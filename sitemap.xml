@@ -1,11 +1,160 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
+  <!-- HOME -->
   <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/</loc>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/index.html</loc>
     <lastmod>2026-05-16</lastmod>
-    <priority>1.0</priority>
+  </url>
+
+  <!-- CURRICULUM -->
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/curriculum.html</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <!-- CAD MODA -->
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/cad-moda.html</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <!-- SUPPLY CHAIN -->
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/supply-chain-production.html</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <!-- PROGETTI INDEX -->
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetti.html</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <!-- PROJECT DETAIL (dinamici ?id=) -->
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=weavecad-draft-studio</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=calcolatore-note-colore</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=gantt-ciclo-tessile</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=lanificio-pro-v2</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=lanificio-pro</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=antilope-studio</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=weave-backend-server</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=modacad-ep1</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=modacad-ep2</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=modacad-ep3</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=modacad-ep4</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=cartamodello-jeans</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=cartamodello-jeans-donna</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=sketchhd-source</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=filieraos-4</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=scm-gefites-evolved</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=scm-gefites-standalone</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=filieraos-3</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=scm-visintin-riassunto-1</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=kanbanflow</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=kanbanflow-1</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=business-plan-tessilenext</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=business-plan-web</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=business-plan-web-1</loc>
+    <lastmod>2026-05-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html?id=erp-control-panel</loc>
+    <lastmod>2026-05-16</lastmod>
   </url>
 
 </urlset>
