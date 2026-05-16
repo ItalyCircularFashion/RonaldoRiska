@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KanbanFlow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0C0C0C;--bg2:#121212;--bg3:#1A1A1A;--bg4:#222222;
+  --bdr:rgba(255,255,255,.07);--bdr2:rgba(255,255,255,.13);
+  --txt:#F0EDE8;--txt2:#9E9B96;--txt3:#5A5751;
+  --gold:#D4A017;--goldbg:rgba(212,160,23,.15);
+  --r:10px;--r2:6px;--r3:14px;
+  font-family:'Syne',system-ui,sans-serif;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--txt)}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:99px}
+button,input,textarea,select{font-family:inherit}
+button{cursor:pointer}
+input,textarea{color:var(--txt)}
+
+/* ── Layout ── */
+#app{display:flex;height:100vh;overflow:hidden}
+#sidebar{width:218px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--bdr);display:flex;flex-direction:column;overflow:hidden;transition:width .2s}
+#sidebar.closed{width:0}
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+#header{flex-shrink:0;background:var(--bg2);border-bottom:1px solid var(--bdr);padding:10px 16px;display:flex;align-items:center;gap:9px;min-height:52px}
+#board-area{flex:1;display:flex;overflow:hidden}
+#board-canvas{flex:1;overflow-x:auto;overflow-y:hidden;padding:14px 16px 18px;display:flex;gap:11px;align-items:flex-start}
+
+/* ── Sidebar ── */
+.sb-logo{padding:14px 13px 10px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:8px;flex-shrink:0;white-space:nowrap;overflow:hidden}
+.sb-mark{width:24px;height:24px;border-radius:5px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#000;flex-shrink:0}
+.sb-name{font-weight:800;font-size:13px;letter-spacing:-.4px}
+.sb-list{flex:1;overflow-y:auto;padding:8px 5px 4px}
+.sb-sec{font-size:9px;font-weight:700;color:var(--txt3);letter-spacing:1.6px;padding:3px 7px 6px;text-transform:uppercase}
+.bi{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:var(--r2);cursor:pointer;margin-bottom:1px;transition:background .1s;position:relative}
+.bi:hover{background:var(--bg3)}
+.bi.active{background:var(--bg4)}
+.bi-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.bi-name{font-size:12px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--txt2);font-weight:500}
+.bi.active .bi-name{color:var(--txt);font-weight:700}
+.bi-del{opacity:0;background:none;border:none;color:var(--txt3);font-size:12px;padding:2px 3px;border-radius:3px;line-height:1;transition:opacity .1s}
+.bi:hover .bi-del{opacity:.8}
+.bi-del:hover{color:#FF4757;opacity:1!important}
+.sb-foot{padding:8px 5px;border-top:1px solid var(--bdr);flex-shrink:0}
+.btn-nb{width:100%;padding:7px;border-radius:var(--r2);border:1.5px dashed var(--bdr2);background:transparent;color:var(--txt2);font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;justify-content:center;transition:all .12s}
+.btn-nb:hover{border-color:var(--gold);color:var(--gold)}
+.nb-row{display:flex;gap:5px}
+.nb-row input{flex:1;background:var(--bg3);border:1px solid var(--bdr2);border-radius:5px;padding:6px 8px;font-size:11px;outline:none;transition:border .1s}
+.nb-row input:focus{border-color:var(--gold)}
+.nb-row .nb-ok{background:var(--gold);border:none;border-radius:5px;padding:6px 9px;color:#000;font-size:12px;font-weight:800}
+
+/* ── Header ── */
+.h-toggle{background:none;border:none;color:var(--txt2);font-size:16px;padding:4px 5px;border-radius:5px;line-height:1;transition:color .1s}
+.h-toggle:hover{color:var(--txt)}
+.h-board{display:flex;align-items:center;gap:7px}
+.h-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.h-bname{font-weight:800;font-size:14px;letter-spacing:-.3px}
+.h-sp{flex:1}
+.srch-wrap{position:relative;display:flex;align-items:center}
+.srch-wrap input{background:var(--bg3);border:1px solid var(--bdr);border-radius:99px;padding:6px 28px 6px 28px;font-size:11px;outline:none;width:160px;transition:border .12s}
+.srch-wrap input:focus{border-color:var(--bdr2)}
+.srch-ic{position:absolute;left:9px;color:var(--txt3);font-size:11px;pointer-events:none}
+.srch-clr{position:absolute;right:9px;background:none;border:none;color:var(--txt3);font-size:13px;line-height:1;padding:0;display:none}
+.pills{display:flex;gap:3px}
+.pill{padding:4px 8px;border-radius:99px;border:1px solid var(--bdr);background:transparent;font-size:10px;font-weight:700;letter-spacing:.3px;transition:all .12s;color:var(--txt2)}
+.pill.on{border-color:currentColor}
+.hbtn{padding:5px 10px;border-radius:var(--r2);border:1px solid var(--bdr);background:transparent;color:var(--txt2);font-size:11px;font-weight:600;transition:all .12s}
+.hbtn:hover{color:var(--txt);border-color:var(--bdr2)}
+.hbtn.on{border-color:var(--gold);color:var(--gold);background:var(--goldbg)}
+.hibtn{padding:5px 8px;border-radius:var(--r2);border:1px solid var(--bdr);background:transparent;color:var(--txt2);font-size:14px;line-height:1;transition:all .12s}
+.hibtn:hover{color:var(--txt);border-color:var(--bdr2)}
+
+/* ── Column ── */
+.col{width:258px;flex-shrink:0;display:flex;flex-direction:column;max-height:calc(100vh - 96px);border-radius:var(--r3);background:var(--bg2);border:1px solid var(--bdr);overflow:hidden;transition:border-color .15s,opacity .2s}
+.col.dragover{border-color:var(--gold)}
+.col.dragging{opacity:.45}
+.col-hd{padding:10px 10px 7px;display:flex;align-items:center;gap:6px;flex-shrink:0;user-select:none}
+.col-hd-drag{cursor:grab;flex:1;display:flex;align-items:center;gap:6px;min-width:0}
+.col-hd-drag:active{cursor:grabbing}
+.col-n{font-weight:700;font-size:12px;flex:1;letter-spacing:-.1px;cursor:text;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.col-ni{background:var(--bg3);border:1px solid var(--gold);border-radius:4px;padding:2px 6px;color:var(--txt);font-size:12px;font-weight:700;outline:none;width:100%}
+.col-cnt{font-size:10px;font-weight:700;padding:2px 6px;border-radius:99px;background:var(--bg4);color:var(--txt2);flex-shrink:0;transition:all .2s}
+.col-cnt.wover{background:rgba(255,71,87,.2);color:#FF4757;animation:pulse 1.4s infinite}
+.chd-btn{opacity:0;background:none;border:none;color:var(--txt3);font-size:15px;padding:1px 3px;border-radius:3px;line-height:1;transition:opacity .1s,color .1s;flex-shrink:0}
+.col:hover .chd-btn{opacity:.9}
+.chd-btn:hover{color:var(--txt)}
+.wip-bar{margin:0 8px 4px;padding:3px 7px;border-radius:4px;font-size:10px;font-weight:600;text-align:center;transition:all .2s}
+.wip-bar.norm{color:var(--txt3)}
+.wip-bar.over{color:#FF4757;background:rgba(255,71,87,.1)}
+.col-cards{flex:1;overflow-y:auto;padding:2px 8px 5px;display:flex;flex-direction:column;gap:6px;min-height:48px}
+.drop-line{height:3px;border-radius:99px;background:var(--gold);opacity:.85;flex-shrink:0}
+.btn-ac{width:calc(100% - 16px);margin:3px 8px 7px;padding:6px;border-radius:7px;border:1.5px dashed var(--bdr);background:transparent;color:var(--txt3);font-size:11px;font-weight:700;transition:all .12s}
+.btn-ac:hover{color:var(--txt2);border-color:var(--bdr2)}
+.add-form{padding:6px 8px;border-top:1px solid var(--bdr);flex-shrink:0}
+.add-form textarea{width:100%;background:var(--bg3);border:1px solid var(--gold);border-radius:7px;padding:7px 9px;font-size:12px;outline:none;resize:none;line-height:1.4}
+.add-form-btns{display:flex;gap:4px;margin-top:4px}
+.add-form-btns .ok{flex:1;padding:6px;border-radius:5px;border:none;background:var(--gold);color:#000;font-size:11px;font-weight:800}
+.add-form-btns .no{padding:6px 9px;border-radius:5px;border:1px solid var(--bdr);background:transparent;color:var(--txt2);font-size:11px}
+.btn-addcol{flex-shrink:0;width:205px;padding:9px 13px;border-radius:var(--r3);border:1.5px dashed var(--bdr2);background:transparent;color:var(--txt2);font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;transition:all .15s;white-space:nowrap;align-self:flex-start;margin-top:0}
+.btn-addcol:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── Card ── */
+.card{border-radius:var(--r);border:1px solid var(--bdr);padding:9px 10px 9px 13px;cursor:pointer;position:relative;overflow:hidden;transition:transform .14s,box-shadow .14s,opacity .15s;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.card:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(0,0,0,.65)}
+.card.dragging{opacity:.35;transform:rotate(2deg)}
+.card-stripe{position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:var(--r) 0 0 var(--r)}
+.card-lbls{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:5px}
+.card-lbl{font-size:10px;font-weight:700;padding:2px 6px;border-radius:99px;letter-spacing:.2px}
+.card-title{font-size:12px;font-weight:600;line-height:1.35;color:var(--txt);margin-bottom:6px}
+.card-foot{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.card-pri{font-size:10px;font-weight:700;padding:2px 6px;border-radius:99px}
+.card-due{font-size:10px;font-weight:600;display:flex;align-items:center;gap:2px}
+.card-due.od{color:#FF4757}
+.card-due.ok{color:var(--txt3)}
+.card-ass{font-family:'DM Mono',monospace;font-size:10px;color:var(--txt3)}
+.card-chk{font-size:10px;font-weight:600;display:flex;align-items:center;gap:2px;margin-left:auto}
+.card-chk.done{color:#2ED573}
+.card-chk.part{color:var(--txt3)}
+.card-delbtn{position:absolute;top:5px;right:5px;background:none;border:none;color:var(--txt3);font-size:11px;opacity:0;transition:opacity .1s;padding:1px 3px;border-radius:3px;line-height:1}
+.card:hover .card-delbtn{opacity:.7}
+.card-delbtn:hover{opacity:1!important;color:#FF4757!important}
+
+/* ── Stats ── */
+#stats{width:244px;background:var(--bg2);border-left:1px solid var(--bdr);padding:14px 13px;overflow-y:auto;flex-shrink:0;animation:sfx .18s ease both}
+.st-hd{font-weight:800;font-size:13px;margin-bottom:13px;display:flex;justify-content:space-between;align-items:center}
+.st-big{text-align:center;padding:13px;background:var(--bg3);border-radius:9px;margin-bottom:11px;border:1px solid var(--bdr)}
+.st-bign{font-size:32px;font-weight:800;color:var(--gold);line-height:1}
+.st-bigl{font-size:9px;color:var(--txt3);font-weight:700;margin-top:3px;letter-spacing:1.2px;text-transform:uppercase}
+.st-sec{font-size:9px;font-weight:700;color:var(--txt3);letter-spacing:1.2px;text-transform:uppercase;margin:10px 0 6px}
+.st-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.st-rdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.st-rlbl{font-size:11px;flex:1;color:var(--txt2)}
+.st-rval{font-size:11px;font-weight:700}
+.st-col{margin-bottom:6px}
+.st-col-hd{display:flex;justify-content:space-between;margin-bottom:3px}
+.st-col-n{font-size:11px;color:var(--txt2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:148px}
+.st-col-c{font-size:11px;font-weight:700}
+.st-track{height:4px;border-radius:99px;background:var(--bg4);overflow:hidden}
+.st-fill{height:100%;border-radius:99px;background:var(--gold)}
+.st-misc{background:var(--bg3);border-radius:9px;padding:10px;border:1px solid var(--bdr);margin-top:10px}
+.st-mr{display:flex;justify-content:space-between;align-items:center;font-size:11px;margin-bottom:5px}
+.st-mr:last-child{margin-bottom:0}
+.st-ml{color:var(--txt2)}
+.st-prog{margin-top:8px}
+.st-prog-hd{display:flex;justify-content:space-between;font-size:10px;color:var(--txt3);margin-bottom:3px}
+.st-prog-tr{height:5px;border-radius:99px;background:var(--bg4);overflow:hidden}
+.st-prog-fl{height:100%;border-radius:99px;background:#2ED573}
+
+/* ── Modal ── */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(5px);animation:fade .15s ease}
+.mbox{background:var(--bg2);border:1px solid var(--bdr2);border-radius:16px;width:100%;max-width:650px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.9);animation:sup .18s ease both}
+.mhd{padding:14px 16px 11px;border-bottom:1px solid var(--bdr);display:flex;align-items:flex-start;gap:9px;flex-shrink:0}
+.mstripe{width:3px;height:36px;border-radius:99px;flex-shrink:0;margin-top:2px}
+.mtitle-area{flex:1;min-width:0}
+.mtitle{width:100%;background:transparent;border:none;font-size:15px;font-weight:700;outline:none;line-height:1.3;letter-spacing:-.3px}
+.msub{font-size:10px;color:var(--txt3);margin-top:2px;font-family:'DM Mono',monospace}
+.mhd-acts{display:flex;gap:5px;flex-shrink:0}
+.btn-del{padding:5px 10px;border-radius:5px;border:1px solid rgba(255,71,87,.3);background:rgba(255,71,87,.1);color:#FF4757;font-size:11px;font-weight:700}
+.btn-cls{padding:5px 9px;border-radius:5px;border:1px solid var(--bdr);background:transparent;color:var(--txt2);font-size:15px;line-height:1}
+.mbody{flex:1;overflow-y:auto;padding:15px 16px;display:flex;gap:15px}
+.ml{flex:1;display:flex;flex-direction:column;gap:13px;min-width:0}
+.mr{width:172px;display:flex;flex-direction:column;gap:11px;flex-shrink:0}
+.flbl{font-size:9px;font-weight:700;color:var(--txt3);letter-spacing:1.2px;text-transform:uppercase;display:block;margin-bottom:4px}
+.ftxt{width:100%;background:var(--bg3);border:1px solid var(--bdr);border-radius:7px;padding:8px 9px;font-size:12px;outline:none;resize:vertical;line-height:1.5;transition:border .12s}
+.ftxt:focus{border-color:var(--bdr2)}
+.finp{width:100%;background:var(--bg3);border:1px solid var(--bdr);border-radius:5px;padding:6px 8px;font-size:12px;outline:none;transition:border .12s}
+.finp:focus{border-color:var(--bdr2)}
+.finp[type=date]{color-scheme:dark}
+
+/* Checklist */
+.chk-prog{height:3px;border-radius:99px;background:var(--bg4);margin-bottom:7px;overflow:hidden}
+.chk-prog-f{height:100%;border-radius:99px;transition:width .3s}
+.chki{display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:5px;margin-bottom:3px;transition:background .15s;border:1px solid transparent}
+.chki.done{background:rgba(46,213,115,.06);border-color:rgba(46,213,115,.1)}
+.chkbox{width:14px;height:14px;border-radius:3px;border:2px solid var(--bdr2);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.chkbox.on{background:#2ED573;border-color:#2ED573}
+.chktxt{font-size:12px;flex:1;transition:all .15s}
+.chktxt.done{text-decoration:line-through;color:var(--txt3)}
+.chkd{background:none;border:none;color:var(--txt3);font-size:11px;opacity:.5;padding:1px 3px}
+.chkd:hover{opacity:1;color:#FF4757}
+.chkadd{display:flex;gap:4px;margin-top:3px}
+.chkadd input{flex:1;background:var(--bg3);border:1px solid var(--bdr);border-radius:5px;padding:5px 7px;font-size:11px;outline:none}
+.chkadd input:focus{border-color:var(--bdr2)}
+
+.pri-btn{width:100%;padding:5px 8px;border-radius:5px;border:1px solid var(--bdr);background:transparent;font-size:11px;font-weight:700;text-align:left;transition:all .12s;margin-bottom:3px;color:var(--txt2)}
+.pri-btn.on{border-color:currentColor}
+.lbls-wrap{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:5px}
+.mlbl{font-size:10px;font-weight:700;padding:2px 6px;border-radius:99px;display:flex;align-items:center;gap:3px}
+.lbl-x{background:none;border:none;color:inherit;font-size:9px;cursor:pointer;opacity:.7;line-height:1;padding:0}
+.lpal{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}
+.lpc{width:13px;height:13px;border-radius:3px;cursor:pointer;border:2px solid transparent;transition:transform .1s}
+.lpc:hover{transform:scale(1.25)}
+.ccsw{width:17px;height:17px;border-radius:3px;cursor:pointer;border:2px solid transparent;transition:border-color .12s}
+.ccsw.on{border-color:var(--gold)}
+.mv-btn{width:100%;padding:5px 8px;border-radius:5px;border:1px solid var(--bdr);background:transparent;color:var(--txt2);font-size:11px;font-weight:600;text-align:left;margin-bottom:3px;transition:all .12s}
+.mv-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* Board Settings */
+.bsov{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(5px);animation:fade .15s ease}
+.bsbox{background:var(--bg2);border:1px solid var(--bdr2);border-radius:14px;padding:20px;width:355px;box-shadow:0 24px 80px rgba(0,0,0,.9);animation:sup .18s ease both}
+.bs-hd{font-weight:800;font-size:14px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+.bs-lbl{font-size:9px;font-weight:700;color:var(--txt3);letter-spacing:1.2px;text-transform:uppercase;display:block;margin-bottom:5px}
+.bs-inp{width:100%;background:var(--bg3);border:1px solid var(--bdr);border-radius:7px;padding:9px 10px;font-size:13px;font-weight:600;outline:none;margin-bottom:13px;transition:border .12s}
+.bs-inp:focus{border-color:var(--bdr2)}
+.cs-wrap{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:13px}
+.csw{width:25px;height:25px;border-radius:7px;cursor:pointer;border:3px solid transparent;transition:transform .1s}
+.csw.on{border-color:#fff}
+.csw:hover{transform:scale(1.1)}
+.wip-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.wip-cn{font-size:11px;flex:1;color:var(--txt2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wip-inp{width:55px;background:var(--bg3);border:1px solid var(--bdr);border-radius:5px;padding:4px 6px;font-size:11px;outline:none;text-align:center}
+.bs-acts{display:flex;gap:6px;margin-top:16px}
+.btn-sv{flex:1;padding:9px;border-radius:7px;border:none;background:var(--gold);color:#000;font-size:12px;font-weight:800}
+.btn-dlb{padding:9px 12px;border-radius:7px;border:1px solid rgba(255,71,87,.3);background:rgba(255,71,87,.1);color:#FF4757;font-size:12px;font-weight:700}
+.btn-exp{padding:9px 11px;border-radius:7px;border:1px solid var(--bdr2);background:transparent;color:var(--txt2);font-size:12px;font-weight:600}
+
+/* Notification */
+.notif{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--bdr2);color:var(--txt);padding:8px 18px;border-radius:99px;font-size:12px;font-weight:700;z-index:9999;pointer-events:none;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.6);animation:nfx 2.4s ease forwards}
+
+/* Animations */
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes sup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sfx{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
+@keyframes nfx{0%{opacity:0;transform:translateX(-50%) translateY(7px)}12%{opacity:1;transform:translateX(-50%) translateY(0)}80%{opacity:1}100%{opacity:0}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ════════════════════════════════════════════
+   CONSTANTS
+════════════════════════════════════════════ */
+const SK = 'kbf_v2';
+const PRI = {
+  urgent:{l:'Urgente',c:'#FF4757',b:'rgba(255,71,87,.18)'},
+  high:  {l:'Alta',   c:'#FFA502',b:'rgba(255,165,2,.18)'},
+  medium:{l:'Media',  c:'#2ED573',b:'rgba(46,213,115,.18)'},
+  low:   {l:'Bassa',  c:'#57606f',b:'rgba(87,96,111,.18)'},
+};
+const PAL=['#E07A5F','#F4A261','#E9C46A','#2A9D8F','#457B9D','#9B5DE5','#F15BB5','#00BBF9','#00F5D4','#FEE440','#80B918'];
+const BCOLS=['#D4A017','#E07A5F','#2A9D8F','#9B5DE5','#00BBF9','#F15BB5','#80B918','#FFA502'];
+const CCOLS=[null,'#1a1a2e','#16213e','#1a2744','#2d1b1b','#1b2d1b','#1b1b2d','#2d2a1b'];
+
+/* ════════════════════════════════════════════
+   HELPERS
+════════════════════════════════════════════ */
+const uid=()=>Math.random().toString(36).slice(2,10);
+const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const fmtD=d=>d?new Date(d+'T12:00:00').toLocaleDateString('it-IT',{day:'2-digit',month:'short'}):'';
+const isOD=d=>d&&new Date(d+'T23:59:59')<new Date();
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+function mkCard(t,d='',p='medium',lbs=[],due='',ass='',chtxts=[],cc=null){
+  return{id:uid(),title:t,desc:d,priority:p,labels:lbs,due,assignee:ass,
+    checks:chtxts.map(x=>({id:uid(),text:x,done:false})),cardColor:cc,created:Date.now()};
+}
+
+/* ════════════════════════════════════════════
+   SEED DATA
+════════════════════════════════════════════ */
+const SEED={
+  boards:[{
+    id:'b1',name:'Progetto Moda AW25',color:'#D4A017',
+    columns:[
+      {id:'c1',name:'Backlog',wip:null,cards:[
+        mkCard('Analisi trend materiali sostenibili','Ricerca su fibre naturali e riciclate per la stagione AW25','medium',[{text:'Ricerca',color:'#2A9D8F'}],'2025-10-01','Giulia R.',['Moodboard','Report materiali','Benchmark competitor']),
+        mkCard('Briefing grafico packaging','','low',[{text:'Marketing',color:'#9B5DE5'}],'','',['Brief creative','Approvazione DD']),
+        mkCard('Piano social media SS26','Strategia Instagram e TikTok per lancio campagna','medium',[{text:'Marketing',color:'#9B5DE5'},{text:'Digitale',color:'#00BBF9'}],'2025-11-15','Anna M.',[]),
+        mkCard('Revisione listino prezzi AW25','','low',[{text:'Vendite',color:'#F15BB5'}],'','Marco B.',[]),
+      ]},
+      {id:'c2',name:'In Lavorazione',wip:3,cards:[
+        mkCard('Campionatura lana cardata – Prato','Richiedere campioni 400g/m² al Lanificio Bianchi per approvazione qualità','urgent',[{text:'Fornitura',color:'#E09A27'},{text:'Prato',color:'#457B9D'}],'2025-08-25','Marco B.',['Email fornitore','Conferma campioni','Test qualità','Approvazione QC']),
+        mkCard('Schede tecniche modelli capsule','','high',[{text:'Tecnico',color:'#9B5DE5'}],'2025-09-01','Suela R.',[]),
+        mkCard('Riunione terzisti confezione Carpi','Allineamento capacità produttiva Q4 e negoziazione prezzi','high',[{text:'Produzione',color:'#E07A5F'}],'2025-08-18','Marco B.',['Agenda','Slide capacità','Offerte prezzi']),
+      ]},
+      {id:'c3',name:'In Revisione',wip:2,cards:[
+        mkCard('Deck presentazione buyer – Milano','Presentazione showroom settembre per AW25','medium',[{text:'Vendite',color:'#F15BB5'}],'2025-09-10','Giulia R.',['Lookbook','Listino prezzi','Schede prodotto','Note buyer']),
+      ]},
+      {id:'c4',name:'Completato',wip:null,cards:[
+        mkCard('Rinnovo contratto terzista – Carpi','Accordo rinnovato con Manifattura XYZ per 3 anni','low',[{text:'Legale',color:'#00F5D4'}],'2025-07-31','Marco B.',[]),
+        mkCard('Certificazione GOTS tessuti Como','Audit completato, certificato valido fino 2027','low',[{text:'Compliance',color:'#00BBF9'}],'2025-07-15','Giulia R.',[]),
+      ]},
+    ]
+  }],
+  activeBoard:'b1'
+};
+
+/* ════════════════════════════════════════════
+   STATE
+════════════════════════════════════════════ */
+let S;
+try{const sv=localStorage.getItem(SK);S=sv?JSON.parse(sv):JSON.parse(JSON.stringify(SEED));}
+catch(e){S=JSON.parse(JSON.stringify(SEED));}
+
+let UI={
+  sidebarOpen:true,addBoardMode:false,newBoardName:'',
+  editColId:null,editColName:'',
+  addCardColId:null,newCardText:'',
+  search:'',filterPri:null,
+  showStats:false,showBoardSettings:false,
+  modalCardId:null,modalColId:null,
+  newCheckText:'',newLabelText:'',
+  notifTimer:null,
+};
+
+let drag={on:false,type:null,id:null,fromCol:null,fromIdx:null};
+let dov={colId:null,idx:null,colIdx:null};
+
+function save(){try{localStorage.setItem(SK,JSON.stringify(S));}catch(e){}}
+
+function board(){return S.boards.find(b=>b.id===S.activeBoard)||S.boards[0];}
+function col(id){return board().columns.find(c=>c.id===id);}
+function card(){
+  if(!UI.modalCardId) return null;
+  const c=col(UI.modalColId);
+  return c?c.cards.find(k=>k.id===UI.modalCardId):null;
+}
+
+/* ════════════════════════════════════════════
+   MUTATIONS
+════════════════════════════════════════════ */
+function upBoard(fn){S.boards=S.boards.map(b=>b.id===S.activeBoard?fn(b):b);save();}
+function upCol(cid,fn){upBoard(b=>({...b,columns:b.columns.map(c=>c.id===cid?fn(c):c)}));}
+function upCard(cid,kid,fn){upCol(cid,c=>({...c,cards:c.cards.map(k=>k.id===kid?fn(k):k)}));}
+
+function addBoard(name){
+  if(!name.trim())return;
+  const nb={id:uid(),name:name.trim(),color:BCOLS[S.boards.length%BCOLS.length],
+    columns:[{id:uid(),name:'Da Fare',wip:null,cards:[]},{id:uid(),name:'In Corso',wip:3,cards:[]},{id:uid(),name:'Fatto',wip:null,cards:[]}]};
+  S.boards.push(nb);S.activeBoard=nb.id;save();notify('Board creata ✓');
+}
+function delBoard(id){
+  if(S.boards.length<=1){notify('Tieni almeno una board!');return;}
+  S.boards=S.boards.filter(b=>b.id!==id);
+  if(S.activeBoard===id)S.activeBoard=S.boards[0].id;
+  save();notify('Board eliminata');
+}
+function addCol(){
+  const id=uid();
+  upBoard(b=>({...b,columns:[...b.columns,{id,name:'Nuova Colonna',wip:null,cards:[]}]}));
+  UI.editColId=id;UI.editColName='Nuova Colonna';
+}
+function delCol(id){upBoard(b=>({...b,columns:b.columns.filter(c=>c.id!==id)}));notify('Colonna eliminata');}
+function addCard(cid,title){
+  if(!title.trim())return;
+  upCol(cid,c=>({...c,cards:[...c.cards,mkCard(title.trim())]}));
+  notify('Scheda aggiunta ✓');
+}
+function delCard(cid,kid){
+  if(UI.modalCardId===kid){UI.modalCardId=null;UI.modalColId=null;}
+  upCol(cid,c=>({...c,cards:c.cards.filter(k=>k.id!==kid)}));
+  notify('Scheda eliminata');
+}
+function moveCard(kid,fromCid,toCid,toIdx){
+  const b=board();
+  const fc=b.columns.find(c=>c.id===fromCid);if(!fc)return;
+  const k=fc.cards.find(x=>x.id===kid);if(!k)return;
+  upBoard(b=>{
+    let cols=b.columns.map(c=>c.id===fromCid?{...c,cards:c.cards.filter(x=>x.id!==kid)}:c);
+    cols=cols.map(c=>{
+      if(c.id!==toCid)return c;
+      const arr=[...c.cards];arr.splice(clamp(toIdx,0,arr.length),0,k);
+      return{...c,cards:arr};
+    });
+    return{...b,columns:cols};
+  });
+}
+function moveCol(fi,ti){
+  upBoard(b=>{const cols=[...b.columns];const[c]=cols.splice(fi,1);cols.splice(ti,0,c);return{...b,columns:cols};});
+}
+
+/* ════════════════════════════════════════════
+   STATS
+════════════════════════════════════════════ */
+function getStats(){
+  const b=board();
+  const all=b.columns.flatMap(c=>c.cards);
+  const byP=Object.fromEntries(Object.keys(PRI).map(k=>[k,0]));
+  all.forEach(k=>{if(byP[k.priority]!==undefined)byP[k.priority]++;});
+  const done=(b.columns.find(c=>c.name.toLowerCase().match(/complet|fatto|done/))||{cards:[]}).cards.length;
+  return{total:all.length,byP,overdue:all.filter(k=>isOD(k.due)).length,withDue:all.filter(k=>k.due).length,done,
+    byCols:b.columns.map(c=>({name:c.name,count:c.cards.length}))};
+}
+
+/* ════════════════════════════════════════════
+   NOTIFICATION
+════════════════════════════════════════════ */
+function notify(msg){
+  clearTimeout(UI.notifTimer);
+  document.getElementById('notif-el')?.remove();
+  const d=document.createElement('div');
+  d.id='notif-el';d.className='notif';d.textContent=msg;
+  document.body.appendChild(d);
+  UI.notifTimer=setTimeout(()=>d.remove(),2400);
+}
+
+/* ════════════════════════════════════════════
+   RENDER — helpers
+════════════════════════════════════════════ */
+function filteredBoard(){
+  const b=board();
+  if(!UI.search&&!UI.filterPri)return b;
+  const s=UI.search.toLowerCase();
+  return{...b,columns:b.columns.map(c=>({...c,cards:c.cards.filter(k=>{
+    const ms=!s||(k.title+k.desc).toLowerCase().includes(s);
+    const mp=!UI.filterPri||k.priority===UI.filterPri;
+    return ms&&mp;
+  })}))};
+}
+
+/* ════════════════════════════════════════════
+   RENDER — sidebar
+════════════════════════════════════════════ */
+function rSidebar(){
+  const boards=S.boards;
+  const items=boards.map(b=>`
+    <div class="bi${b.id===S.activeBoard?' active':''}" data-act="sw-board" data-bid="${b.id}">
+      <div class="bi-dot" style="background:${b.color}"></div>
+      <span class="bi-name">${esc(b.name)}</span>
+      <button class="bi-del" data-act="del-board" data-bid="${b.id}" title="Elimina">×</button>
+    </div>`).join('');
+  const foot=UI.addBoardMode?`
+    <div class="nb-row">
+      <input id="nbi" type="text" placeholder="Nome board…" value="${esc(UI.newBoardName)}" data-act="nb-input" autocomplete="off">
+      <button class="nb-ok" data-act="nb-ok">+</button>
+    </div>`:
+    `<button class="btn-nb" data-act="nb-start">＋ Nuova Board</button>`;
+  return`
+    <div id="sidebar"${UI.sidebarOpen?'':' class="closed"'}>
+      <div class="sb-logo">
+        <div class="sb-mark">K</div>
+        <span class="sb-name">KanbanFlow</span>
+      </div>
+      <div class="sb-list">
+        <div class="sb-sec">Board</div>
+        ${items}
+      </div>
+      <div class="sb-foot">${foot}</div>
+    </div>`;
+}
+
+/* ════════════════════════════════════════════
+   RENDER — header
+════════════════════════════════════════════ */
+function rHeader(){
+  const b=board();
+  const pillsH=Object.entries(PRI).map(([k,v])=>`
+    <button class="pill${UI.filterPri===k?' on':''}" data-act="filter-pri" data-pri="${k}"
+      style="${UI.filterPri===k?`color:${v.c};border-color:${v.c};background:${v.b}`:''}"
+    >${v.l[0]}</button>`).join('');
+  return`
+    <div id="header">
+      <button class="h-toggle" data-act="toggle-sb" title="Sidebar">☰</button>
+      <div class="h-board">
+        <div class="h-dot" style="background:${b.color}"></div>
+        <span class="h-bname">${esc(b.name)}</span>
+      </div>
+      <div class="h-sp"></div>
+      <div class="srch-wrap">
+        <span class="srch-ic">🔍</span>
+        <input type="text" id="srch" placeholder="Cerca…" value="${esc(UI.search)}" data-act="search" autocomplete="off">
+        <button class="srch-clr" id="srch-clr" data-act="srch-clr" style="${UI.search?'display:block':''}">×</button>
+      </div>
+      <div class="pills">${pillsH}</div>
+      <button class="hbtn${UI.showStats?' on':''}" data-act="toggle-stats">📊 Stats</button>
+      <button class="hibtn" data-act="open-bsettings" title="Impostazioni board">⚙</button>
+    </div>`;
+}
+
+/* ════════════════════════════════════════════
+   RENDER — card
+════════════════════════════════════════════ */
+function rCard(k,cid){
+  const p=PRI[k.priority]||PRI.medium;
+  const dc=k.checks.filter(c=>c.done).length,tc=k.checks.length;
+  const od=isOD(k.due);
+  const lbls=k.labels.map(l=>`<span class="card-lbl" style="background:${l.color}26;color:${l.color}">${esc(l.text)}</span>`).join('');
+  const bg=k.cardColor?`background:${k.cardColor}`:'';
+  return`
+    <div class="card${drag.on&&drag.id===k.id?' dragging':''}" style="${bg}" draggable="true"
+      data-act="open-card" data-kid="${k.id}" data-cid="${cid}">
+      <div class="card-stripe" style="background:${p.c}"></div>
+      ${k.labels.length?`<div class="card-lbls">${lbls}</div>`:''}
+      <div class="card-title">${esc(k.title)}</div>
+      <div class="card-foot">
+        <span class="card-pri" style="background:${p.b};color:${p.c}">${p.l}</span>
+        ${k.due?`<span class="card-due ${od?'od':'ok'}">${od?'⚠':'📅'} ${fmtD(k.due)}</span>`:''}
+        ${k.assignee?`<span class="card-ass">${esc(k.assignee.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2))}</span>`:''}
+        ${tc?`<span class="card-chk ${dc===tc?'done':'part'}">☑ ${dc}/${tc}</span>`:''}
+      </div>
+      <button class="card-delbtn" data-act="del-card" data-kid="${k.id}" data-cid="${cid}" title="Elimina">×</button>
+    </div>`;
+}
+
+/* ════════════════════════════════════════════
+   RENDER — column
+════════════════════════════════════════════ */
+function rColumn(c,ci,realCol){
+  const isOver=realCol.wip&&realCol.cards.length>realCol.wip;
+  const isDragOv=dov.colId===c.id&&drag.type==='card';
+  const isColDragOv=drag.type==='col'&&dov.colIdx===ci;
+  const isDraggingCol=drag.type==='col'&&drag.id===c.id;
+  const isEditing=UI.editColId===c.id;
+
+  const cardsH=c.cards.map((k,i)=>{
+    const showDrop=isDragOv&&dov.idx===i;
+    return`
+      ${showDrop?'<div class="drop-line"></div>':''}
+      <div data-drop-card data-cid="${c.id}" data-idx="${i}">
+        ${rCard(k,c.id)}
+      </div>`;
+  }).join('');
+  const showDropEnd=isDragOv&&(dov.idx===undefined||dov.idx>=c.cards.length);
+
+  const colNameH=isEditing?
+    `<input class="col-ni" id="col-ni" type="text" value="${esc(UI.editColName)}" data-act="col-rename-input" data-cid="${c.id}" autocomplete="off">`:
+    `<span class="col-n" data-act="start-rename-col" data-cid="${c.id}" title="Doppio click per rinominare">${esc(c.name)}</span>`;
+
+  const addAreaH=UI.addCardColId===c.id?`
+    <div class="add-form">
+      <textarea id="ac-txt" rows="2" data-act="ac-input" placeholder="Titolo scheda… (↵ aggiungi)">${esc(UI.newCardText)}</textarea>
+      <div class="add-form-btns">
+        <button class="ok" data-act="ac-ok" data-cid="${c.id}">Aggiungi</button>
+        <button class="no" data-act="ac-cancel">✕</button>
+      </div>
+    </div>`:
+    `<button class="btn-ac" data-act="start-add-card" data-cid="${c.id}">＋ Aggiungi scheda</button>`;
+
+  return`
+    <div class="col${isDragOv?' dragover':''}${isDraggingCol?' dragging':''}"
+      data-col-id="${c.id}" data-col-idx="${ci}"
+      style="min-height:0">
+      <div class="col-hd">
+        <div class="col-hd-drag" draggable="true" data-act="col-drag" data-cid="${c.id}" data-cidx="${ci}">
+          ${colNameH}
+        </div>
+        <span class="col-cnt${isOver?' wover':''}" title="Schede${realCol.wip?` / WIP ${realCol.wip}`:''}">
+          ${c.cards.length}${realCol.wip?'/'+realCol.wip:''}
+        </span>
+        <button class="chd-btn" data-act="start-add-card" data-cid="${c.id}" title="Aggiungi scheda">＋</button>
+        <button class="chd-btn" data-act="del-col" data-cid="${c.id}" title="Elimina colonna">×</button>
+      </div>
+      ${realCol.wip?`<div class="wip-bar ${isOver?'over':'norm'}">${isOver?`⚠ WIP superato (max ${realCol.wip})`:`Limite WIP: ${realCol.wip}`}</div>`:''}
+      <div class="col-cards" data-col-cards="${c.id}">
+        ${cardsH}
+        ${showDropEnd?'<div class="drop-line"></div>':''}
+      </div>
+      <div class="col-add-area">${addAreaH}</div>
+    </div>`;
+}
+
+/* ════════════════════════════════════════════
+   RENDER — board canvas
+════════════════════════════════════════════ */
+function rBoardCanvas(){
+  const fb=filteredBoard();
+  const rb=board();
+  const cols=fb.columns.map((c,i)=>rColumn(c,i,rb.columns[i]||c)).join('');
+  return`
+    <div id="board-area">
+      <div id="board-canvas">
+        ${cols}
+        <button class="btn-addcol" data-act="add-col">＋ Aggiungi Colonna</button>
+      </div>
+      ${UI.showStats?rStats():''}
+    </div>`;
+}
+
+/* ════════════════════════════════════════════
+   RENDER — stats
+════════════════════════════════════════════ */
+function rStats(){
+  const st=getStats();
+  const mx=Math.max(...st.byCols.map(c=>c.count),1);
+  const priRows=Object.entries(PRI).map(([k,v])=>`
+    <div class="st-row">
+      <div class="st-rdot" style="background:${v.c}"></div>
+      <span class="st-rlbl">${v.l}</span>
+      <span class="st-rval" style="color:${v.c}">${st.byP[k]||0}</span>
+    </div>`).join('');
+  const colBars=st.byCols.map(c=>`
+    <div class="st-col">
+      <div class="st-col-hd">
+        <span class="st-col-n">${esc(c.name)}</span>
+        <span class="st-col-c">${c.count}</span>
+      </div>
+      <div class="st-track"><div class="st-fill" style="width:${Math.round(c.count/mx*100)}%"></div></div>
+    </div>`).join('');
+  const prog=st.total?Math.round(st.done/st.total*100):0;
+  return`
+    <div id="stats">
+      <div class="st-hd">Statistiche <button data-act="toggle-stats" style="background:none;border:none;color:var(--txt3);font-size:14px">×</button></div>
+      <div class="st-big">
+        <div class="st-bign">${st.total}</div>
+        <div class="st-bigl">Schede totali</div>
+      </div>
+      <div class="st-sec">Per Priorità</div>
+      ${priRows}
+      <div class="st-sec">Per Colonna</div>
+      ${colBars}
+      <div class="st-misc">
+        <div class="st-mr"><span class="st-ml">Con scadenza</span><span>${st.withDue}</span></div>
+        <div class="st-mr"><span class="st-ml">Scadute</span><span style="color:${st.overdue?'#FF4757':'var(--txt)'}">${st.overdue}</span></div>
+        <div class="st-mr"><span class="st-ml">Completate</span><span style="color:#2ED573">${st.done}</span></div>
+        ${st.total?`
+        <div class="st-prog">
+          <div class="st-prog-hd"><span>Avanzamento</span><span>${prog}%</span></div>
+          <div class="st-prog-tr"><div class="st-prog-fl" style="width:${prog}%"></div></div>
+        </div>`:''}
+      </div>
+    </div>`;
+}
+
+/* ════════════════════════════════════════════
+   RENDER — card modal
+════════════════════════════════════════════ */
+function rModal(){
+  const k=card();if(!k)return'';
+  const p=PRI[k.priority]||PRI.medium;
+  const b=board();
+  const colName=b.columns.find(c=>c.id===UI.modalColId)?.name||'';
+  const dc=k.checks.filter(c=>c.done).length,tc=k.checks.length;
+  const prog=tc?Math.round(dc/tc*100):0;
+
+  const priH=Object.entries(PRI).map(([kk,v])=>`
+    <button class="pri-btn${k.priority===kk?' on':''}" data-mact="set-pri" data-pri="${kk}"
+      style="${k.priority===kk?`color:${v.c};border-color:${v.c};background:${v.b}`:''}">${v.l}</button>`).join('');
+
+  const checksH=k.checks.map(ch=>`
+    <div class="chki${ch.done?' done':''}" data-chk-id="${ch.id}">
+      <div class="chkbox${ch.done?' on':''}" data-mact="toggle-check" data-chkid="${ch.id}">
+        ${ch.done?'<span style="color:#000;font-size:9px;font-weight:900">✓</span>':''}
+      </div>
+      <span class="chktxt${ch.done?' done':''}">${esc(ch.text)}</span>
+      <button class="chkd" data-mact="del-check" data-chkid="${ch.id}">×</button>
+    </div>`).join('');
+
+  const lblsH=k.labels.map((l,i)=>`
+    <span class="mlbl" style="background:${l.color}26;color:${l.color}">
+      ${esc(l.text)}
+      <button class="lbl-x" data-mact="del-lbl" data-li="${i}">×</button>
+    </span>`).join('');
+
+  const lpalH=PAL.map(c=>`<div class="lpc" style="background:${c}" data-mact="add-lbl-color" data-lc="${c}" title="${c}"></div>`).join('');
+
+  const ccH=CCOLS.map((c,i)=>`
+    <div class="ccsw${k.cardColor===c?' on':''}" data-mact="set-cc" data-cc="${c||''}"
+      style="background:${c||'var(--bg3)'};${!c?'border-style:dashed':''}" title="${c||'Default'}"></div>`).join('');
+
+  const moveH=b.columns.filter(c=>c.id!==UI.modalColId).map(c=>`
+    <button class="mv-btn" data-mact="move-card" data-tcid="${c.id}">→ ${esc(c.name)}</button>`).join('');
+
+  return`
+    <div class="ov" id="modal-ov">
+      <div class="mbox" id="modal-box">
+        <div class="mhd">
+          <div class="mstripe" style="background:${p.c}"></div>
+          <div class="mtitle-area">
+            <input class="mtitle" type="text" value="${esc(k.title)}" data-mact="set-title" placeholder="Titolo scheda" autocomplete="off">
+            <div class="msub">in <strong>${esc(colName)}</strong> · ${new Date(k.created).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'})}</div>
+          </div>
+          <div class="mhd-acts">
+            <button class="btn-del" data-mact="del-this-card">Elimina</button>
+            <button class="btn-cls" data-mact="close-modal">×</button>
+          </div>
+        </div>
+        <div class="mbody">
+          <div class="ml">
+            <div>
+              <label class="flbl">Descrizione</label>
+              <textarea class="ftxt" rows="3" data-mact="set-desc" placeholder="Aggiungi una descrizione…">${esc(k.desc)}</textarea>
+            </div>
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+                <label class="flbl" style="margin:0">Checklist</label>
+                ${tc?`<span style="font-size:10px;font-weight:700;color:${prog===100?'#2ED573':'var(--txt2)'};margin-left:auto">${prog}%</span>`:''}
+              </div>
+              ${tc?`<div class="chk-prog"><div class="chk-prog-f" style="width:${prog}%;background:${prog===100?'#2ED573':'var(--gold)'}"></div></div>`:''}
+              ${checksH}
+              <div class="chkadd">
+                <input type="text" id="chk-inp" placeholder="Nuovo elemento… (↵)" value="${esc(UI.newCheckText)}" data-mact="chk-input" autocomplete="off">
+              </div>
+            </div>
+          </div>
+          <div class="mr">
+            <div>
+              <label class="flbl">Priorità</label>
+              ${priH}
+            </div>
+            <div>
+              <label class="flbl">Scadenza</label>
+              <input class="finp" type="date" value="${esc(k.due)}" data-mact="set-due">
+              ${k.due?`<button style="margin-top:3px;font-size:10px;color:var(--txt3);background:none;border:none;cursor:pointer;padding:0" data-mact="clr-due">✕ Rimuovi</button>`:''}
+            </div>
+            <div>
+              <label class="flbl">Assegnato a</label>
+              <input class="finp" type="text" value="${esc(k.assignee)}" data-mact="set-ass" placeholder="Nome…" autocomplete="off">
+            </div>
+            <div>
+              <label class="flbl">Etichette</label>
+              <div class="lbls-wrap">${lblsH}</div>
+              <input class="finp" type="text" id="lbl-inp" placeholder="Testo etichetta…" value="${esc(UI.newLabelText)}" data-mact="lbl-input" autocomplete="off" style="margin-bottom:4px">
+              <div class="lpal">${lpalH}</div>
+            </div>
+            <div>
+              <label class="flbl">Colore scheda</label>
+              <div style="display:flex;flex-wrap:wrap;gap:3px">${ccH}</div>
+            </div>
+            <div>
+              <label class="flbl">Sposta in</label>
+              ${moveH||'<span style="font-size:11px;color:var(--txt3)">Unica colonna</span>'}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ════════════════════════════════════════════
+   RENDER — board settings
+════════════════════════════════════════════ */
+function rBoardSettings(){
+  const b=board();
+  const colorSw=BCOLS.map(c=>`<div class="csw${b.color===c?' on':''}" style="background:${c}" data-bsact="set-color" data-bc="${c}"></div>`).join('');
+  const wipRows=b.columns.map(c=>`
+    <div class="wip-row">
+      <span class="wip-cn">${esc(c.name)}</span>
+      <input class="wip-inp" type="number" min="0" max="50" value="${c.wip||''}" placeholder="—"
+        data-bsact="set-wip" data-cid="${c.id}">
+    </div>`).join('');
+  return`
+    <div class="bsov" id="bs-ov">
+      <div class="bsbox">
+        <div class="bs-hd">Impostazioni Board <button style="background:none;border:none;color:var(--txt2);font-size:15px" data-bsact="close">×</button></div>
+        <label class="bs-lbl">Nome board</label>
+        <input class="bs-inp" id="bs-name" type="text" value="${esc(b.name)}" data-bsact="set-name" autocomplete="off">
+        <label class="bs-lbl">Colore tema</label>
+        <div class="cs-wrap">${colorSw}</div>
+        <label class="bs-lbl">Limiti WIP per colonna</label>
+        ${wipRows}
+        <div class="bs-acts">
+          <button class="btn-sv" data-bsact="save">Salva</button>
+          <button class="btn-exp" data-bsact="export" title="Esporta JSON">⬇ Export</button>
+          <button class="btn-dlb" data-bsact="del-board">Elimina</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ════════════════════════════════════════════
+   FULL RENDER
+════════════════════════════════════════════ */
+function render(){
+  const app=document.getElementById('app');
+  app.innerHTML=`
+    ${rSidebar()}
+    <div id="main">
+      ${rHeader()}
+      ${rBoardCanvas()}
+    </div>
+    ${UI.modalCardId?rModal():''}
+    ${UI.showBoardSettings?rBoardSettings():''}
+  `;
+  attachListeners();
+  // focus inputs
+  if(UI.addBoardMode) setTimeout(()=>document.getElementById('nbi')?.focus(),10);
+  if(UI.editColId) setTimeout(()=>document.getElementById('col-ni')?.focus(),10);
+  if(UI.addCardColId) setTimeout(()=>document.getElementById('ac-txt')?.focus(),10);
+  if(UI.modalCardId) setTimeout(()=>document.getElementById('chk-inp')?.focus&&0,0);
+}
+
+/* ════════════════════════════════════════════
+   EVENT DELEGATION
+════════════════════════════════════════════ */
+function attachListeners(){
+  const app=document.getElementById('app');
+
+  // ── Global click ──
+  app.addEventListener('click',e=>{
+    const t=e.target.closest('[data-act]');
+    if(t) handleAct(t.dataset.act,t,e);
+    const m=e.target.closest('[data-mact]');
+    if(m) handleMact(m.dataset.mact,m,e);
+    const bs=e.target.closest('[data-bsact]');
+    if(bs) handleBs(bs.dataset.bsact,bs,e);
+    // close modal on overlay click
+    if(e.target.id==='modal-ov') closeModal();
+    if(e.target.id==='bs-ov') closeBs();
+  });
+
+  // ── Input events ──
+  app.addEventListener('input',e=>{
+    const t=e.target;
+    const act=t.dataset.act||t.dataset.mact||t.dataset.bsact;
+    if(!act)return;
+    if(act==='search'){UI.search=t.value;renderBoard();}
+    else if(act==='nb-input'){UI.newBoardName=t.value;}
+    else if(act==='col-rename-input'){UI.editColName=t.value;}
+    else if(act==='ac-input'){UI.newCardText=t.value;}
+    else if(act==='chk-input'){UI.newCheckText=t.value;}
+    else if(act==='lbl-input'){UI.newLabelText=t.value;}
+    else if(act==='set-title'&&UI.modalCardId){upCard(UI.modalColId,UI.modalCardId,k=>({...k,title:t.value}));updateModalInPlace();}
+    else if(act==='set-desc'&&UI.modalCardId){upCard(UI.modalColId,UI.modalCardId,k=>({...k,desc:t.value}));save();}
+    else if(act==='set-due'&&UI.modalCardId){upCard(UI.modalColId,UI.modalCardId,k=>({...k,due:t.value}));updateModalInPlace();}
+    else if(act==='set-ass'&&UI.modalCardId){upCard(UI.modalColId,UI.modalCardId,k=>({...k,assignee:t.value}));save();}
+    else if(act==='set-name'){/* handled on save */}
+    else if(act==='set-wip'){
+      const cid=t.dataset.cid;
+      const v=t.value?parseInt(t.value):null;
+      upCol(cid,c=>({...c,wip:v}));
+    }
+  });
+
+  // ── Keydown ──
+  app.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){
+      if(UI.modalCardId){closeModal();return;}
+      if(UI.showBoardSettings){closeBs();return;}
+      if(UI.addBoardMode){UI.addBoardMode=false;UI.newBoardName='';renderSidebarOnly();return;}
+      if(UI.editColId){UI.editColId=null;UI.editColName='';renderBoardOnly();return;}
+      if(UI.addCardColId){UI.addCardColId=null;UI.newCardText='';renderBoardOnly();return;}
+    }
+    const tgt=e.target;
+    const act=tgt.dataset.act||tgt.dataset.mact;
+    if(e.key==='Enter'&&!e.shiftKey){
+      if(act==='nb-input'){e.preventDefault();doAddBoard();}
+      else if(act==='col-rename-input'){e.preventDefault();doRenameCol(tgt.dataset.cid);}
+      else if(act==='ac-input'){e.preventDefault();doAddCard(tgt.closest('[data-act="ac-ok"]')?.dataset?.cid||document.querySelector('[data-act="ac-ok"]')?.dataset?.cid);}
+      else if(act==='chk-input'){e.preventDefault();doAddCheck();}
+      else if(act==='lbl-input'){e.preventDefault();doAddLbl(null);}
+    }
+  });
+
+  // ── Drag & Drop ──
+  app.addEventListener('dragstart',e=>{
+    const colDrag=e.target.closest('[data-act="col-drag"]');
+    if(colDrag){
+      drag={on:true,type:'col',id:colDrag.dataset.cid,fromIdx:parseInt(colDrag.dataset.cidx)};
+      e.dataTransfer.effectAllowed='move';
+      setTimeout(()=>e.target.closest('.col')?.classList.add('dragging'),0);
+      return;
+    }
+    const cardEl=e.target.closest('.card');
+    if(cardEl){
+      const kid=cardEl.dataset.kid,cid=cardEl.dataset.cid;
+      if(!kid)return;
+      drag={on:true,type:'card',id:kid,fromCol:cid};
+      e.dataTransfer.effectAllowed='move';
+      setTimeout(()=>cardEl.classList.add('dragging'),0);
+    }
+  });
+
+  app.addEventListener('dragover',e=>{
+    e.preventDefault();
+    if(!drag.on)return;
+    if(drag.type==='card'){
+      const dropTarget=e.target.closest('[data-drop-card]');
+      const colCards=e.target.closest('[data-col-cards]');
+      if(dropTarget){
+        const ncid=dropTarget.dataset.cid,nidx=parseInt(dropTarget.dataset.idx);
+        if(dov.colId!==ncid||dov.idx!==nidx){dov={colId:ncid,idx:nidx,colIdx:null};renderBoardOnly();}
+      } else if(colCards){
+        const ncid=colCards.dataset.colCards;
+        const col2=board().columns.find(c=>c.id===ncid);
+        if(col2&&(dov.colId!==ncid||dov.idx!==col2.cards.length)){
+          dov={colId:ncid,idx:col2.cards.length,colIdx:null};renderBoardOnly();}
+      }
+    } else if(drag.type==='col'){
+      const colEl=e.target.closest('.col');
+      if(colEl){
+        const nidx=parseInt(colEl.dataset.colIdx);
+        if(dov.colIdx!==nidx){dov={colId:null,idx:null,colIdx:nidx};renderBoardOnly();}
+      }
+    }
+  });
+
+  app.addEventListener('drop',e=>{
+    e.preventDefault();
+    if(!drag.on)return;
+    if(drag.type==='card'){
+      const ncid=dov.colId||e.target.closest('[data-col-cards]')?.dataset.colCards;
+      if(ncid){moveCard(drag.id,drag.fromCol,ncid,dov.idx??board().columns.find(c=>c.id===ncid)?.cards.length??0);}
+    } else if(drag.type==='col'){
+      if(dov.colIdx!==null&&dov.colIdx!==undefined&&dov.colIdx!==drag.fromIdx){
+        moveCol(drag.fromIdx,dov.colIdx);
+      }
+    }
+    drag={on:false};dov={};renderBoardOnly();
+  });
+
+  app.addEventListener('dragend',()=>{drag={on:false};dov={};renderBoardOnly();});
+
+  // ESC global
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&UI.modalCardId)closeModal();},true);
+}
+
+/* ════════════════════════════════════════════
+   ACTION HANDLERS
+════════════════════════════════════════════ */
+function handleAct(act,el,e){
+  e.stopPropagation&&e.stopPropagation();
+  if(act==='toggle-sb'){UI.sidebarOpen=!UI.sidebarOpen;renderSidebarOnly();updateSidebarToggle();}
+  else if(act==='sw-board'){if(S.activeBoard!==el.dataset.bid){S.activeBoard=el.dataset.bid;UI.modalCardId=null;UI.showStats=false;render();}}
+  else if(act==='del-board'){e.stopPropagation();if(confirm(`Eliminare la board?`)){delBoard(el.dataset.bid);render();}}
+  else if(act==='nb-start'){UI.addBoardMode=true;renderSidebarOnly();}
+  else if(act==='nb-ok'){doAddBoard();}
+  else if(act==='filter-pri'){UI.filterPri=UI.filterPri===el.dataset.pri?null:el.dataset.pri;renderBoardAndHeader();}
+  else if(act==='srch-clr'){UI.search='';renderBoardAndHeader();}
+  else if(act==='toggle-stats'){UI.showStats=!UI.showStats;renderBoardOnly();}
+  else if(act==='open-bsettings'){UI.showBoardSettings=true;renderBsOnly();}
+  else if(act==='add-col'){addCol();renderBoardOnly();}
+  else if(act==='del-col'){if(confirm('Eliminare questa colonna e tutte le sue schede?')){delCol(el.dataset.cid);renderBoardOnly();}}
+  else if(act==='start-rename-col'){UI.editColId=el.dataset.cid;UI.editColName=col(el.dataset.cid)?.name||'';renderBoardOnly();}
+  else if(act==='col-rename-input'){/* handled in input */}
+  else if(act==='start-add-card'){UI.addCardColId=el.dataset.cid;UI.newCardText='';renderBoardOnly();}
+  else if(act==='ac-ok'){doAddCard(el.dataset.cid);}
+  else if(act==='ac-cancel'){UI.addCardColId=null;UI.newCardText='';renderBoardOnly();}
+  else if(act==='open-card'){
+    UI.modalCardId=el.dataset.kid;UI.modalColId=el.dataset.cid;
+    UI.newCheckText='';UI.newLabelText='';
+    renderModalOnly();
+  }
+  else if(act==='del-card'){e.stopPropagation();delCard(el.dataset.cid,el.dataset.kid);renderBoardOnly();}
+}
+
+function handleMact(act,el,e){
+  if(!UI.modalCardId)return;
+  const k=card();if(!k)return;
+  const cid=UI.modalColId,kid=UI.modalCardId;
+  if(act==='close-modal'){closeModal();}
+  else if(act==='del-this-card'){if(confirm('Eliminare questa scheda?')){delCard(cid,kid);closeModal();renderBoardOnly();}}
+  else if(act==='set-pri'){upCard(cid,kid,k=>({...k,priority:el.dataset.pri}));updateModalInPlace();}
+  else if(act==='clr-due'){upCard(cid,kid,k=>({...k,due:''}));updateModalInPlace();}
+  else if(act==='toggle-check'){
+    upCard(cid,kid,k=>({...k,checks:k.checks.map(c=>c.id===el.dataset.chkid?{...c,done:!c.done}:c)}));
+    updateModalInPlace();
+  }
+  else if(act==='del-check'){
+    upCard(cid,kid,k=>({...k,checks:k.checks.filter(c=>c.id!==el.dataset.chkid)}));
+    updateModalInPlace();
+  }
+  else if(act==='chk-input'){/* handled in keydown */}
+  else if(act==='del-lbl'){
+    const li=parseInt(el.dataset.li);
+    upCard(cid,kid,k=>({...k,labels:k.labels.filter((_,i)=>i!==li)}));
+    updateModalInPlace();
+  }
+  else if(act==='add-lbl-color'){doAddLbl(el.dataset.lc);}
+  else if(act==='lbl-input'){/* handled in keydown */}
+  else if(act==='set-cc'){
+    const c=el.dataset.cc||null;
+    upCard(cid,kid,k=>({...k,cardColor:c}));
+    updateModalInPlace();
+  }
+  else if(act==='move-card'){
+    const tcid=el.dataset.tcid;
+    moveCard(kid,cid,tcid,0);
+    UI.modalColId=tcid;
+    updateModalInPlace();
+  }
+}
+
+function handleBs(act,el,e){
+  const b=board();
+  if(act==='close'){closeBs();}
+  else if(act==='set-color'){upBoard(b=>({...b,color:el.dataset.bc}));renderBsOnly();renderBoardAndHeader();}
+  else if(act==='save'){
+    const nameInp=document.getElementById('bs-name');
+    if(nameInp) upBoard(b=>({...b,name:nameInp.value.trim()||b.name}));
+    closeBs();renderBoardAndHeader();notify('Impostazioni salvate ✓');
+  }
+  else if(act==='export'){
+    const data=JSON.stringify(board(),null,2);
+    const blob=new Blob([data],{type:'application/json'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download=`kanban-${board().name.replace(/\s+/g,'_')}.json`;
+    a.click();
+    notify('Board esportata ✓');
+  }
+  else if(act==='del-board'){
+    if(confirm(`Eliminare "${b.name}"?`)){delBoard(b.id);closeBs();render();}
+  }
+  else if(act==='set-wip'){/* handled in input */}
+}
+
+/* ════════════════════════════════════════════
+   ATOMIC ACTIONS
+════════════════════════════════════════════ */
+function doAddBoard(){
+  if(!UI.newBoardName.trim())return;
+  addBoard(UI.newBoardName);UI.addBoardMode=false;UI.newBoardName='';render();
+}
+function doRenameCol(cid){
+  if(!cid)return;
+  upCol(cid,c=>({...c,name:UI.editColName.trim()||c.name}));
+  UI.editColId=null;UI.editColName='';renderBoardOnly();
+}
+function doAddCard(cid){
+  if(!cid)return;
+  addCard(cid,UI.newCardText);
+  UI.addCardColId=null;UI.newCardText='';renderBoardOnly();
+}
+function doAddCheck(){
+  if(!UI.newCheckText.trim()||!UI.modalCardId)return;
+  const t=UI.newCheckText.trim();
+  upCard(UI.modalColId,UI.modalCardId,k=>({...k,checks:[...k.checks,{id:uid(),text:t,done:false}]}));
+  UI.newCheckText='';updateModalInPlace();
+}
+function doAddLbl(color){
+  if(!UI.modalCardId)return;
+  const txt=UI.newLabelText.trim()||(color?'Label':'');
+  if(!txt)return;
+  const c=color||PAL[card()?.labels.length%PAL.length];
+  upCard(UI.modalColId,UI.modalCardId,k=>({...k,labels:[...k.labels,{text:txt,color:c}]}));
+  UI.newLabelText='';updateModalInPlace();
+}
+function closeModal(){UI.modalCardId=null;UI.modalColId=null;renderModalOnly();renderBoardOnly();}
+function closeBs(){UI.showBoardSettings=false;renderBsOnly();}
+
+/* ════════════════════════════════════════════
+   PARTIAL RENDERS
+════════════════════════════════════════════ */
+function renderBoard(){
+  const ba=document.getElementById('board-area');
+  if(ba){ba.outerHTML=rBoardCanvas();attachListeners();}else render();
+}
+function renderBoardOnly(){
+  const ba=document.getElementById('board-area');
+  if(ba){const tmp=document.createElement('div');tmp.innerHTML=rBoardCanvas();
+    ba.replaceWith(tmp.firstElementChild);attachListeners();}else render();
+}
+function renderBoardAndHeader(){
+  renderBoardOnly();
+  const hd=document.getElementById('header');
+  if(hd){hd.outerHTML=rHeader();attachListeners();}
+}
+function renderSidebarOnly(){
+  const sb=document.getElementById('sidebar');
+  if(sb){sb.outerHTML=rSidebar();attachListeners();}else render();
+}
+function updateSidebarToggle(){
+  const sb=document.getElementById('sidebar');
+  if(sb){if(UI.sidebarOpen)sb.classList.remove('closed');else sb.classList.add('closed');}
+}
+function renderModalOnly(){
+  const existing=document.getElementById('modal-ov');
+  if(UI.modalCardId){
+    const tmp=document.createElement('div');tmp.innerHTML=rModal();
+    const el=tmp.firstElementChild;
+    if(existing)existing.replaceWith(el);else document.getElementById('app').appendChild(el);
+    attachListeners();
+  } else {existing?.remove();}
+}
+function updateModalInPlace(){
+  renderModalOnly();renderBoardOnly();
+}
+function renderBsOnly(){
+  const existing=document.getElementById('bs-ov');
+  if(UI.showBoardSettings){
+    const tmp=document.createElement('div');tmp.innerHTML=rBoardSettings();
+    const el=tmp.firstElementChild;
+    if(existing)existing.replaceWith(el);else document.getElementById('app').appendChild(el);
+    attachListeners();
+  } else {existing?.remove();}
+}
+
+/* ════════════════════════════════════════════
+   INIT
+════════════════════════════════════════════ */
+render();
+
+// Handle col rename blur
+document.addEventListener('focusout',e=>{
+  if(e.target.dataset.act==='col-rename-input'){
+    doRenameCol(e.target.dataset.cid);
+  }
+});
+</script>
+</body>
+</html>
