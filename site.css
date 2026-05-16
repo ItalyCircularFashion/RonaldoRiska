@@ -1159,3 +1159,18 @@ p {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
+
+.section-heading {
+  display: grid;
+  gap: 0.7rem;
+  margin-bottom: 2rem;
+
+  width: 100%;
+  justify-items: center;
+  text-align: center;
+}
+
+.section-heading h2,
+.section-heading p {
+  margin-inline: auto;
+}
