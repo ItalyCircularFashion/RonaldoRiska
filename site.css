@@ -1156,7 +1156,11 @@ p {
   .category-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-
+.project-card {
+  background: rgba(17, 26, 21, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(199, 164, 91, 0.15);
+}
   .project-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
