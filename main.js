@@ -13,7 +13,21 @@ const escapeHtml = (value = "") =>
     .replaceAll("'", "&#039;");
 
 const fromRoot = (path = "") => path;
-const detailHref = (project) => `progetto.html?id=${encodeURIComponent(project.id)}`;
+
+// Nuova funzione: estrae l'ID progetto da un URL del tipo /progetti/xxx.html
+const getProjectIdFromUrl = () => {
+  const path = window.location.pathname;
+  // Cerca pattern /progetti/nome-progetto.html
+  const match = path.match(/\/progetti\/([^\/]+)\.html$/);
+  if (match) return match[1];
+  // Supporto legacy: ?id=xxx
+  const params = new URLSearchParams(window.location.search);
+  if (params.has("id")) return params.get("id");
+  return null;
+};
+
+// Genera URL canonico per i link interni
+const detailHref = (project) => `/progetti/${encodeURIComponent(project.id)}.html`;
 
 const categoryHref = (categoryKey) => fromRoot(categories[categoryKey]?.page || "index.html");
 
@@ -27,20 +41,47 @@ const projectTypeLabel = {
   zip: "Scarica asset",
 };
 
+// Navigazione interna con pushState (evita ricarica pagina)
+const navigateTo = (url, push = true) => {
+  if (push) {
+    window.history.pushState({}, "", url);
+  }
+  // Se il percorso è /progetti/xxx.html, carichiamo il dettaglio in progetto.html
+  if (url.includes("/progetti/") && url.endsWith(".html")) {
+    // Rende attivo il contenuto di progetto.html senza ricaricare la pagina
+    renderProjectDetail();
+    // Aggiorna anche eventuali altri componenti che dipendono dalla URL
+    return;
+  }
+  // Per le altre pagine, ricarica normalmente
+  window.location.href = url;
+};
+
+// Intercetta click sui link .project-preview e .card-actions a
+const initInternalLinks = () => {
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest("a[href^='/progetti/'], a[href^='progetti/']");
+    if (link) {
+      e.preventDefault();
+      let href = link.getAttribute("href");
+      if (!href.startsWith("/")) href = "/" + href;
+      navigateTo(href, true);
+    }
+  });
+};
+
+// Tema
 const initTheme = () => {
   const toggle = qs("[data-theme-toggle]");
   const savedTheme = localStorage.getItem("portfolio-theme") || "dark";
   document.documentElement.dataset.theme = savedTheme;
-
   const syncLabel = () => {
     if (toggle) {
       toggle.textContent = document.documentElement.dataset.theme === "dark" ? "Light" : "Dark";
       toggle.setAttribute("aria-label", `Attiva tema ${toggle.textContent.toLowerCase()}`);
     }
   };
-
   syncLabel();
-
   toggle?.addEventListener("click", () => {
     const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
     document.documentElement.dataset.theme = nextTheme;
@@ -52,15 +93,12 @@ const initTheme = () => {
 const initNavigation = () => {
   const toggle = qs("[data-nav-toggle]");
   const menu = qs("[data-nav-menu]");
-
   if (!toggle || !menu) return;
-
   toggle.addEventListener("click", () => {
     const isOpen = toggle.getAttribute("aria-expanded") === "true";
     toggle.setAttribute("aria-expanded", String(!isOpen));
     menu.classList.toggle("is-open", !isOpen);
   });
-
   menu.addEventListener("click", (event) => {
     if (event.target instanceof HTMLAnchorElement) {
       toggle.setAttribute("aria-expanded", "false");
@@ -72,12 +110,10 @@ const initNavigation = () => {
 const initReveal = () => {
   const items = qsa(".reveal");
   if (!items.length) return;
-
   if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     items.forEach((item) => item.classList.add("is-visible"));
     return;
   }
-
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -89,7 +125,6 @@ const initReveal = () => {
     },
     { threshold: 0.12 }
   );
-
   items.forEach((item) => observer.observe(item));
 };
 
@@ -100,11 +135,8 @@ const renderProjectCard = (project, options = {}) => {
   const category = categories[project.category] || {};
   const typeClass = project.type === "html" ? "is-live" : "is-source";
   const directHref = fromRoot(project.url);
-
   return `
-    <article class="project-card reveal ${typeClass}" data-project-card data-category="${escapeHtml(
-      project.category
-    )}" data-search="${escapeHtml(`${project.title} ${project.description} ${project.tags.join(" ")}`.toLowerCase())}">
+    <article class="project-card reveal ${typeClass}" data-project-card data-category="${escapeHtml(project.category)}" data-search="${escapeHtml(`${project.title} ${project.description} ${project.tags.join(" ")}`.toLowerCase())}">
       <a class="project-preview" href="${detailHref(project)}" aria-label="Apri scheda ${escapeHtml(project.title)}">
         <span class="preview-topline"></span>
         <span class="preview-grid" aria-hidden="true">
@@ -135,10 +167,8 @@ const renderProjectLists = () => {
     const featuredOnly = mount.dataset.featured === "true";
     const limit = Number.parseInt(mount.dataset.limit || "0", 10);
     let list = category === "all" ? [...projects] : getCategoryProjects(category);
-
     if (featuredOnly) list = list.filter((project) => project.featured);
     if (limit > 0) list = list.slice(0, limit);
-
     mount.innerHTML = list.map((project) => renderProjectCard(project, { compact: category === "all" })).join("");
   });
 };
@@ -146,7 +176,6 @@ const renderProjectLists = () => {
 const applyProjectFilters = () => {
   const activeFilter = qs("[data-filter].is-active")?.dataset.filter || "all";
   const searchValue = (qs("[data-project-search]")?.value || "").trim().toLowerCase();
-
   qsa("[data-project-card]").forEach((card) => {
     const matchesFilter = activeFilter === "all" || card.dataset.category === activeFilter;
     const matchesSearch = !searchValue || (card.dataset.search || "").includes(searchValue);
@@ -162,7 +191,6 @@ const initProjectFilters = () => {
       applyProjectFilters();
     });
   });
-
   qs("[data-project-search]")?.addEventListener("input", applyProjectFilters);
   applyProjectFilters();
 };
@@ -172,24 +200,20 @@ const hydrateCategoryBlocks = () => {
     const categoryKey = card.dataset.categoryCard;
     const category = categories[categoryKey];
     if (!category) return;
-
     qs("[data-category-title]", card).textContent = category.label;
     qs("[data-category-summary]", card).textContent = category.summary;
     qs("[data-category-tone]", card).textContent = category.tone;
     qs("[data-category-link]", card).setAttribute("href", categoryHref(categoryKey));
     qs("[data-category-count]", card).textContent = String(getCategoryProjects(categoryKey).length);
   });
-
   qsa("[data-category-page-title]").forEach((node) => {
     const category = categories[document.body.dataset.categoryPage];
     if (category) node.textContent = category.label;
   });
-
   qsa("[data-category-page-summary]").forEach((node) => {
     const category = categories[document.body.dataset.categoryPage];
     if (category) node.textContent = category.summary;
   });
-
   qsa("[data-category-page-tone]").forEach((node) => {
     const category = categories[document.body.dataset.categoryPage];
     if (category) node.textContent = category.tone;
@@ -200,7 +224,7 @@ const renderProjectDetail = () => {
   const mount = qs("[data-project-detail]");
   if (!mount) return;
 
-  const projectId = new URLSearchParams(window.location.search).get("id");
+  const projectId = getProjectIdFromUrl();
   const project = projects.find((item) => item.id === projectId);
 
   if (!project) {
@@ -301,11 +325,9 @@ const drawKpiCanvas = () => {
     canvas.width = Math.max(320, bounds.width) * dpr;
     canvas.height = Math.max(180, bounds.height || 220) * dpr;
     ctx.scale(dpr, dpr);
-
     const width = canvas.width / dpr;
     const height = canvas.height / dpr;
     ctx.clearRect(0, 0, width, height);
-
     const css = getComputedStyle(document.documentElement);
     const line = css.getPropertyValue("--chart-line").trim() || "#c7a45b";
     const fill = css.getPropertyValue("--chart-fill").trim() || "rgba(199, 164, 91, 0.16)";
@@ -315,7 +337,6 @@ const drawKpiCanvas = () => {
     const padding = 26;
     const max = Math.max(...data);
     const min = Math.min(...data);
-
     ctx.strokeStyle = grid;
     ctx.lineWidth = 1;
     for (let i = 0; i < 4; i += 1) {
@@ -325,13 +346,11 @@ const drawKpiCanvas = () => {
       ctx.lineTo(width - padding, y);
       ctx.stroke();
     }
-
     const points = data.map((value, index) => {
       const x = padding + ((width - padding * 2) / (data.length - 1)) * index;
       const y = height - padding - ((value - min) / (max - min)) * (height - padding * 2);
       return { x, y };
     });
-
     ctx.beginPath();
     points.forEach((point, index) => {
       if (index === 0) ctx.moveTo(point.x, point.y);
@@ -342,7 +361,6 @@ const drawKpiCanvas = () => {
     ctx.closePath();
     ctx.fillStyle = fill;
     ctx.fill();
-
     ctx.beginPath();
     points.forEach((point, index) => {
       if (index === 0) ctx.moveTo(point.x, point.y);
@@ -351,14 +369,12 @@ const drawKpiCanvas = () => {
     ctx.strokeStyle = line;
     ctx.lineWidth = 3;
     ctx.stroke();
-
     points.forEach((point) => {
       ctx.beginPath();
       ctx.arc(point.x, point.y, 4, 0, Math.PI * 2);
       ctx.fillStyle = line;
       ctx.fill();
     });
-
     ctx.fillStyle = text;
     ctx.font = "700 12px Inter, system-ui, sans-serif";
     ctx.fillText("Digital maturity index", padding, padding - 8);
@@ -386,6 +402,11 @@ const initFooter = () => {
   });
 };
 
+// Gestione popstate per il tasto indietro/avanti
+window.addEventListener("popstate", () => {
+  renderProjectDetail();
+});
+
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
   initNavigation();
@@ -398,4 +419,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initFooter();
   drawKpiCanvas();
   window.addEventListener("resize", drawKpiCanvas);
+  initInternalLinks();
 });
