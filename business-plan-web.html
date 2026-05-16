@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Business Plan — [Nome Azienda]</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ── RESET & TOKENS ──────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:    #1E2761;
+  --navy2:   #2A3A8C;
+  --navy3:   #0F1640;
+  --gold:    #D4AF37;
+  --gold2:   #F0D060;
+  --ice:     #CADCFC;
+  --white:   #FFFFFF;
+  --offwhite:#F4F6FB;
+  --gray:    #64748B;
+  --lightgray:#E8EDF5;
+  --dark:    #1A1F3A;
+  --red:     #C0392B;
+  --green:   #27AE60;
+  --orange:  #E67E22;
+  --sidebar-w: 240px;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+  --radius: 10px;
+  --trans: 0.35s cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family: var(--font-body);
+  background: var(--navy3);
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── SIDEBAR ─────────────────────────────────────────────── */
+#sidebar{
+  position: fixed; top:0; left:0; bottom:0;
+  width: var(--sidebar-w);
+  background: var(--navy3);
+  border-right: 1px solid rgba(202,220,252,.08);
+  display: flex; flex-direction: column;
+  z-index: 100;
+  padding: 0 0 24px 0;
+  transition: transform var(--trans);
+}
+.sb-brand{
+  padding: 28px 20px 20px;
+  border-bottom: 1px solid rgba(202,220,252,.08);
+  margin-bottom: 10px;
+}
+.sb-brand .tag{
+  font-size: 10px; letter-spacing:.18em; text-transform:uppercase;
+  color: var(--gold); font-weight:600; margin-bottom: 6px;
+}
+.sb-brand .title{
+  font-family: var(--font-display); font-size: 15px; font-weight:700;
+  color: var(--white); line-height:1.3;
+}
+.sb-nav{flex:1; overflow-y:auto; padding: 8px 12px;}
+.sb-nav::-webkit-scrollbar{width:3px}
+.sb-nav::-webkit-scrollbar-thumb{background:rgba(202,220,252,.15);border-radius:2px}
+.sb-item{
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px; border-radius: 7px; cursor: pointer;
+  transition: background var(--trans), color var(--trans);
+  margin-bottom: 2px;
+  text-decoration: none; color: rgba(202,220,252,.6);
+  font-size: 13px; font-weight: 400;
+  position: relative;
+}
+.sb-item:hover{background:rgba(212,175,55,.08); color: var(--gold2);}
+.sb-item.active{background:rgba(212,175,55,.15); color: var(--gold);}
+.sb-item.active::before{
+  content:''; position:absolute; left:0; top:50%; transform:translateY(-50%);
+  width:3px; height:60%; background:var(--gold); border-radius:0 2px 2px 0;
+}
+.sb-num{
+  width: 20px; height: 20px; border-radius:50%;
+  background: rgba(202,220,252,.06);
+  font-size: 10px; font-weight:600; color:inherit;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.sb-item.active .sb-num{background:var(--gold); color:var(--navy3);}
+.sb-footer{
+  padding: 16px 20px 0;
+  border-top: 1px solid rgba(202,220,252,.08);
+  font-size: 11px; color: rgba(202,220,252,.3);
+}
+
+/* MOBILE TOGGLE */
+#menu-btn{
+  display:none; position:fixed; top:12px; left:12px; z-index:200;
+  background:var(--navy); border:1px solid var(--gold);
+  color:var(--gold); width:38px; height:38px; border-radius:7px;
+  cursor:pointer; font-size:16px; align-items:center; justify-content:center;
+}
+
+/* ── MAIN CONTENT ────────────────────────────────────────── */
+#main{
+  margin-left: var(--sidebar-w);
+  min-height: 100vh;
+}
+
+/* ── SECTION BASE ────────────────────────────────────────── */
+.section{
+  min-height: 100vh;
+  padding: 80px 60px 80px 60px;
+  display: flex; flex-direction: column; justify-content: center;
+  position: relative;
+  border-bottom: 1px solid rgba(202,220,252,.06);
+}
+.section:nth-child(even){background: rgba(26,31,58,.5);}
+
+/* ── SECTION HEADER ──────────────────────────────────────── */
+.sec-tag{
+  font-size: 10px; letter-spacing:.2em; text-transform:uppercase;
+  color: var(--gold); font-weight:600; margin-bottom:8px;
+}
+.sec-title{
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 52px); font-weight:700;
+  line-height:1.1; color: var(--white);
+  margin-bottom: 16px;
+}
+.sec-sub{
+  font-size:16px; color: rgba(202,220,252,.7); line-height:1.6;
+  max-width:640px; margin-bottom:48px;
+}
+
+/* ── CARDS ───────────────────────────────────────────────── */
+.card{
+  background: rgba(202,220,252,.04);
+  border: 1px solid rgba(202,220,252,.1);
+  border-radius: var(--radius);
+  padding: 28px; position:relative; overflow:hidden;
+  transition: border-color var(--trans), transform var(--trans), box-shadow var(--trans);
+}
+.card:hover{
+  border-color: rgba(212,175,55,.35);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0,0,0,.3);
+}
+.card::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold2));
+  opacity:0; transition: opacity var(--trans);
+}
+.card:hover::before{opacity:1;}
+.card-num{
+  font-family: var(--font-display); font-size:48px; font-weight:900;
+  color: rgba(212,175,55,.15); line-height:1;
+  margin-bottom: 8px;
+}
+.card-title{
+  font-size:14px; font-weight:600; text-transform:uppercase;
+  letter-spacing:.1em; color: var(--gold); margin-bottom:12px;
+}
+.card-text{font-size:14px; color:rgba(202,220,252,.75); line-height:1.65;}
+
+/* ── GRID LAYOUTS ────────────────────────────────────────── */
+.grid-2{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+.grid-3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px;}
+.grid-4{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+
+/* ── KPI CARDS ───────────────────────────────────────────── */
+.kpi-card{
+  background: rgba(202,220,252,.04);
+  border:1px solid rgba(202,220,252,.1);
+  border-radius: var(--radius); padding: 24px;
+  text-align:center;
+  transition: all var(--trans);
+}
+.kpi-card:hover{border-color:var(--gold); background:rgba(212,175,55,.06);}
+.kpi-val{
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.5vw, 42px); font-weight:700;
+  color: var(--gold); line-height:1;
+  margin-bottom: 6px;
+}
+.kpi-unit{font-size:12px; color:rgba(202,220,252,.5); margin-bottom:4px;}
+.kpi-label{font-size:13px; font-weight:600; color:var(--ice);}
+
+/* ── TABLE ───────────────────────────────────────────────── */
+.bp-table{width:100%; border-collapse:collapse; font-size:14px;}
+.bp-table th{
+  background: var(--navy2); color:var(--white); font-weight:600;
+  padding: 12px 16px; text-align:left; font-size:12px;
+  letter-spacing:.06em; text-transform:uppercase;
+}
+.bp-table td{
+  padding:12px 16px; border-bottom:1px solid rgba(202,220,252,.06);
+  color: rgba(202,220,252,.8);
+}
+.bp-table tr:hover td{background:rgba(202,220,252,.03);}
+.bp-table tr:last-child td{border-bottom:none;}
+.check{color:var(--green);}
+.warn{color:var(--orange);}
+.cross{color:var(--red);}
+.badge{
+  display:inline-block; padding:3px 10px; border-radius:20px;
+  font-size:11px; font-weight:600; letter-spacing:.06em;
+}
+.badge-red{background:rgba(192,57,43,.2); color:#e87060;}
+.badge-orange{background:rgba(230,126,34,.2); color:#f39c12;}
+.badge-green{background:rgba(39,174,96,.2); color:#2ecc71;}
+.us-col{background:rgba(39,174,96,.05);}
+
+/* ── COVER SECTION ───────────────────────────────────────── */
+#s-cover{
+  min-height:100vh; justify-content:center;
+  background: radial-gradient(ellipse at 70% 40%, rgba(42,58,140,.5) 0%, transparent 60%),
+              linear-gradient(160deg, var(--navy3) 0%, #0a0f28 100%);
+  overflow: hidden;
+}
+#s-cover .bg-geo{
+  position:absolute; inset:0; pointer-events:none;
+}
+.geo-circle{
+  position:absolute; border-radius:50%;
+  border:1px solid rgba(212,175,55,.08);
+}
+.cover-eyebrow{
+  font-size:11px; letter-spacing:.25em; text-transform:uppercase;
+  color: var(--gold); font-weight:600; margin-bottom:20px;
+  display:flex; align-items:center; gap:10px;
+}
+.cover-eyebrow::before{
+  content:''; width:32px; height:1px; background:var(--gold);
+}
+.cover-title{
+  font-family: var(--font-display);
+  font-size: clamp(44px, 7vw, 88px); font-weight:900;
+  line-height:1; color:var(--white);
+  margin-bottom:24px;
+}
+.cover-title span{color:var(--gold);}
+.cover-sub{
+  font-size:18px; color:rgba(202,220,252,.65); line-height:1.6;
+  max-width:520px; margin-bottom:48px;
+}
+.cover-meta{
+  display:flex; gap:32px; flex-wrap:wrap;
+  margin-bottom:48px;
+}
+.meta-item{font-size:13px;}
+.meta-item .ml{color:rgba(202,220,252,.4); display:block; font-size:11px; letter-spacing:.1em; text-transform:uppercase; margin-bottom:2px;}
+.meta-item .mv{color:var(--ice); font-weight:500;}
+
+.btn-primary{
+  display:inline-flex; align-items:center; gap:8px;
+  background: var(--gold); color: var(--navy3);
+  font-family: var(--font-body); font-size:14px; font-weight:600;
+  padding: 14px 28px; border-radius:7px; border:none; cursor:pointer;
+  transition: all var(--trans); text-decoration:none;
+  letter-spacing:.04em;
+}
+.btn-primary:hover{background:var(--gold2); transform:translateY(-2px); box-shadow:0 8px 24px rgba(212,175,55,.3);}
+.btn-ghost{
+  display:inline-flex; align-items:center; gap:8px;
+  background:transparent; color:var(--ice);
+  font-family:var(--font-body); font-size:14px; font-weight:500;
+  padding:14px 28px; border-radius:7px;
+  border:1px solid rgba(202,220,252,.2); cursor:pointer;
+  transition: all var(--trans); text-decoration:none;
+}
+.btn-ghost:hover{border-color:var(--gold); color:var(--gold);}
+.cta-row{display:flex; gap:12px; flex-wrap:wrap;}
+
+/* ── NOTE BOX ────────────────────────────────────────────── */
+.note-box{
+  background: rgba(202,220,252,.05);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 7px 7px 0;
+  padding: 14px 18px; font-size:13px;
+  color: rgba(202,220,252,.65); font-style:italic;
+  margin-top: 32px;
+}
+.note-box strong{color:var(--gold); font-style:normal;}
+
+/* ── VALUE PROP CANVAS ───────────────────────────────────── */
+.vp-row{
+  display:grid; grid-template-columns:1fr 120px 1fr; align-items:center; gap:0;
+  background: rgba(202,220,252,.03); border:1px solid rgba(202,220,252,.08);
+  border-radius:7px; overflow:hidden; margin-bottom:8px;
+  transition:border-color var(--trans);
+}
+.vp-row:hover{border-color:rgba(212,175,55,.2);}
+.vp-label{
+  background:rgba(42,58,140,.4); padding:12px 16px;
+  font-size:11px; font-weight:600; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--gold);
+}
+.vp-mid{
+  padding:12px 8px; text-align:center;
+  color:rgba(202,220,252,.3); font-size:16px;
+}
+.vp-val{
+  padding:12px 16px; font-size:13px; color:rgba(202,220,252,.8);
+}
+
+/* ── MARKET CIRCLES ──────────────────────────────────────── */
+.market-vis{
+  position:relative; display:flex; align-items:center; justify-content:center;
+  height:340px;
+}
+.mkt-circle{
+  position:absolute; border-radius:50%; display:flex;
+  align-items:center; justify-content:center;
+  transition: transform var(--trans);
+}
+.mkt-circle:hover{transform:scale(1.02);}
+.mkt-label{text-align:center;}
+.mkt-name{font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;}
+.mkt-val{font-family:var(--font-display); font-size:22px; font-weight:700; color:var(--gold); line-height:1.1;}
+
+/* ── GTM PHASES ──────────────────────────────────────────── */
+.phase-card{
+  border-radius:var(--radius); padding:28px 24px;
+  transition: all var(--trans); cursor:default;
+  position:relative; overflow:hidden;
+}
+.phase-card.active-phase{
+  background: linear-gradient(135deg, var(--navy2), var(--navy));
+  border:1px solid var(--gold);
+  box-shadow: 0 8px 32px rgba(212,175,55,.15);
+}
+.phase-card.inactive-phase{
+  background: rgba(202,220,252,.03);
+  border:1px solid rgba(202,220,252,.08);
+}
+.phase-card:hover{
+  transform:translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,.3);
+}
+.phase-num-big{
+  font-family:var(--font-display); font-size:72px; font-weight:900;
+  line-height:1; color:rgba(212,175,55,.12);
+  position:absolute; bottom:-10px; right:12px;
+}
+.phase-tag{font-size:10px; font-weight:600; letter-spacing:.15em; text-transform:uppercase; color:var(--gold); margin-bottom:6px;}
+.phase-title{font-family:var(--font-display); font-size:20px; font-weight:700; margin-bottom:4px;}
+.phase-period{font-size:12px; color:rgba(202,220,252,.5); margin-bottom:16px; font-style:italic;}
+.phase-items{list-style:none; font-size:13px; color:rgba(202,220,252,.75);}
+.phase-items li{padding:4px 0; display:flex; gap:8px;}
+.phase-items li::before{content:'→'; color:var(--gold); flex-shrink:0;}
+
+/* ── RISK TABLE ──────────────────────────────────────────── */
+.risk-row{
+  display:grid; grid-template-columns:1fr 100px 2fr;
+  gap:0; margin-bottom:8px; border-radius:7px; overflow:hidden;
+  border:1px solid rgba(202,220,252,.07);
+  transition: border-color var(--trans);
+}
+.risk-row:hover{border-color:rgba(202,220,252,.2);}
+.risk-name{
+  padding:14px 16px; background:rgba(202,220,252,.03);
+  font-size:13px; font-weight:500; color:var(--ice);
+}
+.risk-impact{
+  padding:14px 12px; text-align:center;
+  display:flex; align-items:center; justify-content:center;
+}
+.risk-mit{
+  padding:14px 16px; background:rgba(26,31,58,.3);
+  font-size:13px; color:rgba(202,220,252,.6); font-style:italic;
+}
+
+/* ── TEAM CARDS ──────────────────────────────────────────── */
+.team-card{
+  background:rgba(202,220,252,.04);
+  border:1px solid rgba(202,220,252,.08); border-radius:var(--radius);
+  padding:24px; transition:all var(--trans); cursor:default;
+  display:flex; gap:16px; align-items:flex-start;
+}
+.team-card:hover{border-color:rgba(212,175,55,.3); background:rgba(212,175,55,.04);}
+.avatar{
+  width:48px; height:48px; border-radius:50%;
+  background: linear-gradient(135deg, var(--navy2), var(--navy));
+  border:2px solid var(--gold);
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px; flex-shrink:0;
+}
+.team-role{font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); margin-bottom:4px;}
+.team-name{font-family:var(--font-display); font-size:16px; font-weight:700; margin-bottom:4px;}
+.team-exp{font-size:13px; color:rgba(202,220,252,.55);}
+
+/* ── MILESTONE TIMELINE ──────────────────────────────────── */
+.timeline{position:relative; padding-left:32px;}
+.timeline::before{
+  content:''; position:absolute; left:8px; top:0; bottom:0;
+  width:2px; background: linear-gradient(to bottom, var(--gold), transparent);
+}
+.tl-item{position:relative; padding-bottom:28px;}
+.tl-dot{
+  position:absolute; left:-28px; top:4px;
+  width:12px; height:12px; border-radius:50%;
+  background:var(--gold); border:2px solid var(--navy3);
+}
+.tl-q{font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--gold); margin-bottom:3px;}
+.tl-desc{font-size:13px; color:rgba(202,220,252,.7); line-height:1.5;}
+
+/* ── FINANCIAL ───────────────────────────────────────────── */
+.pnl-highlight td:last-child{font-weight:700; color:var(--gold);}
+
+/* ── FUND ALLOC ──────────────────────────────────────────── */
+.alloc-bar{
+  height:8px; border-radius:4px; background:rgba(202,220,252,.08);
+  overflow:hidden; margin-top:6px;
+}
+.alloc-fill{height:100%; border-radius:4px; background:linear-gradient(90deg, var(--gold), var(--gold2));}
+
+/* ── CLOSING SECTION ─────────────────────────────────────── */
+#s-close{
+  background: radial-gradient(ellipse at 30% 60%, rgba(42,58,140,.6) 0%, transparent 60%),
+              linear-gradient(160deg, #0a0f28 0%, var(--navy3) 100%);
+  text-align:center; align-items:center;
+}
+.close-ask{
+  background:rgba(202,220,252,.04);
+  border:1px solid rgba(202,220,252,.08);
+  border-radius:var(--radius); padding:32px 24px;
+  transition:all var(--trans); cursor:default;
+}
+.close-ask:hover{border-color:var(--gold); background:rgba(212,175,55,.05);}
+.close-ask-icon{font-size:32px; margin-bottom:12px;}
+.close-ask-title{font-family:var(--font-display); font-size:18px; font-weight:700; margin-bottom:8px;}
+.close-ask-val{font-size:14px; color:rgba(202,220,252,.65); line-height:1.5;}
+
+/* ── PROGRESS BAR ────────────────────────────────────────── */
+#progress{
+  position:fixed; top:0; left:var(--sidebar-w); right:0; height:2px;
+  background:transparent; z-index:99;
+}
+#progress-fill{
+  height:100%; background:linear-gradient(90deg, var(--gold), var(--gold2));
+  width:0%; transition:width .1s linear;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media(max-width:900px){
+  :root{--sidebar-w:0px;}
+  #sidebar{transform:translateX(-240px); width:240px;}
+  #sidebar.open{transform:translateX(0);}
+  #menu-btn{display:flex;}
+  .section{padding:60px 24px;}
+  .grid-3{grid-template-columns:1fr;}
+  .grid-4{grid-template-columns:1fr 1fr;}
+  .grid-2{grid-template-columns:1fr;}
+  .market-vis{height:240px;}
+  #progress{left:0;}
+}
+
+/* ── ANIMATIONS ──────────────────────────────────────────── */
+.fade-in{opacity:0; transform:translateY(24px); transition: opacity .6s ease, transform .6s ease;}
+.fade-in.visible{opacity:1; transform:translateY(0);}
+.fade-in-delay-1{transition-delay:.1s}
+.fade-in-delay-2{transition-delay:.2s}
+.fade-in-delay-3{transition-delay:.3s}
+.fade-in-delay-4{transition-delay:.4s}
+</style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div id="progress"><div id="progress-fill"></div></div>
+
+<!-- MOBILE MENU BUTTON -->
+<button id="menu-btn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sb-brand">
+    <div class="tag">Business Plan</div>
+    <div class="title">[Nome Azienda]</div>
+  </div>
+  <div class="sb-nav">
+    <a class="sb-item active" href="#s-cover"     onclick="closeSidebar()"><span class="sb-num">1</span> Cover</a>
+    <a class="sb-item"       href="#s-exec"      onclick="closeSidebar()"><span class="sb-num">2</span> Executive Summary</a>
+    <a class="sb-item"       href="#s-problem"   onclick="closeSidebar()"><span class="sb-num">3</span> Il Problema</a>
+    <a class="sb-item"       href="#s-solution"  onclick="closeSidebar()"><span class="sb-num">4</span> La Soluzione</a>
+    <a class="sb-item"       href="#s-market"    onclick="closeSidebar()"><span class="sb-num">5</span> Mercato</a>
+    <a class="sb-item"       href="#s-compete"   onclick="closeSidebar()"><span class="sb-num">6</span> Analisi Competitiva</a>
+    <a class="sb-item"       href="#s-model"     onclick="closeSidebar()"><span class="sb-num">7</span> Modello di Business</a>
+    <a class="sb-item"       href="#s-gtm"       onclick="closeSidebar()"><span class="sb-num">8</span> Go-to-Market</a>
+    <a class="sb-item"       href="#s-team"      onclick="closeSidebar()"><span class="sb-num">9</span> Team & Operativo</a>
+    <a class="sb-item"       href="#s-finance"   onclick="closeSidebar()"><span class="sb-num">10</span> Proiezioni Finanz.</a>
+    <a class="sb-item"       href="#s-funds"     onclick="closeSidebar()"><span class="sb-num">11</span> Uso dei Fondi</a>
+    <a class="sb-item"       href="#s-risks"     onclick="closeSidebar()"><span class="sb-num">12</span> Rischi</a>
+    <a class="sb-item"       href="#s-kpi"       onclick="closeSidebar()"><span class="sb-num">13</span> KPI</a>
+    <a class="sb-item"       href="#s-close"     onclick="closeSidebar()"><span class="sb-num">14</span> Call to Action</a>
+  </div>
+  <div class="sb-footer">Documento Riservato · 2025</div>
+</nav>
+
+<!-- MAIN -->
+<main id="main">
+
+<!-- ①  COVER ─────────────────────────────────────────────── -->
+<section class="section" id="s-cover">
+  <div class="bg-geo" aria-hidden="true">
+    <div class="geo-circle" style="width:600px;height:600px;right:-200px;top:-200px;"></div>
+    <div class="geo-circle" style="width:300px;height:300px;right:50px;top:50px;"></div>
+    <div class="geo-circle" style="width:120px;height:120px;right:200px;top:200px;border-color:rgba(212,175,55,.15)"></div>
+  </div>
+  <div style="position:relative;z-index:1;">
+    <div class="cover-eyebrow fade-in">Business Plan 2025–2027</div>
+    <h1 class="cover-title fade-in fade-in-delay-1">
+      [Nome<br/><span>Azienda]</span>
+    </h1>
+    <p class="cover-sub fade-in fade-in-delay-2">
+      [Tagline: proposta di valore sintetica in una frase che cattura l'essenza del business]
+    </p>
+    <div class="cover-meta fade-in fade-in-delay-3">
+      <div class="meta-item"><span class="ml">Settore</span><span class="mv">[INSERIRE]</span></div>
+      <div class="meta-item"><span class="ml">Prodotto</span><span class="mv">[INSERIRE]</span></div>
+      <div class="meta-item"><span class="ml">Area Geografica</span><span class="mv">[INSERIRE]</span></div>
+      <div class="meta-item"><span class="ml">Budget Iniziale</span><span class="mv">[INSERIRE]</span></div>
+    </div>
+    <div class="cta-row fade-in fade-in-delay-4">
+      <a class="btn-primary" href="#s-exec">Esplora il Piano →</a>
+      <a class="btn-ghost"   href="#s-close">Call to Action</a>
+    </div>
+  </div>
+</section>
+
+<!-- ②  EXECUTIVE SUMMARY ─────────────────────────────────── -->
+<section class="section" id="s-exec">
+  <div class="sec-tag fade-in">02 — Executive Summary</div>
+  <h2 class="sec-title fade-in fade-in-delay-1">Il progetto in sintesi</h2>
+  <div class="grid-3 fade-in fade-in-delay-2">
+    <div class="card">
+      <div class="card-num">01</div>
+      <div class="card-title">Chi Siamo</div>
+      <div class="card-text">[Descrizione sintetica: cosa fa l'azienda, dove opera, anno di fondazione o lancio previsto, team core e ambizione]</div>
+    </div>
+    <div class="card">
+      <div class="card-num">02</div>
+      <div class="card-title">Opportunità</div>
+      <div class="card-text">[Il mercato ha un gap: X problema non risolto per Y segmento di clientela. Valore stimato del mercato indirizzabile]</div>
+    </div>
+    <div class="card">
+      <div class="card-num">03</div>
+      <div class="card-title">La Nostra Risposta</div>
+      <div class="card-text">[Soluzione differenziante: prodotto/servizio, proposta di valore unica, perché ora è il momento giusto]</div>
+    </div>
+  </div>
+  <div class="grid-4 fade-in fade-in-delay-3" style="margin-top:24px;">
+    <div class="kpi-card"><div class="kpi-val">€[X]M</div><div class="kpi-unit">mercato potenziale</div><div class="kpi-label">TAM</div></div>
+    <div class="kpi-card"><div class="kpi-val">€[X]K</div><div class="kpi-unit">obiettivo Anno 1</div><div class="kpi-label">Ricavi Target Y1</div></div>
+    <div class="kpi-card"><div class="kpi-val">€[X]K</div><div class="kpi-unit">round seed</div><div class="kpi-label">Investimento Cercato</div></div>
+    <div class="kpi-card"><div class="kpi-val">[M/A]</div><div class="kpi-unit">dalla partenza</div><div class="kpi-label">Break-even Stimato</div></div>
+  </div>
+  <div class="note-box fade-in fade-in-delay-4"><strong>📌 Nota:</strong> Aggiornare i dati numerici dopo aver completato la modellazione finanziaria dettagliata.</div>
+</section>
+
+<!-- ③  PROBLEMA ──────────────────────────────────────────── -->
+<section class="section" id="s-problem">
+  <div class="sec-tag fade-in">03 — Il Problema</div>
+  <h2 class="sec-title fade-in fade-in-delay-1">Un problema reale,<br/>ancora irrisolto</h2>
+  <div class="grid-2 fade-in fade-in-delay-2" style="margin-bottom:24px;">
+    <div style="background:rgba(42,58,140,.25);border:1px solid rgba(202,220,252,.1);border-radius:var(--radius);padding:32px;">
+      <div style="font-family:var(--font-display);font-size:48px;font-weight:700;color:var(--gold);line-height:1;margin-bottom:8px;">[XX%]</div>
+      <div style="font-size:14px;color:rgba(202,220,252,.7);">dei clienti target dichiara di non avere una soluzione adeguata al problema <em>(fonte: [ricerca di mercato])</em></div>
+    </div>
+    <div style="background:rgba(202,220,252,.03);border:1px solid rgba(202,220,252,.08);border-radius:var(--radius);padding:32px;">
+      <div style="font-size:15px;font-style:italic;color:rgba(202,220,252,.75);line-height:1.7;border-left:3px solid var(--gold);padding-left:16px;">
+        "[Descrivere il problema principale in 1-2 frasi dal punto di vista del cliente. Cosa succede oggi senza una soluzione adeguata?]"
+      </div>
+    </div>
+  </div>
+  <div class="grid-3 fade-in fade-in-delay-3">
+    <div class="card">
+      <div style="font-size:32px;margin-bottom:12px;">⚠️</div>
+      <div class="card-title">Costo Elevato</div>
+      <div class="card-text">[Il cliente spende X risorse in modo inefficiente a causa di Y. Il costo stimato del problema per azienda è €Z/anno]</div>
+    </div>
+    <div class="card">
+      <div style="font-size:32px;margin-bottom:12px;">⏱️</div>
+      <div class="card-title">Perdita di Tempo</div>
+      <div class="card-text">[Il processo richiede Y ore/giorni non necessari. [X] ore/settimana vengono sprecate in attività manuali]</div>
+    </div>
+    <div class="card">
+      <div style="font-size:32px;margin-bottom:12px;">❌</div>
+      <div class="card-title">Qualità Insufficiente</div>
+      <div class="card-text">[Le soluzioni attuali non soddisfano lo standard Z. Il tasso di errore/insoddisfazione medio è del [X%]]</div>
+    </div>
+  </div>
+  <div class="note-box fade-in fade-in-delay-4"><strong>📌 Approfondire con:</strong> dati di ricerca di mercato, interviste clienti, survey. Citare fonte statistica.</div>
+</section>
+
+<!-- ④  SOLUZIONE ─────────────────────────────────────────── -->
+<section class="section" id="s-solution">
+  <div class="sec-tag fade-in">04 — La Soluzione</div>
+  <h2 class="sec-title fade-in fade-in-delay-1">Proposta di Valore</h2>
+  <div class="grid-2 fade-in fade-in-delay-2">
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title">La Nostra Soluzione</div>
+        <div class="card-text" style="margin-bottom:16px;">[Descrizione del prodotto/servizio in 2-3 frasi. Cosa fa esattamente, come funziona ad alto livello, perché è diverso]</div>
+        <ul style="list-style:none;font-size:13px;color:rgba(202,220,252,.75);">
+          <li style="padding:6px 0;border-bottom:1px solid rgba(202,220,252,.06);display:flex;gap:8px;"><span style="color:var(--green);">✅</span> Funzionalità chiave #1: [descrizione]</li>
+          <li style="padding:6px 0;border-bottom:1px solid rgba(202,220,252,.06);display:flex;gap:8px;"><span style="color:var(--green);">✅</span> Funzionalità chiave #2: [descrizione]</li>
+          <li style="padding:6px 0;border-bottom:1px solid rgba(202,220,252,.06);display:flex;gap:8px;"><span style="color:var(--green);">✅</span> Funzionalità chiave #3: [descrizione]</li>
+          <li style="padding:6px 0;display:flex;gap:8px;"><span style="color:var(--gold);">⭐</span> Differenziatore unico: [perché NOI, perché ORA]</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div style="background:rgba(42,58,140,.3);border:1px solid rgba(202,220,252,.1);border-radius:var(--radius);padding:24px;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">Value Proposition Canvas</div>
+        <div class="vp-row"><div class="vp-label">Per chi</div><div class="vp-mid">›</div><div class="vp-val">[Target cliente specifico]</div></div>
+        <div class="vp-row"><div class="vp-label">Che vuole</div><div class="vp-mid">›</div><div class="vp-val">[Bisogno/desiderio principale]</div></div>
+        <div class="vp-row"><div class="vp-label">Offriamo</div><div class="vp-mid">›</div><div class="vp-val">[Prodotto / servizio]</div></div>
+        <div class="vp-row"><div class="vp-label">Che dà</div><div class="vp-mid">›</div><div class="vp-val">[Beneficio concreto misurabile]</div></div>
+        <div class="vp-row"><div class="vp-label">A differenza di</div><div class="vp-mid">›</div><div class="vp-val">[Soluzione concorrente attuale]</div></div>
+        <div class="vp-row"><div class="vp-label">Perché meglio</div><div class="vp-mid">›</div><div class="vp-val">[Vantaggio differenziante chiave]</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="note-box fade-in fade-in-delay-3"><strong>📌 Suggerimento:</strong> inserire screenshot del prodotto, mockup UI o video demo inline in questa sezione.</div>
+</section>
+
+<!-- ⑤  MERCATO ───────────────────────────────────────────── -->
+<section class="section" id="s-market">
+  <div class="sec-tag fade-in">05 — Mercato di Riferimento</div>
+  <h2 class="sec-title fade-in fade-in-delay-1">Un mercato in crescita</h2>
+  <div class="grid-2 fade-in fade-in-delay-2">
+    <div>
+      <div class="market-vis">
+        <div class="mkt-circle" style="width:300px;height:300px;background:rgba(42,58,140,.25);border:1px solid rgba(42,58,140,.5);">
+          <div class="mkt-label" style="position:absolute;top:16px;left:50%;transform:translateX(-50%);">
+            <div class="mkt-name" style="color:rgba(202,220,252,.5);font-size:10px;">TAM</div>
+            <div class="mkt-val" style="font-size:16px;">€ [XXX]M</div>
+            <div style="font-size:10px;color:rgba(202,220,252,.4);">Mercato Totale</div>
+          </div>
+        </div>
+        <div class="mkt-circle" style="width:210px;height:210px;background:rgba(42,58,140,.4);border:1px solid rgba(42,58,140,.7);">
+          <div class="mkt-label" style="position:absolute;top:16px;left:50%;transform:translateX(-50%);">
+            <div class="mkt-name" style="color:rgba(202,220,252,.65);font-size:10px;">SAM</div>
+            <div class="mkt-val" style="font-size:18px;">€ [XX]M</div>
+            <div style="font-size:10px;color:rgba(202,220,252,.5);">Servibile</div>
+          </div>
+        </div>
+        <div class="mkt-circle" style="width:110px;height:110px;background:rgba(212,175,55,.15);border:2px solid var(--gold);">
+          <div class="mkt-label">
+            <div class="mkt-name" style="color:var(--gold);font-size:10px;">SOM</div>
+            <div class="mkt-val" style="font-size:20px;">€ [X]M</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;">
+      <div class="kpi-card" style="text-align:left;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:4px;">CAGR Mercato</div><div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--white);">[X%]</div><div style="font-size:12px;color:rgba(202,220,252,.5);">crescita annua stimata</div></div>
+      <div class="card" style="padding:20px;">
+        <div class="card-title" style="margin-bottom:12px;">Driver di Crescita</div>
+        <ul style="list-style:none;font-size:13px;color:rgba(202,220,252,.7);">
+          <li style="padding:5px 0;display:flex;gap:8px;"><span style="color:var(--gold);">▸</span>[Digitalizzazione / trend settoriale 1]</li>
+          <li style="padding:5px 0;display:flex;gap:8px;"><span style="color:var(--gold);">▸</span>[Cambio comportamento cliente 2]</li>
+          <li style="padding:5px 0;display:flex;gap:8px;"><span style="color:var(--gold);">▸</span>[Regolatorio / normativo 3]</li>
+          <li style="padding:5px 0;display:flex;gap:8px;"><span style="color:var(--gold);">▸</span>[Fonte: report di mercato, anno]</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="note-box fade-in fade-in-delay-3"><strong>📌 Suggerimento:</strong> sostituire la visualizzazione TAM/SAM/SOM con un grafico da fonti primarie (Statista, IBISWorld, ecc.).</div>
+</section>
+
+<!-- ⑥  COMPETITIVA ───────────────────────────────────────── -->
+<section class="section" id="s-compete">
+  <div class="sec-tag fade-in">06 — Analisi Competitiva</div>
+  <h2 class="sec-title fade-in fade-in-delay-1">Perché siamo diversi</h2>
+  <div class="fade-in fade-in-delay-2" style="overflow-x:auto;">
+    <table class="bp-table">
+      <thead>
+        <tr>
+          <th>Criterio</th>
+          <th style="background:rgba(212,175,55,.2);color:var(--gold);">✦ Noi</th>
+          <th>Concorrente A</th>
+          <th>Concorrente B</th>
+          <th>Soluzione DIY</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Prezzo competitivo</strong></td><td class="us-col"><span class="check">✅</span></td><td><span class="warn">⚠️</span></td><td><span class="cross">❌</span></td><td><span class="check">✅</span></td></tr>
+        <tr><td><strong>Facilità d'uso</strong></td><td class="us-col"><span class="check">✅</span></td><td><span class="check">✅</span></td><td><span class="warn">⚠️</span></td><td><span class="cross">❌</span></td></tr>
+        <tr><td><strong>Integrazione settoriale</strong></td><td class="us-col"><span class="check">✅</span></td><td><span class="cross">❌</span></td><td><span class="check">✅</span></td><td><span class="cross">❌</span></td></tr>
+        <tr><td><strong>Supporto dedicato</strong></td><td class="us-col"><span class="check">✅</span></td><td><span class="warn">⚠️</span></td><td><span class="warn">⚠️</span></td><td><span class="cross">❌</span></td></tr>
+        <tr><td><strong>Scalabilità</strong></td><td class="us-col"><span class="check">✅</span></td><td><span class="check">✅</span></td><td><span class="cross">❌</span></td><td><span class="cross">❌</span></td></tr>
+        <tr><td><strong>[Criterio chiave settore]</strong></td><td class="us-col"><span class="check">✅</span></td><td><span class="cross">❌</span></td><td><span class="cross">❌</span></td><td><span class="warn">⚠️</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note-box fade-in fade-in-delay-3"><strong>📌 Personalizzare:</strong> sostituire i concorrenti con i nomi reali e aggiungere/rimuovere criteri specifici del settore.</div>
+</section>
+
+<!-- ⑦  MODELLO DI BUSINESS ───────────────────────────────── -->
+<section class="section" id="s-model">
+  <div class="sec-tag fade-in">07 — Modello di Business</div>
+  <h2 class="sec-title fade-in fade-in-delay-1">Come generiamo valore</h2>
+  <div class="grid-2 fade-in fade-in-delay-2">
+    <div class="card">
+      <div class="card-title">💰 Fonti di Ricavo</div>
+      <table style="width:100%;font-size:13px;border-collapse:collapse;">
+        <tr style="border-bottom:1px solid rgba(202,220,252,.06);"><td style="padding:9px 0;color:rgba(202,220,252,.5);width:40%;font-size:11px;text-transform:uppercase;letter-spacing:.06em;">Modello</td><td style="color:var(--ice);">[SaaS / fee / licenza / transazione]</td></tr>
+        <tr style="border-bottom:1px solid rgba(202,220,252,.06);"><td style="padding:9px 0;color:rgba(202,220,252,.5);font-size:11px;text-transform:uppercase;letter-spacing:.06em;">Prezzo</td><td style="color:var(--ice);">[€X / unità / mese / anno]</td></tr>
+        <tr style="border-bottom:1px solid rgba(202,220,252,.06);"><td style="padding:9px 0;color:rgba(202,220,252,.5);font-size:11px;text-transform:uppercase;letter-spacing:.06em;">Stream 1</td><td style="color:var(--ice);">[Core product] — [XX%] dei ricavi</td></tr>
+        <tr style="border-bottom:1px solid rgba(202,220,252,.06);"><td style="padding:9px 0;color:rgba(202,220,252,.5);font-size:11px;text-transform:uppercase;letter-spacing:.06em;">Stream 2</td><td style="color:var(--ice);">[Add-on / upsell] — [XX%] dei ricavi</td></tr>
+        <tr style="border-bottom:1px solid rgba(202,220,252,.06);"><td style="padding:9px 0;color:rgba(202,220,252,.5);font-size:11px;text-transform:uppercase;letter-spacing:.06em;">LTV stimato</td><td style="color:var(--gold);font-weight:600;">[€ XXX] per cliente</td></tr>
+        <tr><td style="padding:9px 0;color:rgba(202,220,252,.5);font-size:11px;text-transform:uppercase;letter-spacing:.06em;">CAC stimato</td><td style="color:var(--gold);font-weight:600;">[€ XX] per cliente</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="grid-2" style="gap:12px;">
+        <div class="kpi-card"><div class="kpi-val">[XX%]</div><div class="kpi-unit">lordo</div><div class="kpi-label">Margine</div></div>
+        <div class="kpi-card"><div class="kpi-val">[X]</div><div class="kpi-unit">mesi</div><div class="kpi-label">Payback CAC</div></div>
+        <div class="kpi-card"><div class="kpi-val">[X]:1</div><div class="kpi-unit">target ≥ 3:1</div><div class="kpi-label">LTV / CAC</div></div>
+        <div class="kpi-card"><div class="kpi-val">[X%]</div><div class="kpi-unit">target &lt;2%/mese</div><div class="kpi-label">Churn Rate</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="note-box fade-in fade-in-delay-3"><strong>📌 Approfondire:</strong> analisi di sensitività su CAC e LTV. Confrontare con benchmark di settore comparabili.</div>
+</section>
+
+<!-- ⑧  GO-TO-MARKET ──────────────────────────────────────── -->
+<section class="section" id="s-gtm">
+  <div class="sec-tag fade-in">08 — Go-to-Market</div>
+  <h2 class="sec-title fade-in fade-in-delay-1">Strategia di lancio<br/>e crescita</h2>
+  <div class="grid-4 fade-in fade-in-delay-2">
+    <div class="phase-card active-phase">
+      <div class="phase-num-big">1</div>
+      <div class="phase-tag">Fase 1</div>
+      <div class="phase-title">Validazione</div>
+      <div class="phase-period">[Mese 1–3]</div>
+      <ul class="phase-items">
+        <li>MVP / prototipo</li>
+        <li>Beta tester: [X] clienti</li>
+        <li>Raccolta feedback strutturato</li>
+        <li>Aggiustamento product-market fit</li>
+      </ul>
+    </div>
+    <div class="phase-card inactive-phase">
+      <div class="phase-num-big">2</div>
+      <div class="phase-tag">Fase 2</div>
+      <div class="phase-title">Lancio</div>
+      <div class="phase-period">[Mese 4–6]</div>
+      <ul class="phase-items">
+        <li>Lancio commerciale ufficiale</li>
+        <li>Canale primario: [es. LinkedIn]</li>
+        <li>Obiettivo: [X] clienti paganti</li>
+        <li>PR / comunicazione settoriale</li>
+      </ul>
+    </div>
+    <div class="phase-card inactive-phase">
+      <div class="phase-num-big">3</div>
+      <div class="phase-tag">Fase 3</div>
+      <div class="phase-title">Crescita</div>
+      <div class="phase-period">[Mese 7–12]</div>
+      <ul class="phase-items">
+        <li>Scale-up marketing & sales</li>
+        <li>Partnership strategiche</li>
+        <li>Espansione geografica</li>
+        <li>Target: [X] clienti / €[X] ricavi</li>
+      </ul>
+    </div>
+    <div class="phase-card inactive-phase">
+      <div class="phase-num-big">4</div>
+      <div class="phase-tag">Fase 4</div>
+      <div class="phase-title">Scale</div>
+      <div class="phase-period">[Anno 2+]</div>
+      <ul class="phase-items">
+        <li>Nuovi segmenti / verticali</li>
+        <li>Internazionalizzazione</li>
+        <li>Canali indiretti / reseller</li>
+        <li>Serie A / crescita organica</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note-box fade-in fade-in-delay-3"><strong>📌 Specificare:</strong> budget marketing per fase, KPI di acquisizione attesi e canali digitali/fisici prevalenti per segmento.</div>
+</section>
+
+<!-- ⑨  TEAM ──────────────────────────────────────────────── -->
+<section class="section" id="s-team">
+  <div class="sec-tag fade-in">09 — Team & Piano Operativo</div>
+  <h2 class="sec-title fade-in fade-in-delay-1">Le persone che lo costruiscono</h2>
+  <div class="grid-2 fade-in fade-in-delay-2" style="margin-bottom:32px;">
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="team-card"><div class="avatar">👤</div><div><div class="team-role">CEO / Founder</div><div class="team-name">[Nome Cognome]</div><div class="team-exp">[X anni nel settore Y — ex [Azienda Z]]</div></div></div>
+      <div class="team-card"><div class="avatar">💻</div><div><div class="team-role">CTO / Tech Lead</div><div class="team-name">[Nome Cognome]</div><div class="team-exp">[Competenza tecnica chiave — stack rilevante]</div></div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="team-card"><div class="avatar">📈</div><div><div class="team-role">CMO / Sales</div><div class="team-name">[Nome Cognome]</div><div class="team-exp">[Track record commerciale — mercati serviti]</div></div></div>
+      <div class="team-card"><div class="avatar">🎯</div><div><div class="team-role">Advisor / Board</div><div class="team-name">[Nome Cognome]</div><div class="team-exp">[Network settoriale / expertise strategico]</div></div></div>
+    </div>
+  </div>
+  <div class="grid-2 fade-in fade-in-delay-3">
+    <div>
+      <div style="font-size:14px;font-weight:600;color:var(--gold);margin-bottom:16px;text-transform:uppercase;letter-spacing:.1em;">Milestones Operative</div>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-q">Q1 [Anno]</div><div class="tl-desc">Costituzione società, MVP, prime interviste clienti</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-q">Q2 [Anno]</div><div class="tl-desc">Beta test, iterazione prodotto, primo cliente pagante</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-q">Q3 [Anno]</div><div class="tl-desc">Lancio commerciale, team di 3, primo accordo partnership</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-q">Q4 [Anno]</div><div class="tl-desc">€[X]K ARR, fundraising seed, espansione canali</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-q">[Anno]+1</div><div class="tl-desc">€[X]K ARR, team ×2, break-even operativo</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Gap Analysis del Team</div>
+      <div class="card-text" style="margin-bottom:16px;">Figure chiave da assumire nei prossimi 12 mesi:</div>
+      <ul style="list-style:none;font-size:13px;color:rgba(202,220,252,.7);">
+        <li style="padding:7px 0;border-bottom:1px solid rgba(202,220,252,.06);display:flex;gap:8px;"><span style="color:var(--orange);">○</span>[Ruolo da assumere Q2] — [motivazione]</li>
+        <li style="padding:7px 0;border-bottom:1px solid rgba(202,220,252,.06);display:flex;gap:8px;"><span style="color:var(--orange);">○</span>[Ruolo da assumere Q3] — [motivazione]</li>
+        <li style="padding:7px 0;display:flex;gap:8px;"><span style="color:var(--orange);">○</span>[Ruolo da assumere Q4] — [motivazione]</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ⑩  FINANZA ───────────────────────────────────────────── -->
+<section class="section" id="s-finance">
+  <div class="sec-tag fade-in">10 — Proiezioni Finanziarie</div>
+  <h2 class="sec-title fade-in fade-in-delay-1">La strada verso la redditività</h2>
+  <div class="grid-4 fade-in fade-in-delay-2" style="margin-bottom:28px;">
+    <div class="kpi-card"><div class="kpi-val">€[X]K</div><div class="kpi-unit">obiettivo</div><div class="kpi-label">Ricavi Anno 1</div></div>
+    <div class="kpi-card"><div class="kpi-val">€[X]K</div><div class="kpi-unit">+[XX%] YoY</div><div class="kpi-label">Ricavi Anno 2</div></div>
+    <div class="kpi-card"><div class="kpi-val">€[X]M</div><div class="kpi-unit">target</div><div class="kpi-label">Ricavi Anno 3</div></div>
+    <div class="kpi-card"><div class="kpi-val">[Mese]</div><div class="kpi-unit">in operatività</div><div class="kpi-label">Break-even</div></div>
+  </div>
+  <div class="fade-in fade-in-delay-3" style="overflow-x:auto;">
+    <table class="bp-table">
+      <thead>
+        <tr>
+          <th>Voce P&amp;L</th>
+          <th style="text-align:center;">Anno 1</th>
+          <th style="text-align:center;">Anno 2</th>
+          <th style="text-align:center;">Anno 3</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Ricavi Totali</strong></td><td style="text-align:center;">€ [X]K</td><td style="text-align:center;">€ [X]K</td><td style="text-align:center;">€ [X]M</td></tr>
+        <tr><td>Costo del Venduto (COGS)</td><td style="text-align:center;">€ [X]K</td><td style="text-align:center;">€ [X]K</td><td style="text-align:center;">€ [X]K</td></tr>
+        <tr style="border-top:1px solid rgba(212,175,55,.2);"><td><strong>Margine Lordo</strong></td><td style="text-align:center;color:var(--green);">[XX%]</td><td style="text-align:center;color:var(--green);">[XX%]</td><td style="text-align:center;color:var(--green);">[XX%]</td></tr>
+        <tr><td>Costi Operativi (OPEX)</td><td style="text-align:center;">€ [X]K</td><td style="text-align:center;">€ [X]K</td><td style="text-align:center;">€ [X]K</td></tr>
+        <tr><td><strong>EBITDA</strong></td><td style="text-align:center;color:var(--red);">(€ [X]K)</td><td style="text-align:center;color:var(--red);">(€ [X]K)</td><td style="text-align:center;color:var(--green);">€ [X]K</td></tr>
+        <tr class="pnl-highlight"><td><strong>Utile / Perdita Netta</strong></td><td style="text-align:center;color:var(--red);">(€ [X]K)</td><td style="text-align:center;color:var(--red);">(€ [X]K)</td><td style="text-align:center;color:var(--gold);">€ [X]K</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note-box fade-in fade-in-delay-4"><strong>📌 Ipotesi chiave:</strong> [tasso di acquisizione clienti], [churn mensile], [struttura costi fissi/variabili]. Allegare modello Excel dettagliato.</div>
+</section>
+
+<!-- ⑪  FONDI ─────────────────────────────────────────────── -->
+<section class="section" id="s-funds">
+  <div class="sec-tag fade-in">11 — Piano di Investimento</div>
+  <h2 class="sec-title fade-in fade-in-delay-1">Uso dei Fondi</h2>
+  <div class="grid-2 fade-in fade-in-delay-2">
+    <div>
+      <div style="background:rgba(42,58,140,.3);border:2px solid var(--gold);border-radius:var(--radius);padding:32px;text-align:center;margin-bottom:20px;">
+        <div style="font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:rgba(202,220,252,.5);margin-bottom:8px;">Investimento Cercato</div>
+        <div style="font-family:var(--font-display);font-size:52px;font-weight:900;color:var(--gold);line-height:1;margin-bottom:8px;">€ [XXX]K</div>
+        <div style="font-size:13px;color:rgba(202,220,252,.6);">Seed / Pre-seed &nbsp;·&nbsp; [Strumento: equity / convertibile]</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Runway & Prossimi Step</div>
+        <ul style="list-style:none;font-size:13px;color:rgba(202,220,252,.7);">
+          <li style="padding:6px 0;display:flex;gap:8px;"><span style="color:var(--gold);">▸</span>Runway: [X] mesi con investimento cercato</li>
+          <li style="padding:6px 0;display:flex;gap:8px;"><span style="color:var(--gold);">▸</span>Prossima raccolta: Serie A — €[X]M — [Anno]</li>
+          <li style="padding:6px 0;display:flex;gap:8px;"><span style="color:var(--gold);">▸</span>Valuation pre-money: €[X]M (metodo: [DCF/multipli])</li>
+        </ul>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div id="alloc-list"></div>
+    </div>
+  </div>
+  <div class="note-box fade-in fade-in-delay-3"><strong>📌 Suggerimento:</strong> aggiungere grafico a torta interattivo con la ripartizione % dei fondi per maggiore impatto visivo.</div>
+</section>
+
+<!-- ⑫  RISCHI ────────────────────────────────────────────── -->
+<section class="section" id="s-risks">
+  <div class="sec-tag fade-in">12 — Analisi dei Rischi</div>
+  <h2 class="sec-title fade-in fade-in-delay-1">Rischi & Mitigazioni</h2>
+  <div class="fade-in fade-in-delay-2">
+    <div style="display:grid;grid-template-columns:1fr 100px 2fr;gap:0;margin-bottom:8px;padding:10px 16px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(202,220,252,.35);">
+      <div>Rischio</div><div style="text-align:center;">Impatto</div><div>Piano di Mitigazione</div>
+    </div>
+    <div class="risk-row"><div class="risk-name">Adozione lenta del prodotto</div><div class="risk-impact"><span class="badge badge-red">Alto</span></div><div class="risk-mit">Validazione anticipata con MVP, early adopter program con incentivi, iterazione rapida</div></div>
+    <div class="risk-row"><div class="risk-name">Concorrente dominante entra nel segmento</div><div class="risk-impact"><span class="badge badge-red">Alto</span></div><div class="risk-mit">Focus su nicchia difendibile, IP/brevetti, switching cost elevato per il cliente</div></div>
+    <div class="risk-row"><div class="risk-name">Difficoltà raccolta fondi</div><div class="risk-impact"><span class="badge badge-orange">Medio</span></div><div class="risk-mit">Bootstrap fase 1, revenue-based financing, grant/bandi settoriali disponibili</div></div>
+    <div class="risk-row"><div class="risk-name">Turnover risorse chiave del team</div><div class="risk-impact"><span class="badge badge-orange">Medio</span></div><div class="risk-mit">Vesting schedule, cultura forte, documentazione processi, advisor esterno</div></div>
+    <div class="risk-row"><div class="risk-name">Variazioni normative / regolatorio</div><div class="risk-impact"><span class="badge badge-green">Basso</span></div><div class="risk-mit">Monitoraggio continuo, consulente legale dedicato, design compliance-by-default</div></div>
+    <div class="risk-row"><div class="risk-name">[Rischio specifico del settore]</div><div class="risk-impact"><span class="badge badge-orange">Medio</span></div><div class="risk-mit">[Piano di mitigazione specifico da completare]</div></div>
+  </div>
+  <div class="note-box fade-in fade-in-delay-3"><strong>📌 Risk register:</strong> aggiornare mensilmente nelle fasi early, trimestralmente a regime. Assegnare owner per ogni rischio.</div>
+</section>
+
+<!-- ⑬  KPI ────────────────────────────────────────────────── -->
+<section class="section" id="s-kpi">
+  <div class="sec-tag fade-in">13 — KPI & Metriche</div>
+  <h2 class="sec-title fade-in fade-in-delay-1">Come misuriamo il successo</h2>
+  <div class="grid-4 fade-in fade-in-delay-2" style="margin-bottom:28px;">
+    <div class="kpi-card"><div class="kpi-val">€[X]K</div><div class="kpi-unit">Monthly Recurring Revenue</div><div class="kpi-label">MRR Target Y1</div></div>
+    <div class="kpi-card"><div class="kpi-val">[XXX]</div><div class="kpi-unit">fine Anno 1</div><div class="kpi-label">Clienti Attivi</div></div>
+    <div class="kpi-card"><div class="kpi-val">&gt;[70]</div><div class="kpi-unit">Net Promoter Score</div><div class="kpi-label">NPS Target</div></div>
+    <div class="kpi-card"><div class="kpi-val">&lt;[6]</div><div class="kpi-unit">mesi</div><div class="kpi-label">CAC Payback</div></div>
+  </div>
+  <div class="fade-in fade-in-delay-3" style="overflow-x:auto;">
+    <table class="bp-table">
+      <thead>
+        <tr><th>Area</th><th>Metrica</th><th style="text-align:center;">Target Q2</th><th style="text-align:center;">Target Y1</th><th style="text-align:center;">Target Y2</th><th>Fonte Dati</th></tr>
+      </thead>
+      <tbody>
+        <tr><td style="color:var(--gold);font-weight:600;">Commerciale</td><td>Nuovi clienti / mese</td><td style="text-align:center;">[X]</td><td style="text-align:center;">[X]</td><td style="text-align:center;">[X]</td><td>CRM / dashboard</td></tr>
+        <tr><td style="color:var(--gold);font-weight:600;">Commerciale</td><td>Tasso conversione lead</td><td style="text-align:center;">[XX%]</td><td style="text-align:center;">[XX%]</td><td style="text-align:center;">[XX%]</td><td>Funnel analytics</td></tr>
+        <tr><td style="color:var(--green);font-weight:600;">Prodotto</td><td>Churn mensile</td><td style="text-align:center;">&lt;[X%]</td><td style="text-align:center;">&lt;[X%]</td><td style="text-align:center;">&lt;[X%]</td><td>Piattaforma SaaS</td></tr>
+        <tr><td style="color:var(--green);font-weight:600;">Prodotto</td><td>Feature adoption rate</td><td style="text-align:center;">[X%]</td><td style="text-align:center;">[X%]</td><td style="text-align:center;">[X%]</td><td>Product analytics</td></tr>
+        <tr><td style="color:var(--ice);font-weight:600;">Finanziario</td><td>Burn rate mensile</td><td style="text-align:center;">€[X]K</td><td style="text-align:center;">€[X]K</td><td style="text-align:center;">€[X]K</td><td>P&amp;L mensile</td></tr>
+        <tr><td style="color:var(--ice);font-weight:600;">Finanziario</td><td>Gross margin</td><td style="text-align:center;">[X%]</td><td style="text-align:center;">[X%]</td><td style="text-align:center;">[X%]</td><td>Contabilità gestionale</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note-box fade-in fade-in-delay-4"><strong>📌 Dashboard KPI:</strong> implementare tracking settimanale dal giorno 1. Strumenti consigliati: Metabase, Google Looker Studio.</div>
+</section>
+
+<!-- ⑭  CLOSING ───────────────────────────────────────────── -->
+<section class="section" id="s-close">
+  <div style="max-width:680px;text-align:center;position:relative;z-index:1;">
+    <div class="sec-tag fade-in" style="justify-content:center;">14 — Call to Action</div>
+    <h2 class="sec-title fade-in fade-in-delay-1" style="font-size:clamp(36px,6vw,72px);">
+      Uniamoci per<br/>costruirlo insieme.
+    </h2>
+    <p class="sec-sub fade-in fade-in-delay-2" style="text-align:center;margin:0 auto 48px;">
+      [Nome Azienda] rappresenta un'opportunità concreta in un mercato da €[X]M, con un team solido, un modello validato e un piano di esecuzione chiaro.
+    </p>
+  </div>
+  <div class="grid-3 fade-in fade-in-delay-3" style="width:100%;max-width:840px;">
+    <div class="close-ask">
+      <div class="close-ask-icon">💼</div>
+      <div class="close-ask-title">Investimento</div>
+      <div class="close-ask-val">€ [XXX]K<br/>[Equity / Convertibile]<br/>Round: Seed / Pre-seed</div>
+    </div>
+    <div class="close-ask">
+      <div class="close-ask-icon">🤝</div>
+      <div class="close-ask-title">Partnership</div>
+      <div class="close-ask-val">[Tipo di partner strategico cercato — distribuzione, tecnologia, settore]</div>
+    </div>
+    <div class="close-ask">
+      <div class="close-ask-icon">📣</div>
+      <div class="close-ask-title">Network</div>
+      <div class="close-ask-val">[Accesso a clienti pilota, advisor settoriali, media e community]</div>
+    </div>
+  </div>
+  <div class="fade-in fade-in-delay-4" style="margin-top:48px;text-align:center;">
+    <div style="font-size:13px;color:rgba(202,220,252,.4);margin-bottom:16px;letter-spacing:.08em;text-transform:uppercase;">Contatti</div>
+    <div style="font-size:16px;color:var(--ice);display:flex;gap:24px;flex-wrap:wrap;justify-content:center;">
+      <span>📧 [email@dominio.it]</span>
+      <span>📱 [+39 XXX XXX XXXX]</span>
+      <span>🌐 [www.sito.it]</span>
+      <span>💼 [LinkedIn]</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+// ── ALLOCATION DATA ──────────────────────────────────────
+const allocData = [
+  { label:"Sviluppo Prodotto / Tech", pct:35, val:"€ [X]K", note:"MVP → V1.0" },
+  { label:"Marketing & Acquisizione",  pct:25, val:"€ [X]K", note:"Lead gen, content, eventi" },
+  { label:"Team / HR",                 pct:25, val:"€ [X]K", note:"Assunzioni chiave Anno 1" },
+  { label:"Operations & Legal",        pct:10, val:"€ [X]K", note:"Struttura, compliance" },
+  { label:"Riserva / Runway",          pct:5,  val:"€ [X]K", note:"[X] mesi copertura" },
+];
+const el = document.getElementById('alloc-list');
+allocData.forEach(a => {
+  el.innerHTML += `
+  <div style="background:rgba(202,220,252,.04);border:1px solid rgba(202,220,252,.08);border-radius:8px;padding:14px 16px;transition:border-color .3s;" onmouseenter="this.style.borderColor='rgba(212,175,55,.3)'" onmouseleave="this.style.borderColor='rgba(202,220,252,.08)'">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;">
+      <span style="font-size:13px;font-weight:500;color:var(--ice);">${a.label}</span>
+      <span style="font-size:12px;color:var(--gold);font-weight:600;">${a.pct}% · ${a.val}</span>
+    </div>
+    <div class="alloc-bar"><div class="alloc-fill" style="width:0%" data-width="${a.pct}%"></div></div>
+    <div style="font-size:11px;color:rgba(202,220,252,.4);margin-top:4px;">${a.note}</div>
+  </div>`;
+});
+
+// ── SCROLL PROGRESS ──────────────────────────────────────
+function updateProgress() {
+  const scrollTop = window.scrollY;
+  const docH = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('progress-fill').style.width = (scrollTop/docH*100) + '%';
+}
+
+// ── ACTIVE SIDEBAR ITEM ──────────────────────────────────
+const sections = document.querySelectorAll('.section');
+const sbItems  = document.querySelectorAll('.sb-item');
+function updateActive() {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  sbItems.forEach(i => {
+    i.classList.toggle('active', i.getAttribute('href') === '#'+current);
+  });
+}
+
+// ── FADE IN ON SCROLL ────────────────────────────────────
+const fadeEls = document.querySelectorAll('.fade-in');
+function checkFade() {
+  const vBottom = window.scrollY + window.innerHeight;
+  fadeEls.forEach(el => {
+    if (vBottom > el.getBoundingClientRect().top + window.scrollY + 60) {
+      el.classList.add('visible');
+    }
+  });
+}
+
+// ── ALLOC BAR ANIMATION ──────────────────────────────────
+const fills = document.querySelectorAll('.alloc-fill');
+let filledOnce = false;
+function checkFills() {
+  if (filledOnce) return;
+  const fundsSection = document.getElementById('s-funds');
+  if (window.scrollY + window.innerHeight > fundsSection.offsetTop + 200) {
+    fills.forEach((f,i) => {
+      setTimeout(() => { f.style.transition='width .8s ease'; f.style.width = f.dataset.width; }, i*120);
+    });
+    filledOnce = true;
+  }
+}
+
+window.addEventListener('scroll', () => {
+  updateProgress(); updateActive(); checkFade(); checkFills();
+}, { passive:true });
+
+// Init
+updateProgress(); updateActive(); checkFade();
+
+// ── SIDEBAR TOGGLE (mobile) ──────────────────────────────
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+function closeSidebar() {
+  if (window.innerWidth <= 900) {
+    document.getElementById('sidebar').classList.remove('open');
+  }
+}
+</script>
+</body>
+</html>
