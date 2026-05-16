@@ -1130,10 +1130,14 @@ p {
     grid-template-columns: minmax(0, 1.1fr) minmax(330px, 0.56fr);
   }
 
-  .section-heading {
-    grid-template-columns: minmax(220px, 0.36fr) minmax(0, 1fr);
-    align-items: end;
+   .section-heading {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-items: center;
+    text-align: center;
   }
+
+}
 
   .dashboard-grid,
   .contact-grid,
