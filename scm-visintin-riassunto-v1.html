@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCM – Riassunto Visintin | GEFITES</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg:        #0f1117;
+    --surface:   #181c25;
+    --border:    #262c3a;
+    --accent1:   #4f9cf9;   /* blu */
+    --accent2:   #f4a13e;   /* arancio */
+    --accent3:   #6dd88a;   /* verde */
+    --accent4:   #e06c75;   /* rosso */
+    --accent5:   #c678dd;   /* viola */
+    --text:      #e0e5f0;
+    --muted:     #7a85a0;
+    --radius:    12px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* ── HERO ── */
+  header {
+    background: linear-gradient(135deg, #0f1117 0%, #1a2035 50%, #0f1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 56px 40px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 120% at 70% 50%, rgba(79,156,249,.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  header .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--accent1); margin-bottom: 14px;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 900; line-height: 1.1;
+    background: linear-gradient(135deg, #fff 30%, var(--accent1) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+  }
+  header .sub {
+    color: var(--muted); font-size: 14px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(15,17,23,.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex; gap: 4px; overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  nav a {
+    text-decoration: none; white-space: nowrap;
+    font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--muted); padding: 14px 10px;
+    border-bottom: 2px solid transparent;
+    transition: color .2s, border-color .2s;
+  }
+  nav a:hover { color: var(--text); border-color: var(--accent1); }
+
+  /* ── LAYOUT ── */
+  .page { max-width: 1000px; margin: 0 auto; padding: 48px 40px 80px; }
+
+  /* ── SEZIONI ── */
+  section { margin-bottom: 56px; }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; font-weight: 700;
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-title span.num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 600;
+    background: var(--border); color: var(--muted);
+    padding: 3px 8px; border-radius: 4px;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-weight: 600; font-size: 14px; letter-spacing: .04em; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .card p, .card li { color: #c0c8d8; }
+
+  /* ── TAG COLORATI ── */
+  .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 4px; margin-right: 6px; margin-bottom: 4px;
+  }
+  .tag-blue  { background: rgba(79,156,249,.15); color: var(--accent1); border: 1px solid rgba(79,156,249,.3); }
+  .tag-orange{ background: rgba(244,161,62,.15); color: var(--accent2); border: 1px solid rgba(244,161,62,.3); }
+  .tag-green { background: rgba(109,216,138,.15); color: var(--accent3); border: 1px solid rgba(109,216,138,.3); }
+  .tag-red   { background: rgba(224,108,117,.15); color: var(--accent4); border: 1px solid rgba(224,108,117,.3); }
+  .tag-purple{ background: rgba(198,120,221,.15); color: var(--accent5); border: 1px solid rgba(198,120,221,.3); }
+
+  /* ── GRIGLIA COMPARATIVA ── */
+  .compare-grid {
+    display: grid;
+    gap: 12px;
+  }
+  .compare-grid.col2 { grid-template-columns: 1fr 1fr; }
+  .compare-grid.col3 { grid-template-columns: 1fr 1fr 1fr; }
+  @media(max-width:700px) {
+    .compare-grid.col2, .compare-grid.col3 { grid-template-columns: 1fr; }
+    nav { padding: 0 16px; }
+    .page { padding: 24px 16px 60px; }
+    header { padding: 36px 20px 32px; }
+  }
+
+  .cbox {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .cbox-header {
+    font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: .06em;
+    margin-bottom: 10px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .cbox ul { list-style: none; padding: 0; }
+  .cbox li { padding: 3px 0 3px 16px; position: relative; font-size: 13.5px; color: #b8c2d4; }
+  .cbox li::before { content: '›'; position: absolute; left: 0; color: var(--muted); }
+
+  /* ── TABELLA ── */
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 13px; margin-top: 4px;
+  }
+  th {
+    background: var(--border); color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+    text-align: left; padding: 8px 12px;
+  }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: #c0c8d8; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,.02); }
+
+  /* ── FORMULA ── */
+  .formula {
+    font-family: 'JetBrains Mono', monospace;
+    background: #12151e; border: 1px solid var(--border);
+    border-left: 3px solid var(--accent1);
+    padding: 12px 16px; border-radius: 6px;
+    font-size: 13px; color: var(--accent1);
+    margin: 10px 0;
+  }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight {
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    margin-bottom: 14px;
+    border-left: 3px solid;
+  }
+  .hl-blue   { background: rgba(79,156,249,.07);   border-color: var(--accent1); }
+  .hl-orange { background: rgba(244,161,62,.07);   border-color: var(--accent2); }
+  .hl-green  { background: rgba(109,216,138,.07);  border-color: var(--accent3); }
+  .hl-red    { background: rgba(224,108,117,.07);  border-color: var(--accent4); }
+  .hl-purple { background: rgba(198,120,221,.07);  border-color: var(--accent5); }
+  .highlight strong { font-weight: 600; }
+
+  /* ── LISTA PUNTATA CUSTOM ── */
+  ul.styled { list-style: none; padding: 0; }
+  ul.styled li {
+    padding: 5px 0 5px 20px;
+    position: relative; color: #c0c8d8; font-size: 14px;
+  }
+  ul.styled li::before {
+    content: '▸'; position: absolute; left: 0;
+    color: var(--accent1); font-size: 12px; top: 7px;
+  }
+
+  /* ── SEPARATORE ── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  /* ── ALERT FINALE ── */
+  .alert-box {
+    background: linear-gradient(135deg, rgba(79,156,249,.08), rgba(198,120,221,.08));
+    border: 1px solid rgba(79,156,249,.25);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-top: 8px;
+  }
+  .alert-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; margin-bottom: 16px;
+    color: var(--accent1);
+  }
+
+  /* ── BADGE SCHEMA ── */
+  .schema-row {
+    display: flex; align-items: flex-start; gap: 16px;
+    margin-bottom: 10px;
+  }
+  .schema-badge {
+    flex-shrink: 0; width: 28px; height: 28px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+    margin-top: 1px;
+  }
+  .schema-row p { font-size: 14px; color: #c0c8d8; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="label">IFTS GEFITES · Prof. Filippo Visintin · Univ. Firenze</div>
+  <h1>Supply Chain Management</h1>
+  <div class="sub">Riassunto schematico completo — 4 parti · 200 slide</div>
+</header>
+
+<nav>
+  <a href="#parte1">1 · Make or Buy</a>
+  <a href="#parte2">2 · Costi & CVP</a>
+  <a href="#parte3">3 · Acquisti</a>
+  <a href="#parte4">4 · Partnership</a>
+  <a href="#parte5">5 · SC Strategia</a>
+  <a href="#ricordare">⭐ Da ricordare</a>
+  <a href="#differenze">⚡ Differenze chiave</a>
+</nav>
+
+<div class="page">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="parte1">
+  <div class="section-title">
+    <span class="num">PARTE 1</span>
+    Le Scelte Strategiche di Make or Buy
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--accent1)">Contesto storico</div>
+    <p>Ford anni '10: integrazione verticale totale (miniere, fonderie, trasporti, vetro, assemblaggio). Crisi per instabilità dei mercati, riduzione cicli di vita, competizione low-cost → deverticalizzazione e outsourcing.</p>
+  </div>
+
+  <div class="compare-grid col3" style="margin-bottom:16px">
+    <div class="cbox" style="border-top: 3px solid var(--accent1)">
+      <div class="cbox-header" style="color:var(--accent1)">Mercato Competitivo</div>
+      <ul class="cbox">
+        <li>Fornitori in competizione tra loro</li>
+        <li>Transazioni spot</li>
+        <li>Orizzonte breve</li>
+        <li>Investimenti relazionali bassi</li>
+        <li>Switching cost bassi</li>
+        <li>Alta minaccia prodotti sostitutivi</li>
+      </ul>
+    </div>
+    <div class="cbox" style="border-top: 3px solid var(--accent2)">
+      <div class="cbox-header" style="color:var(--accent2)">Mercato Collaborativo</div>
+      <ul class="cbox">
+        <li>Fornitori-partner selezionati</li>
+        <li>Transazioni ripetute</li>
+        <li>Orizzonte medio</li>
+        <li>Investimenti medio-alti</li>
+        <li>Switching cost medio-alti</li>
+        <li>Bassa minaccia sostitutivi</li>
+      </ul>
+    </div>
+    <div class="cbox" style="border-top: 3px solid var(--accent3)">
+      <div class="cbox-header" style="color:var(--accent3)">Integrazione Verticale</div>
+      <ul class="cbox">
+        <li>Tutto fatto internamente</li>
+        <li>Transazioni continuative</li>
+        <li>Orizzonte lungo</li>
+        <li>Investimenti alti</li>
+        <li>Switching cost altissimi</li>
+        <li>Bassa minaccia sostitutivi</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--accent2)">I Costi di Transazione — 3 determinanti</div>
+    <div class="compare-grid col3">
+      <div>
+        <span class="tag tag-blue">Complessità descrittiva</span>
+        <p style="margin-top:6px;font-size:13.5px;color:#b8c2d4">Difficoltà a descrivere le specifiche al fornitore. ≠ complessità interna. Alta → più spazio per comportamenti opportunistici → riduce la convenienza di un mercato intermedio.</p>
+      </div>
+      <div>
+        <span class="tag tag-orange">Specificità</span>
+        <p style="margin-top:6px;font-size:13.5px;color:#b8c2d4">Livello di investimenti relazionali specifici (impianti, tecnologie, know-how). Alta → aumenta lo sforzo richiesto al fornitore e il rischio di appropriazione del know-how.</p>
+      </div>
+      <div>
+        <span class="tag tag-red">Incertezza</span>
+        <p style="margin-top:6px;font-size:13.5px;color:#b8c2d4">Impossibilità di prevedere l'evoluzione di volumi/tecnologia. Alta → maggiore desiderio di controllo interno sulle attività.</p>
+      </div>
+    </div>
+    <div class="formula" style="margin-top:16px">
+      Alta C+S+I → Integrazione verticale &nbsp;|&nbsp; Media C+S+I → Mercato collaborativo &nbsp;|&nbsp; Bassa C+S+I → Mercato competitivo
+    </div>
+    <p style="margin-top:10px;font-size:13px;color:var(--muted)">⚡ Internet, CAD/CAM e sistemi di condivisione info hanno ridotto tutti e 3 i fattori → trend verso l'outsourcing.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--accent3)">I 3 Driver Strategici per la scelta Make/Buy</div>
+    <div class="compare-grid col3">
+      <div class="cbox">
+        <div class="cbox-header" style="color:var(--accent1)">1 · Competenze</div>
+        <ul class="cbox">
+          <li><strong>Core competence</strong>: differenziale competitivo → NON esternalizzare (es. motori Ferrari)</li>
+          <li><strong>Specialistiche</strong>: necessarie ma non differenzianti → outsourcing conveniente</li>
+          <li>Competenze avanzate possono diventare fonte di vantaggio in altri settori</li>
+        </ul>
+      </div>
+      <div class="cbox">
+        <div class="cbox-header" style="color:var(--accent2)">2 · Costi</div>
+        <ul class="cbox">
+          <li>Riduzione costi via delocalizzazione o economie di scala del fornitore</li>
+          <li><strong>Variabilizzazione</strong>: trasformare costi fissi in variabili, trasferendo il rischio al fornitore</li>
+          <li>Il fornitore aggrega volumi di più clienti → riduce incertezza domanda</li>
+        </ul>
+      </div>
+      <div class="cbox">
+        <div class="cbox-header" style="color:var(--accent3)">3 · Capitale</div>
+        <ul class="cbox">
+          <li>Riduzione investimenti necessari (barriere all'entrata)</li>
+          <li>Permette diversificazione del portafoglio (es. 7Eleven)</li>
+          <li>Migliora TRC = Fatturato/Capitale Investito → rating finanziario</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight hl-blue">
+    <strong>Effetto Leva degli Acquisti:</strong> in settori maturi è più facile razionalizzare gli acquisti che aumentare il fatturato. Una riduzione del 5% sugli acquisti ha lo stesso impatto sul ROI di un aumento del 15% delle vendite (a parità di struttura dei costi).
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="parte2">
+  <div class="section-title">
+    <span class="num">PARTE 2</span>
+    Analisi dei Costi e CVP
+  </div>
+
+  <div class="compare-grid col3" style="margin-bottom:16px">
+    <div class="cbox" style="border-top:3px solid var(--accent1)">
+      <div class="cbox-header" style="color:var(--accent1)">Costi Variabili</div>
+      <ul class="cbox">
+        <li>Variano in modo proporzionale al volume (cost driver)</li>
+        <li>CVU = costante al variare del volume</li>
+        <li>CVT = cvu × X</li>
+        <li>Es: materiali diretti, provvigioni, spedizioni</li>
+      </ul>
+    </div>
+    <div class="cbox" style="border-top:3px solid var(--accent2)">
+      <div class="cbox-header" style="color:var(--accent2)">Costi Fissi</div>
+      <ul class="cbox">
+        <li>Non variano al variare del volume nell'intervallo di rilevanza</li>
+        <li><em>Impegnati</em>: cap. produttiva, ammortamenti — modificabili solo nel lungo periodo</li>
+        <li><em>Discrezionali</em>: pubblicità, formazione — modificabili nel breve</li>
+      </ul>
+    </div>
+    <div class="cbox" style="border-top:3px solid var(--accent3)">
+      <div class="cbox-header" style="color:var(--accent3)">Costi Semivariabili</div>
+      <ul class="cbox">
+        <li>Combinazione di fissi + variabili</li>
+        <li>Variano meno che proporzionalmente con il driver</li>
+        <li>Es: energia elettrica</li>
+        <li>CT = CFT + cvu × X</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--accent1)">Analisi Costi-Volumi-Profitto (CVP)</div>
+    <div class="formula">mdcu = p − cvu &nbsp;&nbsp;|&nbsp;&nbsp; MDC = mdcu × X &nbsp;&nbsp;|&nbsp;&nbsp; PR = MDC − CFT</div>
+    <div class="formula">Xp = CFT / mdcu &nbsp;&nbsp;|&nbsp;&nbsp; RTp = CFT / mdcu%</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+      <div>
+        <span class="tag tag-blue">Margine di Sicurezza</span>
+        <div class="formula" style="margin-top:6px">MS(X) = (X − Xp) / X</div>
+        <p style="font-size:13px;color:#b8c2d4;margin-top:6px">% di vendite che possono ridursi prima di andare in perdita.</p>
+      </div>
+      <div>
+        <span class="tag tag-orange">Grado di Leva Operativa</span>
+        <div class="formula" style="margin-top:6px">L(X) = MDC / PR = 1 / MS(X)</div>
+        <p style="font-size:13px;color:#b8c2d4;margin-top:6px">Sensibilità del profitto a variazioni dei ricavi. L(X) alto = alti costi fissi = rischio maggiore.</p>
+      </div>
+    </div>
+    <div class="highlight hl-orange" style="margin-top:14px">
+      <strong>Regola fondamentale:</strong> L(X) e MS(X) sono reciproci. Alta leva operativa = basso margine di sicurezza. Le aziende con alti costi fissi guadagnano molto oltre il BEP ma perdono molto al di sotto.
+    </div>
+    <div style="margin-top:12px">
+      <span class="tag tag-green">Per aumentare il profitto:</span>
+      <ul class="styled" style="margin-top:6px">
+        <li>↑ Prezzo di vendita (p)</li>
+        <li>↓ Costo variabile unitario (cvu)</li>
+        <li>↓ Costi fissi totali (CFT)</li>
+        <li>↑ Volume (X)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--muted)">Ipotesi del modello CVP</div>
+    <ul class="styled">
+      <li>Intervallo di rilevanza: la relazione costo-volume è valida solo in un certo range di output</li>
+      <li>Periodo temporale: nel breve quasi tutti i costi sono fissi; nel lungo quasi tutti sono variabili</li>
+      <li>Contesto: inflazione, tecnologia, contratti di lavoro possono cambiare i costi indipendentemente dal volume</li>
+      <li>Linearità: non sempre valida (costi viscosi, costi a gradino, curve d'apprendimento)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="parte3">
+  <div class="section-title">
+    <span class="num">PARTE 3</span>
+    Gli Acquisti
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--accent2)">Tipologie di Acquisti</div>
+    <div class="compare-grid col2">
+      <div class="cbox">
+        <div class="cbox-header">Diretti</div>
+        <ul class="cbox">
+          <li>MP, componenti e servizi che confluiscono nel prodotto finito</li>
+          <li>Assortimento limitato, fornitori limitati, tasso di rotazione elevato</li>
+          <li>Pianificazione produzione (MRP)</li>
+        </ul>
+      </div>
+      <div class="cbox">
+        <div class="cbox-header">Indiretti (MRO)</div>
+        <ul class="cbox">
+          <li>Non incorporati nel PF (cancelleria, IT, manutenzione, ecc.)</li>
+          <li>Assortimento ampio, molti fornitori, rotazione bassa</li>
+          <li>Previsioni ad hoc e progetti specifici</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--accent1)">Il Processo di Acquisto</div>
+    <div class="compare-grid col2">
+      <div class="cbox">
+        <div class="cbox-header" style="color:var(--accent1)">Strategic Purchasing (bassa freq / alto impatto)</div>
+        <ul class="cbox">
+          <li>Decisioni Make or Buy</li>
+          <li>Marketing di acquisto (market intelligence)</li>
+          <li>Definizione rete di fornitura</li>
+          <li>Gestione e sviluppo fornitori</li>
+          <li>Vendor rating strategico</li>
+        </ul>
+      </div>
+      <div class="cbox">
+        <div class="cbox-header" style="color:var(--accent3)">Processi Operativi (alta freq / basso impatto)</div>
+        <ul class="cbox">
+          <li><strong>Sourcing</strong>: definizione specifiche → RdO → negoziazione → contratto</li>
+          <li><strong>Supply</strong>: ordine → expediting → ricezione merci → pagamento → vendor rating operativo</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--accent5)">Strategie di Approvvigionamento</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Strategia</th>
+          <th>Caratteristica</th>
+          <th>Vantaggi</th>
+          <th>Svantaggi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tag-blue">Multiple Sourcing</span></td>
+          <td>Più fornitori in competizione per componenti standard</td>
+          <td>Differenziali di costo, accesso innovazione, bassi switching cost</td>
+          <td>Bassa personalizzazione, scarsa efficienza</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-orange">Single Sourcing</span></td>
+          <td>Fornitore unico per un bene/servizio</td>
+          <td>Economie di scala, personalizzazione, collaborazione profonda</td>
+          <td>Rischio monopolio laterale, dipendenza</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-purple">Dual Sourcing</span></td>
+          <td>Fornitore principale + fornitore di riserva</td>
+          <td>Collaborazione M/L termine al riparo da comportamenti opportunistici</td>
+          <td>Costi duplicati</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-green">Parallel Sourcing</span></td>
+          <td>Single sourcing per famiglia di prodotto (es. Mercedes)</td>
+          <td>Unisce vantaggi di single e multiple; fornitori in competizione</td>
+          <td>Difficile da applicare, serve ampia gamma prodotti</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--accent2)">Matrice di Kraljic (1983)</div>
+    <p style="margin-bottom:14px;color:#b8c2d4">Classifica gli acquisti su 2 assi: <strong>Importanza strategica</strong> (impatto su costi e qualità) vs <strong>Difficoltà del mercato di fornitura</strong> (concentrazione, capacità, costi logistici).</p>
+    <div class="compare-grid col2">
+      <div class="cbox" style="border:1px solid rgba(79,156,249,.3)">
+        <div class="cbox-header" style="color:var(--accent1)">Alta import. / Bassa difficoltà → "Leva"</div>
+        <ul class="cbox"><li>Massimizzare potere contrattuale</li><li>Multiple sourcing, aste</li></ul>
+      </div>
+      <div class="cbox" style="border:1px solid rgba(198,120,221,.3)">
+        <div class="cbox-header" style="color:var(--accent5)">Alta import. / Alta difficoltà → "Strategici"</div>
+        <ul class="cbox"><li>Partnership, sviluppo congiunto</li><li>Gestione a lungo termine</li></ul>
+      </div>
+      <div class="cbox" style="border:1px solid rgba(109,216,138,.3)">
+        <div class="cbox-header" style="color:var(--accent3)">Bassa import. / Bassa difficoltà → "Non critici"</div>
+        <ul class="cbox"><li>Automatizzare, e-procurement</li><li>Ridurre costi di processo</li></ul>
+      </div>
+      <div class="cbox" style="border:1px solid rgba(244,161,62,.3)">
+        <div class="cbox-header" style="color:var(--accent2)">Bassa import. / Alta difficoltà → "Collo di bottiglia"</div>
+        <ul class="cbox"><li>Assicurare fornitura, scorte di sicurezza</li><li>Sviluppare fornitori alternativi</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--accent3)">Negoziazione: Win-Lose vs Win-Win</div>
+    <div class="compare-grid col2">
+      <div class="cbox" style="border-top:3px solid var(--accent4)">
+        <div class="cbox-header" style="color:var(--accent4)">Competitiva (Win-Lose)</div>
+        <ul class="cbox">
+          <li>Posizioni rigide</li>
+          <li>Spartizione valore fisso</li>
+          <li>Sfruttamento potere contrattuale</li>
+          <li>Confronto con la concorrenza</li>
+          <li>Rischio: Lose-Lose (dilemma del prigioniero)</li>
+        </ul>
+      </div>
+      <div class="cbox" style="border-top:3px solid var(--accent3)">
+        <div class="cbox-header" style="color:var(--accent3)">Collaborativa (Win-Win)</div>
+        <ul class="cbox">
+          <li>Posizioni flessibili</li>
+          <li>Allargamento della "torta" (plusvalore)</li>
+          <li>Comprensione dei bisogni della controparte</li>
+          <li>Condivisione delle informazioni</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--accent1)">Vendor Rating — Modello Olsen & Ellram</div>
+    <p style="margin-bottom:12px;color:#b8c2d4">Valutazione del fornitore su 2 dimensioni per gestire in modo differenziato le relazioni.</p>
+    <table>
+      <thead><tr><th>Dimensione</th><th>Cosa misura</th><th>Componenti</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Attrattività del fornitore</td>
+          <td>Quanto è interessante il fornitore nel lungo periodo</td>
+          <td>Valutazione operativa + Prestazioni complessive + Valutazione strategica</td>
+        </tr>
+        <tr>
+          <td>Forza della relazione</td>
+          <td>Intensità e qualità del rapporto</td>
+          <td>Cooperazione attuale + Frequenza contatti + Distanza geografica</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:14px;font-size:13px;color:var(--muted)">
+      Quadrante alta attrattività + alta forza relazione → <strong style="color:var(--accent3)">Partnership strategica</strong> · 
+      Bassa attrattività + bassa forza → <strong style="color:var(--accent4)">Disimpegno/Razionalizzazione</strong>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="parte4">
+  <div class="section-title">
+    <span class="num">PARTE 4</span>
+    La Gestione della Partnership
+  </div>
+
+  <div class="compare-grid col2" style="margin-bottom:16px">
+    <div class="cbox" style="border-top:3px solid var(--accent1)">
+      <div class="cbox-header" style="color:var(--accent1)">Collaborazione Tecnologica (Co-design)</div>
+      <ul class="cbox">
+        <li>Progettazione e ingegnerizzazione congiunta</li>
+        <li>↓ Time to Market, ↓ costi sviluppo, ↑ qualità e innovatività</li>
+        <li>Richiede competenze complementari e fiducia</li>
+        <li>Strumenti: ESI (Earlier Supplier Involvement), CAD/CAM, PLM, prototipazione virtuale</li>
+      </ul>
+    </div>
+    <div class="cbox" style="border-top:3px solid var(--accent3)">
+      <div class="cbox-header" style="color:var(--accent3)">Collaborazione Operativa</div>
+      <ul class="cbox">
+        <li>Ciclo logistico-produttivo dalla previsione domanda al pagamento</li>
+        <li>Obiettivo: ↓ tempi e costi, ↑ flessibilità e livello di servizio</li>
+        <li>Livello 1: Visibilità (condivisione informazioni)</li>
+        <li>Livello 2: Integrazione (VMI, JIT, Kanban, CPFR, consignment stock)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--accent5)">Tipi di Co-design (matrice Whitegoods)</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Know-how scambiato</th>
+          <th>Processo Decisionale Separato</th>
+          <th>Processo Decisionale Condiviso</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Processo tecnologico</strong> (↓ costi, ↑ conformità)</td>
+          <td><span class="tag tag-green">Process Delivery</span><br>Fornitore affidabile, innovazione incrementale</td>
+          <td><span class="tag tag-green">Joint Process Development</span><br>Fornitore da far crescere, innovazioni radicali</td>
+        </tr>
+        <tr>
+          <td><strong>Componente + processo</strong> (differenziazione)</td>
+          <td><span class="tag tag-blue">Function Delivery</span><br>Fornitore world class leader tecnologico</td>
+          <td><span class="tag tag-blue">Joint Function Development</span><br>Cliente e fornitore leader, innovazioni radicali</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--accent2)">Gestione: BOW-TIE vs DIAMOND</div>
+    <div class="compare-grid col2">
+      <div class="cbox">
+        <div class="cbox-header">BOW-TIE (Mercato)</div>
+        <ul class="cbox">
+          <li>Interfaccia solo tra vendite e acquisti</li>
+          <li>Ruolo del buyer: negoziatore</li>
+          <li>KPI: costo di acquisto</li>
+        </ul>
+      </div>
+      <div class="cbox">
+        <div class="cbox-header">DIAMOND (Partnership)</div>
+        <ul class="cbox">
+          <li>Coinvolgimento di tutte le funzioni (sviluppo prodotti, produzione, logistica)</li>
+          <li>Ruolo del buyer: process owner</li>
+          <li>KPI: valutazione multidimensionale + ripartizione rischi/benefici</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--accent3)">Meccanismi di Protezione nella Partnership</div>
+    <div class="compare-grid col2">
+      <ul class="styled">
+        <li>Contratti quadro (garantiscono investimenti e capacità)</li>
+        <li>Monitoraggio prestazioni (miglioramento continuo)</li>
+        <li>Investimenti dedicati (garanzia di impegno reciproco)</li>
+      </ul>
+      <ul class="styled">
+        <li>Condivisione di conoscenza</li>
+        <li>Trasparenza e riconoscimento dei costi</li>
+        <li>Reputazione (tutela da comportamenti opportunistici)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="parte5">
+  <div class="section-title">
+    <span class="num">PARTE 5</span>
+    Strategie di Supply Chain
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--accent1)">Definizione di SCM</div>
+    <div class="highlight hl-blue">
+      <em>«Approccio orientato ai processi per la gestione dei flussi fisici, informativi ed economico-finanziari lungo l'intera rete di fornitura e di distribuzione, dai fornitori iniziali fino ai clienti finali.»</em> (Metz, 1998)
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--accent2)">Le 4 Strategie di Supply Chain</div>
+    <div class="compare-grid col2">
+      <div class="cbox" style="border-top:3px solid var(--accent1)">
+        <div class="cbox-header" style="color:var(--accent1)">Lean (Efficiente)</div>
+        <span class="tag tag-blue">Domanda stabile / Processo stabile</span>
+        <ul class="cbox" style="margin-top:8px">
+          <li>Eliminazione attività non a valore aggiunto</li>
+          <li>Economie di scala, stock centralizzato</li>
+          <li>Automazione flussi informativi</li>
+          <li>Es: Whirlpool-Sears, alimentari</li>
+        </ul>
+      </div>
+      <div class="cbox" style="border-top:3px solid var(--accent3)">
+        <div class="cbox-header" style="color:var(--accent3)">Responsive (Reattiva)</div>
+        <span class="tag tag-green">Domanda variabile / Processo stabile</span>
+        <ul class="cbox" style="margin-top:8px">
+          <li>Build-to-order, mass customization</li>
+          <li>Flessibilità e varietà</li>
+          <li>Importanza del Time-to-Market</li>
+          <li>Es: abbigliamento moda, automotive personalizzato</li>
+        </ul>
+      </div>
+      <div class="cbox" style="border-top:3px solid var(--accent2)">
+        <div class="cbox-header" style="color:var(--accent2)">Risk Hedging</div>
+        <span class="tag tag-orange">Domanda stabile / Processo instabile</span>
+        <ul class="cbox" style="margin-top:8px">
+          <li>Gestione del rischio strutturale e anomalo (resilience)</li>
+          <li>Scorte e fornitori di riserva</li>
+          <li>Condivisione risorse tra partner</li>
+          <li>Es: Nokia, petrolio, energia idroelettrica</li>
+        </ul>
+      </div>
+      <div class="cbox" style="border-top:3px solid var(--accent5)">
+        <div class="cbox-header" style="color:var(--accent5)">Agile</div>
+        <span class="tag tag-purple">Domanda variabile / Processo instabile</span>
+        <ul class="cbox" style="margin-top:8px">
+          <li>Reattività + risk hedging combinati</li>
+          <li>Capacità di fronteggiare domanda mutevole e imprevedibile</li>
+          <li>Es: Xbox/Flextronics, TLC, semiconduttori</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--accent3)">Logica Push vs Pull</div>
+    <div class="compare-grid col2">
+      <div class="cbox" style="border-top:3px solid var(--accent1)">
+        <div class="cbox-header" style="color:var(--accent1)">PUSH (previsione)</div>
+        <ul class="cbox">
+          <li>Produzione avviata in anticipo sulla base delle previsioni</li>
+          <li>MRP / DRP — pianificazione sfasata nel tempo</li>
+          <li>Adatta a domanda variabile ma richiede previsioni accurate</li>
+          <li>In pratica: enfasi sulle scorte come protezione dall'incertezza</li>
+        </ul>
+      </div>
+      <div class="cbox" style="border-top:3px solid var(--accent3)">
+        <div class="cbox-header" style="color:var(--accent3)">PULL (domanda reale)</div>
+        <ul class="cbox">
+          <li>Produzione avviata solo su richiesta dello stadio a valle</li>
+          <li>Kanban — logica FIFO</li>
+          <li>Adatta a domanda stabile, beneficia della modularità</li>
+          <li>Non gestisce priorità tra prodotti/canali ad alto/basso margine</li>
+        </ul>
+      </div>
+    </div>
+    <div class="highlight hl-green" style="margin-top:14px">
+      <strong>Postponement / Mass Customization:</strong> push a monte (su componenti base standardizzati), pull a valle (personalizzazione nel punto vendita). Riduce scorte e costi logistici aumentando il livello di servizio. Esempi: vernici tinting, Dell ATO, Smart.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--accent4)">Effetto Bullwhip (Effetto Frusta / Forrester)</div>
+    <p style="color:#b8c2d4;margin-bottom:12px">Amplificazione delle variazioni della domanda mano a mano che ci si allontana dal mercato finale. La variabilità aumenta risalendo la filiera.</p>
+    <div class="compare-grid col2">
+      <div>
+        <span class="tag tag-red">Cause</span>
+        <ul class="styled" style="margin-top:6px">
+          <li>Filtri: ogni attore emette ordini propri con perturbazioni</li>
+          <li>Politiche di lottizzazione (lotti crescenti)</li>
+          <li>Azioni commerciali / promozioni</li>
+          <li>Allocazione capacità (accaparramenti)</li>
+        </ul>
+      </div>
+      <div>
+        <span class="tag tag-green">Rimedi</span>
+        <ul class="styled" style="margin-top:6px">
+          <li>Condivisione info in tempo reale (visibilità)</li>
+          <li>Ridurre lead time e costi di emissione ordini</li>
+          <li>Allineamento di canale: pianificazione congiunta</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--accent2)">Contratti per la Condivisione del Rischio</div>
+    <table>
+      <thead><tr><th>Contratto</th><th>Meccanismo</th><th>Chi porta il rischio</th></tr></thead>
+      <tbody>
+        <tr><td>Wholesale price</td><td>Prezzo fisso, nessuna condivisione</td><td>Tutto il cliente</td></tr>
+        <tr><td>Buy-back</td><td>Fornitore ritira invenduti a prezzo concordato</td><td>Condiviso (↑ scorte cliente)</td></tr>
+        <tr><td>Capacity option</td><td>Cliente acquista opzione di capacità</td><td>Condiviso</td></tr>
+        <tr><td>Sales rebate</td><td>Sconto oltre soglia S + penale per stock-out</td><td>Condiviso bidirezionalmente</td></tr>
+        <tr><td>Revenue sharing</td><td>Prezzo basso + ripartizione ricavi vendite</td><td>Condiviso (es. Blockbuster → quota 24%→40%)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="ricordare">
+  <div class="section-title" style="color:var(--accent2)">
+    ⭐ Cose Importanti da Ricordare
+  </div>
+
+  <div class="alert-box">
+    <h3>Le 10 chiavi del corso</h3>
+
+    <div class="schema-row">
+      <div class="schema-badge" style="background:rgba(79,156,249,.2);color:var(--accent1)">1</div>
+      <p><strong>Costi di transazione = chiave del Make or Buy.</strong> Complessità descrittiva + Specificità + Incertezza determinano se esiste un mercato intermedio. Se sono alti → integrazione; bassi → outsourcing.</p>
+    </div>
+    <div class="schema-row">
+      <div class="schema-badge" style="background:rgba(244,161,62,.2);color:var(--accent2)">2</div>
+      <p><strong>Effetto Leva degli Acquisti.</strong> In settori maturi con alto peso degli acquisti sul fatturato, ridurre i costi di acquisto ha un impatto sul ROI molto maggiore che aumentare le vendite.</p>
+    </div>
+    <div class="schema-row">
+      <div class="schema-badge" style="background:rgba(109,216,138,.2);color:var(--accent3)">3</div>
+      <p><strong>Il costo unitario non è il costo marginale.</strong> Decidere basandosi sul costo medio unitario è fuorviante. Bisogna sempre ragionare sull'impatto sui <em>costi totali</em>.</p>
+    </div>
+    <div class="schema-row">
+      <div class="schema-badge" style="background:rgba(224,108,117,.2);color:var(--accent4)">4</div>
+      <p><strong>Leva operativa e margine di sicurezza sono reciproci.</strong> L(X) = 1/MS(X). Alta struttura di costi fissi → alto rischio in caso di calo dei ricavi.</p>
+    </div>
+    <div class="schema-row">
+      <div class="schema-badge" style="background:rgba(198,120,221,.2);color:var(--accent5)">5</div>
+      <p><strong>Matrice di Kraljic:</strong> non tutti gli acquisti vanno gestiti allo stesso modo. Strategici → partnership; Leva → negoziazione aggressiva; Collo di bottiglia → sicurezza fornitura; Non critici → e-procurement.</p>
+    </div>
+    <div class="schema-row">
+      <div class="schema-badge" style="background:rgba(79,156,249,.2);color:var(--accent1)">6</div>
+      <p><strong>Parallel sourcing (Mercedes)</strong> è la soluzione che unisce vantaggi di single e multiple sourcing: ogni fornitore è dedicato ad una famiglia prodotto ma i fornitori sono comunque in competizione.</p>
+    </div>
+    <div class="schema-row">
+      <div class="schema-badge" style="background:rgba(244,161,62,.2);color:var(--accent2)">7</div>
+      <p><strong>Le 4 strategie di SC</strong> si scelgono in base a 2 dimensioni: variabilità della domanda (bassa/alta) e instabilità del processo (bassa/alta). La scelta non è necessariamente unica: GAP usa 3 strategie diverse per 3 brand.</p>
+    </div>
+    <div class="schema-row">
+      <div class="schema-badge" style="background:rgba(109,216,138,.2);color:var(--accent3)">8</div>
+      <p><strong>Effetto Bullwhip</strong>: la variabilità della domanda si amplifica risalendo la filiera. Il rimedio principale è la condivisione delle informazioni in tempo reale (visibilità).</p>
+    </div>
+    <div class="schema-row">
+      <div class="schema-badge" style="background:rgba(224,108,117,.2);color:var(--accent4)">9</div>
+      <p><strong>Push vs Pull + Postponement</strong>: la combinazione ottimale sposta il "punto di disaccoppiamento" a valle, usando push per componenti standard e pull per la personalizzazione finale. Riduce il costo logistico totale aumentando il livello di servizio.</p>
+    </div>
+    <div class="schema-row">
+      <div class="schema-badge" style="background:rgba(198,120,221,.2);color:var(--accent5)">10</div>
+      <p><strong>Contratto Revenue Sharing (Blockbuster):</strong> i contratti tradizionali wholesale incentivano il cliente a tenere scorte basse → stock-out. La condivisione dei ricavi allinea gli incentivi di fornitore e cliente → +servizio per entrambi.</p>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="differenze">
+  <div class="section-title" style="color:var(--accent5)">
+    ⚡ Differenze Importanti da Non Confondere
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent1)">
+    <div class="card-title" style="color:var(--accent1)">1 · Complessità descrittiva ≠ Complessità interna</div>
+    <div class="compare-grid col2">
+      <div class="cbox"><div class="cbox-header">Complessità descrittiva</div>
+        <ul class="cbox"><li>Difficoltà a <em>comunicare</em> le specifiche al fornitore</li><li>Dipende dal numero di parametri da trasferire</li><li>Determina i costi di transazione</li></ul>
+      </div>
+      <div class="cbox"><div class="cbox-header">Complessità interna</div>
+        <ul class="cbox"><li>Sofisticazione <em>intrinseca</em> del bene</li><li>Un componente può essere internamente complesso ma semplice da descrivere</li><li>Non determina i costi di transazione</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent2)">
+    <div class="card-title" style="color:var(--accent2)">2 · Costi fissi impegnati ≠ Costi fissi discrezionali</div>
+    <div class="compare-grid col2">
+      <div class="cbox"><div class="cbox-header">Impegnati (da capacità)</div>
+        <ul class="cbox"><li>Ammortamenti, canoni di locazione</li><li>Modificabili solo nel <strong>medio-lungo</strong> termine</li><li>Non riducibili nel breve senza compromettere la performance</li></ul>
+      </div>
+      <div class="cbox"><div class="cbox-header">Discrezionali</div>
+        <ul class="cbox"><li>Pubblicità, formazione</li><li>Modificabili nel <strong>breve</strong> termine</li><li>Riducibili senza mettere a rischio la sopravvivenza</li><li>Tipicamente più viscosi (sticky)</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent3)">
+    <div class="card-title" style="color:var(--accent3)">3 · Conto Economico a CdV ≠ CE a Margine di Contribuzione</div>
+    <div class="compare-grid col2">
+      <div class="cbox"><div class="cbox-header">Classificato per Funzione (CdV)</div>
+        <ul class="cbox"><li>Raggruppa per: costo del venduto, costi commerciali, costi G&A</li><li>Ogni voce può contenere sia costi fissi che variabili</li><li>Non permette calcolo diretto del BEP</li></ul>
+      </div>
+      <div class="cbox"><div class="cbox-header">Classificato per Variabilità (MDC)</div>
+        <ul class="cbox"><li>Raggruppa per: costi variabili totali, costi fissi totali</li><li>Ogni voce è <em>solo</em> fissa o <em>solo</em> variabile</li><li>Permette calcolo diretto di BEP, leva operativa, margine di sicurezza</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent4)">
+    <div class="card-title" style="color:var(--accent4)">4 · Sourcing ≠ Supply</div>
+    <div class="compare-grid col2">
+      <div class="cbox"><div class="cbox-header">Sourcing</div>
+        <ul class="cbox"><li>Attività <em>strategica</em>: ricerca, valutazione e selezione fornitori</li><li>Bassa frequenza, alto impatto</li><li>Si conclude con il contratto</li><li>Output: contratto chiuso o quadro</li></ul>
+      </div>
+      <div class="cbox"><div class="cbox-header">Supply</div>
+        <ul class="cbox"><li>Attività <em>operativa</em>: dalla emissione ordine al pagamento</li><li>Alta frequenza, basso impatto</li><li>Si avvia con l'ordine (input del contratto)</li><li>Include expediting, ricezione merci, vendor rating operativo</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent5)">
+    <div class="card-title" style="color:var(--accent5)">5 · Lean ≠ Responsive ≠ Agile</div>
+    <table>
+      <thead><tr><th>Strategia</th><th>Domanda</th><th>Processo</th><th>Obiettivo principale</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tag-blue">Lean</span></td><td>Stabile</td><td>Stabile</td><td>Massima efficienza, minimizzare costi logistici totali</td></tr>
+        <tr><td><span class="tag tag-green">Responsive</span></td><td>Variabile</td><td>Stabile</td><td>Massima reattività, varietà, TTM</td></tr>
+        <tr><td><span class="tag tag-orange">Risk Hedging</span></td><td>Stabile</td><td>Instabile</td><td>Minimizzare rischio di interruzione fornitura</td></tr>
+        <tr><td><span class="tag tag-purple">Agile</span></td><td>Variabile</td><td>Instabile</td><td>Reattività + gestione del rischio simultanee</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent1)">
+    <div class="card-title" style="color:var(--accent1)">6 · Push ≠ Pull ≠ Postponement</div>
+    <div class="compare-grid col3">
+      <div class="cbox"><div class="cbox-header" style="color:var(--accent1)">Push</div>
+        <ul class="cbox"><li>Basato su <strong>previsioni</strong></li><li>Produzione anticipata</li><li>MRP/DRP</li><li>Scorte come buffer</li></ul>
+      </div>
+      <div class="cbox"><div class="cbox-header" style="color:var(--accent3)">Pull</div>
+        <ul class="cbox"><li>Basato su <strong>domanda reale</strong></li><li>Produzione a richiesta</li><li>Kanban/JIT</li><li>Capacità idealmente infinita</li></ul>
+      </div>
+      <div class="cbox"><div class="cbox-header" style="color:var(--accent5)">Postponement</div>
+        <ul class="cbox"><li><strong>Combinazione</strong> push + pull</li><li>Push su componenti base a monte</li><li>Pull su personalizzazione a valle</li><li>Sposta il punto di disaccoppiamento</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent2)">
+    <div class="card-title" style="color:var(--accent2)">7 · Co-design Process ≠ Function · Delivery ≠ Joint Development</div>
+    <div class="compare-grid col2">
+      <div class="cbox"><div class="cbox-header">Process vs Function (cosa si scambia)</div>
+        <ul class="cbox">
+          <li><strong>Process</strong>: si migliora l'efficienza produttiva, non le funzionalità del prodotto</li>
+          <li><strong>Function</strong>: il componente migliora anche le funzionalità/differenziali del prodotto finito</li>
+        </ul>
+      </div>
+      <div class="cbox"><div class="cbox-header">Delivery vs Joint Development (chi decide)</div>
+        <ul class="cbox">
+          <li><strong>Delivery</strong>: processi decisionali separati (cliente definisce obiettivi, fornitore i vincoli)</li>
+          <li><strong>Joint Development</strong>: processo decisionale condiviso, team interaziendale</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /page -->
+
+<footer style="text-align:center;padding:24px 40px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace">
+  SCM · IFTS GEFITES · Prof. Filippo Visintin · Università di Firenze — Riassunto schematico
+</footer>
+
+</body>
+</html>

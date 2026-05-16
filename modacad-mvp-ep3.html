@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ModaCAD — MVP</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Literata:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f6f3;
+  --surface: #ffffff;
+  --border: #e8e4dc;
+  --dark: #111110;
+  --mid: #6b6860;
+  --accent: #d4501a;
+  --accent2: #1a6dd4;
+  --green: #18a058;
+  --size-36:#60a5fa; --size-38:#34d399; --size-40:#111110;
+  --size-42:#f59e0b; --size-44:#f97316; --size-46:#a78bfa;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Syne',sans-serif;
+  background:var(--bg);
+  color:var(--dark);
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+
+/* TOP BAR */
+.topbar{
+  height:56px;
+  background:var(--dark);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;
+  flex-shrink:0;
+}
+.logo{font-size:18px;font-weight:800;letter-spacing:-0.02em;color:#fff;}
+.logo em{color:var(--accent);font-style:normal;}
+
+/* STEP NAVIGATOR */
+.steps{display:flex;gap:4px;align-items:center;}
+.step-btn{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 18px;border-radius:24px;
+  font-size:12px;font-weight:600;letter-spacing:0.04em;
+  cursor:pointer;border:none;background:transparent;
+  color:rgba(255,255,255,0.45);transition:all 0.2s;
+  font-family:'Syne',sans-serif;
+}
+.step-btn .num{
+  width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;
+  background:rgba(255,255,255,0.12);
+  transition:all 0.2s;
+}
+.step-btn.active{color:#fff;background:rgba(255,255,255,0.1);}
+.step-btn.active .num{background:var(--accent);color:#fff;}
+.step-btn.done{color:rgba(255,255,255,0.6);}
+.step-btn.done .num{background:var(--green);color:#fff;}
+.step-arrow{color:rgba(255,255,255,0.2);font-size:12px;}
+
+.topbar-right{display:flex;gap:8px;}
+.topbtn{
+  padding:7px 16px;border-radius:6px;font-size:11px;font-weight:600;
+  letter-spacing:0.04em;cursor:pointer;border:1px solid rgba(255,255,255,0.18);
+  background:transparent;color:rgba(255,255,255,0.7);font-family:'Syne',sans-serif;
+  transition:all 0.2s;
+}
+.topbtn:hover{background:rgba(255,255,255,0.1);color:#fff;}
+.topbtn.cta{background:var(--accent);border-color:var(--accent);color:#fff;}
+.topbtn.cta:hover{background:#bf4216;}
+
+/* MAIN CONTENT - screens */
+.screen{display:none;flex:1;overflow:hidden;}
+.screen.active{display:flex;}
+
+/* ══════════════════════════════
+   STEP 1 — SCEGLI BASE
+══════════════════════════════ */
+#s1{flex-direction:column;align-items:center;justify-content:center;padding:40px;gap:32px;}
+.s1-title{text-align:center;}
+.s1-title h1{font-size:36px;font-weight:800;letter-spacing:-0.03em;}
+.s1-title p{font-family:'Literata',serif;font-size:15px;color:var(--mid);margin-top:6px;font-style:italic;}
+
+.base-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;max-width:900px;width:100%;}
+.base-card{
+  background:var(--surface);border:2px solid var(--border);border-radius:12px;
+  padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:12px;
+  cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;
+}
+.base-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,0.08);}
+.base-card.selected{border-color:var(--accent);background:#fff8f5;}
+.base-card.selected::after{
+  content:'✓';position:absolute;top:10px;right:10px;
+  width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;
+  font-size:11px;display:flex;align-items:center;justify-content:center;
+  font-weight:700;
+}
+.base-preview{width:80px;height:110px;position:relative;}
+.base-preview svg{width:100%;height:100%;}
+.base-name{font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;}
+.base-sub{font-size:10px;color:var(--mid);font-family:'Literata',serif;}
+
+.s1-next-row{display:flex;align-items:center;gap:16px;}
+.next-btn{
+  padding:14px 40px;background:var(--accent);color:#fff;border:none;border-radius:8px;
+  font-size:14px;font-weight:700;letter-spacing:0.04em;cursor:pointer;
+  font-family:'Syne',sans-serif;transition:all 0.2s;
+}
+.next-btn:hover{background:#bf4216;transform:translateY(-1px);}
+.next-hint{font-size:11px;color:var(--mid);font-family:'Literata',serif;font-style:italic;}
+
+/* ══════════════════════════════
+   STEP 2 — MODELLISTICA
+══════════════════════════════ */
+#s2{flex-direction:row;}
+
+/* Floating tool strip */
+.tool-strip{
+  width:56px;background:var(--dark);display:flex;flex-direction:column;
+  align-items:center;padding:12px 0;gap:4px;flex-shrink:0;
+}
+.tool{
+  width:40px;height:40px;border-radius:8px;border:none;background:transparent;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:18px;color:rgba(255,255,255,0.5);transition:all 0.15s;
+  position:relative;
+}
+.tool:hover{background:rgba(255,255,255,0.1);color:#fff;}
+.tool.active{background:var(--accent);color:#fff;}
+.tool-tip{
+  position:absolute;left:50px;background:var(--dark);color:#fff;
+  padding:4px 8px;border-radius:4px;font-size:10px;white-space:nowrap;
+  opacity:0;pointer-events:none;transition:opacity 0.15s;font-family:'Syne',sans-serif;
+  z-index:100;
+}
+.tool:hover .tool-tip{opacity:1;}
+.tool-divider{width:28px;height:1px;background:rgba(255,255,255,0.1);margin:4px 0;}
+
+/* Canvas area */
+.canvas-zone{
+  flex:1;position:relative;overflow:hidden;
+  background:radial-gradient(circle at 50% 50%, #fff 0%, var(--bg) 100%);
+}
+#main-canvas{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  cursor:crosshair;
+  border-radius:2px;
+  box-shadow:0 2px 40px rgba(0,0,0,0.08);
+}
+
+/* Floating canvas controls */
+.canvas-float{
+  position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
+  display:flex;gap:8px;background:var(--dark);border-radius:24px;
+  padding:8px 16px;align-items:center;gap:12px;
+}
+.cf-item{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,0.6);}
+.cf-item input[type=range]{width:70px;accent-color:var(--accent);}
+.cf-sep{width:1px;height:16px;background:rgba(255,255,255,0.15);}
+.cf-coord{font-size:10px;color:rgba(255,255,255,0.4);font-family:'Syne',sans-serif;min-width:140px;text-align:center;}
+
+/* Right properties panel */
+.props-panel{
+  width:260px;background:var(--surface);border-left:1px solid var(--border);
+  display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0;
+}
+.pp-head{
+  padding:20px 20px 14px;border-bottom:1px solid var(--border);
+}
+.pp-head h3{font-size:13px;font-weight:700;letter-spacing:0.04em;}
+.pp-section{padding:16px 20px;border-bottom:1px solid var(--border);}
+.pp-label{font-size:10px;font-weight:700;letter-spacing:0.1em;color:var(--mid);text-transform:uppercase;margin-bottom:10px;}
+.pp-field{margin-bottom:10px;}
+.pp-field label{display:block;font-size:10px;color:var(--mid);margin-bottom:4px;}
+.pp-field input{
+  width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:6px;
+  font-family:'Syne',sans-serif;font-size:11px;background:var(--bg);
+  color:var(--dark);outline:none;
+}
+.pp-field input:focus{border-color:var(--accent);}
+
+/* Color dots */
+.color-row{display:flex;gap:8px;flex-wrap:wrap;}
+.cdot{
+  width:24px;height:24px;border-radius:50%;cursor:pointer;
+  border:2px solid transparent;transition:all 0.15s;
+}
+.cdot.active{border-color:var(--dark);transform:scale(1.15);}
+
+/* Next button in panel */
+.pp-next{
+  margin:16px 20px;padding:12px;background:var(--dark);color:#fff;
+  border:none;border-radius:8px;font-size:12px;font-weight:700;
+  letter-spacing:0.04em;cursor:pointer;font-family:'Syne',sans-serif;
+  text-align:center;transition:all 0.2s;
+}
+.pp-next:hover{background:#333;}
+
+/* ══════════════════════════════
+   STEP 3 — TAGLIE & PIAZZAMENTO
+══════════════════════════════ */
+#s3{flex-direction:row;}
+
+.s3-left{
+  width:300px;background:var(--surface);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;
+}
+.s3-canvas-zone{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+
+/* Size selector */
+.size-selector{display:flex;flex-wrap:wrap;gap:8px;}
+.sz{
+  padding:8px 14px;border-radius:8px;border:2px solid var(--border);
+  font-size:13px;font-weight:700;cursor:pointer;transition:all 0.15s;
+  font-family:'Syne',sans-serif;background:var(--bg);
+}
+.sz:hover{border-color:var(--accent);}
+.sz.on{color:#fff;border-color:transparent;}
+
+/* Efficiency */
+.eff-card{
+  background:var(--dark);border-radius:12px;padding:20px;margin:0 20px;
+}
+.eff-number{font-size:42px;font-weight:800;color:#fff;letter-spacing:-0.04em;line-height:1;}
+.eff-label{font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:0.1em;text-transform:uppercase;margin-top:4px;}
+.eff-bar{height:6px;background:rgba(255,255,255,0.15);border-radius:3px;margin-top:14px;overflow:hidden;}
+.eff-fill{height:100%;border-radius:3px;background:var(--green);transition:width 0.8s cubic-bezier(.4,0,.2,1);}
+.eff-details{display:flex;justify-content:space-between;margin-top:10px;}
+.eff-d{font-size:10px;color:rgba(255,255,255,0.5);}
+.eff-d b{color:rgba(255,255,255,0.85);}
+
+/* Nesting canvas area */
+.nest-tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0;}
+.ntab{
+  flex:1;padding:12px;text-align:center;font-size:11px;font-weight:700;
+  letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;
+  border:none;background:transparent;color:var(--mid);
+  border-bottom:2px solid transparent;transition:all 0.2s;
+  font-family:'Syne',sans-serif;
+}
+.ntab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.nest-view{flex:1;overflow:auto;padding:24px;display:flex;justify-content:center;align-items:flex-start;}
+#nest-canvas{border:1px solid var(--border);border-radius:4px;background:#fff;}
+
+/* Export bar */
+.export-bar{
+  display:flex;gap:10px;padding:14px 20px;border-top:1px solid var(--border);
+  background:var(--surface);flex-shrink:0;
+}
+.exp-btn{
+  flex:1;padding:10px;border-radius:8px;font-size:11px;font-weight:700;
+  letter-spacing:0.04em;cursor:pointer;font-family:'Syne',sans-serif;
+  border:1px solid var(--border);background:var(--bg);color:var(--dark);
+  transition:all 0.2s;
+}
+.exp-btn:hover{border-color:var(--accent);color:var(--accent);}
+.exp-btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+.exp-btn.primary:hover{background:#bf4216;}
+
+/* Toast */
+#toast{
+  position:fixed;bottom:24px;right:24px;
+  background:var(--dark);color:#fff;
+  padding:10px 20px;border-radius:8px;font-size:12px;font-weight:600;
+  opacity:0;transition:all 0.25s;z-index:9999;
+  border-left:3px solid var(--accent);pointer-events:none;
+}
+#toast.show{opacity:1;}
+
+@keyframes fadeSlide{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+.base-card{animation:fadeSlide 0.4s ease both;}
+.base-card:nth-child(1){animation-delay:0.05s;}
+.base-card:nth-child(2){animation-delay:0.1s;}
+.base-card:nth-child(3){animation-delay:0.15s;}
+.base-card:nth-child(4){animation-delay:0.2s;}
+.base-card:nth-child(5){animation-delay:0.25s;}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="logo">Moda<em>CAD</em></div>
+  <div class="steps">
+    <button class="step-btn active" id="sb1" onclick="gotoStep(1)">
+      <span class="num">1</span> Scegli Base
+    </button>
+    <span class="step-arrow">›</span>
+    <button class="step-btn" id="sb2" onclick="gotoStep(2)">
+      <span class="num">2</span> Modellistica
+    </button>
+    <span class="step-arrow">›</span>
+    <button class="step-btn" id="sb3" onclick="gotoStep(3)">
+      <span class="num">3</span> Taglie & Piazzamento
+    </button>
+  </div>
+  <div class="topbar-right">
+    <button class="topbtn" onclick="exportSVG()">Esporta SVG</button>
+    <button class="topbtn cta" onclick="gotoStep(1)">+ Nuovo</button>
+  </div>
+</div>
+
+<!-- ══ STEP 1 ══ -->
+<div class="screen active" id="s1">
+  <div class="s1-title">
+    <h1>Quale capo vuoi creare?</h1>
+    <p>Seleziona una base predefinita per iniziare</p>
+  </div>
+  <div class="base-grid">
+    <div class="base-card selected" onclick="selectBase('bodice',this)">
+      <div class="base-preview"><svg viewBox="0 0 80 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 12 L60 12 L65 40 L62 90 L50 95 L30 95 L18 90 L15 40 Z" stroke="#111" stroke-width="2" fill="#f0ede8"/>
+        <path d="M20 12 C20 12 15 30 10 38 L20 42 L22 28" stroke="#111" stroke-width="1.5" fill="none"/>
+        <path d="M60 12 C60 12 65 30 70 38 L60 42 L58 28" stroke="#111" stroke-width="1.5" fill="none"/>
+        <line x1="40" y1="12" x2="40" y2="95" stroke="#d4501a" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="25" y1="18" x2="35" y2="50" stroke="#d4501a" stroke-width="1.5"/>
+        <line x1="55" y1="18" x2="45" y2="50" stroke="#d4501a" stroke-width="1.5"/>
+      </svg></div>
+      <div class="base-name">Corpino</div>
+      <div class="base-sub">Ant. / Post.</div>
+    </div>
+    <div class="base-card" onclick="selectBase('skirt',this)">
+      <div class="base-preview"><svg viewBox="0 0 80 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M25 15 L55 15 L65 95 L15 95 Z" stroke="#111" stroke-width="2" fill="#f0ede8"/>
+        <line x1="40" y1="15" x2="40" y2="95" stroke="#d4501a" stroke-width="1" stroke-dasharray="3,2"/>
+        <path d="M26 24 L28 40" stroke="#1a6dd4" stroke-width="1.5"/>
+      </svg></div>
+      <div class="base-name">Gonna</div>
+      <div class="base-sub">Dritta / Svasata</div>
+    </div>
+    <div class="base-card" onclick="selectBase('trouser',this)">
+      <div class="base-preview"><svg viewBox="0 0 80 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 12 L65 12 L65 50 L48 55 L45 100 L35 100 L32 55 L15 50 Z" stroke="#111" stroke-width="2" fill="#f0ede8"/>
+        <line x1="40" y1="12" x2="40" y2="55" stroke="#d4501a" stroke-width="1" stroke-dasharray="3,2"/>
+      </svg></div>
+      <div class="base-name">Pantalone</div>
+      <div class="base-sub">Dritto / Slim</div>
+    </div>
+    <div class="base-card" onclick="selectBase('sleeve',this)">
+      <div class="base-preview"><svg viewBox="0 0 80 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M40 8 C55 8 65 22 66 40 L64 95 L50 98 L40 100 L30 98 L16 95 L14 40 C15 22 25 8 40 8Z" stroke="#111" stroke-width="2" fill="#f0ede8"/>
+        <line x1="40" y1="8" x2="40" y2="100" stroke="#d4501a" stroke-width="1" stroke-dasharray="3,2"/>
+      </svg></div>
+      <div class="base-name">Manica</div>
+      <div class="base-sub">Dritta / Raglan</div>
+    </div>
+    <div class="base-card" onclick="selectBase('jacket',this)">
+      <div class="base-preview"><svg viewBox="0 0 80 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 8 L60 8 L65 28 L62 95 L18 95 L15 28 Z" stroke="#111" stroke-width="2" fill="#f0ede8"/>
+        <path d="M20 8 L10 32 L20 36" stroke="#111" stroke-width="1.5" fill="none"/>
+        <path d="M60 8 L70 32 L60 36" stroke="#111" stroke-width="1.5" fill="none"/>
+        <path d="M38 8 L36 45 L40 95" stroke="#1a6dd4" stroke-width="1.5" fill="none"/>
+        <circle cx="40" cy="55" r="2" fill="#111"/>
+        <circle cx="40" cy="68" r="2" fill="#111"/>
+        <circle cx="40" cy="81" r="2" fill="#111"/>
+      </svg></div>
+      <div class="base-name">Giacca</div>
+      <div class="base-sub">Monopetto</div>
+    </div>
+  </div>
+  <div class="s1-next-row">
+    <button class="next-btn" onclick="gotoStep(2)">Inizia Modellistica →</button>
+    <span class="next-hint">Puoi modificare la scelta in qualsiasi momento</span>
+  </div>
+</div>
+
+<!-- ══ STEP 2 ══ -->
+<div class="screen" id="s2">
+  <!-- Tool strip -->
+  <div class="tool-strip">
+    <div class="tool active" id="t-select" onclick="setTool('select')">
+      ↖<div class="tool-tip">Seleziona (V)</div>
+    </div>
+    <div class="tool" id="t-pen" onclick="setTool('pen')">
+      ✒<div class="tool-tip">Penna libera (P)</div>
+    </div>
+    <div class="tool" id="t-line" onclick="setTool('line')">
+      ╱<div class="tool-tip">Linea retta (L)</div>
+    </div>
+    <div class="tool" id="t-curve" onclick="setTool('curve')">
+      ∫<div class="tool-tip">Curva Bezier (C)</div>
+    </div>
+    <div class="tool-divider"></div>
+    <div class="tool" id="t-seam" onclick="setTool('seam')">
+      ···<div class="tool-tip">Cucitura (S)</div>
+    </div>
+    <div class="tool" id="t-notch" onclick="setTool('notch')">
+      ▲<div class="tool-tip">Tacca (N)</div>
+    </div>
+    <div class="tool-divider"></div>
+    <div class="tool" onclick="undoLast()" style="font-size:14px;">
+      ↩<div class="tool-tip">Annulla (Ctrl+Z)</div>
+    </div>
+    <div class="tool" onclick="clearCanvas()" style="font-size:14px;">
+      🗑<div class="tool-tip">Pulisci tutto</div>
+    </div>
+  </div>
+
+  <!-- Canvas zone -->
+  <div class="canvas-zone" id="canvas-zone">
+    <canvas id="main-canvas" width="820" height="580"></canvas>
+    <div class="canvas-float">
+      <div class="cf-item">
+        <span>Zoom</span>
+        <input type="range" min="50" max="180" value="100" oninput="setZoom(this.value)" id="zoom-in">
+        <span id="zoom-lbl" style="font-size:10px;color:rgba(255,255,255,0.5);min-width:28px;">100%</span>
+      </div>
+      <div class="cf-sep"></div>
+      <div class="cf-item">
+        <span>Griglia</span>
+        <select onchange="setGrid(this.value)" style="background:transparent;border:none;color:rgba(255,255,255,0.6);font-size:11px;font-family:'Syne',sans-serif;outline:none;">
+          <option value="10">1cm</option>
+          <option value="20" selected>2cm</option>
+          <option value="50">5cm</option>
+        </select>
+      </div>
+      <div class="cf-sep"></div>
+      <div class="cf-coord" id="coord-lbl">X: 0 cm — Y: 0 cm</div>
+    </div>
+  </div>
+
+  <!-- Props panel -->
+  <div class="props-panel">
+    <div class="pp-head">
+      <h3>Proprietà Pezzo</h3>
+    </div>
+    <div class="pp-section">
+      <div class="pp-label">Info</div>
+      <div class="pp-field">
+        <label>Nome pezzo</label>
+        <input id="pp-name" value="CF Corpino">
+      </div>
+      <div class="pp-field">
+        <label>Larghezza</label>
+        <input id="pp-w" value="42.0 cm">
+      </div>
+      <div class="pp-field">
+        <label>Lunghezza</label>
+        <input id="pp-h" value="58.5 cm">
+      </div>
+    </div>
+    <div class="pp-section">
+      <div class="pp-label">C. Cucitura</div>
+      <div class="pp-field">
+        <label>Valore</label>
+        <input id="pp-seam" value="1.5 cm">
+      </div>
+      <div class="pp-field">
+        <label>Verso filo</label>
+        <input id="pp-grain" value="Verticale (↕)">
+      </div>
+    </div>
+    <div class="pp-section">
+      <div class="pp-label">Colore linea</div>
+      <div class="color-row">
+        <div class="cdot active" style="background:#111110" onclick="setColor('#111110',this)" title="Contorno"></div>
+        <div class="cdot" style="background:#d4501a" onclick="setColor('#d4501a',this)" title="Cucitura"></div>
+        <div class="cdot" style="background:#1a6dd4" onclick="setColor('#1a6dd4',this)" title="Costruzione"></div>
+        <div class="cdot" style="background:#18a058" onclick="setColor('#18a058',this)" title="Ausiliaria"></div>
+        <div class="cdot" style="background:#a78bfa" onclick="setColor('#a78bfa',this)" title="Note"></div>
+      </div>
+    </div>
+    <div class="pp-section">
+      <div class="pp-label">Tessuto</div>
+      <div class="pp-field">
+        <label>Tipo</label>
+        <input value="Cotone 100%">
+      </div>
+      <div class="pp-field">
+        <label>Peso</label>
+        <input value="180 g/m²">
+      </div>
+    </div>
+    <div style="flex:1"></div>
+    <button class="pp-next" onclick="gotoStep(3)">Vai a Taglie & Piazzamento →</button>
+  </div>
+</div>
+
+<!-- ══ STEP 3 ══ -->
+<div class="screen" id="s3">
+  <!-- Left panel -->
+  <div class="s3-left">
+    <div class="pp-section">
+      <div class="pp-label">Seleziona Taglie</div>
+      <p style="font-size:11px;color:var(--mid);margin-bottom:12px;font-family:'Literata',serif;font-style:italic;">Attiva le taglie da includere nel piazzamento</p>
+      <div class="size-selector" id="sz-sel">
+        <div class="sz" style="background:var(--size-36);border-color:var(--size-36);" onclick="toggleSz(this,'36')">36</div>
+        <div class="sz" onclick="toggleSz(this,'38')">38</div>
+        <div class="sz on" style="background:var(--size-40);border-color:var(--size-40);color:#fff;" onclick="toggleSz(this,'40')">40 ●</div>
+        <div class="sz" onclick="toggleSz(this,'42')">42</div>
+        <div class="sz" onclick="toggleSz(this,'44')">44</div>
+        <div class="sz" onclick="toggleSz(this,'46')">46</div>
+      </div>
+    </div>
+
+    <div class="pp-section">
+      <div class="pp-label">Sviluppo Taglie Δ</div>
+      <table style="width:100%;border-collapse:collapse;font-size:11px;">
+        <thead>
+          <tr style="border-bottom:1px solid var(--border);">
+            <th style="text-align:left;padding:5px 0;color:var(--mid);font-weight:600;font-size:10px;">Taglia</th>
+            <th style="text-align:left;padding:5px 0;color:var(--mid);font-weight:600;font-size:10px;">ΔL</th>
+            <th style="text-align:left;padding:5px 0;color:var(--mid);font-weight:600;font-size:10px;">ΔP</th>
+          </tr>
+        </thead>
+        <tbody id="grading-body">
+          <tr><td style="padding:4px 0">36</td><td><input style="width:48px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;font-size:10px;font-family:'Syne',sans-serif;" value="-2.0"></td><td><input style="width:48px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;font-size:10px;font-family:'Syne',sans-serif;" value="-1.5"></td></tr>
+          <tr><td style="padding:4px 0">38</td><td><input style="width:48px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;font-size:10px;font-family:'Syne',sans-serif;" value="-1.0"></td><td><input style="width:48px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;font-size:10px;font-family:'Syne',sans-serif;" value="-0.75"></td></tr>
+          <tr style="font-weight:700;"><td style="padding:4px 0">40 ●</td><td><input style="width:48px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;font-size:10px;font-family:'Syne',sans-serif;" value="0"></td><td><input style="width:48px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;font-size:10px;font-family:'Syne',sans-serif;" value="0"></td></tr>
+          <tr><td style="padding:4px 0">42</td><td><input style="width:48px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;font-size:10px;font-family:'Syne',sans-serif;" value="+1.0"></td><td><input style="width:48px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;font-size:10px;font-family:'Syne',sans-serif;" value="+0.75"></td></tr>
+          <tr><td style="padding:4px 0">44</td><td><input style="width:48px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;font-size:10px;font-family:'Syne',sans-serif;" value="+2.0"></td><td><input style="width:48px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;font-size:10px;font-family:'Syne',sans-serif;" value="+1.5"></td></tr>
+          <tr><td style="padding:4px 0">46</td><td><input style="width:48px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;font-size:10px;font-family:'Syne',sans-serif;" value="+3.0"></td><td><input style="width:48px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;font-size:10px;font-family:'Syne',sans-serif;" value="+2.25"></td></tr>
+        </tbody>
+      </table>
+      <button onclick="applyGrading()" style="margin-top:10px;width:100%;padding:9px;background:var(--dark);color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;letter-spacing:0.04em;">
+        ↻ Applica Sviluppo
+      </button>
+    </div>
+
+    <div class="pp-section" style="flex:1">
+      <div class="eff-card">
+        <div class="eff-number" id="eff-num">84.2%</div>
+        <div class="eff-label">Efficienza Piazzamento</div>
+        <div class="eff-bar"><div class="eff-fill" id="eff-fill" style="width:84.2%"></div></div>
+        <div class="eff-details">
+          <div class="eff-d">Tessuto: <b>150cm</b></div>
+          <div class="eff-d">Scarto: <b>0.26m²</b></div>
+          <div class="eff-d">Risparmio: <b>~€3.40</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="export-bar">
+      <button class="exp-btn" onclick="exportSVG()">SVG</button>
+      <button class="exp-btn" onclick="toast('DXF pronto!')">DXF</button>
+      <button class="exp-btn primary" onclick="toast('PDF in corso…')">PDF ↓</button>
+    </div>
+  </div>
+
+  <!-- Canvas zone step 3 -->
+  <div class="s3-canvas-zone">
+    <div class="nest-tabs">
+      <button class="ntab active" onclick="setNestTab('grading',this)">Sviluppo Taglie</button>
+      <button class="ntab" onclick="setNestTab('nesting',this)">Piazzamento</button>
+    </div>
+    <div class="nest-view">
+      <canvas id="nest-canvas" width="860" height="480"></canvas>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ─── STATE ───────────────────────────────────────
+let currentStep = 1;
+let currentBase = 'bodice';
+let tool = 'select';
+let strokeColor = '#111110';
+let zoom = 1;
+let gridSize = 20;
+let isDrawing = false;
+let startPt = null;
+let paths = [];
+let curPath = [];
+let nestTab = 'grading';
+let activeSizes = new Set(['40']);
+
+// ─── STEP NAVIGATION ─────────────────────────────
+function gotoStep(n) {
+  currentStep = n;
+  ['s1','s2','s3'].forEach((id,i) => {
+    document.getElementById(id).classList.toggle('active', i+1 === n);
+  });
+  ['sb1','sb2','sb3'].forEach((id,i) => {
+    const btn = document.getElementById(id);
+    btn.className = 'step-btn';
+    if (i+1 === n) btn.classList.add('active');
+    else if (i+1 < n) btn.classList.add('done');
+  });
+  if (n === 2) { setTimeout(renderCanvas, 50); }
+  if (n === 3) { setTimeout(() => drawNestView(), 50); }
+}
+
+// ─── STEP 1 ──────────────────────────────────────
+function selectBase(b, el) {
+  currentBase = b;
+  document.querySelectorAll('.base-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  const names = {bodice:'CF Corpino',skirt:'CF Gonna',trouser:'Gamba Ant.',sleeve:'Manica',jacket:'CF Giacca'};
+  document.getElementById('pp-name').value = names[b] || b;
+}
+
+// ─── BASE PATTERNS ───────────────────────────────
+const bases = {
+  bodice:{label:'CF Corpino',pts:[[120,70],[330,70],[340,190],[318,370],[295,435],[205,450],[145,440],[108,370],[96,190]],darts:[[210,70,218,155],[240,70,235,158]]},
+  skirt:{label:'CF Gonna',pts:[[130,55],[320,55],[342,390],[285,415],[145,410],[108,390]]},
+  trouser:{label:'Gamba Ant.',pts:[[110,55],[260,55],[278,190],[296,510],[255,530],[195,530],[155,510],[122,190]]},
+  sleeve:{label:'Manica',pts:[[215,55],[295,55],[322,115],[335,295],[322,375],[255,405],[215,405],[175,375],[162,295],[175,115]]},
+  jacket:{label:'CF Giacca',pts:[[115,65],[335,65],[342,185],[318,420],[295,455],[208,460],[148,455],[112,420],[105,185]],buttons:[[228,220],[228,265],[228,310],[228,355]]}
+};
+
+// ─── CANVAS DRAWING (Step 2) ──────────────────────
+const canvas = document.getElementById('main-canvas');
+const ctx = canvas.getContext('2d');
+
+function renderCanvas() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.save(); ctx.scale(zoom,zoom);
+  drawGrid2D();
+  drawBasePattern();
+  paths.forEach(p => {
+    ctx.beginPath();
+    ctx.strokeStyle = p.color; ctx.lineWidth = 2/zoom;
+    p.pts.forEach((pt,i) => i ? ctx.lineTo(pt[0],pt[1]) : ctx.moveTo(pt[0],pt[1]));
+    ctx.stroke();
+  });
+  if (curPath.length > 1) {
+    ctx.beginPath(); ctx.strokeStyle = strokeColor; ctx.lineWidth = 2/zoom;
+    curPath.forEach((pt,i) => i ? ctx.lineTo(pt[0],pt[1]) : ctx.moveTo(pt[0],pt[1]));
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawGrid2D() {
+  const w = canvas.width/zoom, h = canvas.height/zoom;
+  ctx.strokeStyle = 'rgba(0,0,0,0.05)'; ctx.lineWidth = 0.5/zoom;
+  for(let x=0;x<w;x+=gridSize){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}
+  for(let y=0;y<h;y+=gridSize){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}
+}
+
+function drawBasePattern() {
+  const base = bases[currentBase];
+  if(!base) return;
+  const pts = base.pts;
+  // Shadow
+  ctx.shadowColor='rgba(0,0,0,0.06)'; ctx.shadowBlur=16/zoom; ctx.shadowOffsetY=4/zoom;
+  // Fill
+  ctx.beginPath();
+  pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));
+  ctx.closePath(); ctx.fillStyle='#fff'; ctx.fill();
+  ctx.shadowColor='transparent'; ctx.shadowBlur=0; ctx.shadowOffsetY=0;
+  // Seam allowance dashes
+  ctx.setLineDash([5/zoom,3/zoom]);
+  ctx.strokeStyle='rgba(212,80,26,0.35)'; ctx.lineWidth=1/zoom;
+  ctx.beginPath();
+  const off=10;
+  pts.forEach((p,i)=>{
+    const np=pts[(i+1)%pts.length];
+    const dx=np[0]-p[0],dy=np[1]-p[1],len=Math.hypot(dx,dy);
+    const px=-dy/len*off, py=dx/len*off;
+    i?ctx.lineTo(p[0]+px,p[1]+py):ctx.moveTo(p[0]+px,p[1]+py);
+  });
+  ctx.closePath(); ctx.stroke(); ctx.setLineDash([]);
+  // Outline
+  ctx.beginPath();
+  pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));
+  ctx.closePath(); ctx.strokeStyle='#111'; ctx.lineWidth=2/zoom; ctx.stroke();
+  // Darts
+  if(base.darts){
+    ctx.strokeStyle='#d4501a'; ctx.lineWidth=1.5/zoom;
+    base.darts.forEach(d=>{ctx.beginPath();ctx.moveTo(d[0],d[1]);ctx.lineTo(d[2],d[3]);ctx.stroke();});
+  }
+  // Buttons
+  if(base.buttons){
+    base.buttons.forEach(b=>{
+      ctx.beginPath();ctx.arc(b[0],b[1],4/zoom,0,Math.PI*2);
+      ctx.fillStyle='#111';ctx.fill();
+    });
+  }
+  // Grain line
+  const cx=pts.reduce((s,p)=>s+p[0],0)/pts.length;
+  const cy=pts.reduce((s,p)=>s+p[1],0)/pts.length;
+  ctx.strokeStyle='rgba(0,0,0,0.35)'; ctx.lineWidth=1.5/zoom;
+  ctx.beginPath();ctx.moveTo(cx,cy-30);ctx.lineTo(cx,cy+30);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(cx-5,cy-24);ctx.lineTo(cx,cy-30);ctx.lineTo(cx+5,cy-24);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(cx-5,cy+24);ctx.lineTo(cx,cy+30);ctx.lineTo(cx+5,cy+24);ctx.stroke();
+  // Label
+  ctx.font=`${12/zoom}px 'Syne',sans-serif`; ctx.fillStyle='#111'; ctx.textAlign='center';
+  ctx.fillText(base.label||'', cx, cy-44);
+  // Grading overlays
+  const sizeColors={'36':'#60a5fa','38':'#34d399','42':'#f59e0b','44':'#f97316','46':'#a78bfa'};
+  activeSizes.forEach(sz=>{
+    if(sz==='40') return;
+    const delta=(parseInt(sz)-40)*0.55;
+    ctx.strokeStyle=sizeColors[sz]||'#999'; ctx.lineWidth=1/zoom; ctx.setLineDash([3/zoom,2/zoom]);
+    ctx.beginPath();
+    pts.forEach((p,i)=>{
+      const nx=p[0]+delta,ny=p[1]+delta*0.4;
+      i?ctx.lineTo(nx,ny):ctx.moveTo(nx,ny);
+    });
+    ctx.closePath(); ctx.stroke(); ctx.setLineDash([]);
+  });
+}
+
+// Canvas events
+canvas.addEventListener('mousemove',e=>{
+  const r=canvas.getBoundingClientRect();
+  const x=(e.clientX-r.left)/zoom, y=(e.clientY-r.top)/zoom;
+  const cm=v=>(v/gridSize*2).toFixed(1);
+  document.getElementById('coord-lbl').textContent=`X: ${cm(x)} cm — Y: ${cm(y)} cm`;
+  if(isDrawing && tool==='pen'){curPath.push([x,y]);renderCanvas();}
+});
+canvas.addEventListener('mousedown',e=>{
+  const r=canvas.getBoundingClientRect();
+  startPt={x:(e.clientX-r.left)/zoom, y:(e.clientY-r.top)/zoom};
+  isDrawing=true;
+  if(tool==='pen') curPath=[[startPt.x,startPt.y]];
+});
+canvas.addEventListener('mouseup',e=>{
+  const r=canvas.getBoundingClientRect();
+  const x=(e.clientX-r.left)/zoom, y=(e.clientY-r.top)/zoom;
+  if(tool==='pen' && curPath.length>1){paths.push({pts:[...curPath],color:strokeColor});curPath=[];}
+  if(tool==='line' && startPt){paths.push({pts:[[startPt.x,startPt.y],[x,y]],color:strokeColor});curPath=[];}
+  if(tool==='seam' && startPt){paths.push({pts:[[startPt.x,startPt.y],[x,y]],color:'#d4501a'});curPath=[];}
+  isDrawing=false; startPt=null; renderCanvas();
+});
+canvas.addEventListener('dblclick',()=>{if(tool==='pen'){curPath=[];renderCanvas();}});
+
+// ─── TOOLS ───────────────────────────────────────
+function setTool(t) {
+  tool=t;
+  document.querySelectorAll('.tool').forEach(b=>b.classList.remove('active'));
+  document.getElementById('t-'+t)?.classList.add('active');
+}
+function setColor(c,el){
+  strokeColor=c;
+  document.querySelectorAll('.cdot').forEach(d=>d.classList.remove('active'));
+  el?.classList.add('active');
+}
+function setZoom(v){zoom=v/100;document.getElementById('zoom-lbl').textContent=v+'%';renderCanvas();}
+function setGrid(v){gridSize=parseInt(v);renderCanvas();}
+function undoLast(){paths.pop();renderCanvas();toast('Annullato');}
+function clearCanvas(){paths=[];curPath=[];renderCanvas();toast('Canvas pulito');}
+
+// ─── STEP 3 ──────────────────────────────────────
+function toggleSz(el,sz){
+  if(activeSizes.has(sz)&&sz!=='40'){
+    activeSizes.delete(sz);
+    el.classList.remove('on');
+    el.style.background='';el.style.borderColor='';el.style.color='';
+  } else {
+    activeSizes.add(sz);
+    el.classList.add('on');
+    const colors={'36':'#60a5fa','38':'#34d399','40':'#111','42':'#f59e0b','44':'#f97316','46':'#a78bfa'};
+    el.style.background=colors[sz]||'#111';
+    el.style.borderColor=colors[sz]||'#111';
+    el.style.color='#fff';
+  }
+  updateEfficiency();
+  drawNestView();
+}
+
+function updateEfficiency(){
+  const base=84.2;
+  const extra=(activeSizes.size-1)*0.8;
+  const eff=Math.min(92, base+extra).toFixed(1);
+  document.getElementById('eff-num').textContent=eff+'%';
+  document.getElementById('eff-fill').style.width=eff+'%';
+}
+
+function applyGrading(){drawNestView();toast('Sviluppo taglie applicato!');}
+
+function setNestTab(t, el){
+  nestTab=t;
+  document.querySelectorAll('.ntab').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  drawNestView();
+}
+
+function drawNestView(){
+  const nc=document.getElementById('nest-canvas');
+  const nx=nc.getContext('2d');
+  nx.clearRect(0,0,nc.width,nc.height);
+  if(nestTab==='grading') drawGradingView(nx, nc);
+  else drawNestingView(nx, nc);
+}
+
+function drawGradingView(nx, nc){
+  // background
+  nx.fillStyle='#fafaf8';nx.fillRect(0,0,nc.width,nc.height);
+  // draw base pattern + all active sizes
+  const base=bases[currentBase];
+  if(!base)return;
+  const pts=base.pts;
+  const sizeColors={'36':'#60a5fa','38':'#34d399','40':'#111110','42':'#f59e0b','44':'#f97316','46':'#a78bfa'};
+  const sizeOrder=['46','44','42','40','38','36'];
+  sizeOrder.forEach(sz=>{
+    if(!activeSizes.has(sz))return;
+    const delta=(parseInt(sz)-40)*0.55;
+    nx.beginPath();
+    pts.forEach((p,i)=>{
+      const x=p[0]+delta+80, y=p[1]+delta*0.4+40;
+      i?nx.lineTo(x,y):nx.moveTo(x,y);
+    });
+    nx.closePath();
+    if(sz==='40'){nx.fillStyle='rgba(255,255,255,0.9)';}
+    else{nx.fillStyle=sizeColors[sz]+'18';}
+    nx.fill();
+    nx.strokeStyle=sizeColors[sz]; nx.lineWidth=sz==='40'?2:1.2;
+    if(sz!=='40') nx.setLineDash([4,3]);
+    nx.stroke(); nx.setLineDash([]);
+    // label
+    const cx=pts.reduce((s,p)=>s+p[0]+delta+80,0)/pts.length;
+    const minY=Math.min(...pts.map(p=>p[1]+delta*0.4+40));
+    nx.font="10px 'Syne',sans-serif";nx.fillStyle=sizeColors[sz];nx.textAlign='left';
+    nx.fillText(sz, cx+10, minY+14);
+  });
+  // Legend
+  const legendX=680, legendY=30;
+  nx.font="10px 'Syne',sans-serif";nx.textAlign='left';
+  Array.from(activeSizes).sort((a,b)=>a-b).forEach((sz,i)=>{
+    nx.fillStyle=sizeColors[sz];
+    nx.fillRect(legendX, legendY+i*18, 12, 12);
+    nx.fillStyle='#333';
+    nx.fillText('Taglia '+sz+(sz==='40'?' (base)':''), legendX+18, legendY+i*18+10);
+  });
+  nx.font="11px 'Syne',sans-serif";nx.fillStyle='#666';nx.textAlign='center';
+  nx.fillText('Vista Sviluppo Taglie — '+activeSizes.size+' taglie attive', nc.width/2, nc.height-16);
+}
+
+function drawNestingView(nx, nc){
+  nx.fillStyle='#fff';nx.fillRect(0,0,nc.width,nc.height);
+  // Fabric borders
+  nx.strokeStyle='#ccc';nx.lineWidth=2;
+  nx.strokeRect(10,10,840,460);
+  nx.font="9px 'Syne',sans-serif";nx.fillStyle='#aaa';nx.textAlign='left';
+  nx.fillText('TESSUTO 150cm × 6.5m',18,26);
+  // Pieces
+  const colors=['#d4501a','#1a6dd4','#18a058','#a78bfa','#f59e0b','#ec4899'];
+  const placedPieces=[
+    {label:'CF Corpino',x:28,y:36,w:145,h:270},{label:'CB Corpino',x:183,y:36,w:138,h:262},
+    {label:'CF Corpino S',x:331,y:36,w:140,h:268},{label:'CB Corpino S',x:28,y:316,w:132,h:255},
+    {label:'Manica',x:183,y:308,w:108,h:225},{label:'Manica',x:300,y:308,w:108,h:225},
+    {label:'Colletto',x:416,y:308,w:210,h:72},{label:'Paramont.',x:416,y:390,w:165,h:62},
+  ];
+  placedPieces.forEach((p,i)=>{
+    const c=colors[i%colors.length];
+    nx.fillStyle=c+'20';
+    nx.strokeStyle=c+'cc';
+    nx.lineWidth=1.5;
+    nx.beginPath();nx.rect(p.x,p.y,p.w,p.h);nx.fill();nx.stroke();
+    nx.font="9px 'Syne',sans-serif";nx.fillStyle='#222';nx.textAlign='center';
+    nx.fillText(p.label,p.x+p.w/2,p.y+p.h/2);
+  });
+  // Scrap zone
+  nx.fillStyle='rgba(239,68,68,0.05)';
+  nx.fillRect(636,36,208,440);
+  nx.font="9px 'Syne',sans-serif";nx.fillStyle='rgba(239,68,68,0.35)';nx.textAlign='center';
+  nx.fillText('SCARTO',740,256);
+  // Footer
+  const eff=document.getElementById('eff-num').textContent;
+  nx.font="10px 'Syne',sans-serif";nx.fillStyle='#555';nx.textAlign='right';
+  nx.fillText(`Efficienza: ${eff} | Pezzi: ${placedPieces.length} | Tessuto: 150cm×6.5m`,848,478);
+}
+
+// ─── EXPORT ──────────────────────────────────────
+function exportSVG(){
+  toast('Esportazione SVG…');
+  setTimeout(()=>{
+    const base=bases[currentBase];
+    if(!base)return;
+    const d='M '+base.pts.map(p=>p.join(' ')).join(' L ')+' Z';
+    const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="820" height="580">
+  <rect width="820" height="580" fill="#fafaf8"/>
+  <path d="${d}" fill="white" stroke="#111" stroke-width="2"/>
+  <text x="220" y="50" font-family="sans-serif" font-size="12" fill="#111">${base.label}</text>
+</svg>`;
+    const b=new Blob([svg],{type:'image/svg+xml'});
+    const u=URL.createObjectURL(b);
+    const a=document.createElement('a');a.href=u;a.download='cartamodello.svg';a.click();
+    toast('SVG scaricato!');
+  },600);
+}
+
+// ─── TOAST ───────────────────────────────────────
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2200);
+}
+
+// ─── KEYBOARD ────────────────────────────────────
+document.addEventListener('keydown',e=>{
+  if(currentStep!==2)return;
+  if(e.ctrlKey&&e.key==='z'){undoLast();return;}
+  const map={v:'select',p:'pen',l:'line',c:'curve',s:'seam',n:'notch'};
+  if(map[e.key])setTool(map[e.key]);
+});
+
+// Init
+renderCanvas();
+</script>
+</body>
+</html>

@@ -1,0 +1,373 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+.gbtn{padding:3px 9px;border:0.5px solid var(--color-border-secondary);border-radius:20px;background:transparent;cursor:pointer;font-size:11px;color:var(--color-text-primary);font-family:inherit;transition:background 0.12s;}
+.gbtn:hover{background:var(--color-background-secondary);}
+.gbtn.active{background:var(--color-background-info);border-color:var(--color-border-info);color:var(--color-text-info);}
+.gbtn.g{background:rgba(29,158,117,0.13);border-color:#1D9E75;color:#0F6E56;}
+.gbtn.r{background:rgba(210,83,48,0.12);border-color:#D85A30;color:#993C1D;}
+.gbtn.y{background:rgba(186,117,23,0.12);border-color:#BA7517;color:#854F0B;}
+.ctrl{display:flex;flex-direction:column;gap:4px;}
+.ctrl label.cl{font-size:11px;color:var(--color-text-secondary);}
+.chk{font-size:11px;display:flex;align-items:center;gap:5px;cursor:pointer;color:var(--color-text-primary);}
+.scard{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px;text-align:center;}
+.scard .sl{font-size:11px;color:var(--color-text-secondary);margin-bottom:3px;}
+.scard .sv{font-size:22px;font-weight:500;}
+.alert{border-radius:var(--border-radius-md);padding:8px 12px;margin-bottom:5px;font-size:11px;display:flex;align-items:center;gap:8px;border:0.5px solid;}
+.alert.warn{background:var(--color-background-warning);border-color:var(--color-border-warning);color:var(--color-text-warning);}
+.alert.ok{background:var(--color-background-success);border-color:var(--color-border-success);color:var(--color-text-success);}
+.alert.info{background:var(--color-background-info);border-color:var(--color-border-info);color:var(--color-text-info);}
+input[type=date]{font-size:12px;font-family:inherit;}
+</style>
+
+<div style="padding:1rem 0 0.5rem;">
+
+<div style="margin-bottom:12px;">
+  <p style="font-size:15px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px;">Gantt di Produzione — Ciclo Tessile Laniero</p>
+  <p style="font-size:12px;color:var(--color-text-secondary);">Il Dispositore · Distretto di Prato · Capacità Finita / Infinita · Celle a U Lean</p>
+</div>
+
+<!-- Controls -->
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px;padding:12px;background:var(--color-background-secondary);border-radius:var(--border-radius-lg);margin-bottom:12px;">
+
+  <div class="ctrl">
+    <label class="cl">Data conferma ordine</label>
+    <input type="date" id="sDate">
+  </div>
+
+  <div class="ctrl">
+    <label class="cl">Telai disponibili: <strong id="telaiLbl">8</strong></label>
+    <input type="range" id="telai" min="1" max="20" value="8" step="1">
+    <span style="font-size:10px;color:var(--color-text-secondary);">Impatta tessitura</span>
+  </div>
+
+  <div class="ctrl">
+    <label class="cl">Capacità pianificazione</label>
+    <div style="display:flex;gap:4px;flex-wrap:wrap;">
+      <button class="gbtn active" id="bFin" onclick="setCap('finita')">Finita</button>
+      <button class="gbtn" id="bInf" onclick="setCap('infinita')">Infinita</button>
+    </div>
+    <span style="font-size:10px;color:var(--color-text-secondary);margin-top:2px;" id="capNote">APS — limiti reali macchine</span>
+  </div>
+
+  <div class="ctrl">
+    <label class="cl">Tipo produzione</label>
+    <div style="display:flex;gap:4px;flex-wrap:wrap;">
+      <button class="gbtn g active" id="bProd" onclick="setType('produzione')">Produzione</button>
+      <button class="gbtn r" id="bCamp" onclick="setType('campionario')">Campionario</button>
+      <button class="gbtn y" id="bColl" onclick="setType('collezione')">Collezione</button>
+    </div>
+  </div>
+
+  <div class="ctrl">
+    <label class="cl">Tintoria (fase)</label>
+    <label class="chk"><input type="checkbox" id="dyFiocco" onchange="go()"> In fiocco</label>
+    <label class="chk"><input type="checkbox" id="dyRocca" onchange="go()"> In rocca/filato ⚠</label>
+    <label class="chk"><input type="checkbox" id="dyPezza" onchange="go()"> In pezza ⚠</label>
+    <label class="chk"><input type="checkbox" id="dyCapo" onchange="go()"> In capo finito</label>
+  </div>
+
+  <div class="ctrl">
+    <label class="cl">Opzioni ciclo</label>
+    <label class="chk"><input type="checkbox" id="optTorcitura" onchange="go()"> Ritorcitura ⚠</label>
+    <label class="chk"><input type="checkbox" id="optConfez" checked onchange="go()"> Confezione</label>
+    <label class="chk"><input type="checkbox" id="optLean" onchange="go()"> Celle a U (Lean)</label>
+    <label class="chk"><input type="checkbox" id="optCad" checked onchange="go()"> CAD e Taglio</label>
+  </div>
+
+</div>
+
+<!-- Canvas (scrollable) -->
+<div style="overflow-x:auto;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);background:var(--color-background-primary);">
+  <canvas id="gc"></canvas>
+</div>
+
+<!-- Legend -->
+<div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;">
+  <span style="font-size:11px;color:var(--color-text-secondary);display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#1D9E75;display:inline-block;"></span>Lavorazione</span>
+  <span style="font-size:11px;color:var(--color-text-secondary);display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#378ADD;display:inline-block;"></span>Tintoria</span>
+  <span style="font-size:11px;color:var(--color-text-secondary);display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#534AB7;display:inline-block;"></span>Prep. tessitura</span>
+  <span style="font-size:11px;color:var(--color-text-secondary);display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#D85A30;display:inline-block;"></span>Tessitura ⚠</span>
+  <span style="font-size:11px;color:var(--color-text-secondary);display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#BA7517;display:inline-block;"></span>Ritorcitura ⚠</span>
+  <span style="font-size:11px;color:var(--color-text-secondary);display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#639922;display:inline-block;"></span>Finissaggio/Confez.</span>
+  <span style="font-size:11px;color:var(--color-text-secondary);display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;border:1px dashed #999;display:inline-block;"></span>Attesa cap. finita</span>
+</div>
+
+<!-- Summary cards -->
+<div id="sumCards" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;"></div>
+
+<!-- Alerts -->
+<div id="alerts" style="margin-top:10px;"></div>
+
+</div>
+
+<script>
+let gCap='finita', gType='produzione';
+
+const PH=[
+  {id:'approv',name:'Approvvigionamento MP',days:{min:5,base:10,max:18},color:'#1D9E75',bot:false,opt:false},
+  {id:'tFiocco',name:'Tintoria in fiocco',days:{min:7,base:10,max:14},color:'#378ADD',bot:false,opt:true,dye:'fiocco'},
+  {id:'cardatura',name:'Cardatura / Pettinatura',days:{min:3,base:5,max:8},color:'#1D9E75',bot:false,opt:false},
+  {id:'filatura',name:'Filatura Ring / Open-end',days:{min:7,base:10,max:15},color:'#1D9E75',bot:false,opt:false},
+  {id:'tRocca',name:'Tintoria in rocca/filato',days:{min:5,base:8,max:14},color:'#378ADD',bot:true,opt:true,dye:'rocca',bNote:'Verificare vasche libere e bagni'},
+  {id:'torcitura',name:'Torcitura / Ritorcitura',days:{min:3,base:6,max:10},color:'#BA7517',bot:true,opt:true,bNote:'Sempre meno nel distretto — attenzione'},
+  {id:'orditura',name:'Orditura',days:{min:2,base:3,max:5},color:'#534AB7',bot:false,opt:false},
+  {id:'incorsatura',name:'Incorsatura / Imbozzimatura',days:{min:2,base:3,max:5},color:'#534AB7',bot:false,opt:false},
+  {id:'tessitura',name:'Tessitura',days:{min:8,base:18,max:30},color:'#D85A30',bot:true,opt:false,bNote:'Collo di bottiglia principale — pianificare con anticipo'},
+  {id:'tPezza',name:'Tintoria in pezza (continuo)',days:{min:10,base:21,max:28},color:'#378ADD',bot:true,opt:true,dye:'pezza',bNote:'Tintura continuo ~4 settimane — accorcia prep. greggio'},
+  {id:'rifinizione',name:'Rifinizione / Finissaggio greggio',days:{min:5,base:10,max:14},color:'#0F6E56',bot:false,opt:false},
+  {id:'cad',name:'CAD e Taglio tessuto',days:{min:2,base:3,max:5},color:'#639922',bot:false,opt:true},
+  {id:'confezione',name:'Confezione',days:{min:5,base:10,max:14},color:'#639922',bot:false,opt:true},
+  {id:'tCapo',name:'Tintoria in capo finito',days:{min:5,base:8,max:12},color:'#378ADD',bot:false,opt:true,dye:'capo'},
+  {id:'pkg',name:'Finissaggio e Packaging',days:{min:2,base:3,max:5},color:'#3B6D11',bot:false,opt:false},
+];
+
+function getActive(){
+  return PH.filter(p=>{
+    if(!p.opt)return true;
+    if(p.dye==='fiocco')return document.getElementById('dyFiocco').checked;
+    if(p.dye==='rocca')return document.getElementById('dyRocca').checked;
+    if(p.dye==='pezza')return document.getElementById('dyPezza').checked;
+    if(p.dye==='capo')return document.getElementById('dyCapo').checked;
+    if(p.id==='torcitura')return document.getElementById('optTorcitura').checked;
+    if(p.id==='confezione')return document.getElementById('optConfez').checked;
+    if(p.id==='cad')return document.getElementById('optCad').checked;
+    return true;
+  });
+}
+
+function pDur(p){
+  const telai=parseInt(document.getElementById('telai').value);
+  const lean=document.getElementById('optLean').checked;
+  let d=gType==='campionario'?p.days.min:gType==='collezione'?Math.round((p.days.min+p.days.base)/2):p.days.base;
+  if(p.id==='tessitura'){
+    d=Math.round(d*(1+(1-telai/20)*0.65));
+    if(gType==='campionario')d=Math.max(4,Math.round(d*0.45));
+  }
+  if(lean)d=Math.max(1,Math.round(d*0.78));
+  return d;
+}
+
+function pWait(p,first){
+  if(gCap==='infinita')return 0;
+  if(first)return 0;
+  const lean=document.getElementById('optLean').checked;
+  const telai=parseInt(document.getElementById('telai').value);
+  let w=0;
+  if(p.bot){
+    if(p.id==='tessitura')w=Math.max(1,Math.round(9*(1-telai/20)));
+    else if(p.id==='tRocca'||p.id==='tPezza')w=3;
+    else if(p.id==='torcitura')w=5;
+    else w=2;
+  } else {
+    w=1;
+  }
+  if(lean)w=Math.max(0,Math.round(w*0.4));
+  return w;
+}
+
+function calcSched(){
+  const phases=getActive();
+  let day=0;
+  return phases.map((p,i)=>{
+    const w=pWait(p,i===0);
+    const s=day+w;
+    const d=pDur(p);
+    day=s+d;
+    return{...p,s,d,e:s+d,w};
+  });
+}
+
+function go(){
+  const sc=calcSched();
+  if(!sc.length)return;
+  const total=sc[sc.length-1].e;
+  const canvas=document.getElementById('gc');
+  const LW=192,DW=20,RH=38,HH=32,PAD=70;
+  const W=LW+(total+Math.ceil(PAD/DW)+2)*DW;
+  const H=HH+sc.length*RH+8;
+  canvas.width=W;canvas.height=H;
+  const c=canvas.getContext('2d');
+  const dk=window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const BG=dk?'#1c1c1c':'#fff',BG2=dk?'#222':'#f9f9f7',BGH=dk?'#252525':'#f2f1ec';
+  const BD=dk?'rgba(255,255,255,0.07)':'rgba(0,0,0,0.07)';
+  const TX=dk?'#ddd':'#2c2c2a',MU=dk?'#666':'#aaa';
+
+  c.fillStyle=BG;c.fillRect(0,0,W,H);
+  c.fillStyle=BGH;c.fillRect(0,0,LW,H);
+  c.fillStyle=BGH;c.fillRect(0,0,W,HH);
+
+  // vertical separator
+  c.strokeStyle=BD;c.lineWidth=1;
+  c.beginPath();c.moveTo(LW,0);c.lineTo(LW,H);c.stroke();
+  c.beginPath();c.moveTo(0,HH);c.lineTo(W,HH);c.stroke();
+
+  // Header label
+  c.fillStyle=TX;c.font='500 11px system-ui,sans-serif';c.textAlign='left';
+  c.fillText('Fase lavorazione',20,HH/2+5);
+  c.fillStyle=MU;c.font='10px system-ui,sans-serif';c.textAlign='right';
+  c.fillText('gg',LW-6,HH/2+5);
+
+  // Get start date
+  const sv=document.getElementById('sDate').value;
+  const sd=sv?new Date(sv+'T00:00:00'):new Date();
+
+  // Day headers + grid
+  for(let d=0;d<=total+Math.ceil(PAD/DW)+2;d++){
+    const x=LW+d*DW;
+    if(d%5===0){
+      c.strokeStyle=BD;c.lineWidth=1;
+      c.beginPath();c.moveTo(x,0);c.lineTo(x,H);c.stroke();
+      c.fillStyle=MU;c.font='10px system-ui,sans-serif';c.textAlign='center';
+      c.fillText(`G${d}`,x,HH-6);
+      // date
+      const dd=new Date(sd);dd.setDate(sd.getDate()+d);
+      c.fillStyle=dk?'#444':'#ccc';c.font='9px system-ui,sans-serif';
+      c.fillText(dd.toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit'}),x,HH-16);
+    } else {
+      c.strokeStyle=dk?'rgba(255,255,255,0.025)':'rgba(0,0,0,0.03)';c.lineWidth=0.5;
+      c.beginPath();c.moveTo(x,HH);c.lineTo(x,H);c.stroke();
+    }
+  }
+
+  // Rows
+  sc.forEach((p,i)=>{
+    const ry=HH+i*RH;
+    if(i%2!==0){c.fillStyle=BG2;c.fillRect(0,ry,W,RH);}
+    if(p.bot){c.fillStyle=dk?'rgba(186,117,23,0.06)':'rgba(186,117,23,0.04)';c.fillRect(0,ry,W,RH);}
+    c.strokeStyle=BD;c.lineWidth=0.5;
+    c.beginPath();c.moveTo(0,ry+RH);c.lineTo(W,ry+RH);c.stroke();
+
+    // Color dot
+    c.fillStyle=p.color;c.fillRect(8,ry+RH/2-5,8,10);
+
+    // Phase name (clipped)
+    c.save();c.beginPath();c.rect(20,ry,LW-46,RH);c.clip();
+    c.fillStyle=TX;c.font=(p.bot?'500 ':'')+'11px system-ui,sans-serif';c.textAlign='left';
+    c.fillText(p.name,20,ry+RH/2+4);c.restore();
+
+    // Duration
+    c.fillStyle=MU;c.font='10px system-ui,sans-serif';c.textAlign='right';
+    c.fillText(`${p.d}g`,LW-6,ry+RH/2+4);
+
+    // Wait gap (finite capacity)
+    if(i>0&&p.w>0){
+      const wx=LW+sc[i-1].e*DW,ww=p.w*DW;
+      c.fillStyle=dk?'rgba(255,255,255,0.03)':'rgba(0,0,0,0.025)';
+      c.fillRect(wx,ry+7,ww,RH-14);
+      c.strokeStyle=dk?'rgba(255,255,255,0.1)':'rgba(0,0,0,0.07)';
+      c.lineWidth=0.5;c.setLineDash([2,2]);
+      c.strokeRect(wx,ry+7,ww,RH-14);c.setLineDash([]);
+      // wait label
+      if(ww>24){
+        c.fillStyle=dk?'rgba(255,255,255,0.3)':'rgba(0,0,0,0.3)';
+        c.font='9px system-ui,sans-serif';c.textAlign='center';
+        c.fillText(`${p.w}g att.`,wx+ww/2,ry+RH/2+3);
+      }
+    }
+
+    // Main bar
+    const bx=LW+p.s*DW+2,bw=Math.max(8,p.d*DW-4),bh=RH-10,by=ry+5,br=4;
+    c.globalAlpha=dk?0.82:0.87;c.fillStyle=p.color;
+    roundRect(c,bx,by,bw,bh,br);c.fill();c.globalAlpha=1;
+
+    // Bottleneck border
+    if(p.bot){
+      c.strokeStyle=dk?'rgba(255,190,50,0.65)':'rgba(170,60,0,0.45)';
+      c.lineWidth=1.5;roundRect(c,bx,by,bw,bh,br);c.stroke();
+    }
+
+    // Text on bar
+    if(bw>28){
+      c.fillStyle='rgba(255,255,255,0.95)';
+      c.font=`${bw>55?'11':'10'}px system-ui,sans-serif`;c.textAlign='center';
+      c.fillText(`${p.d}gg`,bx+bw/2,by+bh/2+4);
+    }
+    if(p.bot&&bw>40){
+      c.fillStyle='rgba(255,255,255,0.9)';c.font='11px system-ui,sans-serif';c.textAlign='right';
+      c.fillText('⚠',bx+bw-4,by+bh/2+4);
+    }
+  });
+
+  // Delivery line
+  const dlx=LW+total*DW;
+  c.strokeStyle='#E24B4A';c.lineWidth=2;c.setLineDash([5,3]);
+  c.beginPath();c.moveTo(dlx,6);c.lineTo(dlx,H-6);c.stroke();
+  c.setLineDash([]);
+  c.fillStyle='#E24B4A';c.font='500 10px system-ui,sans-serif';c.textAlign='left';
+  c.fillText('Greggio → Rifinizione',dlx+4,HH+14);
+  if(sv){
+    const dd=new Date(sd);dd.setDate(sd.getDate()+total);
+    c.fillText(dd.toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'2-digit'}),dlx+4,HH+26);
+  }
+
+  updateStats(sc,total);
+}
+
+function roundRect(c,x,y,w,h,r){
+  c.beginPath();
+  c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.arcTo(x+w,y,x+w,y+r,r);
+  c.lineTo(x+w,y+h-r);c.arcTo(x+w,y+h,x+w-r,y+h,r);
+  c.lineTo(x+r,y+h);c.arcTo(x,y+h,x,y+h-r,r);
+  c.lineTo(x,y+r);c.arcTo(x,y,x+r,y,r);c.closePath();
+}
+
+function updateStats(sc,total){
+  const lean=document.getElementById('optLean').checked;
+  const bots=sc.filter(p=>p.bot);
+  const sv=document.getElementById('sDate').value;
+  let delivStr='—';
+  if(sv){
+    const d=new Date(sv+'T00:00:00');d.setDate(d.getDate()+total);
+    delivStr=d.toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'});
+  }
+  const totalWait=sc.reduce((s,p)=>s+(p.w||0),0);
+
+  document.getElementById('sumCards').innerHTML=`
+    <div class="scard"><div class="sl">Lead time totale</div><div class="sv" style="color:var(--color-text-primary);">${total}<span style="font-size:13px;font-weight:400;"> gg</span></div></div>
+    <div class="scard"><div class="sl">Attese cap. finita</div><div class="sv" style="color:${totalWait>0?'#BA7517':'var(--color-text-success)'};">${totalWait}<span style="font-size:13px;font-weight:400;"> gg</span></div></div>
+    <div class="scard"><div class="sl">Colli di bottiglia</div><div class="sv" style="color:${bots.length>0?'#D85A30':'var(--color-text-success)'};">${bots.length}</div></div>
+    <div class="scard"><div class="sl">Consegna greggio</div><div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-top:5px;">${delivStr}</div></div>
+  `;
+
+  let html='';
+  bots.forEach(p=>{
+    html+=`<div class="alert warn"><span style="font-size:13px;">⚠</span><span style="font-weight:500;">${p.name}</span><span style="color:var(--color-text-secondary);">${p.bNote||'Verificare disponibilità'} · ${p.d}gg</span></div>`;
+  });
+  if(lean){
+    const saving=Math.round(total/0.78*0.22);
+    html+=`<div class="alert ok"><span style="font-size:13px;">✓</span><span style="font-weight:500;">Celle a U attive</span><span style="color:var(--color-text-secondary);">Risparmio stimato ~${saving} gg · riduzione movimentazioni e giacenze semilavorati · flusso continuo pezzo per pezzo</span></div>`;
+  }
+  if(gCap==='infinita'){
+    html+=`<div class="alert info"><span>ⓘ</span><span style="font-weight:500;">Capacità infinita (MRP)</span><span style="color:var(--color-text-secondary);">Pianificazione teorica — nessuna attesa tra fasi. In realtà i colli di bottiglia esistono: usare per visualizzare il fabbisogno ideale.</span></div>`;
+  }
+  document.getElementById('alerts').innerHTML=html;
+}
+
+function setCap(v){
+  gCap=v;
+  document.getElementById('bFin').classList.toggle('active',v==='finita');
+  document.getElementById('bInf').classList.toggle('active',v==='infinita');
+  document.getElementById('capNote').textContent=v==='finita'?'APS — limiti reali macchine':'MRP — capacità teorica illimitata';
+  go();
+}
+
+function setType(v){
+  gType=v;
+  ['bProd','bCamp','bColl'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.classList.remove('active');
+  });
+  const map={produzione:'bProd',campionario:'bCamp',collezione:'bColl'};
+  document.getElementById(map[v]).classList.add('active');
+  go();
+}
+
+// Init
+document.getElementById('sDate').value=new Date().toISOString().split('T')[0];
+document.getElementById('telai').addEventListener('input',function(){
+  document.getElementById('telaiLbl').textContent=this.value;go();
+});
+
+go();
+</script>

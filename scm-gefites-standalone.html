@@ -1,0 +1,3483 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCM · GEFITES — Supply Chain Management Interattivo</title>
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #ffffff;
+  --bg2:      #f5f7fa;
+  --bg3:      #eaf0f6;
+  --panel:    #dce8f5;
+  --border:   #c0cfe0;
+  --teal:     #1a6fa8;
+  --teal2:    #155d8e;
+  --gold:     #1e3a6e;
+  --gold2:    #16305c;
+  --amber:    #b05c00;
+  --red:      #c0392b;
+  --green:    #1a7a4a;
+  --text:     #0d1f3c;
+  --text2:    #2c4a6e;
+  --text3:    #6688aa;
+  --white:    #ffffff;
+  --font-serif: 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+  --font-sans: 'Gill Sans', 'Gill Sans MT', Optima, Calibri, sans-serif;
+  --font-mono: 'Courier New', Courier, monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ===== LAYOUT ===== */
+#app { display: flex; min-height: 100vh; }
+
+/* ===== SIDEBAR NAV ===== */
+#sidebar {
+  width: 220px;
+  min-width: 220px;
+  background: #1e3a6e;
+  border-right: 1px solid #16305c;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar-logo {
+  padding: 20px 16px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+.sidebar-logo .logo-title {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-logo .logo-sub {
+  font-size: 10px;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-top: 2px;
+}
+
+.nav-group { padding: 8px 0; }
+
+.nav-group-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.4);
+  padding: 8px 16px 4px;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 16px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.65);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+
+.nav-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
+
+.nav-btn.active {
+  background: rgba(255,255,255,0.12);
+  color: #ffffff;
+  border-left-color: #7ec8f0;
+}
+
+.nav-btn .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 12px 16px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  font-size: 10px;
+  color: rgba(255,255,255,0.35);
+}
+
+/* ===== MAIN ===== */
+#main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* ===== SECTIONS ===== */
+.section { display: none; }
+.section.active { display: block; }
+
+/* ===== PAGE HEADER ===== */
+.page-header {
+  background: linear-gradient(135deg, #e8f0fa 0%, #dce8f5 100%);
+  border-bottom: 2px solid var(--border);
+  padding: 28px 36px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.page-header::before {
+  content: '';
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: var(--teal);
+  opacity: 0.07;
+}
+
+.page-header .ph-kicker {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--teal);
+  margin-bottom: 8px;
+}
+
+.page-header h1 {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  color: var(--text);
+  font-weight: normal;
+  line-height: 1.2;
+}
+
+.page-header .ph-desc {
+  margin-top: 8px;
+  color: var(--text2);
+  max-width: 700px;
+  font-size: 13.5px;
+}
+
+/* ===== CONTENT GRID ===== */
+.content { padding: 24px 36px; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.grid-auto { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.card.card-accent { border-color: var(--teal); border-top: 3px solid var(--teal); }
+.card.card-gold   { border-color: var(--gold2); border-top: 3px solid var(--gold); }
+.card.card-amber  { border-color: var(--amber); border-top: 3px solid var(--amber); }
+.card.card-green  { border-color: var(--green); border-top: 3px solid var(--green); }
+.card.card-red    { border-color: var(--red);   border-top: 3px solid var(--red); }
+
+.card-title {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  color: var(--gold);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-sub {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text3);
+  margin-bottom: 4px;
+}
+
+/* ===== THEORY BLOCKS ===== */
+.theory-block {
+  background: #eaf4fb;
+  border-left: 3px solid var(--teal);
+  padding: 12px 16px;
+  margin: 12px 0;
+  border-radius: 0 6px 6px 0;
+}
+
+.theory-block.gold  { background: #eef2fa; border-left-color: var(--gold); }
+.theory-block.amber { background: #fdf3e7; border-left-color: var(--amber); }
+.theory-block.red   { background: #fdf0ee; border-left-color: var(--red); }
+.theory-block.green { background: #eaf6f0; border-left-color: var(--green); }
+
+.theory-block h4 {
+  font-size: 13px;
+  color: var(--teal);
+  margin-bottom: 4px;
+}
+
+.theory-block.gold h4  { color: var(--gold); }
+.theory-block.amber h4 { color: var(--amber); }
+.theory-block.red h4   { color: var(--red); }
+.theory-block.green h4 { color: var(--green); }
+
+.theory-block p { font-size: 12.5px; color: var(--text2); }
+
+/* ===== FORMULA ===== */
+.formula {
+  background: #eaf0f8;
+  border: 1px solid var(--border);
+  padding: 10px 16px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--teal);
+  margin: 8px 0;
+}
+
+/* ===== INTERACTIVE CONTROLS ===== */
+.slider-group { margin: 12px 0; }
+
+.slider-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.slider-label span { font-size: 12.5px; color: var(--text2); }
+.slider-label .val { color: var(--gold); font-weight: bold; font-size: 13px; }
+
+input[type=range] {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--teal);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+input[type=range]::-webkit-slider-thumb:hover { background: var(--gold); }
+
+input[type=number], input[type=text], select {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  width: 100%;
+}
+
+input[type=number]:focus, input[type=text]:focus, select:focus {
+  outline: none;
+  border-color: var(--teal);
+}
+
+.btn {
+  background: var(--teal);
+  color: var(--white);
+  border: none;
+  padding: 9px 18px;
+  border-radius: 4px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn:hover { background: var(--teal2); }
+.btn.btn-gold { background: var(--gold2); }
+.btn.btn-gold:hover { background: var(--gold); color: var(--bg); }
+.btn.btn-sm { padding: 5px 12px; font-size: 12px; }
+
+/* ===== RESULT DISPLAY ===== */
+.result-box {
+  background: #f5f8fc;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin: 12px 0;
+}
+
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 13px;
+}
+
+.result-row .lbl { color: var(--text2); }
+.result-row .val { font-weight: bold; color: var(--gold); font-family: var(--font-mono); }
+.result-row .val.good { color: var(--green); }
+.result-row .val.bad  { color: var(--red); }
+.result-row .val.warn { color: var(--amber); }
+
+.result-divider { border-top: 1px solid var(--border); margin: 6px 0; }
+
+/* ===== RECOMMENDATION BOX ===== */
+.reco-box {
+  padding: 14px 16px;
+  border-radius: 6px;
+  margin: 14px 0;
+  border: 1px solid;
+}
+
+.reco-box.lean     { background: #e8f4f2; border-color: var(--teal); }
+.reco-box.collab   { background: #eef2fa; border-color: var(--gold); }
+.reco-box.vertical { background: #fdf0ee; border-color: var(--red); }
+
+.reco-box h4 { font-size: 15px; margin-bottom: 6px; }
+.reco-box.lean h4     { color: var(--teal); }
+.reco-box.collab h4   { color: var(--gold); }
+.reco-box.vertical h4 { color: var(--red); }
+.reco-box p { font-size: 12.5px; color: var(--text2); }
+
+/* ===== MATRIX ===== */
+.matrix-2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 2px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--border);
+}
+
+.matrix-cell {
+  background: var(--bg2);
+  padding: 16px;
+  cursor: pointer;
+  transition: background 0.15s;
+  min-height: 100px;
+}
+
+.matrix-cell:hover { background: var(--bg3); }
+.matrix-cell.selected { background: var(--panel); }
+
+.matrix-cell h5 { font-size: 13px; margin-bottom: 6px; color: var(--gold); }
+.matrix-cell p  { font-size: 11px; color: var(--text2); line-height: 1.4; }
+.matrix-cell .mc-badge {
+  display: inline-block;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+/* ===== TABLE ===== */
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+
+th {
+  background: var(--bg3);
+  color: var(--text3);
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+  vertical-align: top;
+}
+
+tr:hover td { background: var(--bg3); }
+
+.td-accent { color: var(--teal); font-weight: 600; }
+.td-gold   { color: var(--gold); font-weight: 600; }
+
+/* ===== PROGRESS BAR ===== */
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #d8e4f0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 6px 0;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s;
+}
+
+.progress-fill.teal  { background: var(--teal); }
+.progress-fill.gold  { background: var(--gold); }
+.progress-fill.amber { background: var(--amber); }
+.progress-fill.red   { background: var(--red); }
+
+/* ===== FLOW CHART ===== */
+.flow { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 12px 0; }
+
+.flow-node {
+  background: var(--bg3);
+  border: 1px solid var(--teal);
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 11.5px;
+  color: var(--teal);
+  white-space: nowrap;
+}
+
+.flow-node.gold { border-color: var(--gold); color: var(--gold); }
+.flow-node.amber { border-color: var(--amber); color: var(--amber); }
+
+.flow-arrow { color: var(--text3); font-size: 16px; }
+
+/* ===== BADGE ===== */
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge.teal  { background: #d6edf8; color: #1a6fa8; }
+.badge.gold  { background: #dde5f5; color: #1e3a6e; }
+.badge.amber { background: #fdf0de; color: #b05c00; }
+.badge.red   { background: #fde8e5; color: #c0392b; }
+.badge.green { background: #e0f4eb; color: #1a7a4a; }
+
+/* ===== DIVIDER ===== */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 20px 0;
+}
+
+h2 {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: normal;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+h3 {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+p { margin-bottom: 8px; color: var(--text2); font-size: 13px; }
+
+ul { list-style: none; padding: 0; }
+ul li { padding: 3px 0 3px 16px; position: relative; font-size: 12.5px; color: var(--text2); }
+ul li::before { content: '▸'; position: absolute; left: 0; color: var(--teal); }
+
+/* ===== CANVAS ===== */
+canvas { display: block; }
+
+/* ===== TABS (sub) ===== */
+.sub-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0;
+}
+
+.sub-tab {
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  color: var(--text3);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.15s;
+}
+
+.sub-tab:hover { color: var(--text); }
+.sub-tab.active { color: var(--teal); border-bottom-color: var(--teal); }
+
+.sub-content { display: none; }
+.sub-content.active { display: block; }
+
+/* ===== ACCORDION ===== */
+.accord-item { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 8px; overflow: hidden; }
+.accord-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; background: var(--bg2); cursor: pointer;
+  font-size: 13px; color: var(--text); transition: background 0.15s;
+}
+.accord-head:hover { background: var(--bg3); }
+.accord-head .ah-arrow { color: var(--text3); transition: transform 0.2s; font-size: 12px; }
+.accord-item.open .ah-arrow { transform: rotate(90deg); }
+.accord-body { display: none; padding: 14px 16px; background: #ffffff; border-top: 1px solid var(--border); }
+.accord-item.open .accord-body { display: block; }
+
+/* ===== SCORE METER ===== */
+.score-meter { margin: 8px 0; }
+.score-segments { display: flex; gap: 3px; height: 10px; border-radius: 5px; overflow: hidden; margin-top: 4px; }
+.score-seg { flex: 1; background: #d8e4f0; border-radius: 2px; transition: background 0.3s; }
+.score-seg.lit.low    { background: var(--green); }
+.score-seg.lit.medium { background: var(--amber); }
+.score-seg.lit.high   { background: var(--red); }
+
+/* ===== CASE STUDY ===== */
+.case-study {
+  background: #f5f8fc;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 12px 0;
+}
+
+.case-study .cs-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+}
+
+.case-study .cs-icon { font-size: 20px; }
+.case-study .cs-title { font-size: 14px; color: var(--gold); font-family: var(--font-serif); }
+.case-study .cs-sub   { font-size: 11px; color: var(--text3); }
+.case-study p { font-size: 12.5px; color: var(--text2); margin-bottom: 6px; }
+
+/* ===== BULLWHIP CHART ===== */
+#bullwhip-canvas { width: 100%; height: 200px; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  #sidebar { width: 180px; min-width: 180px; }
+  .grid-3 { grid-template-columns: 1fr; }
+  .content { padding: 16px 20px; }
+}
+
+@media (max-width: 640px) {
+  #sidebar { display: none; }
+  .grid-2 { grid-template-columns: 1fr; }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.section.active { animation: fadeIn 0.25s ease; }
+
+/* ===== FIXED HOME BUTTON ===== */
+#home-fab {
+  display: none;
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  background: #1e3a6e;
+  color: #ffffff;
+  border: none;
+  border-radius: 50px;
+  padding: 11px 22px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(30,58,110,0.35);
+  letter-spacing: 0.3px;
+  transition: all 0.18s;
+  align-items: center;
+  gap: 8px;
+}
+#home-fab:hover {
+  background: #16305c;
+  box-shadow: 0 6px 24px rgba(30,58,110,0.45);
+  transform: translateY(-2px);
+}
+#home-fab.visible { display: flex; }
+
+/* ===== BREADCRUMB ===== */
+.breadcrumb {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 36px;
+  background: #eaf0f6;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text3);
+}
+.breadcrumb.visible { display: flex; }
+.breadcrumb .bc-home {
+  color: var(--teal);
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.breadcrumb .bc-home:hover { color: var(--gold); }
+.breadcrumb .bc-sep { color: var(--border); }
+.breadcrumb .bc-current { color: var(--text); font-weight: 600; }
+
+/* ===== TOOLTIP ===== */
+[data-tip] { position: relative; cursor: help; border-bottom: 1px dashed var(--text3); }
+[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 100;
+}
+[data-tip]:hover::after { opacity: 1; }
+
+/* ===== SC PLANNER TABLE ===== */
+.planner-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 12px 0; }
+.planner-col { background: var(--bg3); border-radius: 6px; padding: 10px; }
+.planner-col h5 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 8px; text-align: center; }
+.planner-item {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 8px;
+  margin-bottom: 6px;
+  font-size: 11px;
+  color: var(--text2);
+  text-align: center;
+}
+
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ===== FIXED HOME BUTTON ===== -->
+<button id="home-fab" onclick="showSection('s0')" title="Torna alla Dashboard">
+  🏠 <span>Home</span>
+</button>
+
+<!-- ===== SIDEBAR ===== -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-title">SCM · GEFITES</div>
+    <div class="logo-sub">Prof. F. Visintin · UniFirenzia</div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Moduli</div>
+    <button class="nav-btn active" onclick="showSection('s0')">
+      <span class="nav-icon">🏠</span> Dashboard
+    </button>
+    <button class="nav-btn" onclick="showSection('s1')">
+      <span class="nav-icon">⚖️</span> Make or Buy
+    </button>
+    <button class="nav-btn" onclick="showSection('s2')">
+      <span class="nav-icon">📊</span> Analisi dei Costi
+    </button>
+    <button class="nav-btn" onclick="showSection('s3')">
+      <span class="nav-icon">🛒</span> Gli Acquisti
+    </button>
+    <button class="nav-btn" onclick="showSection('s4')">
+      <span class="nav-icon">🤝</span> Partnership
+    </button>
+    <button class="nav-btn" onclick="showSection('s5')">
+      <span class="nav-icon">🚚</span> Supply Chain
+    </button>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Strumenti</div>
+    <button class="nav-btn" onclick="showSection('s6')">
+      <span class="nav-icon">🧮</span> Simulatore Costi
+    </button>
+    <button class="nav-btn" onclick="showSection('s7')">
+      <span class="nav-icon">📋</span> Pianificatore SC
+    </button>
+  </div>
+
+  <div class="sidebar-footer">
+    IFTS GEFITES · Codice 321471<br>
+    Moda-Tessile · Prato
+  </div>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<main id="main">
+
+<!-- ==================== DASHBOARD ==================== -->
+<div id="s0" class="section active">
+  <div class="page-header">
+    <div class="ph-kicker">Supply Chain Management</div>
+    <h1>Dashboard — Mappa del Corso</h1>
+    <p class="ph-desc">Navigazione interattiva dei concetti chiave del modulo SCM. Seleziona un argomento dalla sidebar o clicca sui moduli sottostanti.</p>
+  </div>
+
+  <div class="content">
+    <!-- Map -->
+    <div style="display:grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 24px;">
+      <div class="card card-accent" style="cursor:pointer" onclick="showSection('s1')">
+        <div class="card-sub">Parte 1</div>
+        <div class="card-title" style="border:none;margin:0;">⚖️ Make or Buy</div>
+        <p style="margin-top:8px;">Integrazione verticale, outsourcing, costi di transazione, driver strategici.</p>
+        <div style="margin-top:10px">
+          <span class="badge teal">Complessità</span>
+          <span class="badge gold">Specificità</span>
+          <span class="badge amber">Incertezza</span>
+        </div>
+      </div>
+      <div class="card card-gold" style="cursor:pointer" onclick="showSection('s2')">
+        <div class="card-sub">Analisi Economica</div>
+        <div class="card-title" style="border:none;margin:0;">📊 Costi & Break-Even</div>
+        <p style="margin-top:8px;">Costi fissi, variabili, MDC, punto di pareggio, leva operativa.</p>
+        <div style="margin-top:10px">
+          <span class="badge teal">CVU / CFT</span>
+          <span class="badge amber">BEP</span>
+          <span class="badge red">Leva</span>
+        </div>
+      </div>
+      <div class="card card-amber" style="cursor:pointer" onclick="showSection('s3')">
+        <div class="card-sub">Parte 2</div>
+        <div class="card-title" style="border:none;margin:0;">🛒 Gli Acquisti</div>
+        <p style="margin-top:8px;">Strategic purchasing, Matrice di Kraljic, sourcing, vendor rating.</p>
+        <div style="margin-top:10px">
+          <span class="badge gold">Kraljic</span>
+          <span class="badge teal">Sourcing</span>
+          <span class="badge red">Rating</span>
+        </div>
+      </div>
+      <div class="card card-green" style="cursor:pointer" onclick="showSection('s4')">
+        <div class="card-sub">Parte 3</div>
+        <div class="card-title" style="border:none;margin:0;">🤝 Partnership</div>
+        <p style="margin-top:8px;">Bow-Tie vs Diamond, co-design, collaborazione operativa e tecnologica.</p>
+        <div style="margin-top:10px">
+          <span class="badge green">Co-design</span>
+          <span class="badge teal">VMI / JIT</span>
+        </div>
+      </div>
+      <div class="card" style="cursor:pointer;border-color:#9b5de5;border-top:3px solid #9b5de5" onclick="showSection('s5')">
+        <div class="card-sub">Parte 4</div>
+        <div class="card-title" style="border:none;margin:0;color:#9b5de5;">🚚 Supply Chain</div>
+        <p style="margin-top:8px;">Lean, Responsive, Risk Hedging, Agile. Push/Pull, Bullwhip, Postponement.</p>
+        <div style="margin-top:10px">
+          <span class="badge teal">Lean</span>
+          <span class="badge amber">Agile</span>
+          <span class="badge red">Bullwhip</span>
+        </div>
+      </div>
+      <div class="card" style="cursor:pointer;border-color:var(--text3)" onclick="showSection('s6')">
+        <div class="card-sub">Strumenti Integrati</div>
+        <div class="card-title" style="border:none;margin:0;color:var(--text);">🧮 Simulatore & Piano</div>
+        <p style="margin-top:8px;">Calcolatori interattivi: Break-Even, Effetto Leva, Score Kraljic, Piano SC.</p>
+        <div style="margin-top:10px">
+          <span class="badge teal">Interattivo</span>
+          <span class="badge gold">Calcolatore</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Framework -->
+    <div class="card">
+      <div class="card-title">Mappa Concettuale — Supply Chain Management</div>
+      <div style="text-align:center; padding: 10px 0;">
+        <svg viewBox="0 0 800 260" style="width:100%;max-width:800px;height:auto;" xmlns="http://www.w3.org/2000/svg">
+          <!-- Background nodes -->
+          <!-- Fornitori -->
+          <rect x="20" y="100" width="100" height="40" rx="6" fill="#e8f4f0" stroke="#1a6fa8" stroke-width="1.5"/>
+          <text x="70" y="124" text-anchor="middle" fill="#1a6fa8" font-size="11" font-family="Gill Sans, sans-serif">FORNITORI</text>
+
+          <!-- Arrow -->
+          <line x1="122" y1="120" x2="185" y2="120" stroke="#b0c8e0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+          <!-- Acquisti -->
+          <rect x="186" y="90" width="110" height="60" rx="6" fill="#eaf0f6" stroke="#1e3a6e" stroke-width="1.5"/>
+          <text x="241" y="116" text-anchor="middle" fill="#1e3a6e" font-size="10" font-family="Gill Sans, sans-serif">ACQUISTI</text>
+          <text x="241" y="130" text-anchor="middle" fill="#6688aa" font-size="9" font-family="Gill Sans, sans-serif">Kraljic · Sourcing</text>
+          <text x="241" y="142" text-anchor="middle" fill="#6688aa" font-size="9" font-family="Gill Sans, sans-serif">Rating · Contratti</text>
+
+          <!-- Arrow -->
+          <line x1="298" y1="120" x2="360" y2="120" stroke="#b0c8e0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+          <!-- Impresa Focale -->
+          <rect x="361" y="80" width="120" height="80" rx="6" fill="#dce8f5" stroke="#1a6fa8" stroke-width="2"/>
+          <text x="421" y="108" text-anchor="middle" fill="#1a6fa8" font-size="11" font-family="Gill Sans, sans-serif" font-weight="bold">IMPRESA</text>
+          <text x="421" y="122" text-anchor="middle" fill="#1a6fa8" font-size="11" font-family="Gill Sans, sans-serif" font-weight="bold">FOCALE</text>
+          <text x="421" y="138" text-anchor="middle" fill="#6688aa" font-size="9" font-family="Gill Sans, sans-serif">Core Competence</text>
+          <text x="421" y="150" text-anchor="middle" fill="#6688aa" font-size="9" font-family="Gill Sans, sans-serif">Make or Buy</text>
+
+          <!-- Arrow -->
+          <line x1="483" y1="120" x2="545" y2="120" stroke="#b0c8e0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+          <!-- Distribuzione -->
+          <rect x="546" y="90" width="110" height="60" rx="6" fill="#fdf3e7" stroke="#b05c00" stroke-width="1.5"/>
+          <text x="601" y="116" text-anchor="middle" fill="#b05c00" font-size="10" font-family="Gill Sans, sans-serif">DISTRIBUZIONE</text>
+          <text x="601" y="130" text-anchor="middle" fill="#6688aa" font-size="9" font-family="Gill Sans, sans-serif">Lean · Responsive</text>
+          <text x="601" y="142" text-anchor="middle" fill="#6688aa" font-size="9" font-family="Gill Sans, sans-serif">Risk · Agile</text>
+
+          <!-- Arrow -->
+          <line x1="658" y1="120" x2="720" y2="120" stroke="#b0c8e0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+          <!-- Clienti -->
+          <rect x="721" y="100" width="80" height="40" rx="6" fill="#e8f5ee" stroke="#1a7a4a" stroke-width="1.5"/>
+          <text x="761" y="124" text-anchor="middle" fill="#1a7a4a" font-size="11" font-family="Gill Sans, sans-serif">CLIENTI</text>
+
+          <!-- Info flows top -->
+          <path d="M420 80 Q420 40 240 40 Q100 40 70 100" fill="none" stroke="#b0c8e0" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrdash)"/>
+          <text x="240" y="30" text-anchor="middle" fill="#6688aa" font-size="9" font-family="Gill Sans, sans-serif">Flusso informativo (previsioni, ordini, feedback)</text>
+
+          <!-- Financial flows bottom -->
+          <path d="M420 160 Q420 210 240 210 Q100 210 70 140" fill="none" stroke="#b0c8e0" stroke-width="1" stroke-dasharray="4,3" marker-start="url(#arrdash)"/>
+          <text x="240" y="225" text-anchor="middle" fill="#6688aa" font-size="9" font-family="Gill Sans, sans-serif">Flusso economico-finanziario (pagamenti, contratti)</text>
+
+          <!-- Arrow defs -->
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#b0c8e0"/>
+            </marker>
+            <marker id="arrdash" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#b0c8e0"/>
+            </marker>
+          </defs>
+
+          <!-- Labels top line -->
+          <text x="155" y="108" fill="#6688aa" font-size="9" font-family="Gill Sans">Fornitura</text>
+          <text x="325" y="108" fill="#6688aa" font-size="9" font-family="Gill Sans">Produzione</text>
+          <text x="495" y="108" fill="#6688aa" font-size="9" font-family="Gill Sans">Consegna</text>
+          <text x="672" y="108" fill="#6688aa" font-size="9" font-family="Gill Sans">Vendita</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Key Metrics Summary -->
+    <h3 style="margin-top:20px">Indicatori Chiave del Settore Tessile-Moda</h3>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-sub">Acquisti / Fatturato</div>
+        <div style="font-size:32px; color:var(--teal); font-family:var(--font-serif); margin: 8px 0;">50–60%</div>
+        <p>Tessile & Abbigliamento — valore tipico del costo di acquisto. Alta leva negoziale.</p>
+        <div class="progress-bar"><div class="progress-fill teal" style="width:55%"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-sub">Effetto Leva Acquisti</div>
+        <div style="font-size:32px; color:var(--gold); font-family:var(--font-serif); margin: 8px 0;">-5% → +43%</div>
+        <p>Ridurre i costi di acquisto del 5% aumenta il ROI del 40% più facilmente dell'aumento vendite.</p>
+        <div class="progress-bar"><div class="progress-fill gold" style="width:80%"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-sub">Outsourcing Moda Lusso</div>
+        <div style="font-size:32px; color:var(--amber); font-family:var(--font-serif); margin: 8px 0;">65–85%</div>
+        <p>Costi di prodotto gestiti da fornitori nel modello Keiretsu (es. Smart, Toyota).</p>
+        <div class="progress-bar"><div class="progress-fill amber" style="width:72%"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MAKE OR BUY ==================== -->
+<div id="s1" class="section">
+  <div class="page-header">
+    <div class="ph-kicker">Parte 1</div>
+    <h1>Make or Buy — Decisioni Strategiche</h1>
+    <p class="ph-desc">Dilemma mercato-gerarchia: integrazione verticale, outsourcing e partnership. Strumenti per valutare i costi di transazione e i driver strategici.</p>
+  </div>
+
+  <div class="content">
+    <div class="sub-tabs">
+      <button class="sub-tab active" onclick="showSubTab('mob','mob-theory')">📚 Teoria</button>
+      <button class="sub-tab" onclick="showSubTab('mob','mob-sim')">🔬 Simulatore</button>
+      <button class="sub-tab" onclick="showSubTab('mob','mob-leva')">💡 Effetto Leva</button>
+      <button class="sub-tab" onclick="showSubTab('mob','mob-cases')">📂 Casi Studio</button>
+    </div>
+
+    <!-- THEORY -->
+    <div id="mob-theory" class="sub-content active">
+      <div class="grid-2">
+        <div>
+          <h2>Il Dilemma Mercato-Gerarchia</h2>
+          <div class="theory-block">
+            <h4>Integrazione Verticale</h4>
+            <p>Presidio di tutte le attività, dalla materia prima alla distribuzione. Richiede: settore stabile, domanda stabile (saturazione capacità), economie di scala.</p>
+          </div>
+          <div class="theory-block amber">
+            <h4>Mercato Collaborativo</h4>
+            <p>Fornitore-partner selezionato per investimenti relazionali medio-alti. Rapporti ripetuti a medio termine. Condivisione rischi e benefici.</p>
+          </div>
+          <div class="theory-block green">
+            <h4>Mercato Competitivo (Outsourcing puro)</h4>
+            <p>Fornitori in competizione, transazioni spot di breve periodo. Adatto a componenti standard, low switching cost. Accesso all'innovazione.</p>
+          </div>
+
+          <h3 style="margin-top:20px">Confronto dei Modelli</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Caratteristica</th>
+                <th>Mercato</th>
+                <th>Collaborativo</th>
+                <th>Integrazione</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Transazioni</td>
+                <td class="td-green">Spot</td>
+                <td class="td-accent">Ripetute</td>
+                <td class="td-gold">Continue</td>
+              </tr>
+              <tr>
+                <td>Orizzonte temp.</td>
+                <td>Breve</td>
+                <td>Medio</td>
+                <td>Lungo</td>
+              </tr>
+              <tr>
+                <td>Inv. relazionali</td>
+                <td class="td-accent">Bassi</td>
+                <td>Medio-alti</td>
+                <td class="td-gold">Alti</td>
+              </tr>
+              <tr>
+                <td>Switching cost</td>
+                <td class="td-accent">Bassi</td>
+                <td>Medio-alti</td>
+                <td class="td-gold">Alti</td>
+              </tr>
+              <tr>
+                <td>Controllo</td>
+                <td class="td-red">Basso</td>
+                <td>Medio</td>
+                <td class="td-gold">Elevato</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div>
+          <h2>I Costi di Transazione</h2>
+          <p>L'"esistenza del mercato" dipende da tre caratteristiche del bene/servizio scambiato:</p>
+
+          <div class="theory-block">
+            <h4>Complessità Descrittiva</h4>
+            <p>Difficoltà di descrivere le specifiche al fornitore. <em>Alta complessità</em> → più spazio per errori e comportamenti opportunistici → riduce la convenienza del mercato.</p>
+          </div>
+          <div class="theory-block amber">
+            <h4>Specificità</h4>
+            <p>Livello di investimenti relazionali specifici (impianti, tecnologie, know-how). Alta specificità → rischio appropriazione know-how → riduce la possibilità di mercato.</p>
+          </div>
+          <div class="theory-block red">
+            <h4>Incertezza</h4>
+            <p>Impossibilità di prevedere domanda in volume e tecnologia. Alta incertezza → maggiore volontà di controllo → riduce la possibilità di mercato.</p>
+          </div>
+
+          <h3 style="margin-top:20px">I Driver Strategici dell'Outsourcing</h3>
+          <div class="accord-item" onclick="this.classList.toggle('open')">
+            <div class="accord-head">
+              <span>🧠 Gestione delle Competenze</span>
+              <span class="ah-arrow">▶</span>
+            </div>
+            <div class="accord-body">
+              <ul>
+                <li><strong>Competenze chiave:</strong> differenziale competitivo → NON esternalizzare (es. motori Ferrari)</li>
+                <li><strong>Competenze specialistiche:</strong> disponibili sul mercato → outsourcing conveniente (es. logistica)</li>
+                <li><strong>Competenze avanzate non distinctive:</strong> possono essere cedute per focus</li>
+              </ul>
+            </div>
+          </div>
+          <div class="accord-item" onclick="this.classList.toggle('open')">
+            <div class="accord-head">
+              <span>💰 Gestione dei Costi</span>
+              <span class="ah-arrow">▶</span>
+            </div>
+            <div class="accord-body">
+              <ul>
+                <li>Riduzione costi: delocalizzazione, economie di scala del fornitore</li>
+                <li>Variabilizzazione: da fissi a variabili → rischio sul fornitore</li>
+                <li>Utile nei settori con domanda molto variabile (moda, elettronica)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="accord-item" onclick="this.classList.toggle('open')">
+            <div class="accord-head">
+              <span>🏦 Gestione del Capitale</span>
+              <span class="ah-arrow">▶</span>
+            </div>
+            <div class="accord-body">
+              <ul>
+                <li>Riduzione investimenti: TRC = Fatturato / Capitale Investito ↑</li>
+                <li>Diversificazione portafoglio</li>
+                <li>Miglioramento indicatori finanziari per il rating di mercato</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIMULATOR -->
+    <div id="mob-sim" class="sub-content">
+      <div class="grid-2">
+        <div class="card card-accent">
+          <div class="card-title">🔬 Simulatore Costi di Transazione</div>
+          <p>Regola i tre parametri per valutare la convenienza del mercato intermedio. Il risultato indica la strategia consigliata per il distretto tessile di Prato.</p>
+
+          <div class="slider-group">
+            <div class="slider-label">
+              <span data-tip="Quanto è difficile descrivere le specifiche al fornitore?">Complessità Descrittiva</span>
+              <span class="val" id="comp-val">5</span>
+            </div>
+            <input type="range" min="1" max="10" value="5" id="comp-sl" oninput="updateMoB()">
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3)">
+              <span>Standard</span><span>Complesso</span>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-label">
+              <span data-tip="Livello di investimenti specifici richiesti (impianti, tecnologie, know-how)">Specificità</span>
+              <span class="val" id="spec-val">5</span>
+            </div>
+            <input type="range" min="1" max="10" value="5" id="spec-sl" oninput="updateMoB()">
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3)">
+              <span>Generica</span><span>Altamente Specifica</span>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-label">
+              <span data-tip="Impossibilità di prevedere domanda in volume e tecnologia">Incertezza</span>
+              <span class="val" id="unc-val">5</span>
+            </div>
+            <input type="range" min="1" max="10" value="5" id="unc-sl" oninput="updateMoB()">
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3)">
+              <span>Prevedibile</span><span>Volatile</span>
+            </div>
+          </div>
+
+          <div style="margin-top:16px;">
+            <div class="card-sub">Livello Costi di Transazione</div>
+            <div id="ct-meter" class="score-meter">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2)">
+                <span>Bassi</span><span id="ct-score">50/100</span><span>Alti</span>
+              </div>
+              <div class="score-segments" id="ct-segs">
+                <div class="score-seg" data-i="1"></div>
+                <div class="score-seg" data-i="2"></div>
+                <div class="score-seg" data-i="3"></div>
+                <div class="score-seg" data-i="4"></div>
+                <div class="score-seg" data-i="5"></div>
+                <div class="score-seg" data-i="6"></div>
+                <div class="score-seg" data-i="7"></div>
+                <div class="score-seg" data-i="8"></div>
+                <div class="score-seg" data-i="9"></div>
+                <div class="score-seg" data-i="10"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div id="mob-reco">
+            <div class="reco-box lean">
+              <h4>✅ Mercato Competitivo</h4>
+              <p>I costi di transazione sono bassi. È possibile e conveniente ricorrere a più fornitori in competizione. Adatto per componenti standard nel distretto tessile.</p>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:16px;">
+            <div class="card-title">Schema di Sintesi — Condizioni per il Mercato</div>
+            <svg viewBox="0 0 360 140" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+              <!-- Complessità bar -->
+              <text x="10" y="24" fill="#6688aa" font-size="10" font-family="Gill Sans">Complessità</text>
+              <rect x="90" y="12" width="220" height="12" rx="3" fill="#dce8f5"/>
+              <rect id="svg-comp" x="90" y="12" width="110" height="12" rx="3" fill="#1a6fa8"/>
+              <text x="320" y="23" fill="#1e3a6e" font-size="10" font-family="Gill Sans" id="svg-comp-t">5</text>
+
+              <text x="10" y="54" fill="#6688aa" font-size="10" font-family="Gill Sans">Specificità</text>
+              <rect x="90" y="42" width="220" height="12" rx="3" fill="#dce8f5"/>
+              <rect id="svg-spec" x="90" y="42" width="110" height="12" rx="3" fill="#b05c00"/>
+              <text x="320" y="53" fill="#1e3a6e" font-size="10" font-family="Gill Sans" id="svg-spec-t">5</text>
+
+              <text x="10" y="84" fill="#6688aa" font-size="10" font-family="Gill Sans">Incertezza</text>
+              <rect x="90" y="72" width="220" height="12" rx="3" fill="#dce8f5"/>
+              <rect id="svg-unc" x="90" y="72" width="110" height="12" rx="3" fill="#c0392b"/>
+              <text x="320" y="83" fill="#1e3a6e" font-size="10" font-family="Gill Sans" id="svg-unc-t">5</text>
+
+              <!-- Arrow indicators -->
+              <text x="90" y="115" fill="#6688aa" font-size="9" font-family="Gill Sans">Mercato</text>
+              <text x="90" y="128" fill="#6688aa" font-size="9" font-family="Gill Sans">Competitivo</text>
+              <text x="182" y="115" fill="#6688aa" font-size="9" font-family="Gill Sans">Mercato</text>
+              <text x="182" y="128" fill="#6688aa" font-size="9" font-family="Gill Sans">Collaborativo</text>
+              <text x="267" y="115" fill="#6688aa" font-size="9" font-family="Gill Sans">Integrazione</text>
+              <text x="267" y="128" fill="#6688aa" font-size="9" font-family="Gill Sans">Verticale</text>
+              <line x1="170" y1="98" x2="170" y2="108" stroke="#c0cfe0" stroke-dasharray="2"/>
+              <line x1="260" y1="98" x2="260" y2="108" stroke="#c0cfe0" stroke-dasharray="2"/>
+            </svg>
+
+            <div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border); font-size:11px; color:var(--text3);">
+              💡 Tecnologia (Internet, CAD/CAM, FMS) ha spostato la curva verso l'outsourcing riducendo i costi di transazione.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EFFETTO LEVA -->
+    <div id="mob-leva" class="sub-content">
+      <h2>Effetto Leva degli Acquisti</h2>
+      <p>Nei settori maturi (es. tessile), è più facile razionalizzare gli acquisti che perseguire obiettivi di aumento del fatturato. Verifica qui l'impatto sul ROI.</p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Parametri di Partenza</div>
+          <table style="margin-bottom:12px">
+            <thead><tr><th>Voce</th><th>Valore (€)</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Fatturato</td>
+                <td><input type="number" id="lv-fat" value="5000" oninput="calcLeva()"></td>
+              </tr>
+              <tr>
+                <td>Acquisti</td>
+                <td><input type="number" id="lv-acq" value="3500" oninput="calcLeva()"></td>
+              </tr>
+              <tr>
+                <td>Altri costi (fissi)</td>
+                <td><input type="number" id="lv-alt" value="1100" oninput="calcLeva()"></td>
+              </tr>
+              <tr>
+                <td>Scorte</td>
+                <td><input type="number" id="lv-scr" value="500" oninput="calcLeva()"></td>
+              </tr>
+              <tr>
+                <td>Attività correnti</td>
+                <td><input type="number" id="lv-ac" value="600" oninput="calcLeva()"></td>
+              </tr>
+              <tr>
+                <td>Attività fisse</td>
+                <td><input type="number" id="lv-af" value="2900" oninput="calcLeva()"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="slider-group">
+            <div class="slider-label">
+              <span>Riduzione Acquisti %</span><span class="val" id="lv-ridval">5%</span>
+            </div>
+            <input type="range" min="0" max="20" value="5" id="lv-rid" oninput="calcLeva()">
+          </div>
+          <div class="slider-group">
+            <div class="slider-label">
+              <span>Aumento Fatturato %</span><span class="val" id="lv-aumval">15%</span>
+            </div>
+            <input type="range" min="0" max="40" value="15" id="lv-aum" oninput="calcLeva()">
+          </div>
+        </div>
+
+        <div>
+          <div class="card" id="leva-results">
+            <!-- Filled by JS -->
+          </div>
+          <div class="theory-block" style="margin-top:12px;">
+            <h4>Formula ROI</h4>
+            <div class="formula">ROI = ROS × TRC</div>
+            <div class="formula">ROS = EBIT / Fatturato</div>
+            <div class="formula">TRC = Fatturato / Capitale Investito</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASES -->
+    <div id="mob-cases" class="sub-content">
+      <h2>Casi Studio</h2>
+      <div class="grid-2">
+        <div class="case-study">
+          <div class="cs-header">
+            <span class="cs-icon">🚗</span>
+            <div><div class="cs-title">Caso Ford — River Rouge</div><div class="cs-sub">Integrazione Verticale Totale → Crisi</div></div>
+          </div>
+          <p><strong>1917:</strong> Miniere, ferrovia, navi, fonderia, fabbrica vetro, impianto assemblaggio — tutto proprietario.</p>
+          <p><strong>Crisi:</strong> Instabilità mercati, riduzione cicli vita, specializzazione competenze, competizione low-cost.</p>
+          <p><strong>Oggi:</strong> Focalizzazione sulla progettazione, piattaforma Covisint per gestione fornitori. Da manufacturing company a Consumer company.</p>
+          <div style="margin-top:8px;"><span class="badge red">Troppo costoso</span> <span class="badge teal">→ Deverticalizzazione</span></div>
+        </div>
+
+        <div class="case-study">
+          <div class="cs-header">
+            <span class="cs-icon">🧴</span>
+            <div><div class="cs-title">Caso P&G / 3M</div><div class="cs-sub">Mercato Collaborativo — Creazione Standard</div></div>
+          </div>
+          <p><strong>Anni '70:</strong> Lancio Pampers — nastri adesivi riutilizzabili → nuova tecnologia necessaria.</p>
+          <p><strong>Decisione:</strong> Non internalizzare. Coinvolgimento di 3M (competenze elevate). Investimento congiunto in impianto a fianco dello stabilimento P&G.</p>
+          <p><strong>Risultato:</strong> Creazione di uno standard di mercato. Sviluppo mercato intermedio per altri clienti 3M.</p>
+          <div style="margin-top:8px;"><span class="badge teal">Partnership</span> <span class="badge gold">Condivisione rischi</span></div>
+        </div>
+
+        <div class="case-study">
+          <div class="cs-header">
+            <span class="cs-icon">🧶</span>
+            <div><div class="cs-title">Tessuti & Filati Sintetici</div><div class="cs-sub">Outsourcing Poliammide</div></div>
+          </div>
+          <p><strong>2005:</strong> Cresce domanda poliammide, insufficiente capacità interna in Sud America.</p>
+          <p><strong>Analisi:</strong> Fibra di facile definizione (bassa complessità), competenze disponibili esternamente, fornitori europei affidabili con costo inferiore.</p>
+          <p><strong>Scelta:</strong> Outsourcing a fornitore europeo noto. Liberazione risorse per altri investimenti. Domanda futura incerta: rischio contenuto da scelta esterna.</p>
+          <div style="margin-top:8px;"><span class="badge green">Outsourcing</span> <span class="badge amber">Domanda incerta</span></div>
+        </div>
+
+        <div class="case-study">
+          <div class="cs-header">
+            <span class="cs-icon">🏪</span>
+            <div><div class="cs-title">Caso 7-Eleven</div><div class="cs-sub">Gestione del Capitale — Modello Keiretsu</div></div>
+          </div>
+          <p><strong>Prima:</strong> Integrazione verticale (rete distributiva, benzina, gelati, fattorie di bestiame). Perdita quota di mercato.</p>
+          <p><strong>Trasformazione:</strong> Focus su merchandising, gestione ordini, analisi dati domanda. Outsourcing a Citgo, Frito-Lay, Hershey, Coca-Cola, CDC (logistica fresco).</p>
+          <p><strong>Risultato:</strong> Same-store sales +6,6% vs media 3,5%. Inventory turns 38,3 vs 22,2. Vendite per dipendente $239K vs $98K.</p>
+          <div style="margin-top:8px;"><span class="badge teal">Keiretsu</span> <span class="badge gold">TRC ↑↑</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ANALISI COSTI ==================== -->
+<div id="s2" class="section">
+  <div class="page-header">
+    <div class="ph-kicker">Analisi Economica</div>
+    <h1>Costi, Break-Even & Leva Operativa</h1>
+    <p class="ph-desc">Classificazione dei costi, equazioni fondamentali, analisi CVP (Costo-Volume-Profitto), margine di sicurezza e grado di leva operativa.</p>
+  </div>
+
+  <div class="content">
+    <div class="sub-tabs">
+      <button class="sub-tab active" onclick="showSubTab('cost','cost-teoria')">📚 Tipi di Costo</button>
+      <button class="sub-tab" onclick="showSubTab('cost','cost-bep')">📈 Break-Even</button>
+      <button class="sub-tab" onclick="showSubTab('cost','cost-leva')">⚡ Leva Operativa</button>
+      <button class="sub-tab" onclick="showSubTab('cost','cost-mdc')">📋 Conto Economico MDC</button>
+    </div>
+
+    <!-- TIPI COSTO -->
+    <div id="cost-teoria" class="sub-content active">
+      <div class="grid-2">
+        <div>
+          <h2>La Classificazione dei Costi</h2>
+
+          <div class="theory-block">
+            <h4>Costi Variabili</h4>
+            <p>Ammontare <em>totale</em> varia proporzionalmente al volume. Il costo <em>unitario</em> rimane costante. Cost driver = fattore causale (es. unità prodotte, ore lavorate).</p>
+            <div class="formula">CVT = cvu × X &nbsp;&nbsp;| &nbsp;&nbsp;cvu = costante</div>
+          </div>
+
+          <div class="theory-block amber">
+            <h4>Costi Fissi</h4>
+            <p>Non variano al variare del volume <em>nell'intervallo di rilevanza</em>. Si dividono in:</p>
+            <ul>
+              <li><strong>Impegnati (da capacità):</strong> ammortamenti, affitti — non riducibili nel breve</li>
+              <li><strong>Discrezionali:</strong> pubblicità, formazione — adattabili rapidamente</li>
+            </ul>
+          </div>
+
+          <div class="theory-block red">
+            <h4>Costi Semivariabili</h4>
+            <p>Combinazione di fissi + variabili (es. energia elettrica). Variazione meno che proporzionale rispetto al driver.</p>
+            <div class="formula">CT = CFT + (cvu × X)</div>
+          </div>
+
+          <div class="theory-block green">
+            <h4>Costi a Gradino (Step costs)</h4>
+            <p>Risorse acquistabili solo in quantità discrete (es. aggiungere un macchinario, un turno). Si nascondono dietro i costi fissi. Incremento di capacità discreto.</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="card card-gold">
+            <div class="card-title">Visualizzatore Costi Interattivo</div>
+            <div class="slider-group">
+              <div class="slider-label">
+                <span>Costo Variabile Unitario (cvu)</span>
+                <span class="val" id="cv-cvu-val">6</span>
+              </div>
+              <input type="range" min="1" max="20" value="6" id="cv-cvu" oninput="drawCostChart()">
+            </div>
+            <div class="slider-group">
+              <div class="slider-label">
+                <span>Costi Fissi Totali (CFT)</span>
+                <span class="val" id="cv-cft-val">400</span>
+              </div>
+              <input type="range" min="0" max="2000" step="50" value="400" id="cv-cft" oninput="drawCostChart()">
+            </div>
+            <div class="slider-group">
+              <div class="slider-label">
+                <span>Volume Massimo</span>
+                <span class="val" id="cv-vol-val">250</span>
+              </div>
+              <input type="range" min="50" max="1000" step="10" value="250" id="cv-vol" oninput="drawCostChart()">
+            </div>
+            <canvas id="costChart" width="420" height="200"></canvas>
+            <div class="result-box" style="margin-top:8px">
+              <div class="result-row"><span class="lbl">Costo Unitario @ Vol. Max</span><span class="val" id="cv-cu">€ 7,60</span></div>
+              <div class="result-row"><span class="lbl">Costo Marginale</span><span class="val" id="cv-cm">€ 6,00</span></div>
+              <div class="result-row"><span class="lbl">Incidenza Fissi su CT</span><span class="val" id="cv-inc">26%</span></div>
+            </div>
+          </div>
+
+          <div class="theory-block" style="margin-top:12px;">
+            <h4>Attenzione: Costo Unitario vs Costo Marginale</h4>
+            <p>Il costo unitario pieno dipende dal volume e NON è il costo marginale. Decisioni basate sul costo medio unitario possono essere fuorvianti. Usare sempre i costi totali per le decisioni.</p>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+      <h3>Esempi di Cost Driver — Settore Moda/Tessile</h3>
+      <table>
+        <thead><tr><th>Costo Variabile</th><th>Cost Driver</th><th>Rilevanza Moda-Tessile</th></tr></thead>
+        <tbody>
+          <tr><td>Tessuto / materiale diretto</td><td class="td-accent">unità prodotte / metri</td><td>Alta — 50-60% del costo</td></tr>
+          <tr><td>Manodopera diretta</td><td class="td-accent">ore lavorate / capi prodotti</td><td>Alta — terzisti Prato</td></tr>
+          <tr><td>Provvigioni agenti</td><td class="td-accent">ricavi vendite</td><td>Media — canale wholesale</td></tr>
+          <tr><td>Spedizioni</td><td class="td-accent">unità vendute / kg</td><td>Media — e-commerce crescente</td></tr>
+          <tr><td>Tintura / finissaggio</td><td class="td-accent">ore impianti / kg</td><td>Alta — terzisti specializzati</td></tr>
+          <tr><td>Energia (semivariabile)</td><td class="td-accent">ore funzionamento impianti</td><td>Alta — cardatura, torcitura</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BREAK-EVEN -->
+    <div id="cost-bep" class="sub-content">
+      <h2>Analisi Costo-Volume-Profitto — Break-Even</h2>
+      <div class="grid-2">
+        <div class="card card-accent">
+          <div class="card-title">Calcolatore Break-Even</div>
+          <div class="slider-group">
+            <div class="slider-label"><span>Prezzo Unitario (p)</span><span class="val" id="bep-p-val">€ 200</span></div>
+            <input type="range" min="50" max="1000" step="10" value="200" id="bep-p" oninput="calcBEP()">
+          </div>
+          <div class="slider-group">
+            <div class="slider-label"><span>Costo Variabile Unitario (cvu)</span><span class="val" id="bep-cvu-val">€ 120</span></div>
+            <input type="range" min="10" max="900" step="10" value="120" id="bep-cvu" oninput="calcBEP()">
+          </div>
+          <div class="slider-group">
+            <div class="slider-label"><span>Costi Fissi Totali (CFT)</span><span class="val" id="bep-cft-val">€ 2.000</span></div>
+            <input type="range" min="100" max="20000" step="100" value="2000" id="bep-cft" oninput="calcBEP()">
+          </div>
+          <div class="slider-group">
+            <div class="slider-label"><span>Volume Effettivo (X)</span><span class="val" id="bep-x-val">30</span></div>
+            <input type="range" min="1" max="200" value="30" id="bep-x" oninput="calcBEP()">
+          </div>
+
+          <hr class="divider">
+          <div class="formula">mdcu = p - cvu &nbsp;&nbsp;|&nbsp;&nbsp; Xp = CFT / mdcu</div>
+          <div class="formula">RTp = CFT / mdcu% &nbsp;&nbsp;|&nbsp;&nbsp; PR = MDC - CFT</div>
+        </div>
+
+        <div>
+          <canvas id="bepChart" width="420" height="260"></canvas>
+          <div class="result-box" style="margin-top:8px">
+            <div class="result-row"><span class="lbl">Margine di Contribuzione Unit.</span><span class="val" id="r-mdcu"></span></div>
+            <div class="result-row"><span class="lbl">Margine di Contribuzione %</span><span class="val" id="r-mdcup"></span></div>
+            <div class="result-divider"></div>
+            <div class="result-row"><span class="lbl">Volume di Pareggio (Xp)</span><span class="val" id="r-xp"></span></div>
+            <div class="result-row"><span class="lbl">Ricavo di Pareggio (RTp)</span><span class="val" id="r-rtp"></span></div>
+            <div class="result-divider"></div>
+            <div class="result-row"><span class="lbl">Profitto @ Volume Effettivo</span><span class="val" id="r-pr"></span></div>
+            <div class="result-row"><span class="lbl">Margine di Sicurezza MS(X)</span><span class="val" id="r-ms"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-top:16px;">
+        <div class="theory-block">
+          <h4>↑ Aumenta il Prezzo</h4>
+          <p>Aumenta mdcu → Xp scende → stessa CFT coperta con meno volumi. Rischio: riduzione domanda.</p>
+        </div>
+        <div class="theory-block amber">
+          <h4>↓ Riduce cvu</h4>
+          <p>Aumenta mdcu → Xp scende → riduzione costi acquisto materie prime, lavorazioni, outsourcing.</p>
+        </div>
+        <div class="theory-block red">
+          <h4>↓ Riduce CFT</h4>
+          <p>Xp scende proporzionalmente. Costi fissi discrezionali più facili da ridurre (pubblicità, formazione).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEVA OPERATIVA -->
+    <div id="cost-leva" class="sub-content">
+      <h2>Grado di Leva Operativa</h2>
+      <div class="grid-2">
+        <div>
+          <div class="theory-block">
+            <h4>Definizione</h4>
+            <p>Misura la sensibilità del profitto ai cambiamenti di ricavo. All'aumentare dei costi fissi rispetto ai variabili, a parità di volume, aumenta il grado di leva.</p>
+          </div>
+          <div class="formula">L(X) = MDC / PR = MDC / (MDC - CFT)</div>
+          <div class="formula">MS(X) = (X - Xp) / X = 1 / L(X)</div>
+
+          <div class="theory-block amber" style="margin-top:12px;">
+            <h4>Struttura dei Costi e Rischio</h4>
+            <p><strong>Alta leva (molti fissi):</strong> Profitti molto sensibili a variazioni dei ricavi. Es. telecomunicazioni — costo chiamata ~5% del prezzo pagato dal cliente.</p>
+            <p style="margin-top:4px;"><strong>Bassa leva (molti variabili):</strong> Profitti stabili ma margini unitari bassi.</p>
+          </div>
+
+          <div class="card card-accent" style="margin-top:12px;">
+            <div class="card-title">Simulatore Leva Operativa</div>
+            <div class="slider-group">
+              <div class="slider-label"><span>% Costi Fissi su CT</span><span class="val" id="lo-pf-val">50%</span></div>
+              <input type="range" min="10" max="90" value="50" id="lo-pf" oninput="calcLO()">
+            </div>
+            <div class="slider-group">
+              <div class="slider-label"><span>Volume Corrente X</span><span class="val" id="lo-x-val">100</span></div>
+              <input type="range" min="10" max="300" value="100" id="lo-x" oninput="calcLO()">
+            </div>
+            <div class="slider-group">
+              <div class="slider-label"><span>Variazione Ricavi %</span><span class="val" id="lo-dr-val">+10%</span></div>
+              <input type="range" min="-30" max="30" value="10" id="lo-dr" oninput="calcLO()">
+            </div>
+            <div class="result-box" id="lo-results"></div>
+          </div>
+        </div>
+
+        <div>
+          <canvas id="loChart" width="420" height="280"></canvas>
+          <div class="theory-block green" style="margin-top:12px;">
+            <h4>Implicazione Strategica</h4>
+            <p>Per il distretto tessile di Prato, con alta variabilità stagionale e per collezione, una struttura di costi <em>flessibile</em> (outsourcing terzisti) riduce la leva e il rischio. Il terzista porta variabilizzazione.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MDC -->
+    <div id="cost-mdc" class="sub-content">
+      <h2>Conto Economico a Margine di Contribuzione</h2>
+      <div class="grid-2">
+        <div>
+          <h3>Struttura MDC vs Costo del Venduto</h3>
+          <table>
+            <thead><tr><th>Voci CdV Classico</th><th>Voci MDC</th></tr></thead>
+            <tbody>
+              <tr><td>Ricavi</td><td>Ricavi</td></tr>
+              <tr><td><em>Costo del venduto (*)</em></td><td>− Costi variabili produzione</td></tr>
+              <tr><td>Margine Lordo</td><td>− Costi variabili commerciali</td></tr>
+              <tr><td><em>Costi commerciali (*)</em></td><td>− Costi variabili amm.vi</td></tr>
+              <tr><td><em>Costi amm.vi gen. (*)</em></td><td><strong>= MARGINE DI CONTRIBUZIONE</strong></td></tr>
+              <tr><td></td><td>− Costi fissi produzione</td></tr>
+              <tr><td></td><td>− Costi fissi commerciali</td></tr>
+              <tr><td></td><td>− Costi fissi amm.vi</td></tr>
+              <tr><td><strong>Reddito Netto</strong></td><td><strong>= Reddito Netto</strong></td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top:8px;font-size:11px;color:var(--text3)">(*) Contengono sia costi fissi che variabili nel conto CdV classico.</p>
+
+          <div class="theory-block" style="margin-top:14px;">
+            <h4>Analisi Multiprodotto</h4>
+            <div class="formula">mdcumix = %X1 × mdcuP1 + %X2 × mdcuP2 + ...</div>
+            <div class="formula">Xp = CFT / mdcumix</div>
+            <p>Il mix di produzione deve rimanere costante nell'ipotesi di linearità.</p>
+          </div>
+        </div>
+
+        <div class="card card-gold">
+          <div class="card-title">Esempio — Impresa Tessile Multi-Prodotto</div>
+          <p>Inserisci i dati per 2 prodotti e calcola il punto di pareggio del mix.</p>
+          <table style="margin-bottom:12px;">
+            <thead><tr><th>Prodotto</th><th>Prezzo €</th><th>cvu €</th><th>Mix %</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>P1 (Camicie Base)</td>
+                <td><input type="number" id="mp-p1p" value="80" oninput="calcMulti()" style="width:70px"></td>
+                <td><input type="number" id="mp-p1c" value="45" oninput="calcMulti()" style="width:70px"></td>
+                <td><input type="number" id="mp-p1m" value="60" min="0" max="100" oninput="calcMulti()" style="width:60px">%</td>
+              </tr>
+              <tr>
+                <td>P2 (Abiti Premium)</td>
+                <td><input type="number" id="mp-p2p" value="250" oninput="calcMulti()" style="width:70px"></td>
+                <td><input type="number" id="mp-p2c" value="120" oninput="calcMulti()" style="width:70px"></td>
+                <td id="mp-p2m-td" style="width:60px"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="slider-group">
+            <div class="slider-label"><span>CFT Totali €</span><span class="val" id="mp-cft-val">€ 20.000</span></div>
+            <input type="range" min="1000" max="100000" step="1000" value="20000" id="mp-cft" oninput="calcMulti()">
+          </div>
+          <div class="result-box" id="multi-results"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ACQUISTI ==================== -->
+<div id="s3" class="section">
+  <div class="page-header">
+    <div class="ph-kicker">Parte 2</div>
+    <h1>Gli Acquisti — Strategic Purchasing</h1>
+    <p class="ph-desc">Dal processo operativo di supply alla strategia di approvvigionamento. Matrice di Kraljic, strategie di sourcing, vendor rating e negoziazione.</p>
+  </div>
+
+  <div class="content">
+    <div class="sub-tabs">
+      <button class="sub-tab active" onclick="showSubTab('acq','acq-processo')">⚙️ Processo</button>
+      <button class="sub-tab" onclick="showSubTab('acq','acq-kraljic')">🎯 Matrice Kraljic</button>
+      <button class="sub-tab" onclick="showSubTab('acq','acq-sourcing')">🔗 Sourcing</button>
+      <button class="sub-tab" onclick="showSubTab('acq','acq-vendor')">⭐ Vendor Rating</button>
+    </div>
+
+    <!-- PROCESSO -->
+    <div id="acq-processo" class="sub-content active">
+      <h2>Il Processo di Acquisto</h2>
+      <div class="grid-2">
+        <div>
+          <h3>Strategic Purchasing</h3>
+          <div class="flow">
+            <div class="flow-node">Make or Buy</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node gold">Definizione Rete</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node gold">Marketing Acquisto</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">Gestione Fornitori</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node amber">Vendor Rating</div>
+          </div>
+
+          <h3 style="margin-top:16px;">Sourcing Operativo</h3>
+          <div class="flow">
+            <div class="flow-node">RdA</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">Def. Specifiche</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">RdO/RFP</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">Negoziazione</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node gold">CONTRATTO</div>
+          </div>
+
+          <h3 style="margin-top:16px;">Supply Operativo</h3>
+          <div class="flow">
+            <div class="flow-node">Emissione Ordine</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">Expediting</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">Ricezione Merce</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">Pagamento</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node amber">Val. Operativa</div>
+          </div>
+
+          <div class="theory-block" style="margin-top:16px;">
+            <h4>Raggio d'Azione degli Acquisti</h4>
+            <p>Il contributo dell'ufficio acquisti dipende dalle attività svolte. Trend evolutivo: da <em>supply amministrativo</em> → <em>sourcing</em> → <em>strategic purchasing</em> con benefici crescenti.</p>
+          </div>
+        </div>
+
+        <div>
+          <h3>Tipologie di Acquisti</h3>
+          <table>
+            <thead><tr><th>Tipo</th><th>Descrizione</th><th>Esempi Moda</th></tr></thead>
+            <tbody>
+              <tr><td class="td-accent">Diretti</td><td>Confluiscono nel prodotto finito</td><td>Tessuti, filati, bottoni, zip, fodere</td></tr>
+              <tr><td>Indiretti — Ausiliari</td><td>Necessari ma non incorporati</td><td>Cera per telai, lubrificanti</td></tr>
+              <tr><td>MRO</td><td>Manutenzione, riparazione, operation</td><td>Parti di ricambio macchine tessili</td></tr>
+              <tr><td>Beni di Investimento</td><td>Attività fisse</td><td>Telai Jacquard, macchine tagliacuci</td></tr>
+              <tr><td class="td-gold">Servizi</td><td>Acquisti di prestazioni</td><td>Conto lavoro (terzisti), logistica</td></tr>
+            </tbody>
+          </table>
+
+          <div class="theory-block amber" style="margin-top:12px;">
+            <h4>Criteri di Organizzazione degli Acquisti</h4>
+            <p><strong>Per input (merceologica):</strong> Buyer specializzato per categoria. Massimizza efficienza e potere contrattuale (aggregazione volumi). Es. Aermacchi, MMSE.</p>
+            <p style="margin-top:4px;"><strong>Per output (prodotto finito):</strong> Buyer dedicato per famiglia di prodotto. Massimizza efficacia e integrazione con le altre funzioni. Es. Whirlpool.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KRALJIC -->
+    <div id="acq-kraljic" class="sub-content">
+      <h2>Matrice di Kraljic (1983)</h2>
+      <p>Classificazione degli acquisti per guidare le decisioni di approvvigionamento. Asse X: Difficoltà del mercato di fornitura. Asse Y: Importanza strategica per l'impresa.</p>
+
+      <div class="grid-2">
+        <div>
+          <div class="matrix-2x2" style="height:280px;">
+            <div class="matrix-cell" id="kq-strat" onclick="selectKraljic('strat')" style="border-radius:0 0 0 0; border-bottom: 1px solid var(--border); border-right:1px solid var(--border);">
+              <div class="mc-badge" style="background:rgba(231,111,81,0.2);color:var(--red);">Strategici</div>
+              <h5 style="color:var(--red)">🔑 Prodotti Strategici</h5>
+              <p>Alta importanza, mercato difficile. Partnership stretta, contratti di lungo periodo, sviluppo congiunto.</p>
+            </div>
+            <div class="matrix-cell" id="kq-collo" onclick="selectKraljic('collo')" style="border-bottom:1px solid var(--border);">
+              <div class="mc-badge" style="background:rgba(244,162,97,0.2);color:var(--amber);">Collo Bottiglia</div>
+              <h5 style="color:var(--amber)">⚠️ Collo di Bottiglia</h5>
+              <p>Bassa importanza ma mercato difficile. Scorte di sicurezza, backup supplier, contratti garantiti.</p>
+            </div>
+            <div class="matrix-cell" id="kq-leva" onclick="selectKraljic('leva')">
+              <div class="mc-badge" style="background:rgba(233,196,106,0.2);color:var(--gold);">Leva</div>
+              <h5 style="color:var(--gold)">💪 Prodotti Leva</h5>
+              <p>Alta importanza, mercato facile. Massimizzare potere contrattuale, multiple sourcing, aste al ribasso.</p>
+            </div>
+            <div class="matrix-cell" id="kq-non" onclick="selectKraljic('non')" style="border-left:1px solid var(--border);">
+              <div class="mc-badge" style="background:rgba(42,157,143,0.2);color:var(--teal);">Non Critico</div>
+              <h5 style="color:var(--teal)">📦 Non Critico</h5>
+              <p>Bassa importanza, mercato facile. E-procurement, cataloghi, standardizzazione, riduzione fornitori.</p>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:10px; color:var(--text3); padding:0 4px;">
+            <span>← Facile</span><span>Difficoltà Mercato Fornitura</span><span>Difficile →</span>
+          </div>
+          <div style="font-size:10px;color:var(--text3);margin-top:4px;text-align:center;">Asse Y: Importanza Strategica (Alto=su, Basso=giù)</div>
+        </div>
+
+        <div>
+          <div class="card card-gold" id="kraljic-detail">
+            <div class="card-title">Clicca su un quadrante per i dettagli</div>
+            <p>Seleziona un quadrante della matrice per vedere le strategie raccomandate, esempi per il settore tessile-moda e gli strumenti applicabili.</p>
+          </div>
+
+          <!-- Kraljic Scorer -->
+          <div class="card" style="margin-top:16px;">
+            <div class="card-title">Classifica un Acquisto</div>
+            <div class="slider-group">
+              <div class="slider-label">
+                <span>Importanza Strategica</span>
+                <span class="val" id="kq-imp-val">5</span>
+              </div>
+              <input type="range" min="1" max="10" value="5" id="kq-imp" oninput="classifyKraljic()">
+              <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3)"><span>Bassa incidenza</span><span>Core competence</span></div>
+            </div>
+            <div class="slider-group">
+              <div class="slider-label">
+                <span>Difficoltà Mercato Fornitura</span>
+                <span class="val" id="kq-diff-val">5</span>
+              </div>
+              <input type="range" min="1" max="10" value="5" id="kq-diff" oninput="classifyKraljic()">
+              <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3)"><span>Molti fornitori</span><span>Monopolio</span></div>
+            </div>
+            <div class="result-box" id="kq-class-result"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+      <h3>Esempi per il Settore Moda-Tessile — Matrice di Kraljic</h3>
+      <table>
+        <thead>
+          <tr><th>Acquisto</th><th>Quadrante</th><th>Importanza</th><th>Difficoltà</th><th>Strategia</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Tessuto jacquard su misura (filo d'oro)</td>
+            <td><span class="badge red">Strategico</span></td>
+            <td>Alta</td>
+            <td>Alta</td>
+            <td>Single sourcing, co-design, contratto LT</td>
+          </tr>
+          <tr>
+            <td>Filato pregiato cashmere</td>
+            <td><span class="badge amber">Collo Bottiglia</span></td>
+            <td>Bassa/Media</td>
+            <td>Alta</td>
+            <td>Scorte di sicurezza, dual sourcing</td>
+          </tr>
+          <tr>
+            <td>Tessuto base jersey / poliestere</td>
+            <td><span class="badge gold">Leva</span></td>
+            <td>Alta</td>
+            <td>Bassa</td>
+            <td>Multiple sourcing, aste, negoziazione dura</td>
+          </tr>
+          <tr>
+            <td>Cancelleria, MRO uffici</td>
+            <td><span class="badge teal">Non Critico</span></td>
+            <td>Bassa</td>
+            <td>Bassa</td>
+            <td>E-procurement, catalogo, automatizzare</td>
+          </tr>
+          <tr>
+            <td>Stampi / attrezzature speciali</td>
+            <td><span class="badge red">Strategico</span></td>
+            <td>Alta</td>
+            <td>Alta</td>
+            <td>Partnership, investimenti dedicati condivisi</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SOURCING -->
+    <div id="acq-sourcing" class="sub-content">
+      <h2>Strategie di Approvvigionamento</h2>
+      <div class="grid-2">
+        <div>
+          <table>
+            <thead><tr><th>Strategia</th><th>Vantaggi</th><th>Svantaggi</th><th>Quando</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="td-accent"><strong>Multiple Sourcing</strong><br><small>Fornitori multipli in competizione</small></td>
+                <td style="font-size:11px;">• Differenziali costo<br>• Basso rischio opportunismo<br>• Innovazione</td>
+                <td style="font-size:11px;">• Bassa personalizzazione<br>• Scarsa efficienza</td>
+                <td style="font-size:11px;">Componenti standard, alta richiesta flessibilità</td>
+              </tr>
+              <tr>
+                <td class="td-gold"><strong>Single Sourcing</strong><br><small>Fornitore unico dedicato</small></td>
+                <td style="font-size:11px;">• Economie di scala<br>• Collaborazione profonda<br>• Personalizzazione</td>
+                <td style="font-size:11px;">• Monopolio laterale<br>• Alti switching cost</td>
+                <td style="font-size:11px;">Tecnologie esclusive, investimenti relazionali</td>
+              </tr>
+              <tr>
+                <td class="td-amber"><strong>Dual Sourcing</strong><br><small>Principale + riserva</small></td>
+                <td style="font-size:11px;">• Relazione profonda con principale<br>• Backup operativo</td>
+                <td style="font-size:11px;">• Costi duplicazione</td>
+                <td style="font-size:11px;">Componenti critici con rischio supply</td>
+              </tr>
+              <tr>
+                <td class="td-teal"><strong>Parallel Sourcing</strong><br><small>Serie di single sourcing per famiglia prodotto</small></td>
+                <td style="font-size:11px;">• Collaborazione + competizione<br>• Switching possibile<br>• Specializzazione</td>
+                <td style="font-size:11px;">• Difficile da applicare<br>• Gamma prodotti ampia necessaria</td>
+                <td style="font-size:11px;">Gamma ampia di prodotti finiti (es. Mercedes A/C/E/S)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div>
+          <div class="card card-amber">
+            <div class="card-title">🌍 Global vs Local Sourcing</div>
+            <table>
+              <thead><tr><th>Driver</th><th>Favorisce</th></tr></thead>
+              <tbody>
+                <tr><td>Sviluppo infrastrutture logistiche</td><td class="td-teal">Global</td></tr>
+                <tr><td>Accordi internazionali</td><td class="td-teal">Global</td></tr>
+                <tr><td>Minor costo del lavoro</td><td class="td-teal">Global</td></tr>
+                <tr><td>Fornitori world class</td><td class="td-teal">Global</td></tr>
+                <tr><td>Costi logistici elevati</td><td class="td-gold">Local</td></tr>
+                <tr><td>Rapidità e affidabilità (JIT)</td><td class="td-gold">Local</td></tr>
+                <tr><td>Collaborazione stretta necessaria</td><td class="td-gold">Local</td></tr>
+                <tr><td>Risorse esclusive locali</td><td class="td-gold">Local</td></tr>
+                <tr><td>Norme protezionistiche</td><td class="td-gold">Local</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="case-study" style="margin-top:12px;">
+            <div class="cs-header">
+              <span class="cs-icon">🚘</span>
+              <div><div class="cs-title">Caso Mercedes — Parallel Sourcing</div><div class="cs-sub">Resilienza della SC in crisi</div></div>
+            </div>
+            <p>Fornitore italiano (A+C), fornitore tedesco (E+S). Estate 2002: alluvione blocca il tedesco per 3 mesi.</p>
+            <p><strong>Risposta:</strong> In una settimana gli stampi trasportati in Italia, produzione ripristinata su tre turni e festivi. Costi adattamento bassi (già lavorava per Mercedes).</p>
+            <span class="badge teal">Parallel Sourcing</span> <span class="badge amber">Resilienza</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VENDOR RATING -->
+    <div id="acq-vendor" class="sub-content">
+      <h2>Vendor Rating — Modello Olsen & Ellram</h2>
+      <div class="grid-2">
+        <div>
+          <p>Il vendor rating valuta i fornitori su due dimensioni per guidare le decisioni di investimento relazionale. Non tutti i fornitori vanno gestiti allo stesso modo.</p>
+
+          <div class="theory-block">
+            <h4>Attrattività del Fornitore</h4>
+            <ul>
+              <li>Valutazione operativa: costi, qualità, affidabilità, performance</li>
+              <li>Prestazioni complessive: capacità di soddisfare requisiti nel tempo</li>
+              <li>Valutazione strategica: innovazione, competenze chiave, allineamento strategico</li>
+            </ul>
+          </div>
+
+          <div class="theory-block amber">
+            <h4>Forza della Relazione</h4>
+            <ul>
+              <li>Stato attuale cooperazione: fiducia e collaborazione</li>
+              <li>Frequenza e intensità del contatto operativo e strategico</li>
+              <li>Distanza geografica: facilità di coordinamento</li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="card card-accent">
+            <div class="card-title">Classifica il tuo Fornitore</div>
+            <div class="slider-group">
+              <div class="slider-label"><span>Attrattività del Fornitore</span><span class="val" id="vr-attr-val">5</span></div>
+              <input type="range" min="1" max="10" value="5" id="vr-attr" oninput="classifyVendor()">
+            </div>
+            <div class="slider-group">
+              <div class="slider-label"><span>Forza della Relazione</span><span class="val" id="vr-forza-val">5</span></div>
+              <input type="range" min="1" max="10" value="5" id="vr-forza" oninput="classifyVendor()">
+            </div>
+            <div class="result-box" id="vr-result"></div>
+          </div>
+
+          <!-- 2x2 Olsen Ellram -->
+          <div style="margin-top:14px;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:2px; background:var(--border); border-radius:6px; overflow:hidden;">
+              <div style="background:var(--bg2); padding:12px; border-bottom:1px solid var(--border); border-right:1px solid var(--border);">
+                <div style="font-size:11px;color:var(--gold);margin-bottom:4px;font-weight:bold;">📈 Sviluppo Relazione</div>
+                <div style="font-size:10px;color:var(--text2);">Alta attrattività, bassa forza. Rafforzare il rapporto, aumentare interazioni e fiducia. Investire in collaborazione.</div>
+              </div>
+              <div style="background:var(--bg2); padding:12px; border-bottom:1px solid var(--border);">
+                <div style="font-size:11px;color:var(--green);margin-bottom:4px;font-weight:bold;">🤝 Partnership Strategica</div>
+                <div style="font-size:10px;color:var(--text2);">Alta attrattività, alta forza. Relazioni di lungo periodo. Collaborazione e innovazione congiunta. Integrazione processi.</div>
+              </div>
+              <div style="background:var(--bg2); padding:12px; border-right:1px solid var(--border);">
+                <div style="font-size:11px;color:var(--red);margin-bottom:4px;font-weight:bold;">📉 Disimpegno</div>
+                <div style="font-size:10px;color:var(--text2);">Bassa attrattività, bassa forza. Minimizzare investimenti. Standardizzare. Considerare sostituzione fornitore.</div>
+              </div>
+              <div style="background:var(--bg2); padding:12px;">
+                <div style="font-size:11px;color:var(--amber);margin-bottom:4px;font-weight:bold;">⚖️ Razionalizzazione</div>
+                <div style="font-size:10px;color:var(--text2);">Bassa attrattività, alta forza. Valutare riduzione dipendenza. Migliorare efficienza o rinegoziare. Evitare over-investment.</div>
+              </div>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-top:4px; font-size:10px; color:var(--text3);">
+              <span>← Bassa Forza</span><span>Alta Forza →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+      <h3>Tattiche di Negoziazione</h3>
+      <div class="grid-3">
+        <div class="theory-block"><h4>Prendere o Lasciare</h4><p>Punta tutto sul potere contrattuale. Win-Lose. Adatto solo con forte posizione negoziale.</p></div>
+        <div class="theory-block amber"><h4>Negoziazione Win-Win</h4><p>Allargamento della torta. Comprensione bisogni controparte. Condivisione informazioni. Creazione di plusvalore.</p></div>
+        <div class="theory-block red"><h4>Chinese Crunch</h4><p>Trattativa conclusa, poi ultima concessione richiesta. Tattica aggressiva da gestire con cautela.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PARTNERSHIP ==================== -->
+<div id="s4" class="section">
+  <div class="page-header">
+    <div class="ph-kicker">Parte 3</div>
+    <h1>Gestione della Partnership</h1>
+    <p class="ph-desc">Modelli di relazione Bow-Tie vs Diamond. Collaborazione tecnologica (co-design) e collaborazione operativa (VMI, JIT, CPFR).</p>
+  </div>
+
+  <div class="content">
+    <div class="grid-2">
+      <div>
+        <h2>Bow-Tie vs Diamond</h2>
+        <p>Il passaggio da un modello di mercato a una partnership cambia radicalmente l'interfaccia cliente-fornitore.</p>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:16px 0;">
+          <div class="card" style="border-color:var(--text3)">
+            <div class="card-sub" style="text-align:center;">Mercato Puro</div>
+            <div style="font-size:13px; color:var(--gold); text-align:center; margin:8px 0; font-weight:bold;">🎀 BOW-TIE</div>
+            <div style="font-size:11px; color:var(--text2); text-align:center;">
+              Fornitore:<br>Sviluppo · Produzione · Logistica<br>
+              <div style="margin:8px 0; padding:6px; background:var(--bg); border-radius:4px;">
+                <span style="color:var(--text3)">Vendite ↔ Acquisti</span>
+              </div>
+              Cliente:<br>Sviluppo · Produzione · Logistica
+            </div>
+            <hr class="divider">
+            <div style="font-size:11px;color:var(--text2)">
+              <div>Ruolo buyer: <span style="color:var(--amber)">Negoziatore</span></div>
+              <div>Indice: <span style="color:var(--amber)">Costi di acquisto</span></div>
+            </div>
+          </div>
+          <div class="card card-accent">
+            <div class="card-sub" style="text-align:center;">Partnership</div>
+            <div style="font-size:13px; color:var(--teal); text-align:center; margin:8px 0; font-weight:bold;">💎 DIAMOND</div>
+            <div style="font-size:11px; color:var(--text2); text-align:center;">
+              Sviluppo ↔ Sviluppo<br>
+              Produzione ↔ Produzione<br>
+              <div style="margin:6px 0; padding:6px; background:var(--bg); border-radius:4px;">
+                <span style="color:var(--teal)">Vendite ↔ Acquisti</span>
+              </div>
+              Logistica ↔ Logistica
+            </div>
+            <hr class="divider">
+            <div style="font-size:11px;color:var(--text2)">
+              <div>Ruolo buyer: <span style="color:var(--teal)">Process Owner</span></div>
+              <div>Indice: <span style="color:var(--teal)">Valutazione multidimensionale</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="theory-block">
+          <h4>Meccanismi di Protezione della Partnership</h4>
+          <ul>
+            <li><strong>Contratti quadro:</strong> il fornitore recupera investimenti, garanzia di capacità</li>
+            <li><strong>Monitoraggio prestazioni:</strong> miglioramento continuo, tutela errori</li>
+            <li><strong>Investimenti dedicati:</strong> garanzia di impegno reciproco</li>
+            <li><strong>Condivisione conoscenza:</strong> tipo di investimento dedicato</li>
+            <li><strong>Trasparenza sui costi:</strong> garanzia per entrambe le parti</li>
+            <li><strong>Reputazione:</strong> tutela da comportamenti opportunistici</li>
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <h2>Co-Design — Tipologie</h2>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:2px; background:var(--border); border-radius:8px; overflow:hidden; margin-bottom:16px;">
+          <div style="background:var(--bg2); padding:14px; border-bottom:1px solid var(--border); border-right:1px solid var(--border);">
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:6px;">FUNCTION + DELIVERY</div>
+            <div style="color:var(--gold);font-size:13px;margin-bottom:4px;">🔬 Function Delivery</div>
+            <div style="font-size:11px;color:var(--text2);">Fornitore world class leader tecnologico. Progetta e propone. Processo decisionale separato.</div>
+            <div style="margin-top:6px;font-size:10px;color:var(--text3);">Es. Whitegoods — Portalampada</div>
+          </div>
+          <div style="background:var(--bg2); padding:14px; border-bottom:1px solid var(--border);">
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:6px;">FUNCTION + JOINT DEV.</div>
+            <div style="color:var(--red);font-size:13px;margin-bottom:4px;">🚀 Joint Function Development</div>
+            <div style="font-size:11px;color:var(--text2);">Cliente e fornitore leader e innovatori. Innovazioni radicali. Processo decisionale condiviso.</div>
+            <div style="margin-top:6px;font-size:10px;color:var(--text3);">Es. Whitegoods — Cerniera</div>
+          </div>
+          <div style="background:var(--bg2); padding:14px; border-right:1px solid var(--border);">
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:6px;">PROCESS + DELIVERY</div>
+            <div style="color:var(--teal);font-size:13px;margin-bottom:4px;">⚙️ Process Delivery</div>
+            <div style="font-size:11px;color:var(--text2);">Fornitore affidabile, innovazione incrementale. Miglioramento efficienza processo.</div>
+            <div style="margin-top:6px;font-size:10px;color:var(--text3);">Es. Whitegoods — Imballaggio</div>
+          </div>
+          <div style="background:var(--bg2); padding:14px;">
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:6px;">PROCESS + JOINT DEV.</div>
+            <div style="color:var(--green);font-size:13px;margin-bottom:4px;">🌱 Joint Process Development</div>
+            <div style="font-size:11px;color:var(--text2);">Fornitore da far crescere. Innovazioni radicali di processo. Team interaziendale.</div>
+            <div style="margin-top:6px;font-size:10px;color:var(--text3);">Es. Whitegoods — Sportello Freezer</div>
+          </div>
+        </div>
+
+        <div class="card card-green">
+          <div class="card-title">Livelli di Collaborazione Operativa</div>
+          <div class="theory-block" style="background:var(--bg3);">
+            <h4>Livello 1 — Visibilità</h4>
+            <p>Condivisione informazioni su domanda, scorte, ordini, prezzi, previsioni, vendor rating. Strumenti: EDI, RFID, Extranet, firma digitale.</p>
+          </div>
+          <div class="theory-block amber" style="background:var(--bg3); margin-top:8px;">
+            <h4>Livello 2 — Integrazione</h4>
+            <p>Collegamento fisico di sistemi e processi. Esempi:</p>
+            <ul>
+              <li>Vendor Managed Inventory (VMI)</li>
+              <li>Consignment Stock</li>
+              <li>Continuous Replenishment</li>
+              <li>CPFR — Collaborative Planning, Forecasting and Replenishment</li>
+              <li>Just In Time (JIT) / Kanban</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <div class="case-study">
+      <div class="cs-header">
+        <span class="cs-icon">🏎️</span>
+        <div><div class="cs-title">Caso Smart — Partnership Completa</div><div class="cs-sub">Collaborazione Operativa + Tecnologica Simultanee</div></div>
+      </div>
+      <div class="grid-3">
+        <p><strong>Stabilimento Hambach:</strong> 7 fornitori sistemisti di primo livello in loco. Partecipano a progettazione, produzione e assemblaggio dei moduli: telaio, trasmissione, porte, carrozzeria, freni, luci, cruscotto.</p>
+        <p><strong>Sincronizzazione:</strong> Nastri trasportatori collegati. Personale dei fornitori presente sulla linea. 16 fornitori meno integrati. Tempo produzione: 4,5 ore per auto, 1 ogni 90 secondi.</p>
+        <p><strong>Risultato:</strong> Fornitori responsabili dell'85% del costo totale. Smart dedicata solo al 6% delle attività manifatturiere. Massima variabilizzazione dei costi fissi.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SUPPLY CHAIN ==================== -->
+<div id="s5" class="section">
+  <div class="page-header">
+    <div class="ph-kicker">Parte 4</div>
+    <h1>Supply Chain Management — Strategie</h1>
+    <p class="ph-desc">Lean, Responsive, Risk Hedging, Agile. Push/Pull, punto di disaccoppiamento, postponement e bullwhip effect.</p>
+  </div>
+
+  <div class="content">
+    <div class="sub-tabs">
+      <button class="sub-tab active" onclick="showSubTab('sc','sc-strat')">🗺️ Strategie SC</button>
+      <button class="sub-tab" onclick="showSubTab('sc','sc-pushpull')">↔️ Push / Pull</button>
+      <button class="sub-tab" onclick="showSubTab('sc','sc-bullwhip')">🌊 Bullwhip Effect</button>
+      <button class="sub-tab" onclick="showSubTab('sc','sc-contratti')">📝 Contratti SC</button>
+    </div>
+
+    <!-- STRATEGIE -->
+    <div id="sc-strat" class="sub-content active">
+      <h2>Le 4 Strategie di Supply Chain</h2>
+      <div class="grid-2" style="margin-bottom:20px;">
+        <div class="card card-accent">
+          <div class="card-title">Selezione Strategia</div>
+          <p>Regola le variabili per trovare la strategia ottimale per il tuo prodotto/mercato.</p>
+          <div class="slider-group">
+            <div class="slider-label"><span>Variabilità Domanda</span><span class="val" id="sc-vd-val">5</span></div>
+            <input type="range" min="1" max="10" value="5" id="sc-vd" oninput="selectSCStrategy()">
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3)"><span>Stabile / Standard</span><span>Volatile / Innovativo</span></div>
+          </div>
+          <div class="slider-group">
+            <div class="slider-label"><span>Instabilità del Processo</span><span class="val" id="sc-ip-val">5</span></div>
+            <input type="range" min="1" max="10" value="5" id="sc-ip" oninput="selectSCStrategy()">
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3)"><span>Tecnologie mature</span><span>Tecnologie in evoluzione</span></div>
+          </div>
+          <div id="sc-strategy-result" class="result-box" style="margin-top:12px;"></div>
+        </div>
+        <div>
+          <!-- 2x2 Matrix SC -->
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:2px; background:var(--border); border-radius:8px; overflow:hidden;">
+            <div style="background:var(--bg2); padding:14px; border-bottom:1px solid var(--border); border-right:1px solid var(--border);">
+              <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">BASSA VARIABILITÀ + STABILE</div>
+              <div style="color:var(--teal);font-weight:bold;margin-bottom:6px;">⚙️ LEAN</div>
+              <div style="font-size:11px;color:var(--text2);">Massima efficienza costo logistico. Eliminazione waste. Economie di scala. Automazione. Es: Alimentari industria, abbigliamento base.</div>
+            </div>
+            <div style="background:var(--bg2); padding:14px; border-bottom:1px solid var(--border);">
+              <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">ALTA VARIABILITÀ + STABILE</div>
+              <div style="color:var(--gold);font-weight:bold;margin-bottom:6px;">⚡ RESPONSIVE</div>
+              <div style="font-size:11px;color:var(--text2);">Reattività e flessibilità. Build-to-order, mass customization. Time-to-market critico. Es: Abbigliamento firmato, computer, musica.</div>
+            </div>
+            <div style="background:var(--bg2); padding:14px; border-right:1px solid var(--border);">
+              <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">BASSA VARIABILITÀ + INSTABILE</div>
+              <div style="color:var(--amber);font-weight:bold;margin-bottom:6px;">🛡️ RISK HEDGING</div>
+              <div style="font-size:11px;color:var(--text2);">Gestione del rischio. Scorte di backup, fornitori di riserva. Condivisione risorse. Es: Petrolio, energia, prodotti agricoli.</div>
+            </div>
+            <div style="background:var(--bg2); padding:14px;">
+              <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">ALTA VARIABILITÀ + INSTABILE</div>
+              <div style="color:var(--red);font-weight:bold;margin-bottom:6px;">🏃 AGILE</div>
+              <div style="font-size:11px;color:var(--text2);">Responsive + Risk Hedging. Flessibilità estrema + gestione rischio. Es: TLC, semiconduttori, utenza professionale.</div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:4px;padding:0 4px;">
+            <span>← Bassa Variabilità</span><span>Alta Variabilità →</span>
+          </div>
+          <div style="font-size:10px;color:var(--text3);text-align:center;margin-top:2px;">Asse Y: Bassa Instabilità Processo (su) → Alta (giù)</div>
+        </div>
+      </div>
+
+      <h3>Mix di Strategie — Moda/Tessile</h3>
+      <div class="grid-2">
+        <div class="theory-block">
+          <h4>Mix in Parallelo (GAP)</h4>
+          <ul>
+            <li><strong>Old Navy:</strong> fascia bassa → Lean → Cina</li>
+            <li><strong>Gap:</strong> trendy/veloce → Responsive → Centro America</li>
+            <li><strong>Banana Republic:</strong> lusso/qualità → Responsive → Italia</li>
+          </ul>
+        </div>
+        <div class="theory-block amber">
+          <h4>Mix in Serie (Zara / Starbucks)</h4>
+          <ul>
+            <li><strong>A monte:</strong> Lean/Risk Hedging — previsioni, produzione base</li>
+            <li><strong>A valle:</strong> Responsive/Agile — personalizzazione rapida</li>
+            <li><strong>Decoupling Point:</strong> punto di disaccoppiamento push/pull</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="case-study" style="margin-top:12px;">
+        <div class="cs-header">
+          <span class="cs-icon">📱</span>
+          <div><div class="cs-title">Caso Nokia-Ericsson — Risk Hedging vs Single Sourcing</div></div>
+        </div>
+        <div class="grid-2">
+          <p><strong>Marzo 2000:</strong> Incendio impianto Philips/Albuquerque (chip RF per cellulari). Nokia: risk hedging, dual sourcing. <em>Fornitura ripristinata in 5 giorni.</em> Ericsson: single sourcing puro. <em>3 mesi di stop produzione.</em></p>
+          <p><strong>Effetto a lungo termine:</strong> Nokia sottrae 3-4% di quota di mercato ad Ericsson, mai più recuperati. La resilienza della SC diventa vantaggio competitivo strutturale. <span class="badge teal">Lezione: diversificare i fornitori critici</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PUSH PULL -->
+    <div id="sc-pushpull" class="sub-content">
+      <h2>Push / Pull e Postponement</h2>
+      <div class="grid-2">
+        <div>
+          <div class="theory-block">
+            <h4>Logica Push (Forecast Driven)</h4>
+            <p>Produzione avviata in anticipo sulla base delle previsioni. MRP / DRP. Rischio: scorte eccessive se le previsioni sono errate. Adatta a domanda variabile con previsioni accurate.</p>
+          </div>
+          <div class="theory-block amber">
+            <h4>Logica Pull (Market Driven)</h4>
+            <p>Produzione avviata solo su richiesta dello stadio a valle. Enfasi sulla responsiveness. Riduce scorte ma richiede alta capacità a monte. Kanban come strumento tipico.</p>
+          </div>
+
+          <h3 style="margin-top:16px;">Punto di Disaccoppiamento</h3>
+          <div class="card card-accent" style="margin-top:8px;">
+            <div class="card-title">Selettore Push/Pull</div>
+            <div class="slider-group">
+              <div class="slider-label"><span>Posizione Decoupling Point</span><span class="val" id="pp-dp-val">50%</span></div>
+              <input type="range" min="0" max="100" value="50" id="pp-dp" oninput="drawPushPull()">
+              <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3)">
+                <span>←Push totale</span><span>Pull totale→</span>
+              </div>
+            </div>
+            <canvas id="ppChart" width="360" height="120" style="margin-top:8px;"></canvas>
+            <div id="pp-result" class="result-box" style="margin-top:8px;"></div>
+          </div>
+        </div>
+
+        <div>
+          <h3>Postponement (Mass Customization)</h3>
+          <div class="theory-block green">
+            <h4>Vantaggi del Postponement</h4>
+            <ul>
+              <li>Pochi componenti per molte varietà di prodotto finito</li>
+              <li>Previsioni più semplici sui componenti base</li>
+              <li>Riduzione costo di mantenimento a scorta</li>
+              <li>Ottimizzazione costo di trasporto (lotti più grandi)</li>
+              <li>Migliore livello di servizio al cliente finale</li>
+            </ul>
+          </div>
+
+          <div class="case-study" style="margin-top:12px;">
+            <div class="cs-header">
+              <span class="cs-icon">🎨</span>
+              <div><div class="cs-title">Caso Vernici — Tinting</div><div class="cs-sub">Postponement nel colore</div></div>
+            </div>
+            <p><strong>Push anni '70:</strong> produzione colori finiti su previsione → alta esposizione finanziaria.</p>
+            <p><strong>Pull anni '80:</strong> base bianca/trasparente + coloranti → colore creato al POS con spettrofotometro. Alta personalizzazione, scorte minime, previsioni solo su base + coloranti.</p>
+            <span class="badge teal">Postponement</span> <span class="badge gold">Mass Customization</span>
+          </div>
+
+          <div class="theory-block amber" style="margin-top:12px;">
+            <h4>Applicazione al Distretto Tessile — Prato</h4>
+            <p>Produzione base di tessuto (warp + base yarn) in logica push con grandi lotti. Tintura e finissaggio (colorazione, appretti) in logica pull su ordine cliente. Il tintore/finissore come punto di postponement. Riduzione stock finiti, aumento reattività.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BULLWHIP -->
+    <div id="sc-bullwhip" class="sub-content">
+      <h2>Effetto Bullwhip (Forrester)</h2>
+      <p>Amplificazione delle variazioni della domanda mano a mano che ci si allontana dal mercato finale. La mancanza di informazioni tempestive è la causa principale.</p>
+
+      <div class="grid-2">
+        <div>
+          <div class="card card-accent">
+            <div class="card-title">Visualizzatore Effetto Bullwhip</div>
+            <div class="slider-group">
+              <div class="slider-label"><span>Variabilità Domanda Finale (CV%)</span><span class="val" id="bw-cv-val">10%</span></div>
+              <input type="range" min="1" max="30" value="10" id="bw-cv" oninput="drawBullwhip()">
+            </div>
+            <div class="slider-group">
+              <div class="slider-label"><span>Fattore di Amplificazione</span><span class="val" id="bw-amp-val">1.8x</span></div>
+              <input type="range" min="1" max="4" step="0.1" value="1.8" id="bw-amp" oninput="drawBullwhip()">
+            </div>
+            <canvas id="bullwhipChart" width="380" height="220" style="margin-top:8px;"></canvas>
+          </div>
+        </div>
+
+        <div>
+          <h3>Cause dell'Effetto Bullwhip</h3>
+          <div class="accord-item" onclick="this.classList.toggle('open')">
+            <div class="accord-head"><span>🔍 Filtri di Domanda</span><span class="ah-arrow">▶</span></div>
+            <div class="accord-body"><p>Ogni attore emette propri ordini con perturbazioni e ritardi. I dati di vendita non vengono condivisi in tempo reale a tutti gli stadi della filiera.</p></div>
+          </div>
+          <div class="accord-item" onclick="this.classList.toggle('open')">
+            <div class="accord-head"><span>📦 Politiche di Lottizzazione</span><span class="ah-arrow">▶</span></div>
+            <div class="accord-body"><p>Per ridurre i costi di ordinazione si aggregano ordini in lotti. Questo introduce irregolarità artificiali. Es. Pampers: P&G ordina a Wal-Mart settimanalmente, ma Wal-Mart ordina a P&G mensile → varianza amplificata.</p></div>
+          </div>
+          <div class="accord-item" onclick="this.classList.toggle('open')">
+            <div class="accord-head"><span>🏷️ Azioni Commerciali</span><span class="ah-arrow">▶</span></div>
+            <div class="accord-body"><p>Le promozioni creano picchi artificiali di domanda. I clienti acquistano in anticipo durante le promo (forward buying) e poi non ordinano per settimane.</p></div>
+          </div>
+          <div class="accord-item" onclick="this.classList.toggle('open')">
+            <div class="accord-head"><span>🎯 Allocazione Capacità</span><span class="ah-arrow">▶</span></div>
+            <div class="accord-body"><p>Quando si sospettano problemi di capacità a monte, i clienti emettono ordini gonfiati per garantirsi la fornitura. Questo peggiora ulteriormente la situazione (profezia auto-avverante).</p></div>
+          </div>
+
+          <h3 style="margin-top:16px;">Rimedi</h3>
+          <div class="theory-block green">
+            <h4>Condivisione Informazioni</h4>
+            <p>Visibilità in tempo reale lungo la filiera. EDI, RFID, portali web. Il fornitore vede le vendite al consumatore finale direttamente (VMI).</p>
+          </div>
+          <div class="theory-block">
+            <h4>Allineamento di Canale</h4>
+            <p>Programmare insieme, livellare i piani di produzione, coordinare i piani di consegna. CPFR (Collaborative Planning, Forecasting and Replenishment).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTRATTI -->
+    <div id="sc-contratti" class="sub-content">
+      <h2>Contratti per la Ripartizione di Rischi e Benefici</h2>
+      <div class="grid-2">
+        <div>
+          <table>
+            <thead><tr><th>Tipo Contratto</th><th>Meccanismo</th><th>Chi porta il rischio</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="td-amber"><strong>Wholesale Price</strong></td>
+                <td style="font-size:11px;">Prezzo fisso. Tradizionale. Rischio sovrascorta e stock-out tutto al cliente.</td>
+                <td class="td-red">Cliente (100%)</td>
+              </tr>
+              <tr>
+                <td class="td-teal"><strong>Buy-Back</strong></td>
+                <td style="font-size:11px;">Fornitore ritira invenduti a prezzo concordato. Es: distribuzione editoriale.</td>
+                <td class="td-accent">Condiviso</td>
+              </tr>
+              <tr>
+                <td class="td-gold"><strong>Revenue Sharing</strong></td>
+                <td style="font-size:11px;">Fornitore vende a prezzo scontato; ricavi ripartiti tra le parti. Es: Blockbuster/Major cinematografiche.</td>
+                <td class="td-accent">Condiviso</td>
+              </tr>
+              <tr>
+                <td class="td-green"><strong>Capacity Option</strong></td>
+                <td style="font-size:11px;">Il cliente acquista un'opzione di capacità, scontata dal prezzo finale. Es: semiconductor Taiwan.</td>
+                <td class="td-accent">Condiviso</td>
+              </tr>
+              <tr>
+                <td><strong>Sales Rebate</strong></td>
+                <td style="font-size:11px;">Sconto sopra soglia S; penale per ogni stock-out oltre S. Es: HP con distributori.</td>
+                <td class="td-accent">Condiviso</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div>
+          <div class="case-study">
+            <div class="cs-header">
+              <span class="cs-icon">🎬</span>
+              <div><div class="cs-title">Caso Blockbuster — Revenue Sharing</div><div class="cs-sub">Dal 24% al 40% quota di mercato</div></div>
+            </div>
+            <p><strong>1997 (wholesale price):</strong> DVD acquistati a $60, tariffa noleggio $3. Break-even: 20 noleggi. Forte stock-out sui film di successo → incentivo a tenere scorte basse.</p>
+            <p><strong>1998 (revenue sharing):</strong> DVD a $9, noleggio $3 ripartito 50/50 ($1,50 a Blockbuster). Break-even: 6 noleggi → massima disponibilità, livello di servizio 98%.</p>
+            <p><strong>2002:</strong> Quota di mercato al 40%. Slogan: <em>"Make it a Blockbuster night"</em> — strategia SCM impatta la strategia marketing.</p>
+          </div>
+
+          <div class="card card-gold" style="margin-top:12px;">
+            <div class="card-title">Simulatore Revenue Sharing</div>
+            <div class="grid-2" style="gap:8px;">
+              <div>
+                <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Prezzo acquisto fornitore (€)</div>
+                <input type="number" id="rs-price" value="9" min="1" oninput="calcRevenueShare()" style="width:100%">
+              </div>
+              <div>
+                <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Tariffa noleggio (€)</div>
+                <input type="number" id="rs-rent" value="3" min="0.5" step="0.5" oninput="calcRevenueShare()" style="width:100%">
+              </div>
+            </div>
+            <div class="slider-group" style="margin-top:8px;">
+              <div class="slider-label"><span>% Ricavi al cliente</span><span class="val" id="rs-split-val">50%</span></div>
+              <input type="range" min="20" max="90" value="50" id="rs-split" oninput="calcRevenueShare()">
+            </div>
+            <div class="result-box" id="rs-result"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SIMULATORE ==================== -->
+<div id="s6" class="section">
+  <div class="page-header">
+    <div class="ph-kicker">Strumenti Integrati</div>
+    <h1>Simulatore Economico Avanzato</h1>
+    <p class="ph-desc">Calcolatori completi per analisi di scenario, sensibilità e ottimizzazione per il settore tessile-moda.</p>
+  </div>
+
+  <div class="content">
+    <div class="grid-2">
+      <!-- Full BEP with sensitivity -->
+      <div class="card card-accent">
+        <div class="card-title">Analisi di Sensibilità — What-If</div>
+        <p style="font-size:12px;">Esplora come cambiano profitto e break-even al variare di prezzo, cvu e CFT.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+          <div>
+            <div style="font-size:11px;color:var(--text2);">Prezzo (p) €</div>
+            <input type="number" id="wi-p" value="150" oninput="calcWhatIf()">
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--text2);">Costo Var. Unitario (cvu) €</div>
+            <input type="number" id="wi-cvu" value="80" oninput="calcWhatIf()">
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--text2);">Costi Fissi (CFT) €</div>
+            <input type="number" id="wi-cft" value="5000" oninput="calcWhatIf()">
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--text2);">Volume Target</div>
+            <input type="number" id="wi-x" value="120" oninput="calcWhatIf()">
+          </div>
+        </div>
+        <canvas id="wiChart" width="400" height="220"></canvas>
+        <div class="result-box" id="wi-results" style="margin-top:8px;"></div>
+      </div>
+
+      <!-- Score Kraljic completo -->
+      <div class="card card-gold">
+        <div class="card-title">Portafoglio Acquisti — Categorie Multiple</div>
+        <p style="font-size:12px;">Aggiungi categorie di acquisto e visualizza la loro posizione nella Matrice di Kraljic.</p>
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:6px;margin-bottom:8px;">
+          <input type="text" id="kp-name" placeholder="Nome categoria" style="font-size:12px;">
+          <input type="number" id="kp-imp" placeholder="Imp. (1-10)" min="1" max="10" style="font-size:12px;">
+          <input type="number" id="kp-diff" placeholder="Diff. (1-10)" min="1" max="10" style="font-size:12px;">
+        </div>
+        <button class="btn btn-sm" onclick="addKraljicItem()">➕ Aggiungi</button>
+        <canvas id="kpChart" width="360" height="280" style="margin-top:12px;"></canvas>
+        <div id="kp-list" style="margin-top:8px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PIANIFICATORE ==================== -->
+<div id="s7" class="section">
+  <div class="page-header">
+    <div class="ph-kicker">Pianificatore Strategico</div>
+    <h1>Piano di Supply Chain — Scenari</h1>
+    <p class="ph-desc">Applica i concetti del corso per pianificare una strategia SC completa per un'impresa tessile. Scegli scenario, prodotto e valuta le opzioni.</p>
+  </div>
+
+  <div class="content">
+    <div class="grid-2">
+      <div class="card card-accent">
+        <div class="card-title">⚙️ Configurazione Scenario</div>
+
+        <div style="margin-bottom:12px;">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Tipo di Prodotto</div>
+          <select id="plan-prod" onchange="updatePlan()">
+            <option value="base">Abbigliamento Base (T-shirt, basic)</option>
+            <option value="fashion">Moda Fashion (collezione stagionale)</option>
+            <option value="lusso">Lusso / Artigianale (alta gamma)</option>
+            <option value="tecnico">Tessile Tecnico (performance)</option>
+          </select>
+        </div>
+        <div style="margin-bottom:12px;">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Dimensione Azienda</div>
+          <select id="plan-size" onchange="updatePlan()">
+            <option value="micro">Micro (1-9 dip.) — Terzista puro</option>
+            <option value="piccola">Piccola (10-49 dip.) — Organizzatore</option>
+            <option value="media">Media (50-249 dip.) — Brand locale</option>
+            <option value="grande">Grande (250+) — Brand internazionale</option>
+          </select>
+        </div>
+        <div style="margin-bottom:12px;">
+          <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Contesto Mercato</div>
+          <select id="plan-mkt" onchange="updatePlan()">
+            <option value="stabile">Mercato stabile (Prato storico)</option>
+            <option value="crescita">Mercato in crescita (reshoring EU)</option>
+            <option value="turbolento">Mercato turbolento (fast fashion)</option>
+            <option value="crisi">Crisi di fornitura (post-COVID)</option>
+          </select>
+        </div>
+
+        <button class="btn btn-gold" onclick="generatePlan()" style="width:100%;margin-top:8px;">
+          🎯 Genera Piano Strategico
+        </button>
+      </div>
+
+      <div id="plan-output" class="card">
+        <div class="card-title">Piano SC — In attesa di configurazione</div>
+        <p>Configura lo scenario e premi "Genera Piano Strategico" per ricevere raccomandazioni basate sui modelli del corso.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div id="plan-details" style="display:none;">
+      <h2>Dettaglio Piano Raccomandato</h2>
+      <div class="grid-3" id="plan-detail-grid"></div>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+// ====================================================
+// NAVIGATION
+// ====================================================
+const sectionLabels = {
+  s0: null,
+  s1: 'Make or Buy',
+  s2: 'Analisi dei Costi',
+  s3: 'Gli Acquisti',
+  s4: 'Partnership',
+  s5: 'Supply Chain',
+  s6: 'Simulatore',
+  s7: 'Pianificatore SC'
+};
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const btns = document.querySelectorAll('.nav-btn');
+  btns.forEach(b => { if (b.getAttribute('onclick').includes(id)) b.classList.add('active'); });
+
+  // Home FAB: show on all sections except dashboard
+  const fab = document.getElementById('home-fab');
+  if (id === 's0') {
+    fab.classList.remove('visible');
+  } else {
+    fab.classList.add('visible');
+  }
+
+  // Scroll main to top
+  document.getElementById('main').scrollTop = 0;
+
+  // Re-init charts
+  setTimeout(() => {
+    if (id === 's2') { drawCostChart(); calcBEP(); calcLO(); calcMulti(); }
+    if (id === 's5') { drawPushPull(); drawBullwhip(); selectSCStrategy(); }
+    if (id === 's6') { calcWhatIf(); drawKPChart(); }
+    if (id === 's1') { calcLeva(); }
+  }, 50);
+}
+
+function showSubTab(group, id) {
+  document.querySelectorAll(`[id^="${group}-"]`).forEach(el => {
+    if (el.classList.contains('sub-content')) el.classList.remove('active');
+  });
+  document.querySelectorAll('.sub-tab').forEach(t => {
+    if (t.getAttribute('onclick').includes(group)) t.classList.remove('active');
+  });
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  setTimeout(() => {
+    if (id === 'cost-bep') calcBEP();
+    if (id === 'cost-leva') calcLO();
+    if (id === 'cost-mdc') calcMulti();
+    if (id === 'cost-teoria') drawCostChart();
+    if (id === 'sc-pushpull') drawPushPull();
+    if (id === 'sc-bullwhip') drawBullwhip();
+    if (id === 'mob-leva') calcLeva();
+    if (id === 'mob-sim') updateMoB();
+  }, 50);
+}
+
+// ====================================================
+// MAKE OR BUY SIMULATOR
+// ====================================================
+function updateMoB() {
+  const comp = parseInt(document.getElementById('comp-sl').value);
+  const spec = parseInt(document.getElementById('spec-sl').value);
+  const unc  = parseInt(document.getElementById('unc-sl').value);
+
+  document.getElementById('comp-val').textContent = comp;
+  document.getElementById('spec-val').textContent = spec;
+  document.getElementById('unc-val').textContent = unc;
+
+  const avg = (comp + spec + unc) / 3;
+  const score = Math.round(avg * 10);
+  document.getElementById('ct-score').textContent = score + '/100';
+
+  // Update SVG bars
+  const svgComp = document.getElementById('svg-comp');
+  const svgSpec = document.getElementById('svg-spec');
+  const svgUnc  = document.getElementById('svg-unc');
+  if (svgComp) {
+    svgComp.setAttribute('width', (comp / 10) * 220);
+    svgSpec.setAttribute('width', (spec / 10) * 220);
+    svgUnc.setAttribute('width',  (unc  / 10) * 220);
+    document.getElementById('svg-comp-t').textContent = comp;
+    document.getElementById('svg-spec-t').textContent = spec;
+    document.getElementById('svg-unc-t').textContent = unc;
+  }
+
+  // Segments
+  const segs = document.querySelectorAll('#ct-segs .score-seg');
+  const lit = Math.round(avg);
+  segs.forEach((s, i) => {
+    s.className = 'score-seg';
+    if (i < lit) {
+      if (avg <= 3.5) s.classList.add('lit','low');
+      else if (avg <= 6.5) s.classList.add('lit','medium');
+      else s.classList.add('lit','high');
+    }
+  });
+
+  // Recommendation
+  const reco = document.getElementById('mob-reco');
+  if (avg <= 3.5) {
+    reco.innerHTML = `<div class="reco-box lean">
+      <h4>✅ Mercato Competitivo (Outsourcing)</h4>
+      <p>I costi di transazione sono bassi. Bassa complessità descrittiva, bassa specificità e bassa incertezza favoriscono il mercato intermedio. Consigliato: multiple sourcing con fornitori in competizione. Nel settore tessile di Prato: terzisti specializzati su lavorazioni standard.</p>
+    </div>`;
+  } else if (avg <= 6.5) {
+    reco.innerHTML = `<div class="reco-box collab">
+      <h4>⚡ Mercato Collaborativo (Partnership)</h4>
+      <p>I costi di transazione sono sostenibili. Esistono le condizioni per un mercato intermedio collaborativo. Consigliato: single/dual sourcing con investimenti relazionali. Nel tessile: co-sviluppo con terzisti specializzati, contratti quadro di stagione.</p>
+    </div>`;
+  } else {
+    reco.innerHTML = `<div class="reco-box vertical">
+      <h4>⚠️ Integrazione Verticale (Make)</h4>
+      <p>I costi di transazione sono molto alti. Complessità, specificità o incertezza elevate rendono difficile il mercato intermedio. Valutare l'integrazione verticale per questa attività o investire nella creazione di un mercato (come P&G con 3M).</p>
+    </div>`;
+  }
+}
+
+// ====================================================
+// EFFETTO LEVA
+// ====================================================
+function calcLeva() {
+  const fat = parseFloat(document.getElementById('lv-fat').value) || 5000;
+  const acq = parseFloat(document.getElementById('lv-acq').value) || 3500;
+  const alt = parseFloat(document.getElementById('lv-alt').value) || 1100;
+  const scr = parseFloat(document.getElementById('lv-scr').value) || 500;
+  const ac  = parseFloat(document.getElementById('lv-ac').value)  || 600;
+  const af  = parseFloat(document.getElementById('lv-af').value)  || 2900;
+  const rid = parseFloat(document.getElementById('lv-rid').value) || 5;
+  const aum = parseFloat(document.getElementById('lv-aum').value) || 15;
+
+  document.getElementById('lv-ridval').textContent = rid + '%';
+  document.getElementById('lv-aumval').textContent = aum + '%';
+
+  function calcRow(fatNew, acqNew, altNew) {
+    const altNew2 = acqNew > 0 ? alt * (fatNew / fat) : alt;
+    const ebit = fatNew - acqNew - altNew;
+    const scrNew = scr * (acqNew / acq);
+    const ci = scrNew + ac + af;
+    const ros = fatNew > 0 ? (ebit / fatNew * 100) : 0;
+    const trc = ci > 0 ? (fatNew / ci) : 0;
+    const roi = ros * trc / 100;
+    return { fat: fatNew, acq: acqNew, alt: altNew, ebit, ci, ros, trc, roi };
+  }
+
+  const base   = calcRow(fat, acq, alt);
+  const ridAcq = calcRow(fat, acq * (1 - rid/100), alt);
+  const aumFat = calcRow(fat * (1 + aum/100), acq * (1 + aum/100), alt * (1 + aum/100 * 0.7));
+
+  function fmt(v, dec=0, sym='€') { return sym + ' ' + v.toFixed(dec).replace(/\B(?=(\d{3})+(?!\d))/g,'.'); }
+  function fmtPct(v) { return v.toFixed(1) + '%'; }
+  function cls(v, base) { return v > base ? 'good' : (v < base ? 'bad' : ''); }
+
+  document.getElementById('leva-results').innerHTML = `
+    <div class="card-title">Confronto Scenari</div>
+    <table>
+      <thead><tr><th>Voce</th><th>Partenza</th><th>−${rid}% Acquisti</th><th>+${aum}% Fatturato</th></tr></thead>
+      <tbody>
+        <tr><td>Fatturato</td><td>${fmt(base.fat)}</td><td>${fmt(ridAcq.fat)}</td><td class="td-accent">${fmt(aumFat.fat)}</td></tr>
+        <tr><td>Acquisti</td><td>${fmt(base.acq)}</td><td class="td-gold">${fmt(ridAcq.acq)}</td><td>${fmt(aumFat.acq)}</td></tr>
+        <tr><td>Altri Costi</td><td>${fmt(base.alt)}</td><td>${fmt(ridAcq.alt)}</td><td>${fmt(aumFat.alt)}</td></tr>
+        <tr style="border-top:2px solid var(--border)"><td><strong>EBIT</strong></td><td><strong>${fmt(base.ebit)}</strong></td><td class="td-gold"><strong>${fmt(ridAcq.ebit)}</strong></td><td class="td-accent"><strong>${fmt(aumFat.ebit)}</strong></td></tr>
+        <tr><td>Cap. Investito</td><td>${fmt(base.ci)}</td><td>${fmt(ridAcq.ci)}</td><td>${fmt(aumFat.ci)}</td></tr>
+        <tr style="border-top:2px solid var(--border)"><td>ROS</td><td>${fmtPct(base.ros)}</td><td class="td-gold">${fmtPct(ridAcq.ros)}</td><td>${fmtPct(aumFat.ros)}</td></tr>
+        <tr><td>TRC</td><td>${base.trc.toFixed(2)}</td><td>${ridAcq.trc.toFixed(2)}</td><td>${aumFat.trc.toFixed(2)}</td></tr>
+        <tr style="font-size:15px;"><td><strong>ROI</strong></td><td><strong>${fmtPct(base.roi)}</strong></td><td class="td-gold" style="font-size:15px;font-weight:bold;">${fmtPct(ridAcq.roi)}</td><td class="td-accent" style="font-size:15px;font-weight:bold;">${fmtPct(aumFat.roi)}</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;padding:8px;background:var(--bg3);border-radius:4px;font-size:12px;color:var(--text2);">
+      💡 Riduzione acquisti del ${rid}%: ROI passa da ${fmtPct(base.roi)} a ${fmtPct(ridAcq.roi)} (${ridAcq.roi > base.roi ? '+' : ''}${(ridAcq.roi - base.roi).toFixed(1)}pp). 
+      L'aumento del fatturato del ${aum}% produce un ROI di ${fmtPct(aumFat.roi)}.
+      ${ridAcq.roi > aumFat.roi ? 'In questo scenario, razionalizzare gli acquisti è più efficace.' : 'In questo scenario, crescere è più efficace.'}
+    </div>`;
+}
+
+// ====================================================
+// COST CHART
+// ====================================================
+function drawCostChart() {
+  const canvas = document.getElementById('costChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cvu = parseFloat(document.getElementById('cv-cvu').value);
+  const cft = parseFloat(document.getElementById('cv-cft').value);
+  const volMax = parseFloat(document.getElementById('cv-vol').value);
+
+  document.getElementById('cv-cvu-val').textContent = cvu;
+  document.getElementById('cv-cft-val').textContent = cft;
+  document.getElementById('cv-vol-val').textContent = volMax;
+
+  ctx.clearRect(0, 0, W, H);
+  const pad = {l:40, r:10, t:10, b:30};
+  const gW = W - pad.l - pad.r, gH = H - pad.t - pad.b;
+  const maxCost = cft + cvu * volMax;
+
+  function sx(v) { return pad.l + (v / volMax) * gW; }
+  function sy(c) { return pad.t + (1 - c / maxCost) * gH; }
+
+  // Grid
+  ctx.strokeStyle = '#dce8f5'; ctx.lineWidth = 1;
+  for (let i = 0; i <= 5; i++) {
+    const y = pad.t + (i / 5) * gH;
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l + gW, y); ctx.stroke();
+  }
+
+  // Fixed cost
+  ctx.strokeStyle = '#b05c00'; ctx.lineWidth = 2; ctx.setLineDash([5,3]);
+  ctx.beginPath(); ctx.moveTo(sx(0), sy(cft)); ctx.lineTo(sx(volMax), sy(cft)); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Variable cost
+  ctx.strokeStyle = '#1a6fa8'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(sx(0), sy(0)); ctx.lineTo(sx(volMax), sy(cvu * volMax)); ctx.stroke();
+
+  // Total cost
+  ctx.strokeStyle = '#1e3a6e'; ctx.lineWidth = 2.5;
+  ctx.beginPath(); ctx.moveTo(sx(0), sy(cft));
+  for (let x = 0; x <= volMax; x += volMax/100) {
+    ctx.lineTo(sx(x), sy(cft + cvu * x));
+  }
+  ctx.stroke();
+
+  // Labels
+  ctx.fillStyle = '#6688aa'; ctx.font = '10px Gill Sans, sans-serif';
+  ctx.fillText('0', pad.l - 12, pad.t + gH + 16);
+  ctx.fillText(Math.round(volMax/2), sx(volMax/2) - 10, pad.t + gH + 16);
+  ctx.fillText(volMax, sx(volMax) - 10, pad.t + gH + 16);
+
+  ctx.fillStyle = '#b05c00'; ctx.fillText('CFT', sx(volMax * 0.6), sy(cft) - 4);
+  ctx.fillStyle = '#1a6fa8'; ctx.fillText('CVT', sx(volMax * 0.7), sy(cvu * volMax * 0.7) + 12);
+  ctx.fillStyle = '#1e3a6e'; ctx.fillText('CT', sx(volMax * 0.8), sy(cft + cvu * volMax * 0.8) - 4);
+
+  // Update stats
+  const ctMax = cft + cvu * volMax;
+  document.getElementById('cv-cu').textContent = '€ ' + (ctMax / volMax).toFixed(2);
+  document.getElementById('cv-cm').textContent = '€ ' + cvu.toFixed(2);
+  document.getElementById('cv-inc').textContent = Math.round(cft / ctMax * 100) + '%';
+}
+
+// ====================================================
+// BREAK-EVEN
+// ====================================================
+function calcBEP() {
+  const p   = parseFloat(document.getElementById('bep-p').value);
+  const cvu = parseFloat(document.getElementById('bep-cvu').value);
+  const cft = parseFloat(document.getElementById('bep-cft').value);
+  const x   = parseFloat(document.getElementById('bep-x').value);
+
+  document.getElementById('bep-p-val').textContent   = '€ ' + p.toLocaleString();
+  document.getElementById('bep-cvu-val').textContent = '€ ' + cvu.toLocaleString();
+  document.getElementById('bep-cft-val').textContent = '€ ' + cft.toLocaleString();
+  document.getElementById('bep-x-val').textContent   = x;
+
+  const mdcu = p - cvu;
+  if (mdcu <= 0) {
+    document.getElementById('r-mdcu').textContent = '€ ' + mdcu.toFixed(2);
+    document.getElementById('r-mdcu').className = 'val bad';
+    document.getElementById('r-xp').textContent = '∞ (impossibile)';
+    return;
+  }
+  const mdcup = mdcu / p;
+  const xp  = cft / mdcu;
+  const rtp = cft / mdcup;
+  const mdc = mdcu * x;
+  const pr  = mdc - cft;
+  const ms  = x > xp ? ((x - xp) / x * 100) : -(Math.abs(x - xp)/x*100);
+
+  document.getElementById('r-mdcu').textContent = '€ ' + mdcu.toFixed(2);
+  document.getElementById('r-mdcu').className = 'val ' + (mdcu > 0 ? 'good' : 'bad');
+  document.getElementById('r-mdcup').textContent = (mdcup * 100).toFixed(1) + '%';
+  document.getElementById('r-xp').textContent = xp.toFixed(1) + ' unità';
+  document.getElementById('r-rtp').textContent = '€ ' + rtp.toLocaleString('it-IT', {maximumFractionDigits:0});
+  document.getElementById('r-pr').textContent = '€ ' + pr.toLocaleString('it-IT', {maximumFractionDigits:0});
+  document.getElementById('r-pr').className = 'val ' + (pr >= 0 ? 'good' : 'bad');
+  document.getElementById('r-ms').textContent = ms.toFixed(1) + '%';
+  document.getElementById('r-ms').className = 'val ' + (ms >= 0 ? 'good' : 'bad');
+
+  drawBEPChart(p, cvu, cft, x, xp, mdcu);
+}
+
+function drawBEPChart(p, cvu, cft, xEff, xp, mdcu) {
+  const canvas = document.getElementById('bepChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  ctx.clearRect(0, 0, W, H);
+  const pad = {l:50, r:20, t:20, b:40};
+  const gW = W - pad.l - pad.r, gH = H - pad.t - pad.b;
+  const xMax = Math.max(xp * 2.2, xEff * 1.3, 10);
+  const maxVal = Math.max(p * xMax, cft + cvu * xMax) * 1.05;
+
+  function sx(v) { return pad.l + (v / xMax) * gW; }
+  function sy(v) { return pad.t + (1 - v / maxVal) * gH; }
+
+  // Grid
+  ctx.strokeStyle = '#dce8f5'; ctx.lineWidth = 1;
+  [0, 0.25, 0.5, 0.75, 1].forEach(f => {
+    const y = pad.t + f * gH;
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l + gW, y); ctx.stroke();
+    ctx.fillStyle = '#6688aa'; ctx.font = '9px Gill Sans';
+    ctx.fillText((maxVal * (1-f) / 1000).toFixed(1) + 'k', 2, y + 3);
+  });
+
+  // Axis
+  ctx.strokeStyle = '#c0cfe0'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(pad.l, pad.t); ctx.lineTo(pad.l, pad.t + gH); ctx.lineTo(pad.l + gW, pad.t + gH); ctx.stroke();
+
+  // CFT
+  ctx.strokeStyle = '#b05c00'; ctx.lineWidth = 1.5; ctx.setLineDash([4,3]);
+  ctx.beginPath(); ctx.moveTo(sx(0), sy(cft)); ctx.lineTo(sx(xMax), sy(cft)); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Total Cost line
+  ctx.strokeStyle = '#c0392b'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(sx(0), sy(cft)); ctx.lineTo(sx(xMax), sy(cft + cvu * xMax)); ctx.stroke();
+
+  // Revenue line
+  ctx.strokeStyle = '#1a6fa8'; ctx.lineWidth = 2.5;
+  ctx.beginPath(); ctx.moveTo(sx(0), sy(0)); ctx.lineTo(sx(xMax), sy(p * xMax)); ctx.stroke();
+
+  // Break-even point
+  ctx.strokeStyle = '#1e3a6e'; ctx.lineWidth = 1; ctx.setLineDash([3,3]);
+  ctx.beginPath(); ctx.moveTo(sx(xp), sy(0)); ctx.lineTo(sx(xp), sy(p * xp)); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#1e3a6e';
+  ctx.beginPath(); ctx.arc(sx(xp), sy(p * xp), 5, 0, Math.PI * 2); ctx.fill();
+
+  // Effective volume marker
+  if (xEff > 0 && xEff <= xMax) {
+    const prEff = mdcu * xEff - cft;
+    ctx.strokeStyle = prEff >= 0 ? '#1a7a4a' : '#c0392b'; ctx.lineWidth = 1; ctx.setLineDash([2,2]);
+    ctx.beginPath(); ctx.moveTo(sx(xEff), sy(0)); ctx.lineTo(sx(xEff), sy(p * xEff)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = prEff >= 0 ? '#1a7a4a' : '#c0392b';
+    ctx.beginPath(); ctx.arc(sx(xEff), sy(p * xEff), 5, 0, Math.PI * 2); ctx.fill();
+  }
+
+  // Labels
+  ctx.fillStyle = '#1a6fa8'; ctx.font = 'bold 10px Gill Sans';
+  ctx.fillText('RT', sx(xMax * 0.85), sy(p * xMax * 0.85) - 5);
+  ctx.fillStyle = '#c0392b';
+  ctx.fillText('CT', sx(xMax * 0.85), sy(cft + cvu * xMax * 0.85) + 12);
+  ctx.fillStyle = '#1e3a6e';
+  ctx.fillText('Xp=' + xp.toFixed(0), sx(xp) + 4, sy(p * xp / 2));
+
+  // X axis labels
+  ctx.fillStyle = '#6688aa'; ctx.font = '9px Gill Sans';
+  [0, Math.round(xMax/4), Math.round(xMax/2), Math.round(xMax * 3/4), Math.round(xMax)].forEach(v => {
+    ctx.fillText(v, sx(v) - 5, pad.t + gH + 18);
+  });
+  ctx.fillText('Volume', pad.l + gW / 2 - 20, pad.t + gH + 32);
+}
+
+// ====================================================
+// LEVA OPERATIVA
+// ====================================================
+function calcLO() {
+  const pf = parseFloat(document.getElementById('lo-pf').value);
+  const xv  = parseFloat(document.getElementById('lo-x').value);
+  const dr  = parseFloat(document.getElementById('lo-dr').value);
+
+  document.getElementById('lo-pf-val').textContent = pf + '%';
+  document.getElementById('lo-x-val').textContent = xv;
+  document.getElementById('lo-dr-val').textContent = (dr >= 0 ? '+' : '') + dr + '%';
+
+  // Simulate: p=100, cvu based on pf
+  const p = 100, cft = xv * p * (pf / 100), cvu = p * (1 - pf / 100) * 0.6;
+  const mdcu = p - cvu;
+  const mdc = mdcu * xv;
+  const pr  = mdc - cft;
+  if (pr <= 0) {
+    document.getElementById('lo-results').innerHTML = '<div class="result-row"><span class="lbl">Situazione in perdita</span><span class="val bad">PR ≤ 0</span></div>';
+    return;
+  }
+  const L = mdc / pr;
+  const ms = 1 / L * 100;
+  const xp = cft / mdcu;
+  const dpr = L * dr;
+
+  document.getElementById('lo-results').innerHTML = `
+    <div class="result-row"><span class="lbl">Grado Leva Operativa L(X)</span><span class="val">${L.toFixed(2)}x</span></div>
+    <div class="result-row"><span class="lbl">Margine di Sicurezza MS(X)</span><span class="val">${ms.toFixed(1)}%</span></div>
+    <div class="result-row"><span class="lbl">Volume di Pareggio Xp</span><span class="val">${xp.toFixed(0)} unità</span></div>
+    <div class="result-divider"></div>
+    <div class="result-row"><span class="lbl">Con variazione ricavi ${dr >= 0 ? '+' : ''}${dr}%:</span><span class="val ${dpr >= 0 ? 'good' : 'bad'}">${dpr >= 0 ? '+' : ''}${dpr.toFixed(1)}% profitto</span></div>
+    <div style="margin-top:8px;font-size:11px;color:var(--text3);">L(X) = MDC/PR = 1/MS(X). Struttura costi: ${pf}% fissi → leva ${L > 3 ? 'alta (rischio!)' : L > 1.5 ? 'media' : 'bassa'}</div>`;
+
+  drawLOChart(p, cvu, cft, xv, xp, L);
+}
+
+function drawLOChart(p, cvu, cft, x, xp, L) {
+  const canvas = document.getElementById('loChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  const pad = {l:50, r:20, t:30, b:40};
+  const gW = W - pad.l - pad.r, gH = H - pad.t - pad.b;
+  const mdcu = p - cvu;
+  const xMax = Math.max(xp * 2.5, x * 1.4);
+  const prMin = mdcu * 0 - cft;
+  const prMax = mdcu * xMax - cft;
+  const vRange = prMax - prMin;
+
+  function sx(v) { return pad.l + (v / xMax) * gW; }
+  function sy(v) { return pad.t + (1 - (v - prMin) / vRange) * gH; }
+
+  // Grid
+  ctx.strokeStyle = '#dce8f5'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(pad.l, sy(0)); ctx.lineTo(pad.l + gW, sy(0)); ctx.strokeStyle = '#1e3a6e'; ctx.lineWidth = 1; ctx.stroke();
+
+  ctx.strokeStyle = '#c0cfe0'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(pad.l, pad.t); ctx.lineTo(pad.l, pad.t + gH); ctx.lineTo(pad.l + gW, pad.t + gH); ctx.stroke();
+
+  // Profit line
+  ctx.strokeStyle = '#1a6fa8'; ctx.lineWidth = 2.5;
+  ctx.beginPath(); ctx.moveTo(sx(0), sy(-cft)); ctx.lineTo(sx(xMax), sy(mdcu * xMax - cft)); ctx.stroke();
+
+  // Break-even
+  ctx.strokeStyle = '#1e3a6e'; ctx.lineWidth = 1; ctx.setLineDash([4,3]);
+  ctx.beginPath(); ctx.moveTo(sx(xp), pad.t); ctx.lineTo(sx(xp), pad.t + gH); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#1e3a6e'; ctx.font = '10px Gill Sans';
+  ctx.fillText('Xp', sx(xp) + 3, pad.t + 14);
+
+  // Current X
+  const pr = mdcu * x - cft;
+  ctx.fillStyle = pr >= 0 ? '#1a7a4a' : '#c0392b';
+  ctx.beginPath(); ctx.arc(sx(x), sy(pr), 6, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#1e3a6e'; ctx.font = '10px Gill Sans';
+  ctx.fillText('X=' + x, sx(x) + 8, sy(pr));
+
+  // -CFT label
+  ctx.fillStyle = '#c0392b'; ctx.font = '10px Gill Sans';
+  ctx.fillText('-CFT', pad.l - 45, sy(-cft) + 3);
+
+  // Profit/Loss zones
+  const yZero = sy(0);
+  ctx.fillStyle = 'rgba(26,122,74,0.06)';
+  ctx.fillRect(pad.l, pad.t, gW, yZero - pad.t);
+  ctx.fillStyle = 'rgba(192,57,43,0.06)';
+  ctx.fillRect(pad.l, yZero, gW, pad.t + gH - yZero);
+
+  ctx.fillStyle = '#6688aa'; ctx.font = '9px Gill Sans';
+  [0, Math.round(xMax/4), Math.round(xMax/2), Math.round(xMax)].forEach(v => {
+    ctx.fillText(v, sx(v) - 5, pad.t + gH + 18);
+  });
+  ctx.fillText('Volume', pad.l + gW/2 - 20, pad.t + gH + 32);
+  ctx.fillStyle = '#1a6fa8'; ctx.font = 'bold 11px Gill Sans';
+  ctx.fillText('Reddito Volume (Profitto)', pad.l + 5, pad.t + 14);
+}
+
+// ====================================================
+// MULTI-PRODUCT
+// ====================================================
+function calcMulti() {
+  const p1p = parseFloat(document.getElementById('mp-p1p').value) || 80;
+  const p1c = parseFloat(document.getElementById('mp-p1c').value) || 45;
+  const p1m = parseFloat(document.getElementById('mp-p1m').value) || 60;
+  const p2p = parseFloat(document.getElementById('mp-p2p').value) || 250;
+  const p2c = parseFloat(document.getElementById('mp-p2c').value) || 120;
+  const cft = parseFloat(document.getElementById('mp-cft').value) || 20000;
+  const p2m = 100 - p1m;
+
+  document.getElementById('mp-cft-val').textContent = '€ ' + cft.toLocaleString();
+  document.getElementById('mp-p2m-td').textContent = p2m + '%';
+
+  const mdcu1 = p1p - p1c, mdcu2 = p2p - p2c;
+  const mdcumix = (p1m/100) * mdcu1 + (p2m/100) * mdcu2;
+  const xp = mdcumix > 0 ? cft / mdcumix : null;
+  const rt_p1 = xp ? xp * (p1m/100) * p1p : null;
+  const rt_p2 = xp ? xp * (p2m/100) * p2p : null;
+
+  document.getElementById('multi-results').innerHTML = `
+    <div class="result-row"><span class="lbl">MDC unitario P1</span><span class="val ${mdcu1>=0?'good':'bad'}">€ ${mdcu1.toFixed(2)}</span></div>
+    <div class="result-row"><span class="lbl">MDC unitario P2</span><span class="val ${mdcu2>=0?'good':'bad'}">€ ${mdcu2.toFixed(2)}</span></div>
+    <div class="result-row"><span class="lbl">MDC unitario del Mix</span><span class="val">€ ${mdcumix.toFixed(2)}</span></div>
+    <div class="result-divider"></div>
+    <div class="result-row"><span class="lbl">Volume di Pareggio Mix</span><span class="val">${xp ? xp.toFixed(0) + ' unità' : 'N/D'}</span></div>
+    <div class="result-row"><span class="lbl">di cui P1 (${p1m}%)</span><span class="val">${xp ? Math.round(xp * p1m/100) + ' unità' : 'N/D'}</span></div>
+    <div class="result-row"><span class="lbl">di cui P2 (${p2m}%)</span><span class="val">${xp ? Math.round(xp * p2m/100) + ' unità' : 'N/D'}</span></div>`;
+}
+
+// ====================================================
+// KRALJIC INTERACTIVE
+// ====================================================
+const kraljicData = {
+  strat: {
+    title: '🔑 Prodotti Strategici',
+    color: 'var(--red)',
+    desc: 'Alta importanza strategica + mercato di fornitura difficile.',
+    strategy: 'Partnership di lungo termine. Single o dual sourcing. Co-design. Investimenti relazionali specifici. Contratti quadro con garanzie di volumi. Vendor development.',
+    examples: 'Tessuto jacquard su misura, filato Nm speciale, stampi esclusivi, tecnologie di finishing proprietarie.',
+    tools: 'Early Supplier Involvement, VMI, Colocation, Contratti revenue-sharing',
+    risk: 'Alto rischio supply: monitorare continuamente le prestazioni del fornitore.'
+  },
+  collo: {
+    title: '⚠️ Collo di Bottiglia',
+    color: 'var(--amber)',
+    desc: 'Bassa importanza strategica + mercato difficile (pochi/unici fornitori).',
+    strategy: 'Scorte di sicurezza elevate. Contratti con garanzie di fornitura. Dual sourcing se possibile. Sviluppo fornitori alternativi nel lungo periodo.',
+    examples: 'Cashmere (monopolio geografico), coloranti specifici, elastici speciali, zip YKK particolari.',
+    tools: 'Risk hedging, scorte di buffer, backup supplier',
+    risk: 'Rischio di stock-out critico anche se il valore unitario è basso.'
+  },
+  leva: {
+    title: '💪 Prodotti Leva',
+    color: 'var(--gold)',
+    desc: 'Alta importanza strategica + mercato di fornitura facile.',
+    strategy: 'Massimizzare il potere contrattuale. Multiple sourcing. Aste al ribasso. Contratti a breve termine. E-sourcing. Pressione sui prezzi.',
+    examples: 'Tessuti jersey standard, bottoni commodity, imbottiture, fermagli standard, filo comune.',
+    tools: 'Aste inverse elettroniche, e-procurement, spot buying, benchmark continuo',
+    risk: 'Attenzione a non danneggiare relazioni strategiche future per risparmi marginali.'
+  },
+  non: {
+    title: '📦 Non Critico',
+    color: 'var(--teal)',
+    desc: 'Bassa importanza strategica + mercato di fornitura facile.',
+    strategy: 'Automazione e standardizzazione del processo di acquisto. E-procurement con catalogi. Aggregazione fabbisogni. Riduzione numero fornitori. Ridurre il costo del processo.',
+    examples: 'Cancelleria, MRO generico, prodotti pulizia, attrezzatura ufficio, forniture IT generiche.',
+    tools: 'E-procurement, cataloghi online, P-Card, contratti quadro aperti',
+    risk: 'Rischio "maverick buying" — gestire con sistemi informativi e politiche chiare.'
+  }
+};
+
+function selectKraljic(quad) {
+  document.querySelectorAll('.matrix-cell').forEach(c => c.classList.remove('selected'));
+  document.getElementById('kq-' + quad).classList.add('selected');
+  const d = kraljicData[quad];
+  document.getElementById('kraljic-detail').innerHTML = `
+    <div class="card-title" style="color:${d.color}">${d.title}</div>
+    <p>${d.desc}</p>
+    <div class="theory-block" style="border-left-color:${d.color}; margin-top:8px;">
+      <h4 style="color:${d.color}">Strategia Raccomandata</h4>
+      <p>${d.strategy}</p>
+    </div>
+    <div style="margin-top:10px;">
+      <div class="card-sub">Esempi Settore Moda-Tessile</div>
+      <p style="margin-top:4px;">${d.examples}</p>
+    </div>
+    <div style="margin-top:8px;">
+      <div class="card-sub">Strumenti</div>
+      <p style="margin-top:4px;">${d.tools}</p>
+    </div>
+    <div style="margin-top:8px;padding:8px;background:rgba(231,111,81,0.08);border-radius:4px;font-size:11px;color:var(--amber);">
+      ⚠️ ${d.risk}
+    </div>`;
+}
+
+function classifyKraljic() {
+  const imp  = parseInt(document.getElementById('kq-imp').value);
+  const diff = parseInt(document.getElementById('kq-diff').value);
+  document.getElementById('kq-imp-val').textContent  = imp;
+  document.getElementById('kq-diff-val').textContent = diff;
+
+  let quad, color, name;
+  if (imp >= 5 && diff >= 5) { quad = 'STRATEGICO'; color = 'var(--red)'; name = 'Partnership, single sourcing, co-design'; }
+  else if (imp < 5 && diff >= 5) { quad = 'COLLO DI BOTTIGLIA'; color = 'var(--amber)'; name = 'Scorte sicurezza, dual sourcing, contratti garanzia'; }
+  else if (imp >= 5 && diff < 5) { quad = 'LEVA'; color = 'var(--gold)'; name = 'Multiple sourcing, aste, pressione prezzi'; }
+  else { quad = 'NON CRITICO'; color = 'var(--teal)'; name = 'E-procurement, catalogo, aggregazione fabbisogni'; }
+
+  document.getElementById('kq-class-result').innerHTML = `
+    <div class="result-row"><span class="lbl">Quadrante</span><span class="val" style="color:${color}">${quad}</span></div>
+    <div class="result-row"><span class="lbl">Strategia</span></div>
+    <div style="font-size:12px;color:var(--text2);margin-top:4px;">${name}</div>`;
+}
+
+// ====================================================
+// VENDOR RATING
+// ====================================================
+function classifyVendor() {
+  const attr  = parseInt(document.getElementById('vr-attr').value);
+  const forza = parseInt(document.getElementById('vr-forza').value);
+  document.getElementById('vr-attr-val').textContent  = attr;
+  document.getElementById('vr-forza-val').textContent = forza;
+
+  let strategy, color, action;
+  if (attr >= 5 && forza >= 5) {
+    strategy = 'PARTNERSHIP STRATEGICA'; color = 'var(--green)';
+    action = 'Investire in collaborazione e innovazione congiunta. Integrare i processi. Relazione di lungo periodo.';
+  } else if (attr >= 5 && forza < 5) {
+    strategy = 'SVILUPPO RELAZIONE'; color = 'var(--gold)';
+    action = 'Rafforzare il rapporto. Aumentare interazioni e fiducia. Investimenti relazionali selettivi.';
+  } else if (attr < 5 && forza >= 5) {
+    strategy = 'RAZIONALIZZAZIONE'; color = 'var(--amber)';
+    action = 'Valutare riduzione dipendenza. Migliorare efficienza o rinegoziare. Evitare over-investment.';
+  } else {
+    strategy = 'DISIMPEGNO / SOSTITUZIONE'; color = 'var(--red)';
+    action = 'Minimizzare investimenti relazionali. Standardizzare. Cercare fornitori alternativi.';
+  }
+
+  document.getElementById('vr-result').innerHTML = `
+    <div class="result-row"><span class="lbl">Strategia Suggerita</span><span class="val" style="color:${color}">${strategy}</span></div>
+    <div style="font-size:12px;color:var(--text2);margin-top:6px;">${action}</div>`;
+}
+
+// ====================================================
+// SC STRATEGY SELECTOR
+// ====================================================
+function selectSCStrategy() {
+  const vd = parseInt(document.getElementById('sc-vd').value);
+  const ip = parseInt(document.getElementById('sc-ip').value);
+  document.getElementById('sc-vd-val').textContent = vd;
+  document.getElementById('sc-ip-val').textContent = ip;
+
+  let strategy, color, desc, example;
+  if (vd < 5 && ip < 5) {
+    strategy = 'LEAN'; color = 'var(--teal)';
+    desc = 'Domanda stabile, processi maturi. Massimizzare efficienza. Eliminazione waste, economie di scala, automazione informatica.';
+    example = 'Alimentari industria, abbigliamento base (basic tees, uniformi), produzione conto terzi standardizzata.';
+  } else if (vd >= 5 && ip < 5) {
+    strategy = 'RESPONSIVE'; color = 'var(--gold)';
+    desc = 'Alta variabilità domanda, processi stabili. Build-to-order, mass customization. Time-to-market critico.';
+    example = 'Abbigliamento moda stagionale (Prato → showroom), computer, musica, abbigliamento firmato.';
+  } else if (vd < 5 && ip >= 5) {
+    strategy = 'RISK HEDGING'; color = 'var(--amber)';
+    desc = 'Domanda relativamente stabile ma processi/fornitura instabili. Backup sistematici, condivisione risorse di capacità.';
+    example = 'Petrolio, energia idroelettrica, prodotti agricoli, materie prime con volatilità supply.';
+  } else {
+    strategy = 'AGILE'; color = 'var(--red)';
+    desc = 'Alta variabilità domanda + processi instabili. Reattività massima + gestione rischio. La sfida più complessa.';
+    example = 'TLC, semiconduttori, computer professionali, moda lusso avanguardia con nuove tecnologie di produzione.';
+  }
+
+  document.getElementById('sc-strategy-result').innerHTML = `
+    <div class="result-row"><span class="lbl">Strategia Ottimale</span><span class="val" style="color:${color};font-size:16px;">${strategy}</span></div>
+    <div style="font-size:12px;color:var(--text2);margin-top:6px;">${desc}</div>
+    <div style="font-size:11px;color:var(--text3);margin-top:6px;">Es: ${example}</div>`;
+}
+
+// ====================================================
+// PUSH PULL CHART
+// ====================================================
+function drawPushPull() {
+  const dp = parseFloat(document.getElementById('pp-dp').value);
+  document.getElementById('pp-dp-val').textContent = Math.round(dp) + '%';
+
+  const canvas = document.getElementById('ppChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const pushW = (dp / 100) * W;
+  const y0 = 20, h = 50, y1 = y0 + h;
+
+  // Push zone
+  ctx.fillStyle = 'rgba(42,157,143,0.2)';
+  ctx.fillRect(0, y0, pushW, h);
+  ctx.strokeStyle = '#2a9d8f'; ctx.lineWidth = 2;
+  ctx.strokeRect(0, y0, pushW, h);
+  ctx.fillStyle = '#2a9d8f'; ctx.font = 'bold 11px Gill Sans';
+  ctx.textAlign = 'center';
+  if (pushW > 50) ctx.fillText('PUSH', pushW / 2, y0 + h/2 + 4);
+
+  // Pull zone
+  ctx.fillStyle = 'rgba(244,162,97,0.2)';
+  ctx.fillRect(pushW, y0, W - pushW, h);
+  ctx.strokeStyle = '#f4a261'; ctx.lineWidth = 2;
+  ctx.strokeRect(pushW, y0, W - pushW, h);
+  ctx.fillStyle = '#f4a261';
+  if (W - pushW > 50) ctx.fillText('PULL', pushW + (W - pushW) / 2, y0 + h/2 + 4);
+
+  // Decoupling point marker
+  ctx.fillStyle = '#e9c46a';
+  ctx.fillRect(pushW - 2, y0 - 5, 4, h + 10);
+  ctx.font = '10px Gill Sans'; ctx.textAlign = 'center';
+  ctx.fillText('Decoupling', pushW, y0 - 8);
+
+  // Labels below
+  ctx.fillStyle = '#6688aa'; ctx.font = '9px Gill Sans'; ctx.textAlign = 'left';
+  ctx.fillText('Fornitori', 4, H - 5);
+  ctx.textAlign = 'right';
+  ctx.fillText('Clienti', W - 4, H - 5);
+
+  // Mode description
+  let mode, color;
+  if (dp < 20) { mode = 'Pull totale — Build to order puro (es. sartoria su misura)'; color = '#f4a261'; }
+  else if (dp < 40) { mode = 'Prevalentemente Pull — Assemblaggio su ordine (ATO)'; color = '#f4a261'; }
+  else if (dp < 60) { mode = 'Bilanciato — Postponement ottimale (es. vernici, Dell)'; color = '#e9c46a'; }
+  else if (dp < 80) { mode = 'Prevalentemente Push — Produzione su previsione, stock base'; color = '#2a9d8f'; }
+  else { mode = 'Push totale — Make to Stock puro (es. commodity)'; color = '#2a9d8f'; }
+
+  document.getElementById('pp-result').innerHTML = `
+    <div class="result-row"><span class="lbl" style="color:${color};">${mode}</span></div>
+    <div class="result-row"><span class="lbl">Rischio sovrascorta</span><span class="val ${dp > 60 ? 'bad' : dp > 40 ? 'warn' : 'good'}">${dp > 60 ? 'Alto' : dp > 40 ? 'Medio' : 'Basso'}</span></div>
+    <div class="result-row"><span class="lbl">Reattività al mercato</span><span class="val ${dp < 40 ? 'good' : dp < 60 ? 'warn' : 'bad'}">${dp < 40 ? 'Alta' : dp < 60 ? 'Media' : 'Bassa'}</span></div>`;
+}
+
+// ====================================================
+// BULLWHIP CHART
+// ====================================================
+function drawBullwhip() {
+  const cv  = parseFloat(document.getElementById('bw-cv').value) / 100;
+  const amp = parseFloat(document.getElementById('bw-amp').value);
+  document.getElementById('bw-cv-val').textContent  = Math.round(cv * 100) + '%';
+  document.getElementById('bw-amp-val').textContent = amp.toFixed(1) + 'x';
+
+  const canvas = document.getElementById('bullwhipChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const N = 50;
+  const base = 100;
+  const stages = [
+    { label: 'Clienti Finali', color: '#2a9d8f', ampFactor: 1 },
+    { label: 'Dettagliante',   color: '#52b788', ampFactor: amp },
+    { label: 'Distributore',  color: '#e9c46a', ampFactor: amp * amp },
+    { label: 'Produttore',    color: '#f4a261', ampFactor: amp * amp * amp },
+  ];
+
+  const pad = {l:10, r:80, t:20, b:30};
+  const gW = W - pad.l - pad.r, gH = H - pad.t - pad.b;
+  const stH = gH / stages.length;
+
+  stages.forEach((stage, si) => {
+    const y0 = pad.t + si * stH;
+    const ymid = y0 + stH / 2;
+    const amplitude = base * cv * stage.ampFactor;
+    const maxAmp = base * cv * stages[stages.length-1].ampFactor;
+    const scale = stH * 0.4 / maxAmp;
+
+    ctx.strokeStyle = stage.color; ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    for (let i = 0; i < N; i++) {
+      const t = i / N;
+      const wave = Math.sin(t * Math.PI * 4) * amplitude + Math.sin(t * Math.PI * 7 + si * 0.5) * amplitude * 0.3;
+      const x = pad.l + t * gW;
+      const y = ymid - wave * scale;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // Center line
+    ctx.strokeStyle = stage.color; ctx.lineWidth = 0.5; ctx.setLineDash([2,3]);
+    ctx.beginPath(); ctx.moveTo(pad.l, ymid); ctx.lineTo(pad.l + gW, ymid); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // CV label
+    ctx.fillStyle = stage.color; ctx.font = '9px Gill Sans'; ctx.textAlign = 'left';
+    ctx.fillText(stage.label, pad.l + gW + 4, ymid - 8);
+    ctx.fillStyle = '#607080'; ctx.font = '8px Gill Sans';
+    ctx.fillText('CV≈' + (cv * stage.ampFactor * 100).toFixed(0) + '%', pad.l + gW + 4, ymid + 10);
+  });
+
+  // Arrow showing amplification direction
+  ctx.fillStyle = '#e76f51'; ctx.font = 'bold 10px Gill Sans'; ctx.textAlign = 'center';
+  ctx.fillText('↑ Amplificazione', pad.l + gW / 2, pad.t + 10);
+}
+
+// ====================================================
+// REVENUE SHARING CALC
+// ====================================================
+function calcRevenueShare() {
+  const price = parseFloat(document.getElementById('rs-price').value) || 9;
+  const rent  = parseFloat(document.getElementById('rs-rent').value) || 3;
+  const split = parseFloat(document.getElementById('rs-split').value) || 50;
+  document.getElementById('rs-split-val').textContent = split + '%';
+
+  const custShare = rent * (split / 100);
+  const supplierShare = rent * (1 - split / 100);
+  const bepCust = price / custShare;
+  const bepFull = price / rent;
+
+  document.getElementById('rs-result').innerHTML = `
+    <div class="result-row"><span class="lbl">Ricavi per noleggio al cliente</span><span class="val">€ ${custShare.toFixed(2)}</span></div>
+    <div class="result-row"><span class="lbl">Royalty al fornitore</span><span class="val">€ ${supplierShare.toFixed(2)}</span></div>
+    <div class="result-divider"></div>
+    <div class="result-row"><span class="lbl">Break-even noleggi (rev. sharing)</span><span class="val good">${bepCust.toFixed(1)} noleggi</span></div>
+    <div class="result-row"><span class="lbl">Break-even senza condivisione</span><span class="val bad">${bepFull.toFixed(1)} noleggi</span></div>
+    <div style="margin-top:6px;font-size:11px;color:var(--text3)">Riduzione break-even del ${Math.round((bepFull-bepCust)/bepFull*100)}% → incentivo a tenere più scorte → ↑ livello di servizio</div>`;
+}
+
+// ====================================================
+// WHAT-IF CHART
+// ====================================================
+function calcWhatIf() {
+  const p   = parseFloat(document.getElementById('wi-p').value)   || 150;
+  const cvu = parseFloat(document.getElementById('wi-cvu').value) || 80;
+  const cft = parseFloat(document.getElementById('wi-cft').value) || 5000;
+  const x   = parseFloat(document.getElementById('wi-x').value)   || 120;
+
+  const mdcu = p - cvu;
+  const xp   = mdcu > 0 ? cft / mdcu : null;
+  const pr   = mdcu * x - cft;
+  const ms   = (xp && x > xp) ? (x - xp) / x * 100 : null;
+  const L    = (pr > 0) ? (mdcu * x / pr) : null;
+
+  document.getElementById('wi-results').innerHTML = `
+    <div class="result-row"><span class="lbl">MDC Unitario</span><span class="val ${mdcu >= 0 ? 'good' : 'bad'}">€ ${mdcu.toFixed(2)}</span></div>
+    <div class="result-row"><span class="lbl">Volume di Pareggio</span><span class="val">${xp ? xp.toFixed(1) + ' unità' : 'N/D'}</span></div>
+    <div class="result-row"><span class="lbl">Profitto @ ${x} unità</span><span class="val ${pr >= 0 ? 'good' : 'bad'}">€ ${pr.toLocaleString('it-IT', {maximumFractionDigits:0})}</span></div>
+    <div class="result-row"><span class="lbl">Margine di Sicurezza</span><span class="val ${ms && ms > 0 ? 'good' : 'bad'}">${ms ? ms.toFixed(1) + '%' : 'Perdita'}</span></div>
+    <div class="result-row"><span class="lbl">Grado Leva Operativa</span><span class="val">${L ? L.toFixed(2) + 'x' : 'N/D'}</span></div>`;
+
+  const canvas = document.getElementById('wiChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  const pad = {l:50, r:20, t:20, b:40};
+  const gW = W - pad.l - pad.r, gH = H - pad.t - pad.b;
+  const xMax = xp ? Math.max(xp * 2.5, x * 1.5) : x * 2;
+  const maxV = Math.max(p * xMax, cft + cvu * xMax) * 1.05;
+
+  function sx(v) { return pad.l + (v / xMax) * gW; }
+  function sy(v) { return pad.t + (1 - v / maxV) * gH; }
+
+  ctx.strokeStyle = '#c0cfe0'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(pad.l, pad.t); ctx.lineTo(pad.l, pad.t + gH); ctx.lineTo(pad.l + gW, pad.t + gH); ctx.stroke();
+
+  // CT
+  ctx.strokeStyle = '#e76f51'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(sx(0), sy(cft)); ctx.lineTo(sx(xMax), sy(cft + cvu * xMax)); ctx.stroke();
+  // RT
+  ctx.strokeStyle = '#2a9d8f'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(sx(0), sy(0)); ctx.lineTo(sx(xMax), sy(p * xMax)); ctx.stroke();
+  // BEP
+  if (xp) {
+    ctx.strokeStyle = '#e9c46a'; ctx.setLineDash([4,3]); ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(sx(xp), pad.t); ctx.lineTo(sx(xp), pad.t + gH); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#e9c46a'; ctx.font = '9px Gill Sans'; ctx.textAlign = 'center';
+    ctx.fillText('Xp=' + xp.toFixed(0), sx(xp), pad.t + 14);
+  }
+  // X marker
+  ctx.fillStyle = pr >= 0 ? '#52b788' : '#e76f51';
+  ctx.beginPath(); ctx.arc(sx(x), sy(p * x), 5, 0, Math.PI * 2); ctx.fill();
+
+  ctx.fillStyle = '#6688aa'; ctx.font = '9px Gill Sans'; ctx.textAlign = 'left';
+  [0, Math.round(xMax/3), Math.round(xMax*2/3), Math.round(xMax)].forEach(v => {
+    ctx.fillText(v, sx(v) - 8, pad.t + gH + 14);
+  });
+  ctx.fillStyle = '#2a9d8f'; ctx.fillText('RT', sx(xMax * 0.8), sy(p * xMax * 0.8) - 5);
+  ctx.fillStyle = '#e76f51'; ctx.fillText('CT', sx(xMax * 0.8), sy(cft + cvu * xMax * 0.8) + 12);
+}
+
+// ====================================================
+// KRALJIC PORTFOLIO CHART
+// ====================================================
+let kpItems = [];
+
+function addKraljicItem() {
+  const name = document.getElementById('kp-name').value.trim();
+  const imp  = parseFloat(document.getElementById('kp-imp').value);
+  const diff = parseFloat(document.getElementById('kp-diff').value);
+  if (!name || !imp || !diff) return;
+  if (imp < 1 || imp > 10 || diff < 1 || diff > 10) return;
+  kpItems.push({ name, imp, diff });
+  document.getElementById('kp-name').value = '';
+  document.getElementById('kp-imp').value  = '';
+  document.getElementById('kp-diff').value = '';
+  drawKPChart();
+  renderKPList();
+}
+
+function renderKPList() {
+  const list = document.getElementById('kp-list');
+  if (!list) return;
+  list.innerHTML = kpItems.map((it, i) => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border);font-size:11px;">
+      <span style="color:var(--text2);">${it.name}</span>
+      <span style="color:var(--text3);">Imp:${it.imp} Diff:${it.diff}</span>
+      <button onclick="kpItems.splice(${i},1);drawKPChart();renderKPList();" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:12px;">✕</button>
+    </div>`).join('');
+}
+
+function drawKPChart() {
+  const canvas = document.getElementById('kpChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  const pad = {l:30, r:20, t:20, b:30};
+  const gW = W - pad.l - pad.r, gH = H - pad.t - pad.b;
+
+  // Grid lines
+  ctx.strokeStyle = '#c0cfe0'; ctx.lineWidth = 1;
+  ctx.strokeRect(pad.l, pad.t, gW, gH);
+  ctx.beginPath(); ctx.moveTo(pad.l + gW/2, pad.t); ctx.lineTo(pad.l + gW/2, pad.t + gH); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(pad.l, pad.t + gH/2); ctx.lineTo(pad.l + gW, pad.t + gH/2); ctx.stroke();
+
+  // Quadrant backgrounds
+  const quadColors = [
+    {x:0, y:0, c:'rgba(231,111,81,0.08)'},    // top-left (high imp, low diff) = leva
+    {x:gW/2, y:0, c:'rgba(231,111,81,0.14)'},  // top-right = strat
+    {x:0, y:gH/2, c:'rgba(42,157,143,0.08)'}, // bot-left = non crit
+    {x:gW/2, y:gH/2, c:'rgba(244,162,97,0.08)'} // bot-right = collo
+  ];
+  quadColors.forEach(q => {
+    ctx.fillStyle = q.c;
+    ctx.fillRect(pad.l + q.x, pad.t + q.y, gW/2, gH/2);
+  });
+
+  // Labels
+  ctx.fillStyle = '#6688aa'; ctx.font = '9px Gill Sans'; ctx.textAlign = 'center';
+  ctx.fillText('Difficoltà Mercato →', pad.l + gW/2, pad.t + gH + 20);
+  ctx.save(); ctx.translate(14, pad.t + gH/2); ctx.rotate(-Math.PI/2);
+  ctx.fillText('← Importanza Strategica', 0, 0); ctx.restore();
+
+  // Quadrant labels
+  ctx.font = '8px Gill Sans';
+  ctx.fillStyle = '#b05c00'; ctx.fillText('LEVA', pad.l + gW/4, pad.t + 12);
+  ctx.fillStyle = '#c0392b'; ctx.fillText('STRATEGICO', pad.l + gW * 3/4, pad.t + 12);
+  ctx.fillStyle = '#1a6fa8'; ctx.fillText('NON CRITICO', pad.l + gW/4, pad.t + gH - 6);
+  ctx.fillStyle = '#b05c00'; ctx.fillText('COLLO BOTT.', pad.l + gW * 3/4, pad.t + gH - 6);
+
+  // Points
+  const colors = ['#2a9d8f','#e9c46a','#f4a261','#e76f51','#52b788','#9b5de5','#f15bb5','#00bbf9'];
+  kpItems.forEach((it, i) => {
+    const x = pad.l + (it.diff / 10) * gW;
+    const y = pad.t + (1 - it.imp / 10) * gH;
+    ctx.fillStyle = colors[i % colors.length];
+    ctx.beginPath(); ctx.arc(x, y, 7, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 8px Gill Sans'; ctx.textAlign = 'center';
+    ctx.fillText(i + 1, x, y + 3);
+    ctx.fillStyle = colors[i % colors.length]; ctx.font = '8px Gill Sans';
+    const labelX = x > pad.l + gW * 0.75 ? x - 4 : x + 10;
+    ctx.textAlign = x > pad.l + gW * 0.75 ? 'right' : 'left';
+    ctx.fillText(it.name, labelX, y - 8);
+  });
+}
+
+// ====================================================
+// STRATEGIC PLANNER
+// ====================================================
+const planDB = {
+  base: {
+    stabil: { strat: 'LEAN', sc: 'Supply chain efficiente (lean)', mob: 'Multiple sourcing', collab: 'Visibilità informazioni' },
+    crescita: { strat: 'LEAN + RESPONSIVE', sc: 'Lean a monte, Responsive a valle', mob: 'Parallel sourcing', collab: 'EDI con fornitori chiave' },
+    turbolento: { strat: 'RESPONSIVE', sc: 'Build-to-order, fast replenishment', mob: 'Dual/Multiple sourcing flessibile', collab: 'VMI con grandi fornitori tessuto' },
+    crisi: { strat: 'RISK HEDGING', sc: 'Scorte di buffer, dual sourcing', mob: 'Dual sourcing + stock componenti critici', collab: 'Contratti quadro con garanzie volume' }
+  },
+  fashion: {
+    stabil: { strat: 'RESPONSIVE', sc: 'Reattiva, TtM breve', mob: 'Single/Dual sourcing per lead tessuto', collab: 'Co-design con terzisti chiave' },
+    crescita: { strat: 'RESPONSIVE + AGILE', sc: 'Fast fashion, mass customization', mob: 'Parallel sourcing, local + nearshore', collab: 'CPFR con distributori' },
+    turbolento: { strat: 'AGILE', sc: 'Maximum agility, postponement', mob: 'Multiple sourcing con buffer', collab: 'Full integration + information sharing' },
+    crisi: { strat: 'RISK HEDGING + RESPONSIVE', sc: 'Near-reshoring, buffer stocks', mob: 'Local sourcing prioritario', collab: 'Vendor development locale (Prato)' }
+  },
+  lusso: {
+    stabil: { strat: 'RESPONSIVE', sc: 'Build-to-order artigianale', mob: 'Single sourcing strategico', collab: 'Partnership profonda, co-design' },
+    crescita: { strat: 'RESPONSIVE', sc: 'Espansione controllata, qualità prioritaria', mob: 'Dual sourcing con sviluppo fornitori', collab: 'Joint function development' },
+    turbolento: { strat: 'RESPONSIVE', sc: 'Brand protection + flessibilità', mob: 'Integrazione verticale parziale core', collab: 'Contratti quadro blindati' },
+    crisi: { strat: 'RISK HEDGING', sc: 'Integrazione verticale core, outsource non core', mob: 'Insourcing selettivo + dual sourcing', collab: 'Capacity options con fornitori critici' }
+  },
+  tecnico: {
+    stabil: { strat: 'LEAN + RISK HEDGING', sc: 'Efficienza + backup certifications', mob: 'Dual sourcing certificato', collab: 'Collaborazione normativa, R&D congiunto' },
+    crescita: { strat: 'RISK HEDGING + RESPONSIVE', sc: 'Scala + certificazioni + reattività', mob: 'Parallel sourcing con standard', collab: 'ESI — Early Supplier Involvement' },
+    turbolento: { strat: 'AGILE', sc: 'Rapid prototyping supply chain', mob: 'Agile sourcing + open innovation', collab: 'Co-design + collaborazione operativa' },
+    crisi: { strat: 'RISK HEDGING', sc: 'Reshoring + Nearshoring per certif.', mob: 'Local sourcing certificato', collab: 'Contratti buy-back + capacity option' }
+  }
+};
+
+function generatePlan() {
+  const prod = document.getElementById('plan-prod').value;
+  const size = document.getElementById('plan-size').value;
+  const mkt  = document.getElementById('plan-mkt').value;
+
+  const plan = planDB[prod] ? planDB[prod][mkt] : planDB.base[mkt];
+  const output = document.getElementById('plan-output');
+
+  const prodLabel = document.getElementById('plan-prod').options[document.getElementById('plan-prod').selectedIndex].text;
+  const sizeLabel = document.getElementById('plan-size').options[document.getElementById('plan-size').selectedIndex].text;
+  const mktLabel  = document.getElementById('plan-mkt').options[document.getElementById('plan-mkt').selectedIndex].text;
+
+  output.innerHTML = `
+    <div class="card-title">Piano Strategico Generato</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+      <span class="badge teal">${prodLabel.split('(')[0].trim()}</span>
+      <span class="badge amber">${sizeLabel.split('(')[0].trim()}</span>
+      <span class="badge gold">${mktLabel.split('(')[0].trim()}</span>
+    </div>
+    <div class="theory-block">
+      <h4>Strategia SC Raccomandata</h4>
+      <p style="font-size:14px;color:var(--teal);">${plan.strat}</p>
+    </div>
+    <div class="theory-block amber" style="margin-top:8px;">
+      <h4>Configurazione Supply Chain</h4>
+      <p>${plan.sc}</p>
+    </div>
+    <div class="theory-block green" style="margin-top:8px;">
+      <h4>Strategia Make or Buy</h4>
+      <p>${plan.mob}</p>
+    </div>
+    <div class="theory-block" style="margin-top:8px;">
+      <h4>Livello di Collaborazione</h4>
+      <p>${plan.collab}</p>
+    </div>`;
+
+  document.getElementById('plan-details').style.display = 'block';
+
+  const sizeReco = {
+    micro: { kraljic: 'Collo di Bottiglia → Near Bottleneck per filati speciali; Non critico per tutto il resto', leva: 'Dipendenza dal committente (make on demand) — TRC elevatissimo', negoziazione: 'Posizione debole — collaborazione vs competizione' },
+    piccola: { kraljic: 'Mix: prodotti leva (tessuti base), qualche strategico (know-how esclusivo)', leva: 'Variabilizzare costi tramite terzisti per la parte volatile', negoziazione: 'Aggregazione volumi con altri organizzatori (es. consorzio Prato)' },
+    media: { kraljic: 'Matrice completa applicabile. Presidio dei prodotti strategici', leva: 'Leverage su acquisti possibile, KPI acquisti su fatturato', negoziazione: 'Posizione negoziabile — single sourcing su strategici, multiple su leva' },
+    grande: { kraljic: 'Full Kraljic. Strategic sourcing. Vendor development attivo', leva: 'Effetto leva acquisti molto rilevante. ROI sensitivity alta', negoziazione: 'Potere contrattuale elevato — dual/parallel sourcing ottimale' }
+  };
+
+  const r = sizeReco[size];
+  document.getElementById('plan-detail-grid').innerHTML = `
+    <div class="card card-accent">
+      <div class="card-title">📊 Portafoglio Acquisti</div>
+      <p>${r.kraljic}</p>
+    </div>
+    <div class="card card-gold">
+      <div class="card-title">💰 Gestione Costi</div>
+      <p>${r.leva}</p>
+    </div>
+    <div class="card card-amber">
+      <div class="card-title">🤝 Negoziazione</div>
+      <p>${r.negoziazione}</p>
+    </div>`;
+}
+
+// ====================================================
+// INIT
+// ====================================================
+window.addEventListener('load', () => {
+  updateMoB();
+  calcLeva();
+  drawCostChart();
+  calcBEP();
+  calcLO();
+  calcMulti();
+  classifyKraljic();
+  classifyVendor();
+  selectSCStrategy();
+  drawPushPull();
+  drawBullwhip();
+  calcRevenueShare();
+  calcWhatIf();
+  drawKPChart();
+
+  // Add some default items to KP chart
+  kpItems = [
+    {name:'Filato base', imp:7, diff:3},
+    {name:'Cashmere', imp:5, diff:9},
+    {name:'Jacquard speciale', imp:9, diff:8},
+    {name:'Cancelleria', imp:2, diff:2},
+  ];
+  drawKPChart();
+  renderKPList();
+});
+</script>
+</body>
+</html>

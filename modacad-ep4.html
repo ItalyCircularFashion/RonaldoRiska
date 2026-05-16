@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ModaCAD</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,500&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ─── TOKENS ─── */
+:root {
+  --cream:    #f4f1eb;
+  --paper:    #faf8f4;
+  --ink:      #1c1b19;
+  --ink2:     #4a4841;
+  --ink3:     #9c9890;
+  --line:     #e4e0d8;
+  --rust:     #c45c2a;
+  --rust-l:   #e8714010;
+  --blue:     #2a5fc4;
+  --green:    #2a9c5c;
+  --yellow:   #c49a2a;
+  --violet:   #7c4ac4;
+  --r:8px;
+  --shadow:   0 2px 24px rgba(28,27,25,.07);
+  --shadow-lg:0 8px 48px rgba(28,27,25,.13);
+}
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+html, body { height:100%; overflow:hidden; }
+body {
+  font-family:'IBM Plex Mono', monospace;
+  background:var(--cream);
+  color:var(--ink);
+  display:flex;
+  flex-direction:column;
+}
+
+/* ─── TRANSITIONS ─── */
+.view { display:none; flex:1; flex-direction:column; overflow:hidden; }
+.view.on { display:flex; animation: fadeUp .35s cubic-bezier(.4,0,.2,1) both; }
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(14px); }
+  to   { opacity:1; transform:none; }
+}
+
+/* ─── NAV BAR ─── */
+nav {
+  height:52px; background:var(--ink); display:flex; align-items:center;
+  justify-content:space-between; padding:0 24px; flex-shrink:0; z-index:100;
+}
+.brand {
+  font-family:'Fraunces',serif; font-size:19px; font-weight:500; color:#fff;
+  letter-spacing:-.01em;
+}
+.brand span { color:var(--rust); font-style:italic; }
+.nav-steps { display:flex; align-items:center; gap:0; }
+.nstep {
+  display:flex; align-items:center; gap:7px; padding:6px 16px;
+  font-size:11px; letter-spacing:.05em; color:rgba(255,255,255,.35);
+  cursor:pointer; border:none; background:none; font-family:'IBM Plex Mono',monospace;
+  transition:color .2s; position:relative;
+}
+.nstep::after {
+  content:'›'; margin-left:8px; color:rgba(255,255,255,.15);
+}
+.nstep:last-child::after { display:none; }
+.nstep.cur { color:#fff; }
+.nstep.done { color:rgba(255,255,255,.55); }
+.nstep .dot {
+  width:20px; height:20px; border-radius:50%; border:1.5px solid currentColor;
+  display:flex; align-items:center; justify-content:center; font-size:10px;
+  transition:all .2s; flex-shrink:0;
+}
+.nstep.cur .dot  { background:var(--rust); border-color:var(--rust); color:#fff; }
+.nstep.done .dot { background:var(--green); border-color:var(--green); color:#fff; }
+.nav-r { display:flex; gap:8px; }
+.nav-btn {
+  padding:6px 14px; border-radius:20px; font-size:11px; font-weight:400;
+  letter-spacing:.05em; cursor:pointer; border:1px solid rgba(255,255,255,.2);
+  background:none; color:rgba(255,255,255,.65); font-family:'IBM Plex Mono',monospace;
+  transition:all .18s;
+}
+.nav-btn:hover { background:rgba(255,255,255,.08); color:#fff; }
+.nav-btn.hi { background:var(--rust); border-color:var(--rust); color:#fff; }
+.nav-btn.hi:hover { background:#b35225; }
+
+/* ════════════════════════════════════
+   VIEW 1 — SCEGLI BASE
+════════════════════════════════════ */
+#v1 {
+  align-items:center; justify-content:center; gap:36px;
+  padding:40px;
+}
+.v1-head { text-align:center; }
+.v1-head h1 {
+  font-family:'Fraunces',serif; font-size:38px; font-weight:300;
+  letter-spacing:-.03em; line-height:1.1;
+}
+.v1-head h1 em { font-style:italic; color:var(--rust); }
+.v1-head p { font-size:12px; color:var(--ink3); margin-top:8px; letter-spacing:.04em; }
+
+.bases {
+  display:grid; grid-template-columns:repeat(5,160px); gap:14px;
+}
+.bcard {
+  background:var(--paper); border:2px solid var(--line); border-radius:12px;
+  padding:20px 12px 16px; display:flex; flex-direction:column; align-items:center;
+  gap:10px; cursor:pointer; transition:all .2s; user-select:none;
+}
+.bcard:hover { border-color:var(--rust); transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+.bcard.sel { border-color:var(--rust); background:#fff; box-shadow:0 0 0 4px #c45c2a18; }
+.bcard svg { width:72px; height:100px; }
+.bcard-name { font-size:11px; font-weight:500; letter-spacing:.08em; }
+.bcard-sub  { font-size:10px; color:var(--ink3); }
+
+.start-btn {
+  padding:15px 52px; background:var(--ink); color:#fff; border:none;
+  border-radius:30px; font-size:13px; font-family:'Fraunces',serif;
+  font-weight:500; font-style:italic; cursor:pointer; letter-spacing:.02em;
+  transition:all .2s; box-shadow:var(--shadow);
+}
+.start-btn:hover { background:var(--rust); transform:translateY(-2px); box-shadow:var(--shadow-lg); }
+
+/* ════════════════════════════════════
+   VIEW 2 — EDITOR
+════════════════════════════════════ */
+#v2 { flex-direction:row; }
+
+/* Canvas zone */
+.canvas-zone {
+  flex:1; position:relative; overflow:hidden;
+  background:
+    radial-gradient(ellipse at 60% 40%, rgba(255,255,255,.8) 0%, transparent 70%),
+    var(--cream);
+}
+#cv {
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  border-radius:4px;
+  box-shadow:0 4px 40px rgba(28,27,25,.1), 0 0 0 1px rgba(28,27,25,.06);
+  cursor:crosshair; background:#fff;
+}
+
+/* Floating pill toolbar */
+.toolbar {
+  position:absolute; bottom:24px; left:50%; transform:translateX(-50%);
+  background:var(--ink); border-radius:40px;
+  display:flex; align-items:center; gap:2px; padding:6px 8px;
+  box-shadow:var(--shadow-lg); z-index:10;
+}
+.tb-sep { width:1px; height:22px; background:rgba(255,255,255,.12); margin:0 4px; }
+.tb-btn {
+  width:36px; height:36px; border-radius:50%; border:none; background:none;
+  color:rgba(255,255,255,.5); cursor:pointer; font-size:16px;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .15s; position:relative;
+}
+.tb-btn:hover { background:rgba(255,255,255,.1); color:#fff; }
+.tb-btn.on { background:var(--rust); color:#fff; }
+.tb-tip {
+  position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%);
+  background:var(--ink); color:#fff; padding:4px 10px; border-radius:6px;
+  font-size:10px; white-space:nowrap; opacity:0; pointer-events:none;
+  transition:opacity .15s; letter-spacing:.04em;
+}
+.tb-btn:hover .tb-tip { opacity:1; }
+
+/* Zoom indicator */
+.zoom-pill {
+  position:absolute; top:20px; right:20px;
+  background:var(--ink); color:rgba(255,255,255,.7);
+  padding:6px 14px; border-radius:20px; font-size:10px; letter-spacing:.06em;
+  display:flex; align-items:center; gap:10px;
+}
+.zoom-pill input { width:64px; accent-color:var(--rust); cursor:pointer; }
+
+/* Coordinates */
+.coord-bar {
+  position:absolute; top:20px; left:20px;
+  background:rgba(28,27,25,.75); color:rgba(255,255,255,.6);
+  padding:6px 14px; border-radius:20px; font-size:10px; letter-spacing:.06em;
+  backdrop-filter:blur(8px);
+}
+
+/* ── Right panel (collapsible) ── */
+.rpanel {
+  width:0; background:var(--paper); border-left:1px solid var(--line);
+  overflow:hidden; transition:width .3s cubic-bezier(.4,0,.2,1);
+  display:flex; flex-direction:column; flex-shrink:0;
+}
+.rpanel.open { width:260px; }
+.rp-inner { width:260px; display:flex; flex-direction:column; height:100%; overflow-y:auto; }
+.rp-sec { padding:18px 20px; border-bottom:1px solid var(--line); }
+.rp-ttl { font-size:10px; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:var(--ink3); margin-bottom:12px; }
+.rp-field { margin-bottom:10px; }
+.rp-field label { display:block; font-size:10px; color:var(--ink3); margin-bottom:4px; }
+.rp-field input {
+  width:100%; padding:8px 10px; border:1px solid var(--line); border-radius:6px;
+  font-family:'IBM Plex Mono',monospace; font-size:11px; background:var(--cream);
+  color:var(--ink); outline:none; transition:border-color .15s;
+}
+.rp-field input:focus { border-color:var(--rust); }
+.color-row { display:flex; gap:8px; flex-wrap:wrap; }
+.cdot {
+  width:26px; height:26px; border-radius:50%; cursor:pointer;
+  border:2.5px solid transparent; transition:all .15s;
+}
+.cdot.on { border-color:var(--ink); transform:scale(1.15); }
+
+/* Toggle panel button */
+.panel-toggle {
+  position:absolute; right:0; top:50%; transform:translateY(-50%);
+  width:28px; height:56px; background:var(--paper); border:1px solid var(--line);
+  border-right:none; border-radius:8px 0 0 8px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-size:13px; color:var(--ink3); transition:all .2s; z-index:5;
+}
+.panel-toggle:hover { background:var(--cream); color:var(--ink); }
+
+/* Next step floating button */
+.next-float {
+  position:absolute; bottom:24px; right:20px;
+  padding:12px 28px; background:var(--rust); color:#fff; border:none;
+  border-radius:28px; font-family:'Fraunces',serif; font-size:13px;
+  font-style:italic; font-weight:500; cursor:pointer;
+  box-shadow:0 4px 20px rgba(196,92,42,.4); transition:all .2s; z-index:10;
+}
+.next-float:hover { background:#b35225; transform:translateY(-2px); box-shadow:0 6px 28px rgba(196,92,42,.5); }
+
+/* ════════════════════════════════════
+   VIEW 3 — TAGLIE & PIAZZAMENTO
+════════════════════════════════════ */
+#v3 { flex-direction:row; }
+
+.v3-left {
+  width:280px; background:var(--paper); border-right:1px solid var(--line);
+  display:flex; flex-direction:column; overflow-y:auto; flex-shrink:0;
+}
+.v3-main { flex:1; display:flex; flex-direction:column; overflow:hidden; }
+
+/* Tab switcher */
+.tabrow {
+  display:flex; padding:16px 20px 0; gap:4px; flex-shrink:0;
+}
+.tab {
+  padding:8px 18px; border-radius:8px 8px 0 0; font-size:11px;
+  letter-spacing:.04em; cursor:pointer; border:1px solid var(--line);
+  border-bottom:none; background:var(--cream); color:var(--ink3);
+  font-family:'IBM Plex Mono',monospace; transition:all .15s;
+}
+.tab.on { background:var(--paper); color:var(--ink); font-weight:500; }
+
+/* Canvas panel */
+.cv-panel {
+  flex:1; overflow:auto; padding:20px; display:flex; justify-content:center; align-items:flex-start;
+  background:var(--paper); border:1px solid var(--line); margin:0 20px 0; border-radius:0 8px 8px 8px;
+}
+#cv3 { border-radius:4px; }
+
+/* Size chips */
+.sz-row { display:flex; flex-wrap:wrap; gap:8px; }
+.szc {
+  padding:7px 14px; border-radius:8px; font-size:12px; font-weight:500;
+  cursor:pointer; border:2px solid var(--line); background:var(--cream);
+  color:var(--ink2); font-family:'IBM Plex Mono',monospace; transition:all .15s;
+}
+.szc:hover { border-color:var(--ink); }
+.szc.on { color:#fff; border-color:transparent; }
+
+/* Efficiency widget */
+.eff-widget {
+  background:var(--ink); border-radius:12px; padding:20px; margin:0 20px;
+}
+.eff-pct { font-family:'Fraunces',serif; font-size:48px; font-weight:300; color:#fff; line-height:1; }
+.eff-lbl { font-size:9px; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.4); margin-top:4px; }
+.eff-bar { height:5px; background:rgba(255,255,255,.12); border-radius:3px; margin-top:16px; overflow:hidden; }
+.eff-fill { height:100%; border-radius:3px; background:var(--green); transition:width .9s cubic-bezier(.4,0,.2,1); }
+.eff-row { display:flex; justify-content:space-between; margin-top:10px; }
+.eff-kv { font-size:10px; color:rgba(255,255,255,.45); }
+.eff-kv b { color:rgba(255,255,255,.8); }
+
+/* Export row */
+.export-row {
+  display:flex; gap:8px; padding:16px 20px; border-top:1px solid var(--line);
+  background:var(--paper); flex-shrink:0; margin-top:auto;
+}
+.xbtn {
+  flex:1; padding:10px 8px; border-radius:8px; font-size:10px; font-weight:500;
+  letter-spacing:.06em; text-transform:uppercase; cursor:pointer;
+  border:1px solid var(--line); background:var(--cream); color:var(--ink2);
+  font-family:'IBM Plex Mono',monospace; transition:all .18s;
+}
+.xbtn:hover { border-color:var(--rust); color:var(--rust); }
+.xbtn.primary { background:var(--rust); border-color:var(--rust); color:#fff; }
+.xbtn.primary:hover { background:#b35225; }
+
+/* ─── TOAST ─── */
+#toast {
+  position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(10px);
+  background:var(--ink); color:#fff; padding:10px 22px; border-radius:24px;
+  font-size:11px; letter-spacing:.04em; opacity:0; pointer-events:none;
+  transition:all .25s; z-index:9999; white-space:nowrap;
+  box-shadow:var(--shadow-lg);
+}
+#toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width:4px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--line); border-radius:2px; }
+
+/* Stagger animations for base cards */
+.bcard:nth-child(1){animation-delay:.04s}
+.bcard:nth-child(2){animation-delay:.08s}
+.bcard:nth-child(3){animation-delay:.12s}
+.bcard:nth-child(4){animation-delay:.16s}
+.bcard:nth-child(5){animation-delay:.20s}
+@keyframes cardIn {
+  from{opacity:0;transform:translateY(18px)scale(.97)}
+  to{opacity:1;transform:none}
+}
+.bcard { animation:cardIn .5s cubic-bezier(.4,0,.2,1) both; }
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="brand">moda<span>CAD</span></div>
+  <div class="nav-steps">
+    <button class="nstep cur" id="ns1" onclick="go(1)">
+      <span class="dot">1</span> Base
+    </button>
+    <button class="nstep" id="ns2" onclick="go(2)">
+      <span class="dot">2</span> Editor
+    </button>
+    <button class="nstep" id="ns3" onclick="go(3)">
+      <span class="dot">3</span> Taglie
+    </button>
+  </div>
+  <div class="nav-r">
+    <button class="nav-btn" onclick="exportSVG()">↓ SVG</button>
+    <button class="nav-btn hi" onclick="go(1)">+ Nuovo</button>
+  </div>
+</nav>
+
+<!-- ═══ VIEW 1: SCEGLI BASE ═══ -->
+<div class="view on" id="v1">
+  <div class="v1-head">
+    <h1>Quale capo <em>vuoi creare?</em></h1>
+    <p>Seleziona una base per iniziare · puoi modificarla liberamente nell'editor</p>
+  </div>
+
+  <div class="bases">
+
+    <!-- CORPINO -->
+    <div class="bcard sel" onclick="pick('bodice',this)">
+      <svg viewBox="0 0 72 100" fill="none">
+        <path d="M18 10 L54 10 L58 30 L56 84 L46 88 L26 88 L16 84 L14 30 Z" fill="#f4f1eb" stroke="#1c1b19" stroke-width="1.8"/>
+        <path d="M18 10 C14 20 8 26 6 34 L16 38" stroke="#1c1b19" stroke-width="1.4" fill="none"/>
+        <path d="M54 10 C58 20 64 26 66 34 L56 38" stroke="#1c1b19" stroke-width="1.4" fill="none"/>
+        <line x1="36" y1="10" x2="36" y2="88" stroke="#c45c2a" stroke-width=".9" stroke-dasharray="3,2"/>
+        <path d="M26 14 L31 46" stroke="#c45c2a" stroke-width="1.3"/>
+        <path d="M46 14 L41 46" stroke="#c45c2a" stroke-width="1.3"/>
+      </svg>
+      <div class="bcard-name">Corpino</div>
+      <div class="bcard-sub">Ant. / Post.</div>
+    </div>
+
+    <!-- GONNA -->
+    <div class="bcard" onclick="pick('skirt',this)">
+      <svg viewBox="0 0 72 100" fill="none">
+        <path d="M24 12 L48 12 L58 88 L14 88 Z" fill="#f4f1eb" stroke="#1c1b19" stroke-width="1.8"/>
+        <line x1="36" y1="12" x2="36" y2="88" stroke="#c45c2a" stroke-width=".9" stroke-dasharray="3,2"/>
+        <path d="M25 20 L28 36" stroke="#2a5fc4" stroke-width="1.3"/>
+      </svg>
+      <div class="bcard-name">Gonna</div>
+      <div class="bcard-sub">Dritta</div>
+    </div>
+
+    <!-- PANTALONE -->
+    <div class="bcard" onclick="pick('trouser',this)">
+      <svg viewBox="0 0 72 100" fill="none">
+        <path d="M12 10 L60 10 L60 46 L44 50 L42 92 L30 92 L28 50 L12 46 Z" fill="#f4f1eb" stroke="#1c1b19" stroke-width="1.8"/>
+        <line x1="36" y1="10" x2="36" y2="50" stroke="#c45c2a" stroke-width=".9" stroke-dasharray="3,2"/>
+      </svg>
+      <div class="bcard-name">Pantalone</div>
+      <div class="bcard-sub">Dritto</div>
+    </div>
+
+    <!-- MANICA -->
+    <div class="bcard" onclick="pick('sleeve',this)">
+      <svg viewBox="0 0 72 100" fill="none">
+        <path d="M36 6 C50 6 60 18 60 36 L58 88 L46 92 L36 94 L26 92 L14 88 L12 36 C12 18 22 6 36 6Z" fill="#f4f1eb" stroke="#1c1b19" stroke-width="1.8"/>
+        <line x1="36" y1="6" x2="36" y2="94" stroke="#c45c2a" stroke-width=".9" stroke-dasharray="3,2"/>
+      </svg>
+      <div class="bcard-name">Manica</div>
+      <div class="bcard-sub">Dritta</div>
+    </div>
+
+    <!-- GIACCA -->
+    <div class="bcard" onclick="pick('jacket',this)">
+      <svg viewBox="0 0 72 100" fill="none">
+        <path d="M18 8 L54 8 L58 28 L56 88 L16 88 L14 28 Z" fill="#f4f1eb" stroke="#1c1b19" stroke-width="1.8"/>
+        <path d="M18 8 L8 30 L18 34" stroke="#1c1b19" stroke-width="1.3" fill="none"/>
+        <path d="M54 8 L64 30 L54 34" stroke="#1c1b19" stroke-width="1.3" fill="none"/>
+        <path d="M36 8 L34 42" stroke="#2a5fc4" stroke-width="1.3"/>
+        <circle cx="36" cy="52" r="2" fill="#1c1b19"/>
+        <circle cx="36" cy="64" r="2" fill="#1c1b19"/>
+        <circle cx="36" cy="76" r="2" fill="#1c1b19"/>
+      </svg>
+      <div class="bcard-name">Giacca</div>
+      <div class="bcard-sub">Monopetto</div>
+    </div>
+
+  </div>
+
+  <button class="start-btn" onclick="go(2)">Inizia a disegnare →</button>
+</div>
+
+<!-- ═══ VIEW 2: EDITOR ═══ -->
+<div class="view" id="v2">
+
+  <div class="canvas-zone" id="czone">
+    <canvas id="cv"></canvas>
+
+    <!-- Coordinates -->
+    <div class="coord-bar" id="coord">X 0.0 · Y 0.0 cm</div>
+
+    <!-- Zoom -->
+    <div class="zoom-pill">
+      <span id="zoom-lbl" style="min-width:30px">100%</span>
+      <input type="range" min="40" max="200" value="100" id="zoom-sl" oninput="setZoom(this.value)">
+    </div>
+
+    <!-- Panel toggle -->
+    <div class="panel-toggle" id="ptoggle" onclick="togglePanel()" title="Proprietà">⚙</div>
+
+    <!-- Toolbar pill -->
+    <div class="toolbar">
+      <button class="tb-btn on"  id="tb-sel"    onclick="setTool('sel')">↖<div class="tb-tip">Seleziona (V)</div></button>
+      <button class="tb-btn"     id="tb-pen"    onclick="setTool('pen')">✒<div class="tb-tip">Disegna (P)</div></button>
+      <button class="tb-btn"     id="tb-line"   onclick="setTool('line')">╱<div class="tb-tip">Linea (L)</div></button>
+      <div class="tb-sep"></div>
+      <button class="tb-btn"     id="tb-seam"   onclick="setTool('seam')" style="font-size:12px">···<div class="tb-tip">Cucitura (S)</div></button>
+      <button class="tb-btn"     id="tb-notch"  onclick="setTool('notch')">▲<div class="tb-tip">Tacca (N)</div></button>
+      <div class="tb-sep"></div>
+      <!-- Colors -->
+      <button class="tb-btn" onclick="pickColor('#1c1b19',this)" style="font-size:9px">
+        <span style="width:16px;height:16px;border-radius:50%;background:#1c1b19;display:block"></span>
+        <div class="tb-tip">Contorno</div>
+      </button>
+      <button class="tb-btn" onclick="pickColor('#c45c2a',this)" style="font-size:9px">
+        <span style="width:16px;height:16px;border-radius:50%;background:#c45c2a;display:block"></span>
+        <div class="tb-tip">Cucitura</div>
+      </button>
+      <button class="tb-btn" onclick="pickColor('#2a5fc4',this)" style="font-size:9px">
+        <span style="width:16px;height:16px;border-radius:50%;background:#2a5fc4;display:block"></span>
+        <div class="tb-tip">Costruzione</div>
+      </button>
+      <div class="tb-sep"></div>
+      <button class="tb-btn" onclick="undo()" title="Annulla">↩<div class="tb-tip">Annulla (⌘Z)</div></button>
+      <button class="tb-btn" onclick="clearAll()" title="Pulisci" style="font-size:13px">✕<div class="tb-tip">Pulisci tutto</div></button>
+    </div>
+
+    <!-- Next step -->
+    <button class="next-float" onclick="go(3)">Taglie & Piazzamento →</button>
+  </div>
+
+  <!-- Right panel -->
+  <div class="rpanel" id="rp">
+    <div class="rp-inner">
+      <div class="rp-sec">
+        <div class="rp-ttl">Pezzo</div>
+        <div class="rp-field"><label>Nome</label><input id="rp-name" value="CF Corpino"></div>
+        <div class="rp-field"><label>Larghezza</label><input id="rp-w" value="42.0 cm"></div>
+        <div class="rp-field"><label>Lunghezza</label><input id="rp-h" value="58.5 cm"></div>
+      </div>
+      <div class="rp-sec">
+        <div class="rp-ttl">Cuciture</div>
+        <div class="rp-field"><label>Margine</label><input value="1.5 cm"></div>
+        <div class="rp-field"><label>Verso filo</label><input value="Verticale ↕"></div>
+      </div>
+      <div class="rp-sec">
+        <div class="rp-ttl">Tessuto</div>
+        <div class="rp-field"><label>Tipo</label><input value="Cotone 100%"></div>
+        <div class="rp-field"><label>Peso</label><input value="180 g/m²"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ VIEW 3: TAGLIE & PIAZZAMENTO ═══ -->
+<div class="view" id="v3">
+  <div class="v3-left">
+    <div class="rp-sec">
+      <div class="rp-ttl">Taglie attive</div>
+      <div class="sz-row" id="szrow">
+        <div class="szc" data-sz="36" style="--c:#60a5fa" onclick="toggleSz(this)">36</div>
+        <div class="szc" data-sz="38" style="--c:#34d399" onclick="toggleSz(this)">38</div>
+        <div class="szc on" data-sz="40" style="--c:#1c1b19;background:#1c1b19;color:#fff" onclick="toggleSz(this)">40</div>
+        <div class="szc" data-sz="42" style="--c:#f59e0b" onclick="toggleSz(this)">42</div>
+        <div class="szc" data-sz="44" style="--c:#f97316" onclick="toggleSz(this)">44</div>
+        <div class="szc" data-sz="46" style="--c:#a78bfa" onclick="toggleSz(this)">46</div>
+      </div>
+    </div>
+
+    <div class="rp-sec">
+      <div class="rp-ttl">Sviluppo Δ per taglia</div>
+      <table id="grading-tbl" style="width:100%;border-collapse:collapse;font-size:11px;"></table>
+      <button onclick="applyGrading()" style="width:100%;margin-top:10px;padding:10px;border-radius:8px;border:none;background:var(--ink);color:#fff;font-size:11px;font-family:'IBM Plex Mono',monospace;cursor:pointer;letter-spacing:.04em;transition:background .2s;" onmouseover="this.style.background='var(--rust)'" onmouseout="this.style.background='var(--ink)'">
+        Applica sviluppo taglie
+      </button>
+    </div>
+
+    <div style="padding:0 0 16px;">
+      <div class="eff-widget" id="eff-w">
+        <div class="eff-pct" id="eff-pct">84.2%</div>
+        <div class="eff-lbl">Efficienza piazzamento</div>
+        <div class="eff-bar"><div class="eff-fill" id="eff-fill" style="width:84.2%"></div></div>
+        <div class="eff-row">
+          <div class="eff-kv">Tessuto <b>150cm</b></div>
+          <div class="eff-kv">Scarto <b>0.26m²</b></div>
+          <div class="eff-kv">Risparmio <b>~€3.40</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="export-row">
+      <button class="xbtn" onclick="doExport('SVG')">SVG</button>
+      <button class="xbtn" onclick="doExport('DXF')">DXF</button>
+      <button class="xbtn primary" onclick="doExport('PDF')">↓ PDF</button>
+    </div>
+  </div>
+
+  <div class="v3-main">
+    <div class="tabrow">
+      <button class="tab on" id="tab-gr" onclick="setTab('grading',this)">Sviluppo Taglie</button>
+      <button class="tab"    id="tab-ne" onclick="setTab('nesting',this)">Piazzamento</button>
+    </div>
+    <div class="cv-panel">
+      <canvas id="cv3"></canvas>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ─── STATE ─────────────────────────────── */
+let base = 'bodice';
+let activeTool = 'sel';
+let drawColor = '#1c1b19';
+let zoom = 1;
+let gridPx = 20;
+let drawing = false;
+let p0 = null;
+let strokes = [];
+let cur = [];
+let panelOpen = false;
+let activeTab = 'grading';
+let activeSizes = new Set(['40']);
+
+const SIZES = ['36','38','40','42','44','46'];
+const SZ_COLOR = { '36':'#60a5fa','38':'#34d399','40':'#1c1b19','42':'#f59e0b','44':'#f97316','46':'#a78bfa' };
+const SZ_DELTA = { '36':-3,'38':-1.5,'40':0,'42':1.5,'44':3,'46':4.5 };
+
+/* ─── BASES ─────────────────────────────── */
+const BASES = {
+  bodice:{
+    label:'CF Corpino',
+    pts:[[110,65],[340,65],[352,190],[324,385],[298,450],[208,465],[148,452],[108,385],[96,190]],
+    darts:[[220,65,228,160],[250,65,244,164]],
+    seam:true
+  },
+  skirt:{
+    label:'CF Gonna',
+    pts:[[128,52],[330,52],[354,396],[288,418],[148,414],[108,396]],
+    darts:[[178,52,184,110]]
+  },
+  trouser:{
+    label:'Gamba Ant.',
+    pts:[[105,52],[268,52],[286,195],[308,524],[262,544],[196,544],[158,524],[120,195]]
+  },
+  sleeve:{
+    label:'Manica',
+    pts:[[210,52],[300,52],[328,118],[340,300],[325,382],[255,408],[210,408],[165,382],[150,300],[172,118]]
+  },
+  jacket:{
+    label:'CF Giacca',
+    pts:[[112,58],[338,58],[346,188],[320,428],[298,462],[210,468],[148,462],[110,428],[102,188]],
+    buttons:[[224,218],[224,265],[224,312],[224,358]]
+  }
+};
+
+/* ─── NAVIGATION ─────────────────────────── */
+function go(n) {
+  document.querySelectorAll('.view').forEach((v,i)=>{
+    v.classList.toggle('on', i+1===n);
+  });
+  document.querySelectorAll('.nstep').forEach((s,i)=>{
+    s.className='nstep';
+    if(i+1===n) s.classList.add('cur');
+    else if(i+1<n) s.classList.add('done');
+    const d=s.querySelector('.dot');
+    d.textContent = (i+1<n) ? '✓' : i+1;
+  });
+  if(n===2){ setTimeout(()=>{ resizeCanvas(); renderEditor(); },60); }
+  if(n===3){ buildGradingTable(); setTimeout(render3, 60); }
+}
+
+/* ─── VIEW 1 ─────────────────────────────── */
+function pick(b, el) {
+  base = b;
+  document.querySelectorAll('.bcard').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  const names={bodice:'CF Corpino',skirt:'CF Gonna',trouser:'Gamba Ant.',sleeve:'Manica',jacket:'CF Giacca'};
+  document.getElementById('rp-name').value = names[b]||b;
+}
+
+/* ─── VIEW 2: CANVAS ─────────────────────── */
+const cv = document.getElementById('cv');
+const cx = cv.getContext('2d');
+
+function resizeCanvas() {
+  const zone = document.getElementById('czone');
+  const w = Math.min(zone.clientWidth - 80, 860);
+  const h = Math.min(zone.clientHeight - 80, 600);
+  cv.width = w; cv.height = h;
+  renderEditor();
+}
+
+function renderEditor() {
+  const w=cv.width, h=cv.height;
+  cx.clearRect(0,0,w,h);
+  cx.save(); cx.scale(zoom,zoom);
+  drawEditorGrid(w/zoom, h/zoom);
+  drawBase(cx, zoom);
+  strokes.forEach(s => drawStroke(cx, s, zoom));
+  if(cur.length>1) drawStroke(cx, {pts:cur,color:drawColor,dash:activeTool==='seam'}, zoom);
+  cx.restore();
+}
+
+function drawEditorGrid(w,h) {
+  cx.strokeStyle='rgba(28,27,25,.05)'; cx.lineWidth=.6/zoom;
+  for(let x=0;x<=w;x+=gridPx){cx.beginPath();cx.moveTo(x,0);cx.lineTo(x,h);cx.stroke();}
+  for(let y=0;y<=h;y+=gridPx){cx.beginPath();cx.moveTo(0,y);cx.lineTo(w,y);cx.stroke();}
+}
+
+function drawBase(ctx, z) {
+  const b = BASES[base]; if(!b) return;
+  const pts = b.pts;
+  /* shadow */
+  ctx.save(); ctx.shadowColor='rgba(0,0,0,.08)'; ctx.shadowBlur=20/z; ctx.shadowOffsetY=6/z;
+  ctx.beginPath();
+  pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));
+  ctx.closePath(); ctx.fillStyle='#fff'; ctx.fill(); ctx.restore();
+  /* seam dash */
+  ctx.save(); ctx.setLineDash([5/z,3/z]);
+  ctx.strokeStyle='rgba(196,92,42,.3)'; ctx.lineWidth=1/z;
+  const off=10;
+  ctx.beginPath();
+  pts.forEach((p,i)=>{
+    const np=pts[(i+1)%pts.length];
+    const dx=np[0]-p[0],dy=np[1]-p[1],len=Math.hypot(dx,dy)||1;
+    const ox=-dy/len*off, oy=dx/len*off;
+    i?ctx.lineTo(p[0]+ox,p[1]+oy):ctx.moveTo(p[0]+ox,p[1]+oy);
+  });
+  ctx.closePath(); ctx.stroke(); ctx.restore();
+  /* outline */
+  ctx.beginPath();
+  pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));
+  ctx.closePath(); ctx.strokeStyle='#1c1b19'; ctx.lineWidth=2/z; ctx.stroke();
+  /* darts */
+  if(b.darts){ b.darts.forEach(d=>{ ctx.beginPath(); ctx.strokeStyle='#c45c2a'; ctx.lineWidth=1.5/z; ctx.moveTo(d[0],d[1]); ctx.lineTo(d[2],d[3]); ctx.stroke(); }); }
+  /* buttons */
+  if(b.buttons){ b.buttons.forEach(bt=>{ ctx.beginPath(); ctx.arc(bt[0],bt[1],4/z,0,Math.PI*2); ctx.fillStyle='#1c1b19'; ctx.fill(); }); }
+  /* grain line */
+  const cx2=pts.reduce((s,p)=>s+p[0],0)/pts.length;
+  const cy2=pts.reduce((s,p)=>s+p[1],0)/pts.length;
+  ctx.strokeStyle='rgba(28,27,25,.3)'; ctx.lineWidth=1.5/z;
+  ctx.beginPath();ctx.moveTo(cx2,cy2-32);ctx.lineTo(cx2,cy2+32);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(cx2-5,cy2-26);ctx.lineTo(cx2,cy2-32);ctx.lineTo(cx2+5,cy2-26);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(cx2-5,cy2+26);ctx.lineTo(cx2,cy2+32);ctx.lineTo(cx2+5,cy2+26);ctx.stroke();
+  /* label */
+  ctx.font=`${12/z}px 'IBM Plex Mono',monospace`;
+  ctx.fillStyle='rgba(28,27,25,.55)'; ctx.textAlign='center';
+  ctx.fillText(b.label, cx2, cy2-46);
+  /* grading overlays */
+  activeSizes.forEach(sz=>{
+    if(sz==='40')return;
+    const d=(parseInt(sz)-40)*0.6;
+    ctx.save(); ctx.setLineDash([3/z,2/z]);
+    ctx.strokeStyle=SZ_COLOR[sz]||'#999'; ctx.lineWidth=1/z;
+    ctx.beginPath();
+    pts.forEach((p,i)=>{ const x=p[0]+d,y=p[1]+d*.38; i?ctx.lineTo(x,y):ctx.moveTo(x,y); });
+    ctx.closePath(); ctx.stroke(); ctx.restore();
+  });
+}
+
+function drawStroke(ctx, s, z) {
+  if(!s.pts||s.pts.length<2)return;
+  ctx.save();
+  if(s.dash) ctx.setLineDash([5/z,3/z]);
+  ctx.strokeStyle=s.color||'#1c1b19'; ctx.lineWidth=1.8/z; ctx.lineCap='round'; ctx.lineJoin='round';
+  ctx.beginPath(); s.pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));
+  ctx.stroke(); ctx.restore();
+}
+
+/* Canvas events */
+function cvXY(e) {
+  const r=cv.getBoundingClientRect();
+  return { x:(e.clientX-r.left)/zoom, y:(e.clientY-r.top)/zoom };
+}
+cv.addEventListener('mousemove',e=>{
+  const {x,y}=cvXY(e);
+  document.getElementById('coord').textContent=`X ${(x/gridPx*2).toFixed(1)} · Y ${(y/gridPx*2).toFixed(1)} cm`;
+  if(drawing&&activeTool==='pen'){ cur.push([x,y]); renderEditor(); }
+});
+cv.addEventListener('mousedown',e=>{
+  const {x,y}=cvXY(e); p0={x,y}; drawing=true;
+  if(activeTool==='pen'||activeTool==='seam') cur=[[x,y]];
+});
+cv.addEventListener('mouseup',e=>{
+  const {x,y}=cvXY(e);
+  if((activeTool==='pen'||activeTool==='seam')&&cur.length>1){
+    strokes.push({pts:[...cur],color:drawColor,dash:activeTool==='seam'}); cur=[];
+  }
+  if(activeTool==='line'&&p0){
+    strokes.push({pts:[[p0.x,p0.y],[x,y]],color:drawColor});
+  }
+  drawing=false; p0=null; renderEditor();
+});
+cv.addEventListener('dblclick',()=>{ if(activeTool==='pen'){ cur=[]; renderEditor(); } });
+
+/* ─── TOOLS & CONTROLS ───────────────────── */
+function setTool(t) {
+  activeTool=t;
+  document.querySelectorAll('.tb-btn[id^="tb-"]').forEach(b=>b.classList.remove('on'));
+  const el=document.getElementById('tb-'+t);
+  if(el) el.classList.add('on');
+}
+function pickColor(c){ drawColor=c; }
+function setZoom(v){ zoom=v/100; document.getElementById('zoom-lbl').textContent=v+'%'; renderEditor(); }
+function setGrid(v){ gridPx=parseInt(v); renderEditor(); }
+function undo(){ strokes.pop(); renderEditor(); }
+function clearAll(){ strokes=[]; cur=[]; renderEditor(); toast('Canvas pulito'); }
+function togglePanel(){
+  panelOpen=!panelOpen;
+  document.getElementById('rp').classList.toggle('open',panelOpen);
+  document.getElementById('ptoggle').textContent = panelOpen ? '›' : '⚙';
+}
+
+/* ─── VIEW 3 ─────────────────────────────── */
+function buildGradingTable() {
+  const tb = document.getElementById('grading-tbl');
+  tb.innerHTML=`<tr style="border-bottom:1px solid var(--line)">
+    <th style="text-align:left;padding:4px 0;font-size:9px;letter-spacing:.1em;color:var(--ink3);font-weight:500">TG</th>
+    <th style="text-align:left;padding:4px 0;font-size:9px;letter-spacing:.1em;color:var(--ink3);font-weight:500">ΔL</th>
+    <th style="text-align:left;padding:4px 0;font-size:9px;letter-spacing:.1em;color:var(--ink3);font-weight:500">ΔP</th>
+  </tr>`;
+  const dL={36:-2,38:-1,40:0,42:1,44:2,46:3};
+  const dP={36:-1.5,38:-.75,40:0,42:.75,44:1.5,46:2.25};
+  SIZES.forEach(sz=>{
+    const active=activeSizes.has(sz);
+    const tr=document.createElement('tr');
+    tr.style.opacity=active?'1':'.35';
+    tr.innerHTML=`
+      <td style="padding:4px 0;font-size:11px;color:${SZ_COLOR[sz]};font-weight:500">${sz}${sz==='40'?' ●':''}</td>
+      <td><input value="${dL[sz]>=0?'+':''}${dL[sz]}" style="width:46px;padding:3px 6px;border:1px solid var(--line);border-radius:4px;font-size:10px;font-family:'IBM Plex Mono',monospace;background:var(--cream)"></td>
+      <td><input value="${dP[sz]>=0?'+':''}${dP[sz]}" style="width:46px;padding:3px 6px;border:1px solid var(--line);border-radius:4px;font-size:10px;font-family:'IBM Plex Mono',monospace;background:var(--cream)"></td>`;
+    document.getElementById('grading-tbl').appendChild(tr);
+  });
+}
+
+function toggleSz(el) {
+  const sz=el.dataset.sz;
+  if(sz==='40') return;
+  if(activeSizes.has(sz)){
+    activeSizes.delete(sz);
+    el.classList.remove('on');
+    el.style.background=''; el.style.color=''; el.style.borderColor='';
+  } else {
+    activeSizes.add(sz);
+    el.classList.add('on');
+    el.style.background=SZ_COLOR[sz]; el.style.color='#fff'; el.style.borderColor='transparent';
+  }
+  updateEff(); buildGradingTable(); render3();
+}
+
+function updateEff(){
+  const v=Math.min(93,(84.2+(activeSizes.size-1)*1.1)).toFixed(1);
+  document.getElementById('eff-pct').textContent=v+'%';
+  document.getElementById('eff-fill').style.width=v+'%';
+}
+
+function applyGrading(){ render3(); toast('Sviluppo taglie applicato ✓'); }
+
+function setTab(t,el){
+  activeTab=t;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on'); render3();
+}
+
+function render3(){
+  const canvas=document.getElementById('cv3');
+  const zone=canvas.parentElement;
+  canvas.width=zone.clientWidth-40||820;
+  canvas.height=400;
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  activeTab==='grading' ? drawGrading(ctx,canvas) : drawNesting(ctx,canvas);
+}
+
+function drawGrading(ctx,canvas){
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvas.width,canvas.height);
+  const b=BASES[base]; if(!b)return;
+  const pts=b.pts;
+  const offX=60, offY=30, sc=0.72;
+  const sizeOrder=[...SIZES].reverse();
+  sizeOrder.forEach(sz=>{
+    if(!activeSizes.has(sz))return;
+    const d=(parseInt(sz)-40)*0.5*sc;
+    ctx.save();
+    ctx.beginPath();
+    pts.forEach((p,i)=>{
+      const x=p[0]*sc+offX+d, y=p[1]*sc+offY+d*.35;
+      i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+    });
+    ctx.closePath();
+    ctx.fillStyle=sz==='40'?'rgba(255,255,255,.95)':SZ_COLOR[sz]+'14';
+    ctx.fill();
+    ctx.strokeStyle=SZ_COLOR[sz]; ctx.lineWidth=sz==='40'?2:1.2;
+    if(sz!=='40') ctx.setLineDash([4,3]);
+    ctx.stroke(); ctx.restore();
+    /* size label */
+    const lx=pts[0][0]*sc+offX+d+6;
+    const ly=pts[0][1]*sc+offY+d*.35-6;
+    ctx.font="10px 'IBM Plex Mono',monospace"; ctx.fillStyle=SZ_COLOR[sz];
+    ctx.textAlign='left'; ctx.fillText(sz, lx, ly);
+  });
+  /* center back line */
+  ctx.font="10px 'IBM Plex Mono',monospace"; ctx.fillStyle='rgba(28,27,25,.4)';
+  ctx.textAlign='center';
+  const cxp=pts.reduce((s,p)=>s+p[0],0)/pts.length*sc+offX;
+  ctx.fillText('Vista Sviluppo — '+activeSizes.size+' taglia/e attiva/e',cxp+80,canvas.height-14);
+}
+
+function drawNesting(ctx,canvas){
+  const W=canvas.width,H=canvas.height;
+  ctx.fillStyle='#fafaf8'; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='#d0ccc4'; ctx.lineWidth=2;
+  ctx.strokeRect(12,12,W-24,H-24);
+  ctx.font="9px 'IBM Plex Mono',monospace"; ctx.fillStyle='#b0aca4'; ctx.textAlign='left';
+  ctx.fillText('TESSUTO 150cm × 6.5m', 20, 28);
+  /* Pieces */
+  const pl=[
+    {l:'CF Corpino',    x:26,  y:36, w:138,h:268},{l:'CB Corpino',   x:174, y:36, w:130,h:260},
+    {l:'CF Corpino S',  x:314, y:36, w:135,h:265},{l:'CB Corpino S', x:26,  y:314,w:128,h:252},
+    {l:'Manica Dx',     x:164, y:306,w:105,h:220},{l:'Manica Sx',    x:278, y:306,w:105,h:220},
+    {l:'Colletto',      x:393, y:306,w:200,h:68}, {l:'Paramont.',    x:393, y:384,w:158,h:60}
+  ];
+  const colors=['#c45c2a','#2a5fc4','#2a9c5c','#a78bfa','#f59e0b','#ec4899','#34d399','#60a5fa'];
+  pl.forEach((p,i)=>{
+    const c=colors[i%colors.length];
+    ctx.fillStyle=c+'18'; ctx.strokeStyle=c+'aa'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.roundRect(p.x,p.y,p.w,p.h,4); ctx.fill(); ctx.stroke();
+    ctx.font="9px 'IBM Plex Mono',monospace"; ctx.fillStyle='#333'; ctx.textAlign='center';
+    ctx.fillText(p.l, p.x+p.w/2, p.y+p.h/2+4);
+  });
+  /* scrap */
+  ctx.fillStyle='rgba(239,68,68,.04)';
+  ctx.beginPath(); ctx.roundRect(604,36,W-630,H-54,4); ctx.fill();
+  ctx.font="9px 'IBM Plex Mono',monospace"; ctx.fillStyle='rgba(239,68,68,.3)'; ctx.textAlign='center';
+  ctx.fillText('SCARTO', 604+(W-630)/2, H/2);
+  /* footer */
+  const eff=document.getElementById('eff-pct').textContent;
+  ctx.font="10px 'IBM Plex Mono',monospace"; ctx.fillStyle='#888'; ctx.textAlign='right';
+  ctx.fillText(`Efficienza ${eff} · ${pl.length} pezzi · 150cm × 6.5m`, W-20, H-16);
+}
+
+function doExport(fmt){
+  if(fmt==='SVG') exportSVG(); else toast(`${fmt} in preparazione…`);
+}
+function exportSVG(){
+  toast('Esportazione SVG…');
+  setTimeout(()=>{
+    const b=BASES[base]; if(!b)return;
+    const d='M'+b.pts.map(p=>p.join(' ')).join('L')+'Z';
+    const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="820" height="600"><rect width="820" height="600" fill="#f4f1eb"/><path d="${d}" fill="white" stroke="#1c1b19" stroke-width="2"/><text x="220" y="46" font-family="monospace" font-size="12">${b.label}</text></svg>`;
+    const u=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));
+    Object.assign(document.createElement('a'),{href:u,download:'cartamodello.svg'}).click();
+    toast('SVG scaricato ✓');
+  },500);
+}
+
+/* ─── TOAST ──────────────────────────────── */
+let toastTimer;
+function toast(msg){
+  clearTimeout(toastTimer);
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.classList.add('on');
+  toastTimer=setTimeout(()=>el.classList.remove('on'),2200);
+}
+
+/* ─── KEYBOARD ───────────────────────────── */
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('v2').classList.contains('on')){
+    if(e.metaKey||e.ctrlKey){ if(e.key==='z'){undo();return;} }
+    ({v:'sel',p:'pen',l:'line',s:'seam',n:'notch'}[e.key]||null) && setTool({v:'sel',p:'pen',l:'line',s:'seam',n:'notch'}[e.key]);
+  }
+});
+window.addEventListener('resize', ()=>{
+  if(document.getElementById('v2').classList.contains('on')) resizeCanvas();
+  if(document.getElementById('v3').classList.contains('on')) render3();
+});
+</script>
+</body>
+</html>
