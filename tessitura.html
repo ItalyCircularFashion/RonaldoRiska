@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="it" data-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tessitura | Ronaldo Riska Portfolio</title>
+    <meta name="description" content="Simulatori trama/ordito, armature tessili, pattern weaving, calcoli colore e dashboard tessitura.">
+    <meta name="theme-color" content="#08110c">
+    <link rel="stylesheet" href="site.css">
+  </head>
+  <body data-category-page="tessitura">
+    <a class="skip-link" href="#main">Salta al contenuto</a>
+    <header class="site-header">
+      <nav class="nav container" aria-label="Navigazione principale">
+        <a class="brand" href="index.html"><span class="brand-mark">RR</span><span class="brand-text"><span>Ronaldo Riska</span><span>Tessitura</span></span></a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu" data-nav-toggle><span aria-hidden="true"></span><span class="sr-only">Apri menu</span></button>
+        <div class="nav-links" id="site-menu" data-nav-menu>
+          <a href="index.html">Home</a>
+          <a href="curriculum.html">Curriculum</a>
+          <a href="cad-moda.html">CAD Moda</a>
+          <a href="supply-chain-production.html">Supply Chain</a>
+          <a href="index.html#contatti">Contatti</a>
+          <button class="theme-toggle" type="button" data-theme-toggle>Light</button>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="page-hero section">
+        <div class="container dashboard-grid">
+          <div class="reveal">
+            <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><span>Tessitura</span></nav>
+            <p class="eyebrow">Macro-area professionale</p>
+            <h1 data-category-page-title>Tessitura</h1>
+            <p class="lead" data-category-page-summary></p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#lista-progetti">Apri i tool</a>
+              <a class="button button-secondary" href="progetto.html?id=weavecad-draft-studio">Scheda WeaveCAD</a>
+            </div>
+          </div>
+          <div class="dashboard-panel reveal">
+            <canvas data-kpi-canvas aria-label="Grafico maturita area tessitura"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-band">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="eyebrow">Contenuto tecnico</p>
+            <h2>Dal disegno armatura alla pianificazione del ciclo.</h2>
+          </div>
+          <ul class="process-list">
+            <li class="reveal"><strong>01</strong><span>Simulatori trama/ordito e armature tessili con parametri, repeat e colori filati.</span></li>
+            <li class="reveal"><strong>02</strong><span>Calcolo note colore, spezzature, simmetrie e nuove partenze centrate.</span></li>
+            <li class="reveal"><strong>03</strong><span>Dashboard lanificio, Gantt ciclo tessile e prototipi per controllo operativo.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" id="lista-progetti">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="eyebrow">Progetti Tessitura</p>
+            <h2>Tool interattivi e prototipi tecnici.</h2>
+          </div>
+          <div class="project-grid" data-project-list data-category="tessitura"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>&copy; <span data-year></span> Ronaldo Riska. Tessitura.</p>
+        <a href="index.html">Home</a>
+      </div>
+    </footer>
+    <script src="project-data.js" defer></script>
+    <script src="main.js" defer></script>
+  </body>
+</html>
