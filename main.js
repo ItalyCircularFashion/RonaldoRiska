@@ -14,13 +14,16 @@ const escapeHtml = (value = "") =>
 
 const fromRoot = (path = "") => path;
 
-// Nuova funzione: estrae l'id dall'URL canonico /progetti/xxx.html
 const getProjectIdFromUrl = () => {
+  const savedPath = sessionStorage.getItem('redirectPath');
+  if (savedPath) {
+    sessionStorage.removeItem('redirectPath');
+    const match = savedPath.match(/\/progetti\/([^\/]+)\.html$/);
+    if (match) return decodeURIComponent(match[1]);
+  }
   const path = window.location.pathname;
-  // Match pattern /progetti/nome-progetto.html
   const match = path.match(/\/progetti\/([^\/]+)\.html$/);
   if (match) return decodeURIComponent(match[1]);
-  // Fallback al vecchio ?id=
   const params = new URLSearchParams(window.location.search);
   return params.get("id");
 };
@@ -306,45 +309,6 @@ const renderProjectDetail = () => {
   `;
 };
 
-const drawKpiCanvas = () => {
-
-  requestAnimationFrame(() => {
-
-    qsa("[data-kpi-canvas]").forEach((canvas) => {
-
-      const bounds = canvas.getBoundingClientRect();
-
-      const dpr = window.devicePixelRatio || 1;
-
-      const width = Math.max(320, bounds.width);
-      const height = Math.max(180, bounds.height || 220);
-
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-
-      const ctx = canvas.getContext("2d");
-
-      ctx.scale(dpr, dpr);
-
-    const css = getComputedStyle(document.documentElement);
-    const line = css.getPropertyValue("--chart-line").trim() || "#c7a45b";
-    const fill = css.getPropertyValue("--chart-fill").trim() || "rgba(199, 164, 91, 0.16)";
-    const grid = css.getPropertyValue("--line").trim() || "rgba(255,255,255,0.14)";
-    const text = css.getPropertyValue("--muted").trim() || "#9ba8a1";
-    const data = [18, 29, 24, 42, 50, 47, 64, 72, 81, 76, 88, 96];
-    const padding = 26;
-    const max = Math.max(...data);
-    const min = Math.min(...data);
-
-    ctx.strokeStyle = grid;
-    ctx.lineWidth = 1;
-    for (let i = 0; i < 4; i += 1) {
-      const y = padding + ((height - padding * 2) / 3) * i;
-      ctx.beginPath();
-      ctx.moveTo(padding, y);
-      ctx.lineTo(width - padding, y);
-      ctx.stroke();
-    }
 
 const drawKpiCanvas = () => {
 
