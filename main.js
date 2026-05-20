@@ -307,17 +307,24 @@ const renderProjectDetail = () => {
 };
 
 const drawKpiCanvas = () => {
-  qsa("[data-kpi-canvas]").forEach((canvas) => {
-    const ctx = canvas.getContext("2d");
-    const bounds = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = Math.max(320, bounds.width) * dpr;
-    canvas.height = Math.max(180, bounds.height || 220) * dpr;
-    ctx.scale(dpr, dpr);
 
-    const width = canvas.width / dpr;
-    const height = canvas.height / dpr;
-    ctx.clearRect(0, 0, width, height);
+  requestAnimationFrame(() => {
+
+    qsa("[data-kpi-canvas]").forEach((canvas) => {
+
+      const bounds = canvas.getBoundingClientRect();
+
+      const dpr = window.devicePixelRatio || 1;
+
+      const width = Math.max(320, bounds.width);
+      const height = Math.max(180, bounds.height || 220);
+
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+
+      const ctx = canvas.getContext("2d");
+
+      ctx.scale(dpr, dpr);
 
     const css = getComputedStyle(document.documentElement);
     const line = css.getPropertyValue("--chart-line").trim() || "#c7a45b";
