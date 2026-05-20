@@ -361,37 +361,74 @@ const drawKpiCanvas = () => {
       const width = Math.max(320, bounds.width);
       const height = Math.max(180, bounds.height || 220);
 
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
+      // evita resize inutili
+      if (
+        canvas.width !== width * dpr ||
+        canvas.height !== height * dpr
+      ) {
 
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+
+      }
+
+      // reset transform matrix
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      const padding = 24;
-
-      const styles = getComputedStyle(document.documentElement);
-
-      const line =
-        styles.getPropertyValue("--accent").trim() || "#6ee7b7";
-
-      const fill =
-        styles.getPropertyValue("--accent-soft").trim() ||
-        "rgba(110,231,183,0.18)";
-
-      const text =
-        styles.getPropertyValue("--text").trim() || "#f5f7fb";
-
-      const data = [28, 42, 58, 74, 92];
-
-      const min = Math.min(...data);
-      const max = Math.max(...data);
 
       ctx.clearRect(0, 0, width, height);
 
+      const css = getComputedStyle(document.documentElement);
+
+      const line =
+        css.getPropertyValue("--chart-line").trim() ||
+        "#c7a45b";
+
+      const fill =
+        css.getPropertyValue("--chart-fill").trim() ||
+        "rgba(199, 164, 91, 0.16)";
+
+      const grid =
+        css.getPropertyValue("--line").trim() ||
+        "rgba(255,255,255,0.14)";
+
+      const text =
+        css.getPropertyValue("--muted").trim() ||
+        "#9ba8a1";
+
+      const data = [18, 29, 24, 42, 50, 47, 64, 72, 81, 76, 88, 96];
+
+      const padding = 26;
+
+      const max = Math.max(...data);
+      const min = Math.min(...data);
+
+      // grid
+      ctx.strokeStyle = grid;
+      ctx.lineWidth = 1;
+
+      for (let i = 0; i < 4; i += 1) {
+
+        const y =
+          padding +
+          ((height - padding * 2) / 3) * i;
+
+        ctx.beginPath();
+
+        ctx.moveTo(padding, y);
+
+        ctx.lineTo(width - padding, y);
+
+        ctx.stroke();
+
+      }
+
+      // points
       const points = data.map((value, index) => {
 
         const x =
           padding +
-          ((width - padding * 2) / (data.length - 1)) * index;
+          ((width - padding * 2) / (data.length - 1)) *
+          index;
 
         const y =
           height -
@@ -403,7 +440,7 @@ const drawKpiCanvas = () => {
 
       });
 
-      // Area fill
+      // fill area
       ctx.beginPath();
 
       points.forEach((point, index) => {
@@ -429,9 +466,10 @@ const drawKpiCanvas = () => {
       ctx.closePath();
 
       ctx.fillStyle = fill;
+
       ctx.fill();
 
-      // Line
+      // line
       ctx.beginPath();
 
       points.forEach((point, index) => {
@@ -445,10 +483,12 @@ const drawKpiCanvas = () => {
       });
 
       ctx.strokeStyle = line;
+
       ctx.lineWidth = 3;
+
       ctx.stroke();
 
-      // Points
+      // dots
       points.forEach((point) => {
 
         ctx.beginPath();
@@ -462,11 +502,12 @@ const drawKpiCanvas = () => {
         );
 
         ctx.fillStyle = line;
+
         ctx.fill();
 
       });
 
-      // Labels
+      // labels
       ctx.fillStyle = text;
 
       ctx.font =
