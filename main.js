@@ -346,44 +346,148 @@ const drawKpiCanvas = () => {
       ctx.stroke();
     }
 
-    const points = data.map((value, index) => {
-      const x = padding + ((width - padding * 2) / (data.length - 1)) * index;
-      const y = height - padding - ((value - min) / (max - min)) * (height - padding * 2);
-      return { x, y };
-    });
+const drawKpiCanvas = () => {
 
-    ctx.beginPath();
-    points.forEach((point, index) => {
-      if (index === 0) ctx.moveTo(point.x, point.y);
-      else ctx.lineTo(point.x, point.y);
-    });
-    ctx.lineTo(points.at(-1).x, height - padding);
-    ctx.lineTo(points[0].x, height - padding);
-    ctx.closePath();
-    ctx.fillStyle = fill;
-    ctx.fill();
+  requestAnimationFrame(() => {
 
-    ctx.beginPath();
-    points.forEach((point, index) => {
-      if (index === 0) ctx.moveTo(point.x, point.y);
-      else ctx.lineTo(point.x, point.y);
-    });
-    ctx.strokeStyle = line;
-    ctx.lineWidth = 3;
-    ctx.stroke();
+    qsa("[data-kpi-canvas]").forEach((canvas) => {
 
-    points.forEach((point) => {
+      const ctx = canvas.getContext("2d");
+
+      const bounds = canvas.getBoundingClientRect();
+
+      const dpr = window.devicePixelRatio || 1;
+
+      const width = Math.max(320, bounds.width);
+      const height = Math.max(180, bounds.height || 220);
+
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const padding = 24;
+
+      const styles = getComputedStyle(document.documentElement);
+
+      const line =
+        styles.getPropertyValue("--accent").trim() || "#6ee7b7";
+
+      const fill =
+        styles.getPropertyValue("--accent-soft").trim() ||
+        "rgba(110,231,183,0.18)";
+
+      const text =
+        styles.getPropertyValue("--text").trim() || "#f5f7fb";
+
+      const data = [28, 42, 58, 74, 92];
+
+      const min = Math.min(...data);
+      const max = Math.max(...data);
+
+      ctx.clearRect(0, 0, width, height);
+
+      const points = data.map((value, index) => {
+
+        const x =
+          padding +
+          ((width - padding * 2) / (data.length - 1)) * index;
+
+        const y =
+          height -
+          padding -
+          ((value - min) / (max - min)) *
+          (height - padding * 2);
+
+        return { x, y };
+
+      });
+
+      // Area fill
       ctx.beginPath();
-      ctx.arc(point.x, point.y, 4, 0, Math.PI * 2);
-      ctx.fillStyle = line;
+
+      points.forEach((point, index) => {
+
+        if (index === 0) {
+          ctx.moveTo(point.x, point.y);
+        } else {
+          ctx.lineTo(point.x, point.y);
+        }
+
+      });
+
+      ctx.lineTo(
+        points[points.length - 1].x,
+        height - padding
+      );
+
+      ctx.lineTo(
+        points[0].x,
+        height - padding
+      );
+
+      ctx.closePath();
+
+      ctx.fillStyle = fill;
       ctx.fill();
+
+      // Line
+      ctx.beginPath();
+
+      points.forEach((point, index) => {
+
+        if (index === 0) {
+          ctx.moveTo(point.x, point.y);
+        } else {
+          ctx.lineTo(point.x, point.y);
+        }
+
+      });
+
+      ctx.strokeStyle = line;
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Points
+      points.forEach((point) => {
+
+        ctx.beginPath();
+
+        ctx.arc(
+          point.x,
+          point.y,
+          4,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fillStyle = line;
+        ctx.fill();
+
+      });
+
+      // Labels
+      ctx.fillStyle = text;
+
+      ctx.font =
+        "700 12px Inter, system-ui, sans-serif";
+
+      ctx.fillText(
+        "Digital maturity index",
+        padding,
+        padding - 8
+      );
+
+      ctx.fillText(
+        "Tooling + analytics + textile process",
+        padding,
+        height - 8
+      );
+
     });
 
-    ctx.fillStyle = text;
-    ctx.font = "700 12px Inter, system-ui, sans-serif";
-    ctx.fillText("Digital maturity index", padding, padding - 8);
-    ctx.fillText("Tooling + analytics + textile process", padding, height - 8);
   });
+
 };
 
 const initCounters = () => {
