@@ -46,13 +46,6 @@ RonaldoRiska/
 - Font: Inter, DM Sans, Cormorant Garamond
 
 ---
-
-## 🔧 Esecuzione in locale
-
-1. **Clona il repository**
-   ```bash
-   git clone https://github.com/italycircularfashion/RonaldoRiska.git
-   cd RonaldoRiska
    
 
 📄 Licenza
