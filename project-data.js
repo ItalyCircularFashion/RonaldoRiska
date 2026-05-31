@@ -82,7 +82,7 @@ window.portfolioProjects = [
     category:    "supply",
     status:      "Live",
     type:        "html",
-    url:         "progetti/filieraos.html",
+    url:         "filieraos.html",
     featured:    true,
     tags:        ["Make-or-Buy", "CVP", "Kraljic", "Dashboard", "KPI", "SCM"],
     detail: {
@@ -99,7 +99,7 @@ window.portfolioProjects = [
     category:    "supply",
     status:      "Draft",
     type:        "html",
-    url:         "progetti/business-plan.html",
+    url:         "business-plan.html",
     featured:    false,
     tags:        ["Business Plan", "Finanza", "Startup", "Prato", "EU DPP"],
     detail: {
@@ -135,7 +135,7 @@ window.portfolioProjects = [
     category:    "cad",
     status:      "Live",
     type:        "html",
-    url:         "progetti/modacad.html",
+    url:         "modacad.html",
     featured:    false,
     tags:        ["CAD", "Modellistica", "Pattern Making", "React", "Canvas"],
     detail: {
@@ -152,7 +152,7 @@ window.portfolioProjects = [
     category:    "cad",
     status:      "Live",
     type:        "html",
-    url:         "progetti/cartamodelli-jeans.html",
+    url:         "cartamodelli-jeans.html",
     featured:    false,
     tags:        ["CAD", "Cartamodelli", "Jeans", "Modellistica", "Denim"],
     detail: {
@@ -171,7 +171,7 @@ window.portfolioProjects = [
     category:    "tessitura",
     status:      "Live",
     type:        "html",
-    url:         "progetti/weavecad.html",
+    url:         "weavecad.html",
     featured:    true,
     tags:        ["Tessitura", "Armature", "Trama", "Ordito", "Simulatore", "Prato"],
     detail: {
@@ -188,7 +188,7 @@ window.portfolioProjects = [
     category:    "tessitura",
     status:      "Live",
     type:        "html",
-    url:         "progetti/gantt-tessile.html",
+    url:         "gantt-tessile.html",
     featured:    false,
     tags:        ["Gantt", "Pianificazione", "Ciclo Tessile", "Lanificio", "Prato"],
     detail: {
