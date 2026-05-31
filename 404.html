@@ -1,21 +1,13 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reindirizzamento...</title>
-  <script>
-    // Preleva il percorso richiesto (es. /progetti/erp-control-panel.html)
-    var path = window.location.pathname;
-    // Se inizia con /progetti/, lo usiamo come routing interno
-    if (path.startsWith('/progetti/')) {
-      // Reindirizza a index.html mantenendo il path nella query? No, meglio salvare il path in sessionStorage
-      sessionStorage.setItem('redirectPath', path);
-      window.location.replace('/index.html');
-    } else {
-      window.location.replace('/index.html');
-    }
-  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 - Pagina non trovata</title>
 </head>
-<body>Reindirizzamento in corso...</body>
+<body>
+<h1>404</h1>
+<p>La pagina richiesta non esiste.</p>
+<p><a href="/">Torna alla Home</a></p>
+</body>
 </html>
