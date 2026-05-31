@@ -1,448 +1,218 @@
+/**
+ * project-data.js
+ * ─────────────────────────────────────────────────────────────────────────────
+ * DATI DINAMICI DEL PORTFOLIO — Ronaldo Riska
+ * Caricato da: index.html (defer, prima di main.js)
+ *
+ * Le chiavi categoria DEVONO coincidere con i data-filter e data-category-card
+ * presenti in index.html: "tessitura" | "cad" | "supply"
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+
 window.portfolioCategories = {
+
   tessitura: {
-    label: "Tessitura",
-    shortLabel: "Textile Tech",
-    page: "tessitura.html",
-    tone: "Processi tessili, armature, filati, colore e cicli di lavorazione.",
-    summary:
-      "Simulatori trama/ordito, calcoli tessili, dashboard di tessitura e prototipi per gestire processi tecnici di lanificio.",
-    metrics: ["8 moduli", "WeaveCAD", "Pattern", "KPI reparto"],
+    label:      "Tessitura",
+    shortLabel: "Tessitura",
+    tone:       "Simulatori produttivi · Armature · Pianificazione",
+    summary:    "Simulatori di armatura tessile, note colore, Gantt ciclo lanificio e strumenti per la produzione distretto-Prato.",
+    page:       "tessitura.html",
   },
+
   cad: {
-    label: "CAD Moda",
-    shortLabel: "Fashion CAD",
-    page: "cad-moda.html",
-    tone: "Progettazione prodotto, modellistica digitale e workflow moda.",
-    summary:
-      "Strumenti per modellistica, cartamodelli, concept design, sketch enhancement e sviluppo prodotto digitale.",
-    metrics: ["8 moduli", "Pattern", "Sketch", "Product flow"],
+    label:      "CAD Moda",
+    shortLabel: "CAD Moda",
+    tone:       "Modellistica · Sketch AI · Prodotto",
+    summary:    "Applicazioni CAD per modellistica, cartamodelli, sketch digitali AI-enhanced e concept di prodotto moda.",
+    page:       "cad-moda.html",
   },
+
   supply: {
-    label: "Supply Chain & Production",
-    shortLabel: "Industrial Ops",
-    page: "supply-chain-production.html",
-    tone: "Pianificazione, produzione, stock, ordini, MRP/MPS e KPI industriali.",
-    summary:
-      "Dashboard enterprise, simulatori make-or-buy, sistemi Kanban, business planning e analytics per operations tessili.",
-    metrics: ["11 moduli", "SCM", "Kanban", "Planning"],
+    label:      "Supply Chain",
+    shortLabel: "Supply Chain",
+    tone:       "MRP · Dashboard · Operations Analytics",
+    summary:    "Piattaforme MRP, dashboard supply chain, simulatori make-or-buy, Kanban e tool di operations analytics.",
+    page:       "supply-chain-production.html",
   },
+
 };
 
 window.portfolioProjects = [
+
+  // ── SUPPLY CHAIN ─────────────────────────────────────────────────────────
+
   {
-    id: "weavecad-draft-studio",
-    title: "WeaveCAD Draft Studio",
-    category: "tessitura",
-    type: "html",
-    status: "Tool interattivo",
-    url: "weavecad-draft-studio.html",
-    featured: true,
-    description:
-      "Editor tecnico per armature tessili con simulazione trama/ordito, repeat, colori filati, pattern e operazioni di progettazione.",
-    value:
-      "Dimostra capacita di trasformare logiche tessili complesse in un'interfaccia digitale usabile per prototipazione e analisi.",
-    tags: ["Trama", "Ordito", "Armature", "Pattern", "Weaving"],
-    stack: ["HTML", "CSS", "JavaScript", "Canvas/UI"],
-    deliverables: ["Simulatore armature", "Editor pattern", "Vista tecnica", "Parametri struttura"],
+    id:          "textile-platform-v5",
+    title:       "Textile Platform v5",
+    description: "Piattaforma ERP-grade per il settore tessile. Motore MRP reale con lot sizing L4L/MOQ/MULTIPLE, gestione domanda unificata, ciclo vita ordini fornitore, modulo Project Management PMBOK con Gantt e registro rischi, SketchHD integrato con Claude Vision.",
+    category:    "supply",
+    status:      "Live",
+    type:        "html",
+    url:         "textile-platform-v5.html",
+    featured:    true,
+    tags:        ["MRP", "ERP", "React", "Supply Chain", "Project Management", "AI"],
+    detail: {
+      value:      "Strumento operativo completo per pianificazione materiali, gestione fornitori e monitoraggio progetti in un'unica interfaccia industrial dark-mode.",
+      tech:       ["React 18", "useReducer", "MRP Engine puro", "Gantt", "Claude Vision API"],
+      highlights: ["MRP engine con L4L/MOQ/MULTIPLE lot sizing", "Supply order lifecycle completo", "Gantt interattivo + WBS + Registro Rischi", "SketchHD AI integrato"],
+    },
   },
+
   {
-    id: "calcolatore-note-colore",
-    title: "Calcolatore Note Colore Tessili",
-    category: "tessitura",
-    type: "html",
-    status: "Tool tecnico",
-    url: "calcolatore-note-colore-tessili.html",
-    featured: true,
-    description:
-      "Calcolatore per note colore, simmetrie, spezzature e nuove partenze centrate nella costruzione di sequenze tessili.",
-    value:
-      "Porta un calcolo tecnico ripetitivo dentro un workflow digitale chiaro, riducendo errori manuali e tempi di controllo.",
-    tags: ["Colore", "Note tessili", "Sequenze", "Calcolo"],
-    stack: ["HTML", "CSS", "JavaScript"],
-    deliverables: ["Nota simmetrica", "Dettaglio spezzatura", "Partenza centrata"],
+    id:          "mrp-iphone-planner",
+    title:       "MRP iPhone Planner",
+    description: "Simulatore MRP mobile-first con piano di produzione editabile, calcolo automatico fabbisogni componenti FOQ/LFL, gestione ordini aperti, clienti e fornitori. Dati reali dell'esercizio MPS/MRP (Pantony + Jacket-shirt, 20 settimane).",
+    category:    "supply",
+    status:      "Live",
+    type:        "jsx",
+    url:         "mrp-iphone-v3.jsx",
+    featured:    false,
+    tags:        ["MRP", "MPS", "Mobile", "React", "Pianificazione"],
+    detail: {
+      value:      "Tool MRP completamente configurabile da mobile, senza installazione.",
+      tech:       ["React", "Hooks", "MRP Engine"],
+      highlights: ["UI ottimizzata iPhone", "Master Config panel", "Lot sizing FOQ/LFL", "Multi-fornitore con prezzi"],
+    },
   },
+
   {
-    id: "gantt-ciclo-tessile",
-    title: "Gantt Dispositore Ciclo Tessile Prato",
-    category: "tessitura",
-    type: "html",
-    status: "Dashboard ciclo",
-    url: "gantt-ciclo-tessile-prato.html",
-    featured: true,
-    description:
-      "Vista Gantt per organizzare un ciclo tessile nel distretto pratese, con fasi operative e pianificazione temporale.",
-    value:
-      "Collega competenze tessili e produzione in una rappresentazione visuale adatta al coordinamento di reparto.",
-    tags: ["Gantt", "Ciclo tessile", "Planning", "Prato"],
-    stack: ["HTML", "CSS", "JavaScript"],
-    deliverables: ["Timeline produttiva", "Fasi ciclo", "Vista dispositore"],
+    id:          "filieraos-4",
+    title:       "FilieraOS — Supply Chain Simulator",
+    description: "Simulatore decisionale per la supply chain tessile. Integra Make-or-Buy, CVP, leva operativa, margine di sicurezza e Matrice di Kraljic. Basato sui materiali IFTS GEFITES / Prof. Filippo Visintin (Università di Firenze).",
+    category:    "supply",
+    status:      "Live",
+    type:        "html",
+    url:         "progetti/filieraos.html",
+    featured:    true,
+    tags:        ["Make-or-Buy", "CVP", "Kraljic", "Dashboard", "KPI", "SCM"],
+    detail: {
+      value:      "Dashboard operativa per decisioni di pianificazione, acquisti e gestione fornitori nel distretto tessile.",
+      tech:       ["HTML", "Chart.js", "JavaScript"],
+      highlights: ["Analisi Make-or-Buy", "CVP e punto di pareggio", "Matrice di Kraljic", "KPI supply chain"],
+    },
   },
+
   {
-    id: "lanificio-pro-v2",
-    title: "LanificioPRO v2",
-    category: "tessitura",
-    type: "jsx",
-    status: "Prototipo React",
-    url: "lanificiopro-v2.jsx",
-    description:
-      "Prototipo React per gestione digitale di un lanificio, con logiche di reparto, produzione e controllo operativo.",
-    value:
-      "Mostra progettazione applicativa orientata a un contesto tessile reale, con mentalita da prodotto software.",
-    tags: ["Lanificio", "React", "Operations", "KPI"],
-    stack: ["React", "JSX", "Product design"],
-    deliverables: ["Control panel", "Workflow reparto", "Modello dati"],
+    id:          "business-plan-tessile",
+    title:       "Business Plan Tessile",
+    description: "Documento interattivo di business plan per startup tessile-digitale. Include analisi di mercato, modello finanziario, piano operativo e pitch per investitori. Orientato al distretto di Prato e compliance EU Digital Product Passport.",
+    category:    "supply",
+    status:      "Draft",
+    type:        "html",
+    url:         "progetti/business-plan.html",
+    featured:    false,
+    tags:        ["Business Plan", "Finanza", "Startup", "Prato", "EU DPP"],
+    detail: {
+      value:      "Framework riutilizzabile per business plan in ambito tessile-digitale.",
+      tech:       ["HTML", "CSS", "JavaScript"],
+      highlights: ["Modello canvas", "Proiezioni finanziarie", "Analisi competitiva"],
+    },
   },
+
+  // ── CAD MODA ─────────────────────────────────────────────────────────────
+
   {
-    id: "lanificio-pro",
-    title: "LanificioPRO",
-    category: "tessitura",
-    type: "jsx",
-    status: "Prototipo React",
-    url: "lanificiopro.jsx",
-    description:
-      "Prima versione del prototipo gestionale per lanificio, utile per documentare iterazione progettuale e sviluppo incrementale.",
-    value:
-      "Evidenzia evoluzione del progetto, miglioramento progressivo dell'interfaccia e ragionamento sui processi.",
-    tags: ["Lanificio", "React", "Prototype"],
-    stack: ["React", "JSX"],
-    deliverables: ["Versione base", "Flussi operativi", "Componenti UI"],
+    id:          "sketchhd-artifact",
+    title:       "SketchHD — Sketch to HD",
+    description: "Workflow AI per la trasformazione di sketch digitali in immagini ad alta definizione. Canvas di disegno integrato con Claude Vision per analisi e generazione prompt Stable Diffusion. Preset stilistici: Fashion, Realistic, Product, Concept, Textile.",
+    category:    "cad",
+    status:      "Live",
+    type:        "jsx",
+    url:         "sketchhd-artifact.jsx",
+    featured:    true,
+    tags:        ["AI", "Fashion", "Sketch", "Claude Vision", "Stability AI", "React"],
+    detail: {
+      value:      "Accelera il processo concept-to-image per designer e stylisti. Dalla matita digitale all'immagine fotorealistica.",
+      tech:       ["React", "Canvas API", "Claude Vision API", "Stability AI API"],
+      highlights: ["Canvas draw nativo", "5 stili preset tessili", "Analisi AI prompt SD", "Download PNG HD"],
+    },
   },
+
   {
-    id: "antilope-studio",
-    title: "CAD Textile Antilope Studio",
-    category: "tessitura",
-    type: "jsx",
-    status: "Prototipo CAD",
-    url: "antilope-studio.jsx",
-    description:
-      "Studio CAD tessile in JSX per sperimentare interfacce di progettazione tecnica e controllo digitale di pattern.",
-    value:
-      "Unisce progettazione tessile, UI tecnica e architettura di prodotto per applicazioni specialistiche.",
-    tags: ["CAD tessile", "React", "Pattern", "Studio"],
-    stack: ["React", "JSX", "CAD workflow"],
-    deliverables: ["UI CAD", "Pattern logic", "Workspace tecnico"],
+    id:          "modacad-ep1",
+    title:       "ModaCAD Studio",
+    description: "Applicazione CAD moda web-based ispirata a Audaces e Lectra. Workspace tecnico per modellistica digitale, costruzione cartamodelli, gradazione taglie e nesting. Interfaccia dark-mode con pannello strumenti professionale.",
+    category:    "cad",
+    status:      "Live",
+    type:        "html",
+    url:         "progetti/modacad.html",
+    featured:    false,
+    tags:        ["CAD", "Modellistica", "Pattern Making", "React", "Canvas"],
+    detail: {
+      value:      "Dimostratore di workflow CAD moda completamente in browser — accessibile senza licenze software.",
+      tech:       ["React", "Canvas API", "SVG", "CSS"],
+      highlights: ["Canvas pattern making", "Gradazione taglie", "Nesting automatico"],
+    },
   },
+
   {
-    id: "weave-backend-server",
-    title: "Weave Backend Server",
-    category: "tessitura",
-    type: "js",
-    status: "Backend prototype",
-    url: "weave-backend-server.js",
-    description:
-      "Server JavaScript per sperimentare il backend di un ambiente Weave Studio con logiche applicative separate dal frontend.",
-    value:
-      "Documenta competenze di architettura oltre l'interfaccia: backend, API e separazione delle responsabilita.",
-    tags: ["Backend", "Node", "Weave studio", "API"],
-    stack: ["JavaScript", "Node.js"],
-    deliverables: ["Server prototype", "Base API", "Backend studio"],
+    id:          "cartamodelli-jeans",
+    title:       "Cartamodelli Jeans Digitali",
+    description: "Visualizzazione interattiva della costruzione di cartamodelli jeans uomo e donna con misure standard. Mostra logiche costruttive, tolleranze e sequenza di tracciatura. Risorsa didattica e tecnica per il comparto denim.",
+    category:    "cad",
+    status:      "Live",
+    type:        "html",
+    url:         "progetti/cartamodelli-jeans.html",
+    featured:    false,
+    tags:        ["CAD", "Cartamodelli", "Jeans", "Modellistica", "Denim"],
+    detail: {
+      value:      "Documentazione tecnica interattiva per cartamodelli denim.",
+      tech:       ["SVG", "JavaScript", "HTML"],
+      highlights: ["Misure standard EU", "Costruzione passo-passo", "Tolleranze cuciture"],
+    },
   },
+
+  // ── TESSITURA ──────────────────────────────────────────────────────────────
+
   {
-    id: "modacad-ep1",
-    title: "ModaCAD Studio EP1",
-    category: "cad",
-    type: "html",
-    status: "Tool CAD",
-    url: "modacad-studio-ep1.html",
-    featured: true,
-    description:
-      "Ambiente di modellistica digitale per moda con UI editoriale, strumenti laterali e logica da studio CAD.",
-    value:
-      "Presenta un workflow di progettazione prodotto con attenzione a interfaccia, strumenti e contesto moda.",
-    tags: ["ModaCAD", "Modellistica", "Product design", "CAD"],
-    stack: ["HTML", "CSS", "JavaScript"],
-    deliverables: ["Workspace CAD", "Toolbar", "Gestione capo"],
+    id:          "weavecad-draft-studio",
+    title:       "WeaveCAD Draft Studio",
+    description: "Simulatore interattivo per armature tessili: tela, saia, raso, panama e derivati. Disegno trama/ordito con parametri configurabili, visualizzazione in tempo reale del tessuto simulato, calcolo note colore e spezzature.",
+    category:    "tessitura",
+    status:      "Live",
+    type:        "html",
+    url:         "progetti/weavecad.html",
+    featured:    true,
+    tags:        ["Tessitura", "Armature", "Trama", "Ordito", "Simulatore", "Prato"],
+    detail: {
+      value:      "Simula visivamente il risultato di armatura prima della produzione — tool formativo e operativo.",
+      tech:       ["Canvas API", "JavaScript", "HTML", "CSS"],
+      highlights: ["7 armature di base", "Parametri trama/ordito configurabili", "Visualizzazione real-time", "Export note colore"],
+    },
   },
+
   {
-    id: "modacad-ep2",
-    title: "ModaCAD Studio EP2",
-    category: "cad",
-    type: "html",
-    status: "Tool CAD",
-    url: "modacad-studio-ep2.html",
-    description:
-      "Seconda iterazione del CAD moda, con affinamento dell'esperienza utente e della struttura di lavoro digitale.",
-    value:
-      "Mostra capacita di iterare un prodotto digitale mantenendo coerenza visiva e migliorando le funzionalita.",
-    tags: ["CAD moda", "Iterazione", "Workflow", "UX"],
-    stack: ["HTML", "CSS", "JavaScript"],
-    deliverables: ["Versione evoluta", "Workspace", "Product tools"],
+    id:          "gantt-tessile",
+    title:       "Gantt Ciclo Tessile",
+    description: "Diagramma di Gantt interattivo per la pianificazione del ciclo di lavorazione tessile: cardatura, filatura, orditura, tessitura, tintoria, rifinizione e confezione. Gestione ordini multipli, visualizzazione WIP e avanzamento per fase.",
+    category:    "tessitura",
+    status:      "Live",
+    type:        "html",
+    url:         "progetti/gantt-tessile.html",
+    featured:    false,
+    tags:        ["Gantt", "Pianificazione", "Ciclo Tessile", "Lanificio", "Prato"],
+    detail: {
+      value:      "Strumento di pianificazione visuale per operatori e responsabili di produzione nel distretto tessile.",
+      tech:       ["React", "Canvas", "Hooks"],
+      highlights: ["7 fasi ciclo laniero", "Ordini multipli", "WIP tracking", "Bottleneck analysis"],
+    },
   },
+
   {
-    id: "modacad-ep3",
-    title: "ModaCAD MVP EP3",
-    category: "cad",
-    type: "html",
-    status: "MVP interattivo",
-    url: "modacad-mvp-ep3.html",
-    featured: true,
-    description:
-      "MVP CAD per selezione capo e generazione di un flusso iniziale di progettazione digitale.",
-    value:
-      "Trasforma una scelta progettuale in percorso applicativo, utile per prototipare strumenti prodotto.",
-    tags: ["MVP", "CAD", "Capo", "Workflow"],
-    stack: ["HTML", "CSS", "JavaScript"],
-    deliverables: ["Scelta capo", "Flusso guidato", "Interfaccia MVP"],
+    id:          "note-colore-calculator",
+    title:       "Note Colore Calculator",
+    description: "Tool per il calcolo delle note colore in ordito: spezzature, simmetrie, nuove partenze centrate e sequenze ripetute. Input parametri e output lista note pronta per l'orditrice. Riduce gli errori nel passaggio da disegno a produzione.",
+    category:    "tessitura",
+    status:      "Live",
+    type:        "html",
+    url:         "progetti/note-colore.html",
+    featured:    false,
+    tags:        ["Tessitura", "Note Colore", "Orditura", "Calcolo", "Qualità"],
+    detail: {
+      value:      "Elimina i calcoli manuali per le note colore, fonte frequente di errori nella fase di orditura.",
+      tech:       ["JavaScript", "HTML", "CSS"],
+      highlights: ["Simmetrie automatiche", "Partenze centrate", "Export lista note", "Validazione input"],
+    },
   },
-  {
-    id: "modacad-ep4",
-    title: "ModaCAD EP4",
-    category: "cad",
-    type: "html",
-    status: "Prototype",
-    url: "modacad-ep4.html",
-    description:
-      "Quarta iterazione del concept ModaCAD, centrata su accesso rapido alla creazione del capo.",
-    value:
-      "Evidenzia sperimentazione rapida e affinamento progressivo di una soluzione CAD moda.",
-    tags: ["ModaCAD", "Prototype", "Product flow"],
-    stack: ["HTML", "CSS", "JavaScript"],
-    deliverables: ["Iterazione UI", "Scelta capo", "Prototype flow"],
-  },
-  {
-    id: "cartamodello-jeans",
-    title: "Cartamodello Pantalone Jeans 38-48",
-    category: "cad",
-    type: "html",
-    status: "Pattern tool",
-    url: "cartamodello-jeans.html",
-    featured: true,
-    description:
-      "Strumento per cartamodello pantalone jeans con taglie 38-48, utile per collegare modellistica e visualizzazione digitale.",
-    value:
-      "Rende dimostrabile la competenza nel tradurre regole di modellistica in strumenti web consultabili.",
-    tags: ["Jeans", "Cartamodello", "Taglie", "Modellistica"],
-    stack: ["HTML", "CSS", "JavaScript"],
-    deliverables: ["Pattern jeans", "Range taglie", "Vista modello"],
-  },
-  {
-    id: "cartamodello-jeans-donna",
-    title: "Cartamodello Jeans Donna",
-    category: "cad",
-    type: "html",
-    status: "Pattern tool",
-    url: "cartamodello-jeans-donna.html",
-    featured: true,
-    description:
-      "Cartamodello digitale per jeans donna regular fit, con interfaccia dedicata alla costruzione del modello.",
-    value:
-      "Integra progettazione moda, regole tecniche e output visuale per comunicare competenza CAD/prodotto.",
-    tags: ["Jeans donna", "Regular fit", "Pattern", "CAD"],
-    stack: ["HTML", "CSS", "JavaScript"],
-    deliverables: ["Pattern donna", "Regular fit", "Vista tecnica"],
-  },
-  {
-    id: "sketchhd-artifact",
-    title: "SketchHD Artifact",
-    category: "cad",
-    type: "jsx",
-    status: "AI design prototype",
-    url: "sketchhd-artifact.jsx",
-    description:
-      "Prototipo JSX per workflow di miglioramento sketch verso output ad alta definizione.",
-    value:
-      "Collega design moda, AI-assisted workflow e prototipazione frontend.",
-    tags: ["Sketch", "AI", "HD", "React"],
-    stack: ["React", "JSX", "AI workflow"],
-    deliverables: ["Sketch workflow", "Artifact UI", "Enhancement flow"],
-  },
-  {
-    id: "sketchhd-source",
-    title: "SketchHD Source",
-    category: "cad",
-    type: "jsx",
-    status: "React source",
-    url: "sketchhd.jsx",
-    description:
-      "Sorgente React del concept SketchHD per gestione di immagini, concept e output visuali.",
-    value:
-      "Mostra codice applicativo e ragionamento su componenti, stato e interfaccia utente.",
-    tags: ["React", "Sketch", "Frontend"],
-    stack: ["React", "JSX"],
-    deliverables: ["Source code", "Componenti", "Image flow"],
-  },
-  {
-    id: "scm-gefites-evolved",
-    title: "SCM GEFITES Evolved",
-    category: "supply",
-    type: "html",
-    status: "Dashboard SCM",
-    url: "scm-gefites-evolved.html",
-    featured: true,
-    description:
-      "Dashboard interattiva per supply chain management con moduli su make-or-buy, costi, acquisti, partnership e pianificazione.",
-    value:
-      "Ha un taglio enterprise e rende visibile la capacita di costruire strumenti didattici e operativi complessi.",
-    tags: ["SCM", "Make or Buy", "Costi", "Planning", "Dashboard"],
-    stack: ["HTML", "CSS", "JavaScript"],
-    deliverables: ["Dashboard", "Simulatori", "Navigazione moduli", "Piano supply chain"],
-  },
-  {
-    id: "filieraos-4",
-    title: "FilieraOS 4",
-    category: "supply",
-    type: "html",
-    status: "Enterprise platform",
-    url: "filieraos-4.html",
-    featured: true,
-    description:
-      "Piattaforma di supply chain intelligence per fashion con dashboard, quick actions, decisioner make-or-buy e analytics.",
-    value:
-      "Comunica una visione SaaS per operations moda: dati, decisioni e workflow in un ambiente unico.",
-    tags: ["Fashion SCM", "SaaS", "Analytics", "Decisioner"],
-    stack: ["HTML", "CSS", "JavaScript"],
-    deliverables: ["Dashboard", "Decisioner", "Analytics", "Quick actions"],
-  },
-  {
-    id: "filieraos-3",
-    title: "FilieraOS 3",
-    category: "supply",
-    type: "html",
-    status: "Enterprise platform",
-    url: "filieraos-3.html",
-    description:
-      "Versione precedente della piattaforma FilieraOS, utile per mostrare evoluzione e iterazione del concept.",
-    value:
-      "Rende leggibile il percorso di miglioramento di un prodotto digitale per supply chain moda.",
-    tags: ["SCM", "Iteration", "Dashboard", "Fashion"],
-    stack: ["HTML", "CSS", "JavaScript"],
-    deliverables: ["Dashboard", "Moduli SCM", "Analytics"],
-  },
-  {
-    id: "scm-gefites-standalone",
-    title: "SCM GEFITES Standalone",
-    category: "supply",
-    type: "html",
-    status: "Dashboard SCM",
-    url: "scm-gefites-standalone.html",
-    description:
-      "Versione standalone della dashboard SCM con moduli formativi e strumenti interattivi.",
-    value:
-      "Dimostra capacita di condensare contenuti complessi in un'esperienza navigabile e operativa.",
-    tags: ["SCM", "Dashboard", "Acquisti", "Costi"],
-    stack: ["HTML", "CSS", "JavaScript"],
-    deliverables: ["Mappa corso", "Simulatori", "Moduli SCM"],
-  },
-  {
-    id: "scm-visintin-riassunto",
-    title: "SCM Visintin Riassunto",
-    category: "supply",
-    type: "html",
-    status: "Knowledge dashboard",
-    url: "scm-visintin-riassunto.html",
-    description:
-      "Riassunto interattivo su supply chain management, costi di transazione, CVP, acquisti e partnership.",
-    value:
-      "Trasforma materiali teorici in contenuto digitale consultabile e strutturato.",
-    tags: ["SCM", "Riassunto", "CVP", "Acquisti"],
-    stack: ["HTML", "CSS"],
-    deliverables: ["Knowledge base", "Moduli teorici", "Navigazione"],
-  },
-  {
-    id: "scm-visintin-riassunto-1",
-    title: "SCM Visintin Riassunto v1",
-    category: "supply",
-    type: "html",
-    status: "Knowledge dashboard",
-    url: "scm-visintin-riassunto-v1.html",
-    description:
-      "Variante del riassunto SCM, mantenuta come storico di iterazione e confronto contenutistico.",
-    value:
-      "Mostra controllo documentale e capacita di tenere versioni alternative di un modulo.",
-    tags: ["SCM", "Versioning", "Knowledge"],
-    stack: ["HTML", "CSS"],
-    deliverables: ["Versione alternativa", "Contenuti SCM"],
-  },
-  {
-    id: "kanbanflow",
-    title: "KanbanFlow",
-    category: "supply",
-    type: "html",
-    status: "Production board",
-    url: "kanbanflow.html",
-    featured: true,
-    description:
-      "Board Kanban per flussi di lavoro, avanzamento attivita e gestione visuale delle priorita operative.",
-    value:
-      "Avvicina produzione e project management con un'interfaccia immediata e orientata all'azione.",
-    tags: ["Kanban", "WIP", "Priorita", "Operations"],
-    stack: ["HTML", "CSS", "JavaScript"],
-    deliverables: ["Board", "Card lavoro", "Stati flusso"],
-  },
-  {
-    id: "kanbanflow-1",
-    title: "KanbanFlow v1",
-    category: "supply",
-    type: "html",
-    status: "Production board",
-    url: "kanbanflow-v1.html",
-    description:
-      "Seconda variante del sistema KanbanFlow per confronto e iterazione della board operativa.",
-    value:
-      "Mostra sviluppo incrementale di strumenti per controllo WIP e coordinamento attivita.",
-    tags: ["Kanban", "WIP", "Iteration"],
-    stack: ["HTML", "CSS", "JavaScript"],
-    deliverables: ["Board alternativa", "Flusso lavoro"],
-  },
-  {
-    id: "business-plan-tessilenext",
-    title: "Business Plan TessileNext",
-    category: "supply",
-    type: "html",
-    status: "Business planning",
-    url: "business-plan-tessilenext.html",
-    featured: true,
-    description:
-      "Business plan digitale per TessileNext S.r.l. con struttura da Smart&Start, mercato, prodotto, marketing e piano operativo.",
-    value:
-      "Integra visione industriale, sostenibilita e capacita di comunicare un progetto imprenditoriale in formato web.",
-    tags: ["Business plan", "Smart&Start", "Tessile", "Strategy"],
-    stack: ["HTML", "CSS", "JavaScript"],
-    deliverables: ["Executive summary", "Market analysis", "Piano operativo", "Team"],
-  },
-  {
-    id: "business-plan-web",
-    title: "Business Plan Web",
-    category: "supply",
-    type: "html",
-    status: "Business planning",
-    url: "business-plan-web.html",
-    description:
-      "Template evoluto di business plan web con sezioni su progetto, opportunita, soluzione e modello operativo.",
-    value:
-      "Mostra capacita di strutturare presentazioni business in formato web interattivo.",
-    tags: ["Business", "Planning", "Web", "Startup"],
-    stack: ["HTML", "CSS", "JavaScript"],
-    deliverables: ["Piano web", "Narrativa progetto", "Sezioni business"],
-  },
-  {
-    id: "business-plan-web-1",
-    title: "Business Plan Web v1",
-    category: "supply",
-    type: "html",
-    status: "Business planning",
-    url: "business-plan-web-v1.html",
-    description:
-      "Variante del business plan web, utile come storico progettuale e base per ulteriori personalizzazioni.",
-    value:
-      "Evidenzia iterazione e capacita di creare sistemi documentali digitali riusabili.",
-    tags: ["Business", "Versioning", "Web"],
-    stack: ["HTML", "CSS", "JavaScript"],
-    deliverables: ["Versione alternativa", "Piano web"],
-  },
-  {
-    id: "erp-control-panel",
-    title: "ERP Frontend Control Panel",
-    category: "supply",
-    type: "jsx",
-    status: "ERP prototype",
-    url: "erp-control-panel.jsx",
-    description:
-      "Prototipo frontend ERP per controllo operativo, pensato come ponte fra CAD tessile, produzione e gestione dati.",
-    value:
-      "Dimostra pensiero sistemico: prodotto, reparto, dati e controllo in un'unica architettura applicativa.",
-    tags: ["ERP", "Frontend", "Operations", "Control panel"],
-    stack: ["React", "JSX", "ERP workflow"],
-    deliverables: ["Control panel", "Componenti ERP", "Workflow dati"],
-  },
+
 ];
