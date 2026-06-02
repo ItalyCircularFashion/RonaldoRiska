@@ -269,13 +269,13 @@ const renderProjectDetail = () => {
         <article class="analysis-panel reveal">
           <p class="eyebrow">Valore professionale</p>
           <h2>Che cosa dimostra</h2>
-          <p>${escapeHtml(project.value)}</p>
+          <p>${escapeHtml(project.detail?.value || project.description)}</p>
         </article>
         <article class="analysis-panel reveal">
           <p class="eyebrow">Stack</p>
           <h2>Tecnologie e output</h2>
-          <ul class="tag-list">${renderTagList(project.stack)}</ul>
-          <ul class="check-list">${renderTagList(project.deliverables)}</ul>
+          <ul class="tag-list">${renderTagList(project.detail?.tech || project.tags)}</ul>
+          <ul class="check-list">${renderTagList(project.detail?.highlights || [])}</ul>
         </article>
       </div>
     </section>
@@ -290,7 +290,7 @@ const renderProjectDetail = () => {
           project.type === "html"
             ? `<div class="project-frame-shell reveal"><iframe src="${directHref}" title="${escapeHtml(project.title)}" loading="lazy"></iframe></div>`
             : `<div class="source-panel reveal">
-                <p>Questo elemento e' un prototipo sorgente. Aprilo per ispezionare il codice e valutarne architettura, componenti e logica applicativa.</p>
+                <p>Questo elemento è un prototipo sorgente. Aprilo per ispezionare il codice e valutarne architettura, componenti e logica applicativa.</p>
                 <a class="button button-primary" href="${directHref}" target="_blank" rel="noopener">Apri file sorgente</a>
               </div>`
         }
@@ -516,23 +516,24 @@ const initFooter = () => {
 };
 
 // Gestione navigazione interna con URL canonici (History API)
+// IMPORTANTE: Non modificare pathname per la home — GitHub Pages serve index.html automaticamente
 const initInternalNavigation = () => {
   document.body.addEventListener("click", (e) => {
     const link = e.target.closest("a");
     if (!link) return;
     const href = link.getAttribute("href");
     if (!href) return;
-    // Intercetta solo link interni che puntano a /progetti/... o alle pagine principali
-    if (href.startsWith("/progetti/") && href.endsWith(".html")) {
+    
+    // Intercetta solo link a schede progetto (progetti/xxx.html)
+    if (href.startsWith("progetti/") && href.endsWith(".html")) {
       e.preventDefault();
-      const url = new URL(href, window.location.origin);
-      history.pushState({}, "", url.pathname);
+      const url = new URL(href, window.location.origin + window.location.pathname);
+      // Usa replaceState per non aggiungere entry nella storia per ora
+      window.history.replaceState({}, "", url.pathname);
       renderProjectDetail();
       window.scrollTo({ top: 0, behavior: "smooth" });
-    } else if (href === "index.html" || href === "/" || href === "./") {
-      // Gestione home per evitare ricariche complete (opzionale)
-      // Lasciamo il comportamento default per semplicità
     }
+    // NON intercettare link alla home (index.html, /) — lascia il comportamento default
   });
 
   // Gestione back/forward
