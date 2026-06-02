@@ -48,7 +48,7 @@ window.portfolioProjects = [
     category:    "supply",
     status:      "Live",
     type:        "html",
-    url:         "textile-platform-v5.html",
+    url:         "supply-chain-production.html",
     featured:    true,
     tags:        ["MRP", "ERP", "React", "Supply Chain", "Project Management", "AI"],
     detail: {
@@ -82,7 +82,7 @@ window.portfolioProjects = [
     category:    "supply",
     status:      "Live",
     type:        "html",
-    url:         "filieraos.html",
+    url:         "filieraos-4.html",
     featured:    true,
     tags:        ["Make-or-Buy", "CVP", "Kraljic", "Dashboard", "KPI", "SCM"],
     detail: {
@@ -99,7 +99,7 @@ window.portfolioProjects = [
     category:    "supply",
     status:      "Draft",
     type:        "html",
-    url:         "business-plan.html",
+    url:         "business-plan-web.html",
     featured:    false,
     tags:        ["Business Plan", "Finanza", "Startup", "Prato", "EU DPP"],
     detail: {
@@ -135,7 +135,7 @@ window.portfolioProjects = [
     category:    "cad",
     status:      "Live",
     type:        "html",
-    url:         "modacad.html",
+    url:         "modacad-studio-ep2.html",
     featured:    false,
     tags:        ["CAD", "Modellistica", "Pattern Making", "React", "Canvas"],
     detail: {
@@ -152,7 +152,7 @@ window.portfolioProjects = [
     category:    "cad",
     status:      "Live",
     type:        "html",
-    url:         "cartamodelli-jeans.html",
+    url:         "cartamodello-jeans.html",
     featured:    false,
     tags:        ["CAD", "Cartamodelli", "Jeans", "Modellistica", "Denim"],
     detail: {
@@ -171,7 +171,7 @@ window.portfolioProjects = [
     category:    "tessitura",
     status:      "Live",
     type:        "html",
-    url:         "weavecad.html",
+    url:         "weavecad-draft-studio.html",
     featured:    true,
     tags:        ["Tessitura", "Armature", "Trama", "Ordito", "Simulatore", "Prato"],
     detail: {
@@ -188,7 +188,7 @@ window.portfolioProjects = [
     category:    "tessitura",
     status:      "Live",
     type:        "html",
-    url:         "gantt-tessile.html",
+    url:         "gantt-ciclo-tessile-prato.html",
     featured:    false,
     tags:        ["Gantt", "Pianificazione", "Ciclo Tessile", "Lanificio", "Prato"],
     detail: {
@@ -205,7 +205,7 @@ window.portfolioProjects = [
     category:    "tessitura",
     status:      "Live",
     type:        "html",
-    url:         "progetti/note-colore.html",
+    url:         "calcolatore-note-colore-tessili.html",
     featured:    false,
     tags:        ["Tessitura", "Note Colore", "Orditura", "Calcolo", "Qualità"],
     detail: {
