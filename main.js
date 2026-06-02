@@ -515,25 +515,32 @@ const initFooter = () => {
   });
 };
 
-// Gestione navigazione interna con URL canonici (History API)
-// IMPORTANTE: Non modificare pathname per la home — GitHub Pages serve index.html automaticamente
+// Gestione navigazione interna intelligente
+// Intercetta link a categorie (tessitura.html, cad-moda.html, ecc.) e link ai progetti
 const initInternalNavigation = () => {
+  // Lista delle pagine categoria (corrisponde a categorie nel portfolio)
+  const categoryPages = ['tessitura.html', 'cad-moda.html', 'supply-chain-production.html', 'curriculum.html'];
+  
   document.body.addEventListener("click", (e) => {
     const link = e.target.closest("a");
     if (!link) return;
     const href = link.getAttribute("href");
     if (!href) return;
     
-    // Intercetta solo link a schede progetto (progetti/xxx.html)
+    // Intercetta link a schede progetto (progetti/xxx.html)
     if (href.startsWith("progetti/") && href.endsWith(".html")) {
       e.preventDefault();
       const url = new URL(href, window.location.origin + window.location.pathname);
-      // Usa replaceState per non aggiungere entry nella storia per ora
-      window.history.replaceState({}, "", url.pathname);
+      window.history.pushState({}, "", url.pathname);
       renderProjectDetail();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
-    // NON intercettare link alla home (index.html, /) — lascia il comportamento default
+    // Intercetta link a pagine categoria e li redirige sempre alla home senza index.html
+    else if (categoryPages.some(page => href.includes(page)) || 
+             href === "index.html" || href === "./" || href === "#") {
+      // Lascia il comportamento default per il browser
+      // GitHub Pages redirige automaticamente a home senza index.html
+    }
   });
 
   // Gestione back/forward
