@@ -78,11 +78,10 @@
     <main id="main">
 
       <!-- HERO CON VIDEO BACKGROUND -->
-      <section class="hero" id="top" aria-labelledby="hero-title">
+      <section class="hero hero-with-video" id="top" aria-labelledby="hero-title">
         <!-- Video Background -->
-        <video class="hero-video" autoplay muted loop playsinline>
+        <video class="hero-video" autoplay muted loop playsinline loading="lazy">
           <source src="https://videos.pexels.com/video-files/3571264/3571264-hd_1920_1080_25fps.mp4" type="video/mp4">
-          <!-- Fallback: immagine statica per browser che non supportano video -->
         </video>
         <!-- Overlay scuro per leggibilità testo -->
         <div class="hero-overlay"></div>
@@ -372,68 +371,61 @@
         </div>
       </section>
 
-      <!-- TEXTILE INTELLIGENCE JOURNAL -->
-      <!-- NOTE: <main> annidato rimosso (era BUG critico W3C). Sostituito con <div>. -->
-      <section class="intelligence-layout" id="tessile-intelligence" aria-labelledby="journal-title">
+      <!-- TEXTILE INTELLIGENCE JOURNAL — COMPLETAMENTE RISTRUTTURATA -->
+      <section class="intelligence-section" id="tessile-intelligence" aria-labelledby="journal-title">
         <div class="container">
 
-          <div class="section-heading reveal">
+          <div class="intelligence-header reveal">
             <p class="eyebrow">Textile Intelligence Feed · Industrial Report</p>
-            <div>
-              <h2 id="journal-title">Industrial Intelligence Journal — Prato Textile District</h2>
-              <p class="lead">Analisi su supply chain, sostenibilità, manifattura avanzata e trasformazione digitale nel comparto moda‑tessile.</p>
-            </div>
+            <h2 id="journal-title">Industrial Intelligence Journal — Prato Textile District</h2>
+            <p class="lead">Analisi su supply chain, sostenibilità, manifattura avanzata e trasformazione digitale nel comparto moda‑tessile.</p>
           </div>
 
+          <!-- MAIN FEATURED ARTICLE -->
+          <article class="intelligence-featured reveal">
+            <div class="featured-preview">
+              <div class="preview-accent"></div>
+              <span class="preview-date">Q2 2026</span>
+            </div>
+            <div class="featured-content">
+              <div class="featured-meta">
+                <span>Special Edition</span>
+                <span>Prato District</span>
+              </div>
+              <h3>La manifattura sostenibile diventa leva competitiva per l'ecosistema tessile di Prato</h3>
+              <p>La domanda globale di produzioni certificate sta riscrivendo le gerarchie di valore nel tessile. Il distretto di Prato, storicamente radicato nel riciclo e nella rigenerazione di fibre, ha opportunità di primo piano nel nuovo paradigma eco‑consapevole.</p>
+              <p>Le imprese all'avanguardia investono in workflow digitali e piattaforme di operational intelligence che riducono gli sprechi. L'adozione di sistemi MES abilitati da AI consente tracciabilità real-time e decisioni di pianificazione reattive e sostenibili.</p>
+            </div>
+          </article>
+
+          <!-- INTELLIGENCE GRID: Left, Center, Right -->
           <div class="intelligence-grid">
 
-            <!-- COLONNA SINISTRA -->
-            <aside class="intel-column left-column reveal" aria-label="Operations Intelligence">
-              <div>
-                <div class="category-card">
-                  <span class="eyebrow">Operations Intelligence</span>
-                  <h3>Adaptive Engineering Profile</h3>
-                  <p>Profilo operativo nativo‑digitale che integra manifattura tessile, supply chain analytics e orchestrazione di flussi produttivi verso fabbriche interconnesse e centri decisionali cloud‑native.</p>
-                  <p>L'approccio combina capacità produttive tradizionali con architetture web‑based, cruscotti KPI predittivi e automazione dei processi, ridisegnando il time‑to‑market del prodotto tessile.</p>
-                </div>
-                <div class="category-card">
-                  <span class="eyebrow">Strategic Outlook</span>
-                  <h3>Industrial Transition</h3>
-                  <p>Le aziende tessili leader accelerano verso modelli data‑driven. La competitività passa dalla visibilità end‑to‑end sulla filiera e dall'adozione di sistemi di process intelligence interni ed ecosistemici.</p>
-                </div>
+            <!-- LEFT COLUMN: Strategic Insights -->
+            <aside class="intel-column" aria-label="Strategic Intelligence">
+              <div class="intel-card reveal">
+                <span class="eyebrow">Operations Intelligence</span>
+                <h4>Adaptive Engineering Profile</h4>
+                <p>Profilo operativo nativo‑digitale che integra manifattura tessile, supply chain analytics e orchestrazione di flussi produttivi verso fabbriche interconnesse.</p>
+              </div>
+              <div class="intel-card reveal">
+                <span class="eyebrow">Strategic Outlook</span>
+                <h4>Industrial Transition</h4>
+                <p>Le aziende tessili leader accelerano verso modelli data‑driven. La competitività passa dalla visibilità end‑to‑end sulla filiera e dall'adozione di sistemi di process intelligence.</p>
               </div>
             </aside>
 
-            <!-- COLONNA CENTRALE — era <main>: BUG CORRETTO, ora <div> -->
-            <div class="intel-main reveal">
-              <article class="project-card" style="margin-bottom:2rem;overflow:hidden;padding:0">
-                <div class="project-preview" style="min-height:180px">
-                  <div class="preview-topline"></div>
-                  <div class="preview-grid" aria-hidden="true">
-                    <span></span><span></span><span></span>
-                  </div>
-                  <span class="preview-label">Industrial Report · Q2 2026</span>
-                </div>
-                <div class="project-card-body">
-                  <div class="project-card-meta">
-                    <span>Special Edition</span>
-                    <span>Prato District</span>
-                  </div>
-                  <h3>La manifattura sostenibile diventa leva competitiva per l'ecosistema tessile di Prato</h3>
-                  <p>La domanda globale di produzioni certificate sta riscrivendo le gerarchie di valore nel tessile. Il distretto di Prato, storicamente radicato nel riciclo e nella rigenerazione di fibre, ha opportunità di primo piano nel nuovo paradigma eco‑consapevole.</p>
-                  <p>Le imprese all'avanguardia investono in workflow digitali e piattaforme di operational intelligence che riducono gli sprechi. L'adozione di sistemi MES abilitati da AI consente tracciabilità real-time e decisioni di pianificazione reattive e sostenibili.</p>
-                </div>
-              </article>
-
-              <div style="display:grid;gap:1.5rem">
-                <div class="timeline-card">
+            <!-- CENTER COLUMN: Updates & Timeline -->
+            <div class="intel-main">
+              <div class="timeline-group">
+                <div class="timeline-card reveal">
                   <div class="timeline-header">
                     <span class="date-pill">Market Signal</span>
                   </div>
                   <h4>I buyer europei premiano tracciabilità e produzione agile</h4>
                   <p>I grandi gruppi del lusso selezionano fornitori con supply chain trasparenti, lead time reattivi e piattaforme di customizzazione digitale.</p>
                 </div>
-                <div class="timeline-card">
+                <div class="timeline-card reveal">
                   <div class="timeline-header">
                     <span class="date-pill">Supply Chain · KPI</span>
                   </div>
@@ -443,31 +435,29 @@
               </div>
             </div>
 
-            <!-- COLONNA DESTRA -->
-            <aside class="intel-column right-column reveal" aria-label="Industrial Pulse">
-              <div>
-                <div class="category-card">
-                  <span class="eyebrow">Industrial Pulse · Indicatori</span>
-                  <h3>Production Dynamics</h3>
-                  <ul class="clean-list">
-                    <li>Adozione workflow digitali in crescita (y/y)</li>
-                    <li>Lead time come KPI strategico → focus time‑to‑market</li>
-                    <li>Domanda approvvigionamento sostenibile in aumento</li>
-                    <li>Investimenti in automazione industriale in crescita</li>
-                  </ul>
-                </div>
-                <div class="category-card">
-                  <span class="eyebrow">AI Commentary</span>
-                  <h3>Il nuovo paradigma produttivo</h3>
-                  <p>La convergenza tra AI, IoT di fabbrica e piattaforme web‑based ridefinisce il modello operativo dell'industria tessile verso agenti autonomi per la pianificazione dinamica. I team industriali non implementano più: orchestrano sistemi intelligenti.</p>
-                </div>
+            <!-- RIGHT COLUMN: Indicators & Commentary -->
+            <aside class="intel-column" aria-label="Industrial Pulse">
+              <div class="intel-card reveal">
+                <span class="eyebrow">Industrial Pulse</span>
+                <h4>Production Dynamics</h4>
+                <ul class="clean-list">
+                  <li>Adozione workflow digitali in crescita (y/y)</li>
+                  <li>Lead time come KPI strategico</li>
+                  <li>Domanda sostenibilità in aumento</li>
+                  <li>Investimenti in automazione in crescita</li>
+                </ul>
+              </div>
+              <div class="intel-card reveal">
+                <span class="eyebrow">AI Commentary</span>
+                <h4>Nuovo paradigma produttivo</h4>
+                <p>La convergenza tra AI, IoT di fabbrica e piattaforme web‑based ridefinisce il modello operativo dell'industria tessile verso agenti autonomi per la pianificazione dinamica.</p>
               </div>
             </aside>
 
           </div>
 
-          <!-- CTA con link reali (erano href="#": BUG CORRETTO) -->
-          <div class="hero-actions" style="justify-content:center;margin-top:3rem">
+          <!-- CTA FINALE -->
+          <div class="intelligence-cta reveal" style="justify-content:center;margin-top:3rem">
             <a href="Ronaldo-Riska-CV-2026.pdf" download class="button button-primary">Scarica CV PDF</a>
             <a href="#progetti" class="button button-secondary">Esplora i tool →</a>
           </div>
@@ -488,7 +478,6 @@
     <!-- Script: project-data.js PRIMA di main.js (dipendenza) -->
     <script src="project-data.js" defer></script>
     <script src="main.js" defer></script>
-    <!-- script.js RIMOSSO: era orphaned, tutta la logica è in main.js -->
 
   </body>
 </html>
