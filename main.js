@@ -29,7 +29,7 @@ const getProjectIdFromUrl = () => {
 };
 
 // Genera URL canonico per i link interni
-const detailHref = (project) => `progetti/${encodeURIComponent(project.id)}.html`;
+const detailHref = (project) => `progetto.html?id=${encodeURIComponent(project.id)}`;
 
 const categoryHref = (categoryKey) => fromRoot(categories[categoryKey]?.page || "index.html");
 
@@ -216,7 +216,23 @@ const renderProjectDetail = () => {
   const mount = qs("[data-project-detail]");
   if (!mount) return;
 
-  const projectId = getProjectIdFromUrl();
+  const getProjectIdFromUrl = () => {
+  const savedPath = sessionStorage.getItem('redirectPath');
+  if (savedPath) {
+    sessionStorage.removeItem('redirectPath');
+    const match = savedPath.match(/\/progetti\/([^\/]+)\.html$/);
+    if (match) return decodeURIComponent(match[1]);
+  }
+
+  const path = window.location.pathname;
+
+  // supporto GitHub Pages subdir-safe
+  const match = path.match(/progetti\/([^\/]+)\.html$/);
+  if (match) return decodeURIComponent(match[1]);
+
+  const params = new URLSearchParams(window.location.search);
+  return params.get("id");
+};
   const project = projects.find((item) => item.id === projectId);
 
   if (!project) {
@@ -528,7 +544,7 @@ const initInternalNavigation = () => {
     if (!href) return;
     
     // Intercetta link a schede progetto (progetti/xxx.html)
-    if (href.startsWith("progetti/") && href.endsWith(".html")) {
+    if (href.includes("progetto.html?id=")) {
       e.preventDefault();
       const url = new URL(href, window.location.origin + window.location.pathname);
       window.history.pushState({}, "", url.pathname);
@@ -544,10 +560,10 @@ const initInternalNavigation = () => {
   });
 
   // Gestione back/forward
-  window.addEventListener("popstate", () => {
-    renderProjectDetail();
-  });
-};
+ window.addEventListener("popstate", () => {
+  renderProjectDetail();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
