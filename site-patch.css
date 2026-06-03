@@ -274,3 +274,31 @@
     -webkit-backdrop-filter: blur(8px);
   }
 }
+/* Centra l'intera sezione metrics-header */
+.metrics-header {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.metrics-heading,
+.metrics-intro {
+  max-width: 100%;
+}
+
+.metrics-badges {
+  justify-content: center;
+}
+
+/* Impedisci alla media query originale di riattivare il grid */
+@media (min-width: 720px) {
+  .metrics-header {
+    display: flex !important;
+    grid-template-columns: unset;
+    align-items: center;
+  }
+}
