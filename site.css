@@ -1,42 +1,131 @@
 :root {
   color-scheme: dark;
-  --bg: #070b09;
-  --bg-soft: #0d1511;
-  --surface: #111a15;
-  --surface-2: #17231d;
-  --surface-3: #f7f3ea;
-  --ink: #f8faf7;
-  --ink-strong: #ffffff;
-  --muted: #aebbb3;
-  --muted-2: #6f7f75;
-  --line: rgba(232, 226, 214, 0.16);
-  --line-strong: rgba(232, 226, 214, 0.28);
-  --accent: #c7a45b;
-  --accent-2: #1f6f4a;
-  --accent-3: #e8dfcd;
-  --danger: #c96d55;
+
+  /* ─────────────────────────────
+     BASE LAYER (environment)
+  ───────────────────────────── */
+  --bg: #070b09;                 /* base ambient */
+  --bg-soft: #0b1210;            /* transition zone */
+
+  /* ─────────────────────────────
+     SURFACE LAYER (depth system)
+  ───────────────────────────── */
+  --surface: #0f1713;            /* default cards */
+  --surface-2: #14201a;          /* hover / raised */
+  --surface-3: #1b2a22;          /* active / focus */
+
+  /* ─────────────────────────────
+     TYPOGRAPHY SYSTEM
+  ───────────────────────────── */
+  --ink: #eaf1ec;                /* primary text */
+  --ink-strong: #ffffff;         /* titles / KPI */
+  --muted: #a6b4ac;              /* secondary text */
+  --muted-2: #6f7f75;            /* disabled / metadata */
+
+  /* ─────────────────────────────
+     STRUCTURE (lines / grid)
+  ───────────────────────────── */
+  --line: rgba(234, 241, 236, 0.10);
+  --line-strong: rgba(234, 241, 236, 0.18);
+
+  /* ─────────────────────────────
+     BRAND SYSTEM (semantic accents)
+  ───────────────────────────── */
+  --accent: #c7a45b;             /* gold industrial */
+  --accent-2: #1f6f4a;           /* textile green */
+  --accent-3: #e8dfcd;           /* highlight neutral */
+
+  /* ─────────────────────────────
+     STATUS SYSTEM
+  ───────────────────────────── */
+  --success: #1f6f4a;
+  --warning: #c7a45b;
+  --danger:  #c96d55;
+  --info:    #4aa3a3;
+
+  /* ─────────────────────────────
+     DATA VISUALIZATION
+  ───────────────────────────── */
   --chart-line: #c7a45b;
-  --chart-fill: rgba(199, 164, 91, 0.16);
-  --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
-  --radius: 8px;
+  --chart-fill: rgba(199, 164, 91, 0.12);
+  --chart-grid: rgba(234, 241, 236, 0.06);
+
+  /* ─────────────────────────────
+     ELEVATION SYSTEM (IMPORTANT)
+  ───────────────────────────── */
+  --shadow-sm: 0 6px 18px rgba(0,0,0,0.25);
+  --shadow:    0 18px 50px rgba(0,0,0,0.35);
+  --shadow-lg: 0 28px 90px rgba(0,0,0,0.45);
+
+  /* ─────────────────────────────
+     SHAPE SYSTEM
+  ───────────────────────────── */
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+
+  /* ─────────────────────────────
+     LAYOUT SYSTEM
+  ───────────────────────────── */
   --container: 1180px;
-  --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* ─────────────────────────────
+     TYPOGRAPHY STACK
+  ───────────────────────────── */
+  --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
 }
 
 :root[data-theme="light"] {
   color-scheme: light;
-  --bg: #f8f8f4;
-  --bg-soft: #eef2ec;
+
+  /* BASE */
+  --bg: #f5f7f2;
+  --bg-soft: #ecefe8;
+
+  /* SURFACES (very important contrast layering) */
   --surface: #ffffff;
-  --surface-2: #edf3ee;
-  --surface-3: #101813;
-  --ink: #132019;
-  --ink-strong: #07100b;
-  --muted: #5f6c63;
-  --muted-2: #7a877f;
-  --line: rgba(19, 32, 25, 0.14);
-  --line-strong: rgba(19, 32, 25, 0.24);
-  --chart-fill: rgba(31, 111, 74, 0.16);
+  --surface-2: #f3f5f0;
+  --surface-3: #e9ede6;
+
+  /* TYPOGRAPHY */
+  --ink: #1b231e;
+  --ink-strong: #0f1511;
+  --muted: #5f6c64;
+  --muted-2: #8a968f;
+
+  /* STRUCTURE */
+  --line: rgba(20, 30, 25, 0.10);
+  --line-strong: rgba(20, 30, 25, 0.18);
+
+  /* ACCENTS (desaturati rispetto al dark) */
+  --accent: #8f742c;
+  --accent-2: #1f6f4a;
+  --accent-3: #d8cfb8;
+
+  /* STATUS */
+  --success: #1f6f4a;
+  --warning: #8f742c;
+  --danger:  #b85a45;
+  --info:    #2d7f7f;
+
+  /* DATA VISUALIZATION */
+  --chart-line: #8f742c;
+  --chart-fill: rgba(143, 116, 44, 0.12);
+  --chart-grid: rgba(20, 30, 25, 0.06);
+
+  /* SHADOWS (soft, paper-like) */
+  --shadow-sm: 0 4px 12px rgba(0,0,0,0.06);
+  --shadow:    0 14px 40px rgba(0,0,0,0.10);
+  --shadow-lg: 0 26px 70px rgba(0,0,0,0.14);
+
+  /* RADIUS */
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+
+  --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
 }
 
 * {
