@@ -293,12 +293,3 @@
 .metrics-badges {
   justify-content: center;
 }
-
-/* Impedisci alla media query originale di riattivare il grid */
-@media (min-width: 720px) {
-  .metrics-header {
-    display: flex !important;
-    grid-template-columns: unset;
-    align-items: center;
-  }
-}
