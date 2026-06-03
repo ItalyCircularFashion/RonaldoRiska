@@ -550,6 +550,22 @@ const initInternalNavigation = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+  const initCanonical = () => {
+    let link = document.querySelector('link[rel="canonical"]');
+
+    if (!link) {
+      link = document.createElement("link");
+      link.setAttribute("rel", "canonical");
+      document.head.appendChild(link);
+    }
+
+    const cleanUrl =
+      window.location.origin +
+      window.location.pathname;
+
+    link.setAttribute("href", cleanUrl);
+  };
+
   initTheme();
   initNavigation();
   hydrateCategoryBlocks();
@@ -561,5 +577,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initFooter();
   drawKpiCanvas();
   initInternalNavigation();
+
+  initCanonical();
+
   window.addEventListener("resize", drawKpiCanvas);
 });
