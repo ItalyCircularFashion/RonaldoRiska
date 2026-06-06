@@ -3,55 +3,22 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <!-- ── SEO ── -->
     <title>Ronaldo Riska | CV Online Interattivo — Tessile, CAD Moda, Industrial Tech</title>
     <meta name="description" content="Portfolio interattivo di Ronaldo Riska: tessitura, CAD moda, supply chain, produzione, dashboard industriali e strumenti digitali per il settore tessile.">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#08110c">
-    <!-- ── OPEN GRAPH (immagine URL assoluto — era relativo: BUG CORRETTO) ── -->
-    <meta property="og:type"        content="profile">
-    <meta property="og:title"       content="Ronaldo Riska | Portfolio interattivo">
+    <meta property="og:type" content="profile">
+    <meta property="og:title" content="Ronaldo Riska | Portfolio interattivo">
     <meta property="og:description" content="CV online tecnico con progetti, dashboard e tool digitali per tessile, moda e operations industriali.">
-    <meta property="og:image"       content="https://italycircularfashion.github.io/RonaldoRiska/profile.jpg">
-    <meta property="og:url"         content="https://italycircularfashion.github.io/RonaldoRiska/">
-    <meta property="og:locale"      content="it_IT">
-    <!-- ── TWITTER CARD (aggiunto) ── -->
-    <meta name="twitter:card"        content="summary_large_image">
-    <meta name="twitter:title"       content="Ronaldo Riska | Portfolio tessile digitale">
-    <meta name="twitter:description" content="CV online con tool reali, simulatori e dashboard per il settore tessile.">
-    <meta name="twitter:image"       content="https://italycircularfashion.github.io/RonaldoRiska/profile.jpg">
-    <!-- ── CANONICAL ── -->
+    <meta property="og:image" content="profile.jpg">
     <link rel="canonical" href="https://italycircularfashion.github.io/RonaldoRiska/">
-    <!-- ── FONT PRECONNECT ── -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <!-- ── PRELOAD hero image (era lazy: BUG CORRETTO — LCP) ── -->
-    <link rel="preload" as="image" href="profile.jpg">
-    <!-- ── CSS ── -->
     <link rel="stylesheet" href="site.css">
-    <link rel="stylesheet" href="site-patch.css">
-    <!-- ── STRUCTURED DATA ── -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Ronaldo Riska",
-      "url": "https://italycircularfashion.github.io/RonaldoRiska/",
-      "image": "https://italycircularfashion.github.io/RonaldoRiska/profile.jpg",
-      "jobTitle": "Textile Supply Chain & Digital Operations",
-      "worksFor": { "@type": "Organization", "name": "Distretto Tessile di Prato" },
-      "address": { "@type": "PostalAddress", "addressLocality": "Prato", "addressCountry": "IT" },
-      "email": "ronaldo.riska@gmail.com",
-      "sameAs": ["https://github.com/ItalyCircularFashion"]
-    }
-    </script>
   </head>
   <body>
     <a class="skip-link" href="#main">Salta al contenuto</a>
-
-    <!-- ── HEADER ── -->
     <header class="site-header">
       <nav class="nav container" aria-label="Navigazione principale">
-        <a class="brand" href="./" aria-label="Homepage Ronaldo Riska">
+       <a class="brand" href="./" aria-label="Homepage Ronaldo Riska">
           <span class="brand-mark">RR</span>
           <span class="brand-text">
             <span>Ronaldo Riska</span>
@@ -69,15 +36,12 @@
           <a href="cad-moda.html">CAD Moda</a>
           <a href="supply-chain-production.html">Supply Chain</a>
           <a href="#contatti">Contatti</a>
-          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Attiva tema light">Light</button>
+          <button class="theme-toggle" type="button" data-theme-toggle>Light</button>
         </div>
       </nav>
     </header>
-
-    <!-- ── MAIN (un solo <main> per pagina: BUG CORRETTO) ── -->
     <main id="main">
-
-      <!-- HERO -->
+      <!-- Hero section – più elegante -->
       <section class="hero" id="top" aria-labelledby="hero-title">
         <div class="container hero-grid">
           <div class="hero-copy reveal">
@@ -85,7 +49,7 @@
             <h1 id="hero-title">Ronaldo Riska</h1>
             <p class="hero-role">Textile supply chain · CAD moda · Industrial tech</p>
             <p class="lead">
-              Una piattaforma portfolio che non mostra solo esperienze: mette a disposizione <strong>tool reali, simulatori, dashboard</strong>
+              Una piattaforma portfolio che non mostra solo esperienze: mette a disposizione <strong>tool reali, simulatori, dashboard</strong> 
               e prototipi applicativi costruiti per processi tessili, prodotto moda e operations industriali.
             </p>
             <div class="hero-actions">
@@ -100,12 +64,9 @@
               <div><dt>Approccio</dt><dd>Industrial tech</dd></div>
             </dl>
           </div>
-          <figure class="hero-visual reveal" style="margin:0">
-            <!-- loading="eager" (era lazy: BUG CORRETTO — peggiora LCP) -->
-            <img src="profile.jpg" width="870" height="1260"
-                 alt="Ritratto professionale di Ronaldo Riska"
-                 loading="eager" fetchpriority="high">
-            <figcaption class="visual-caption" aria-hidden="true">
+          <figure class="hero-visual reveal">
+            <img src="profile.jpg" width="870" height="1260" alt="Ritratto professionale di Ronaldo Riska" loading="lazy">
+            <figcaption class="visual-caption">
               <span>Supply chain tessile</span>
               <span>CAD prodotto</span>
               <span>Process intelligence</span>
@@ -114,94 +75,157 @@
         </div>
       </section>
 
-      <!-- OPERATIONAL METRICS DASHBOARD -->
-      <section class="metrics-section" aria-labelledby="metriche-title">
-        <div class="container">
+     <!-- ========================================= -->
+<!-- OPERATIONAL METRICS DASHBOARD -->
+<!-- ========================================= -->
 
-          <div class="metrics-header reveal">
-            <div class="metrics-heading">
-              <p class="eyebrow">Operational Portfolio Metrics</p>
-              <h2 id="metriche-title">Ecosistema digitale costruito tra tessile, supply chain e industrial intelligence.</h2>
-            </div>
-            <div class="metrics-intro">
-              <p>Una struttura portfolio progettata come piattaforma operativa: dashboard, tool HTML, simulatori produttivi, moduli analitici e prototipi digitali navigabili.</p>
-              <div class="metrics-badges" aria-label="Aree di competenza">
-                <span>Industrial Tech</span>
-                <span>Digital Workflow</span>
-                <span>Textile Operations</span>
-                <span>AI Systems</span>
-              </div>
-            </div>
-          </div>
+<section class="section metrics-section" aria-labelledby="metriche-title">
 
-          <div class="metrics-dashboard">
+  <div class="container">
 
-            <article class="metric-card metric-feature reveal">
-              <div class="metric-top">
-                <span class="metric-label">Digital Portfolio</span>
-                <span class="metric-status">Live</span>
-              </div>
-              <strong class="metric-number" data-count-to="25" aria-live="polite">0</strong>
-              <div>
-                <h3>Progetti e prototipi operativi</h3>
-                <p>Tool interattivi, dashboard industriali, simulatori tessili e moduli orientati a process intelligence e operations.</p>
-              </div>
-            </article>
+    <!-- Header -->
+    <div class="metrics-header reveal">
 
-            <article class="metric-card reveal">
-              <div class="metric-top">
-                <span class="metric-label">Core Areas</span>
-              </div>
-              <strong class="metric-number" data-count-to="3" aria-live="polite">0</strong>
-              <div>
-                <h3>Macro-aree professionali</h3>
-                <p>Tessitura, CAD moda, supply chain e workflow industriali.</p>
-              </div>
-            </article>
+      <div class="metrics-heading">
+        <p class="eyebrow">Operational Portfolio Metrics</p>
 
-            <article class="metric-card reveal">
-              <div class="metric-top">
-                <span class="metric-label">Interactive Tools</span>
-              </div>
-              <strong class="metric-number" data-count-to="18" aria-live="polite">0</strong>
-              <div>
-                <h3>Dashboard e tool HTML</h3>
-                <p>Applicazioni navigabili ottimizzate per desktop, tablet e mobile.</p>
-              </div>
-            </article>
+        <h2 id="metriche-title">
+          Ecosistema digitale costruito tra tessile,
+          supply chain e industrial intelligence.
+        </h2>
+      </div>
 
-            <article class="metric-card reveal">
-              <div class="metric-top">
-                <span class="metric-label">Development Layer</span>
-              </div>
-              <strong class="metric-number" data-count-to="7" aria-live="polite">0</strong>
-              <div>
-                <h3>Prototipi tecnici e sorgenti</h3>
-                <p>Strutture React, moduli JS e architetture front-end orientate a scalabilità e UX industriale.</p>
-              </div>
-            </article>
+      <div class="metrics-intro">
+        <p>
+          Una struttura portfolio progettata come piattaforma operativa:
+          dashboard, tool HTML, simulatori produttivi,
+          moduli analitici e prototipi digitali navigabili.
+        </p>
 
-            <article class="metric-insight reveal">
-              <div class="insight-grid">
-                <div>
-                  <span class="insight-label">Textile Intelligence</span>
-                  <h3>Portfolio progettato come command center industriale.</h3>
-                </div>
-                <p>Il modello integra competenze operative tessili con digitalizzazione dei processi, analytics e sistemi AI-driven per workflow moderni e scalabili.</p>
-              </div>
-            </article>
-
-          </div>
+        <div class="metrics-badges">
+          <span>Industrial Tech</span>
+          <span>Digital Workflow</span>
+          <span>Textile Operations</span>
+          <span>AI Systems</span>
         </div>
-      </section>
+      </div>
 
-      <!-- DIGITAL COMMAND CENTER -->
+    </div>
+
+    <!-- Metrics Grid -->
+    <div class="metrics-dashboard">
+
+      <!-- Main KPI -->
+      <article class="metric-card metric-feature reveal">
+
+        <div class="metric-top">
+          <span class="metric-label">Digital Portfolio</span>
+          <span class="metric-status">Live</span>
+        </div>
+
+        <strong class="metric-number" data-count-to="25">0</strong>
+
+        <h3>Progetti e prototipi operativi</h3>
+
+        <p>
+          Tool interattivi, dashboard industriali,
+          simulatori tessili e moduli orientati
+          a process intelligence e operations.
+        </p>
+
+      </article>
+
+      <!-- Secondary metrics -->
+      <article class="metric-card reveal">
+
+        <div class="metric-top">
+          <span class="metric-label">Core Areas</span>
+        </div>
+
+        <strong class="metric-number" data-count-to="3">0</strong>
+
+        <h3>Macro-aree professionali</h3>
+
+        <p>
+          Tessitura, CAD moda,
+          supply chain e workflow industriali.
+        </p>
+
+      </article>
+
+      <article class="metric-card reveal">
+
+        <div class="metric-top">
+          <span class="metric-label">Interactive Tools</span>
+        </div>
+
+        <strong class="metric-number" data-count-to="18">0</strong>
+
+        <h3>Dashboard e tool HTML</h3>
+
+        <p>
+          Applicazioni navigabili ottimizzate
+          per desktop, tablet e mobile.
+        </p>
+
+      </article>
+
+      <article class="metric-card reveal">
+
+        <div class="metric-top">
+          <span class="metric-label">Development Layer</span>
+        </div>
+
+        <strong class="metric-number" data-count-to="7">0</strong>
+
+        <h3>Prototipi tecnici e sorgenti</h3>
+
+        <p>
+          Strutture React, moduli JS
+          e architetture front-end orientate
+          a scalabilità e UX industriale.
+        </p>
+
+      </article>
+
+      <!-- Full width insight -->
+      <article class="metric-insight reveal">
+
+        <div class="insight-grid">
+
+          <div>
+            <span class="insight-label">
+              Textile Intelligence
+            </span>
+
+            <h3>
+              Portfolio progettato come
+              command center industriale.
+            </h3>
+          </div>
+
+          <p>
+            Il modello integra competenze operative tessili
+            con digitalizzazione dei processi,
+            analytics e sistemi AI-driven
+            per workflow moderni e scalabili.
+          </p>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </div>
+
+</section>
+
+      <!-- Digital command center -->
       <section class="section" aria-labelledby="command-title">
         <div class="container dashboard-grid">
           <div class="dashboard-panel reveal">
-            <canvas data-kpi-canvas aria-label="Grafico maturità digitale" role="img">
-              <p>Grafico della maturità digitale: indice crescente da 18 a 96 nel corso dell'anno.</p>
-            </canvas>
+            <canvas data-kpi-canvas aria-label="Grafico maturità digitale"></canvas>
           </div>
           <div class="reveal">
             <p class="eyebrow">Digital command center</p>
@@ -216,7 +240,7 @@
         </div>
       </section>
 
-      <!-- CATEGORIE -->
+      <!-- Categorie -->
       <section class="section section-band" aria-labelledby="categorie-title">
         <div class="container">
           <div class="section-heading reveal">
@@ -230,41 +254,41 @@
             <article class="category-card reveal" data-category-card="tessitura">
               <div>
                 <p class="eyebrow" data-category-tone></p>
-                <h3 data-category-title>Tessitura</h3>
-                <p data-category-summary>Simulatori di armatura, note colore, Gantt ciclo produttivo.</p>
+                <h3 data-category-title></h3>
+                <p data-category-summary></p>
               </div>
               <div>
                 <p class="category-count"><strong data-category-count>0</strong><span>moduli</span></p>
-                <a class="button button-primary" data-category-link href="tessitura.html">Apri area →</a>
+                <a class="button button-primary" data-category-link href="#">Apri area →</a>
               </div>
             </article>
             <article class="category-card reveal" data-category-card="cad">
               <div>
                 <p class="eyebrow" data-category-tone></p>
-                <h3 data-category-title>CAD Moda</h3>
-                <p data-category-summary>Modellistica, cartamodelli, SketchHD AI e concept digitale.</p>
+                <h3 data-category-title></h3>
+                <p data-category-summary></p>
               </div>
               <div>
                 <p class="category-count"><strong data-category-count>0</strong><span>moduli</span></p>
-                <a class="button button-primary" data-category-link href="cad-moda.html">Apri area →</a>
+                <a class="button button-primary" data-category-link href="#">Apri area →</a>
               </div>
             </article>
             <article class="category-card reveal" data-category-card="supply">
               <div>
                 <p class="eyebrow" data-category-tone></p>
-                <h3 data-category-title>Supply Chain</h3>
-                <p data-category-summary>MRP, dashboard SCM, make-or-buy e operations analytics.</p>
+                <h3 data-category-title></h3>
+                <p data-category-summary></p>
               </div>
               <div>
                 <p class="category-count"><strong data-category-count>0</strong><span>moduli</span></p>
-                <a class="button button-primary" data-category-link href="supply-chain-production.html">Apri area →</a>
+                <a class="button button-primary" data-category-link href="#">Apri area →</a>
               </div>
             </article>
           </div>
         </div>
       </section>
 
-      <!-- PROGETTI -->
+      <!-- Progetti -->
       <section class="section" id="progetti" aria-labelledby="progetti-title">
         <div class="container">
           <div class="section-heading reveal">
@@ -275,25 +299,19 @@
             <p>Strumenti interattivi HTML e prototipi sorgente. Le schede spiegano il valore tecnico e industriale.</p>
           </div>
           <div class="toolbar reveal">
-            <div class="filter-group" role="group" aria-label="Filtri categoria progetto">
+            <div class="filter-group" aria-label="Filtri progetto">
               <button class="filter-button is-active" type="button" data-filter="all">Tutti</button>
               <button class="filter-button" type="button" data-filter="tessitura">Tessitura</button>
               <button class="filter-button" type="button" data-filter="cad">CAD Moda</button>
               <button class="filter-button" type="button" data-filter="supply">Supply Chain</button>
             </div>
-            <label class="sr-only" for="project-search">Cerca progetto</label>
-            <input id="project-search" class="search-input" type="search"
-                   placeholder="Cerca progetto, tag o tecnologia"
-                   data-project-search
-                   autocomplete="off">
+            <input class="search-input" type="search" placeholder="Cerca progetto, tag o tecnologia" data-project-search>
           </div>
-          <!-- Mount point: popolato da main.js tramite project-data.js -->
-          <div class="project-grid" data-density="compact" data-project-list data-category="all"
-               aria-live="polite" aria-label="Griglia progetti"></div>
+          <div class="project-grid" data-density="compact" data-project-list data-category="all"></div>
         </div>
       </section>
 
-      <!-- CURRICULUM -->
+      <!-- Curriculum e competenze -->
       <section class="section section-band" aria-labelledby="cv-title">
         <div class="container dashboard-grid">
           <div class="reveal">
@@ -313,174 +331,252 @@
         </div>
       </section>
 
-      <!-- CONTATTI -->
-      <section class="section contact-section" id="contatti" aria-labelledby="contatti-title">
-        <div class="container contact-grid">
+     <!-- Contact & Collaboration Layer -->
+<section class="section contact-section" id="contatti" aria-labelledby="contatti-title">
+  <div class="container contact-grid">
 
-          <div class="reveal">
-            <p class="eyebrow">Industrial Collaboration</p>
-            <h2 id="contatti-title">Connettere manifattura tessile, process intelligence e strumenti digitali.</h2>
-            <p class="lead">Portfolio orientato allo sviluppo di workflow industriali, dashboard operative, simulazioni supply chain e piattaforme digitali applicate alla filiera moda-tessile.</p>
-            <p>L'obiettivo è integrare competenze operative di produzione, qualità e pianificazione con approcci digital-first: analytics, automazione documentale, sistemi AI-driven e interfacce web per il monitoraggio dei processi.</p>
-            <div class="hero-actions">
-              <a class="button button-primary" href="mailto:ronaldo.riska@gmail.com">Avvia una conversazione →</a>
-              <a class="button button-secondary" href="Ronaldo-Riska-CV-2026.pdf" download>Scarica CV PDF</a>
-            </div>
-            <div class="contact-tags" aria-label="Aree di collaborazione">
-              <span>Textile Operations</span>
-              <span>CAD Fashion</span>
-              <span>Supply Chain</span>
-              <span>Industrial Analytics</span>
-              <span>Digital Workflow</span>
-              <span>AI Systems</span>
-            </div>
-          </div>
+    <!-- Left column -->
+    <div class="reveal">
+      <p class="eyebrow">Industrial Collaboration</p>
 
-          <address class="contact-panel reveal">
-            <div class="contact-card">
-              <span class="contact-label">Email</span>
-              <a href="mailto:ronaldo.riska@gmail.com">ronaldo.riska@gmail.com</a>
-            </div>
-            <div class="contact-card">
-              <span class="contact-label">Telefono</span>
-              <a href="tel:+393519134887">+39 351 913 4887</a>
-            </div>
-            <div class="contact-card">
-              <span class="contact-label">Location</span>
-              <span>Prato, Toscana — Italy</span>
-            </div>
-            <div class="contact-card">
-              <span class="contact-label">GitHub Repository</span>
-              <a href="https://github.com/ItalyCircularFashion" target="_blank" rel="noopener noreferrer">
-                github.com/ItalyCircularFashion
-              </a>
-            </div>
-            <div class="contact-card">
-              <span class="contact-label">Focus operativo</span>
-              <span>Textile manufacturing · Process optimization · Industrial dashboarding · Digital product systems</span>
-            </div>
-          </address>
+      <h2 id="contatti-title">
+        Connettere manifattura tessile, process intelligence e strumenti digitali.
+      </h2>
 
-        </div>
-      </section>
+      <p class="lead">
+        Portfolio orientato allo sviluppo di workflow industriali,
+        dashboard operative, simulazioni supply chain e piattaforme
+        digitali applicate alla filiera moda-tessile.
+      </p>
 
-      <!-- TEXTILE INTELLIGENCE JOURNAL -->
-      <!-- NOTE: <main> annidato rimosso (era BUG critico W3C). Sostituito con <div>. -->
-      <section class="intelligence-layout" id="tessile-intelligence" aria-labelledby="journal-title">
-        <div class="container">
+      <p>
+        L’obiettivo è integrare competenze operative di produzione,
+        qualità e pianificazione con approcci digital-first:
+        analytics, automazione documentale, sistemi AI-driven
+        e interfacce web per il monitoraggio dei processi.
+      </p>
 
-          <div class="section-heading reveal">
-            <p class="eyebrow">Textile Intelligence Feed · Industrial Report</p>
-            <div>
-              <h2 id="journal-title">Industrial Intelligence Journal — Prato Textile District</h2>
-              <p class="lead">Analisi su supply chain, sostenibilità, manifattura avanzata e trasformazione digitale nel comparto moda‑tessile.</p>
-            </div>
-          </div>
+      <div class="hero-actions">
+        <a class="button button-primary" href="mailto:ronaldo.riska@gmail.com">
+          Avvia una conversazione →
+        </a>
 
-          <div class="intelligence-grid">
-
-            <!-- COLONNA SINISTRA -->
-            <aside class="intel-column left-column reveal" aria-label="Operations Intelligence">
-              <div>
-                <div class="category-card">
-                  <span class="eyebrow">Operations Intelligence</span>
-                  <h3>Adaptive Engineering Profile</h3>
-                  <p>Profilo operativo nativo‑digitale che integra manifattura tessile, supply chain analytics e orchestrazione di flussi produttivi verso fabbriche interconnesse e centri decisionali AI‑first.</p>
-                  <p>L'approccio combina capacità produttive tradizionali con architetture web‑based, cruscotti KPI predittivi e automazione dei processi, ridisegnando il time‑to‑market del comparto moda.</p>
-                </div>
-                <div class="category-card">
-                  <span class="eyebrow">Strategic Outlook</span>
-                  <h3>Industrial Transition</h3>
-                  <p>Le aziende tessili leader accelerano verso modelli data‑driven. La competitività passa dalla visibilità end‑to‑end sulla filiera e dall'adozione di sistemi di process intelligence.</p>
-                </div>
-              </div>
-            </aside>
-
-            <!-- COLONNA CENTRALE — era <main>: BUG CORRETTO, ora <div> -->
-            <div class="intel-main reveal">
-              <article class="project-card" style="margin-bottom:2rem;overflow:hidden;padding:0">
-                <div class="project-preview" style="min-height:180px">
-                  <div class="preview-topline"></div>
-                  <div class="preview-grid" aria-hidden="true">
-                    <span></span><span></span><span></span>
-                  </div>
-                  <span class="preview-label">Industrial Report · Q2 2026</span>
-                </div>
-                <div class="project-card-body">
-                  <div class="project-card-meta">
-                    <span>Special Edition</span>
-                    <span>Prato District</span>
-                  </div>
-                  <h3>La manifattura sostenibile diventa leva competitiva per l'ecosistema tessile di Prato</h3>
-                  <p>La domanda globale di produzioni certificate sta riscrivendo le gerarchie di valore nel tessile. Il distretto di Prato, storicamente radicato nel riciclo e nella rigenerazione, si trasforma in un avamposto di innovazione industriale.</p>
-                  <p>Le imprese all'avanguardia investono in workflow digitali e piattaforme di operational intelligence che riducono gli sprechi. L'adozione di sistemi MES abilitati da AI consente una riconfigurazione rapida delle linee produttive.</p>
-                </div>
-              </article>
-
-              <div style="display:grid;gap:1.5rem">
-                <div class="timeline-card">
-                  <div class="timeline-header">
-                    <span class="date-pill">Market Signal</span>
-                  </div>
-                  <h4>I buyer europei premiano tracciabilità e produzione agile</h4>
-                  <p>I grandi gruppi del lusso selezionano fornitori con supply chain trasparenti, lead time reattivi e piattaforme di customizzazione digitale.</p>
-                </div>
-                <div class="timeline-card">
-                  <div class="timeline-header">
-                    <span class="date-pill">Supply Chain · KPI</span>
-                  </div>
-                  <h4>I cruscotti KPI diventano centrali nella pianificazione produttiva</h4>
-                  <p>L'uso di dashboard operative per monitorare saturazione macchinari, WIP, performance fornitori e rotazione stock è in forte crescita nel distretto pratese.</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- COLONNA DESTRA -->
-            <aside class="intel-column right-column reveal" aria-label="Industrial Pulse">
-              <div>
-                <div class="category-card">
-                  <span class="eyebrow">Industrial Pulse · Indicatori</span>
-                  <h3>Production Dynamics</h3>
-                  <ul class="clean-list">
-                    <li>Adozione workflow digitali in crescita (y/y)</li>
-                    <li>Lead time come KPI strategico → focus time‑to‑market</li>
-                    <li>Domanda approvvigionamento sostenibile in aumento</li>
-                    <li>Investimenti in automazione industriale in crescita</li>
-                  </ul>
-                </div>
-                <div class="category-card">
-                  <span class="eyebrow">AI Commentary</span>
-                  <h3>Il nuovo paradigma produttivo</h3>
-                  <p>La convergenza tra AI, IoT di fabbrica e piattaforme web‑based ridefinisce il modello operativo dell'industria tessile verso agenti autonomi per la pianificazione dinamica.</p>
-                </div>
-              </div>
-            </aside>
-
-          </div>
-
-          <!-- CTA con link reali (erano href="#": BUG CORRETTO) -->
-          <div class="hero-actions" style="justify-content:center;margin-top:3rem">
-            <a href="Ronaldo-Riska-CV-2026.pdf" download class="button button-primary">Scarica CV PDF</a>
-            <a href="#progetti" class="button button-secondary">Esplora i tool →</a>
-          </div>
-
-        </div>
-      </section>
-
-    </main>
-    <!-- ── FINE <main> — correttamente uno solo ── -->
-
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <p>&copy; <span data-year></span> Ronaldo Riska — Textile Intelligence Portfolio</p>
-        <a href="#top">Torna su ↑</a>
+        <a class="button button-secondary"
+           href="Ronaldo-Riska-CV-2026.pdf"
+           download>
+          Scarica CV PDF
+        </a>
       </div>
-    </footer>
 
-    <!-- Script: project-data.js PRIMA di main.js (dipendenza) -->
-    <script src="project-data.js" defer></script>
-    <script src="main.js" defer></script>
-    <!-- script.js RIMOSSO: era orphaned, tutta la logica è in main.js -->
+      <!-- operational tags -->
+      <div class="contact-tags">
+        <span>Textile Operations</span>
+        <span>CAD Fashion</span>
+        <span>Supply Chain</span>
+        <span>Industrial Analytics</span>
+        <span>Digital Workflow</span>
+        <span>AI Systems</span>
+      </div>
+    </div>
 
-  </body>
+    <!-- Right column -->
+    <address class="contact-panel reveal">
+
+      <div class="contact-card">
+        <span class="contact-label">Email</span>
+        <a href="mailto:ronaldo.riska@gmail.com">
+          ronaldo.riska@gmail.com
+        </a>
+      </div>
+
+      <div class="contact-card">
+        <span class="contact-label">Telefono</span>
+        <a href="tel:+393519134887">
+          +39 351 913 4887
+        </a>
+      </div>
+
+      <div class="contact-card">
+        <span class="contact-label">Location</span>
+        <span>Prato, Toscana — Italy</span>
+      </div>
+
+      <div class="contact-card">
+        <span class="contact-label">GitHub Repository</span>
+        <a href="https://github.com/ItalyCircularFashion"
+           target="_blank"
+           rel="noopener">
+          github.com/ItalyCircularFashion
+        </a>
+      </div>
+
+      <div class="contact-card">
+        <span class="contact-label">Focus operativo</span>
+        <span>
+          Textile manufacturing · Process optimization ·
+          Industrial dashboarding · Digital product systems
+        </span>
+      </div>
+
+    </address>
+
+  </div>
+</section>
+
+<!-- ========================================= -->
+<!-- TEXTILE INTELLIGENCE JOURNAL · INTEGRATO NEL TEMA PORTFOLIO -->
+<!-- ========================================= -->
+<section class="section intelligence-layout" id="tessile-intelligence">
+  <div class="container">
+
+    <!-- intestazione sezione (coerente con .section-heading) -->
+    <div class="section-heading reveal">
+      <p class="eyebrow">Textile Intelligence Feed · Industrial Report</p>
+      <div>
+        <h2>Industrial Intelligence Journal — Prato Textile District</h2>
+        <p class="lead">Analisi su supply chain, sostenibilità, manifattura avanzata e trasformazione digitale nel comparto moda‑tessile. Dati, trend e strategie per il distretto 4.0.</p>
+      </div>
+    </div>
+
+    <!-- griglia a tre colonne (stile rivista, adattiva) -->
+    <div class="intelligence-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 2rem;">
+      
+      <!-- COLONNA SINISTRA · AI & STRATEGY -->
+      <aside class="intel-column left-column reveal">
+        <div style="position: sticky; top: 100px; display: grid; gap: 1.5rem;">
+          
+          <div class="category-card" style="padding: 1.5rem;">
+            <span class="eyebrow" style="color: var(--accent);">Operations Intelligence</span>
+            <h3 style="font-size: 1.6rem; margin: 0.5rem 0;">Adaptive Engineering Profile</h3>
+            <p style="color: var(--muted);">Profilo operativo nativo‑digitale che integra manifattura tessile, supply chain analytics e orchestrazione di flussi produttivi. L'evoluzione verso fabbriche interconnesse e centri decisionali AI‑first.</p>
+            <p style="color: var(--muted); margin-top: 1rem;">L'approccio combina capacità produttive tradizionali con architetture web‑based, cruscotti KPI predittivi e automazione dei processi, ridisegnando il time‑to‑market del comparto moda.</p>
+          </div>
+
+          <div class="category-card" style="padding: 1.5rem;">
+            <span class="eyebrow" style="color: var(--accent);">AI Positioning Engine</span>
+            <h3 style="font-size: 1.3rem; margin: 0.5rem 0;">Industrial Digital Positioning</h3>
+            <p style="color: var(--muted);">Tecnologie tessili abilitate da AI, ottimizzazione dei processi, dashboard di produzione in tempo reale e monitoraggio delle performance. Una bussola strategica per l'Industry 5.0.</p>
+          </div>
+
+          <div class="category-card" style="padding: 1.5rem;">
+            <span class="eyebrow" style="color: var(--accent);">Strategic Outlook</span>
+            <h3 style="font-size: 1.3rem; margin: 0.5rem 0;">Industrial Transition</h3>
+            <p style="color: var(--muted);">Le aziende tessili leader accelerano verso modelli data‑driven: <strong>+34% di investimenti</strong> in tracciabilità blockchain e AI industriale entro il 2027. La competitività passa dalla visibilità end‑to‑end.</p>
+          </div>
+
+        </div>
+      </aside>
+
+      <!-- COLONNA CENTRALE · ARTICOLO PRINCIPALE + NEWS STREAM -->
+      <main class="intel-main reveal">
+        <!-- feature story -->
+        <article class="project-card" style="padding: 0; overflow: hidden; margin-bottom: 2rem;">
+          <div class="project-preview" style="min-height: 180px;">
+            <div class="preview-topline"></div>
+            <div class="preview-grid">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="preview-label">Industrial Report · Q2 2026</div>
+          </div>
+          <div class="project-card-body" style="padding: 1.5rem;">
+            <div class="project-card-meta">
+              <span>Special Edition</span>
+              <span>Prato District</span>
+            </div>
+            <h3 style="font-size: 1.8rem; line-height: 1.2;">La manifattura sostenibile diventa leva competitiva per l’ecosistema tessile di Prato</h3>
+            <p>La domanda globale di produzioni certificate e a basso impatto ambientale sta riscrivendo le gerarchie di valore nel tessile. Il distretto di Prato, storicamente radicato nel riciclo e nella rigenerazione, si trasforma in un avamposto di innovazione industriale, attirando commesse premium da marchi internazionali.</p>
+            <p>Le imprese all'avanguardia investono in workflow digitali, materie prime seconde tracciate e piattaforme di operational intelligence che riducono gli sprechi fino al 22%. L'adozione di sistemi MES (Manufacturing Execution System) abilitati da AI consente una riconfigurazione rapida delle linee produttive.</p>
+            <div style="border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1rem 0; font-style: italic; color: var(--muted);">
+              «L'integrazione tra analytics e automazione permette di ridurre inefficienze e aumentare la visibilità operativa dell'intera filiera. Chi non adotta dashboard predittive perde posizionamento».
+            </div>
+            <p>Parallelamente cresce l'interesse verso cruscotti decisionali, manutenzione predittiva e sistemi di process intelligence in grado di anticipare i colli di bottiglia. Il distretto di Prato capitalizza la sua tradizione circolare per diventare riferimento europeo del textile‑as‑a‑service e della produzione on‑demand.</p>
+          </div>
+        </article>
+
+        <!-- NEWS STREAM (flusso notizie) -->
+        <div style="display: grid; gap: 1.5rem;">
+          <div class="timeline-card" style="border-left: 2px solid var(--accent);">
+            <div class="timeline-header">
+              <span class="date-pill" style="background: var(--surface-2); color: var(--accent);">Market Signal</span>
+            </div>
+            <h4 style="margin: 0.5rem 0 0.75rem;">I buyer europei premiano tracciabilità e produzione agile</h4>
+            <p style="color: var(--muted);">I grandi gruppi del lusso e della moda distribuita selezionano fornitori con supply chain trasparenti, lead time reattivi e piattaforme di customizzazione digitale. La certificazione di sostenibilità non è più un plus ma un requisito di accesso.</p>
+          </div>
+
+          <div class="timeline-card" style="border-left: 2px solid var(--accent);">
+            <div class="timeline-header">
+              <span class="date-pill" style="background: var(--surface-2); color: var(--accent);">Supply Chain · KPI</span>
+            </div>
+            <h4 style="margin: 0.5rem 0 0.75rem;">I cruscotti KPI diventano centrali nella pianificazione produttiva</h4>
+            <p style="color: var(--muted);">L'uso di dashboard operative per monitorare saturazione macchinari, WIP, performance fornitori e rotazione stock è cresciuto del 41% negli ultimi 18 mesi nel distretto pratese.</p>
+          </div>
+
+          <div class="timeline-card" style="border-left: 2px solid var(--accent);">
+            <div class="timeline-header">
+              <span class="date-pill" style="background: var(--surface-2); color: var(--accent);">Industrial Analytics · AI</span>
+            </div>
+            <h4 style="margin: 0.5rem 0 0.75rem;">Sistemi di intelligenza artificiale accelerano l’ottimizzazione</h4>
+            <p style="color: var(--muted);">L'integrazione tra algoritmi di machine learning e automazione incrementa la visibilità end‑to‑end e riduce i tempi morti. Primi case study mostrano un miglioramento del 17% dell'OEE.</p>
+          </div>
+        </div>
+
+        <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--line); display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--muted);">
+          <span>Textile Intelligence Journal · Anno I, Numero 4</span>
+          <span>Analisi indipendente del comparto tessile 4.0</span>
+        </div>
+      </main>
+
+      <!-- COLONNA DESTRA · PULSE & COMMENTO -->
+      <aside class="intel-column right-column reveal">
+        <div style="position: sticky; top: 100px; display: grid; gap: 1.5rem;">
+
+          <div class="category-card" style="padding: 1.5rem;">
+            <span class="eyebrow" style="color: var(--accent);">Industrial Pulse · Indicatori</span>
+            <h3 style="margin: 0.5rem 0;">Production Dynamics</h3>
+            <ul class="clean-list" style="margin-top: 0.5rem;">
+              <li>Adozione workflow digitali ▲ +28% (y/y)</li>
+              <li>Lead time come KPI strategico → focus time‑to‑market</li>
+              <li>Domanda di approvvigionamento sostenibile ▲ +53%</li>
+              <li>Investimenti in automazione industriale ▲ +37%</li>
+            </ul>
+          </div>
+
+          <div class="category-card" style="padding: 1.5rem;">
+            <span class="eyebrow" style="color: var(--accent);">Consumer Dynamics · Premium Segment</span>
+            <h3 style="margin: 0.5rem 0;">Market Behaviour</h3>
+            <p style="color: var(--muted);">Il segmento premium‑valore seleziona attivamente brand che integrano qualità artigianale, certificazioni di circolarità e manifattura europea come driver distintivi. Il <strong>68% dei consumatori</strong> è disposto a pagare un premium per la trasparenza della filiera.</p>
+          </div>
+
+          <div class="category-card" style="padding: 1.5rem;">
+            <span class="eyebrow" style="color: var(--accent);">AI Commentary · Operational Intelligence</span>
+            <h3 style="margin: 0.5rem 0;">Il nuovo paradigma produttivo</h3>
+            <p style="color: var(--muted);">La convergenza tra intelligenza artificiale, IoT di fabbrica e piattaforme web‑based sta ridefinendo il modello operativo dell'industria tessile. La prossima frontiera: agenti autonomi per la pianificazione dinamica della produzione.</p>
+          </div>
+
+        </div>
+      </aside>
+    </div>
+
+    <!-- call to action (opzionale, per mantenere tono marketing) -->
+    <div class="hero-actions" style="justify-content: center; margin-top: 3rem;">
+      <a href="#" class="button button-primary">Scarica il report completo (PDF)</a>
+      <a href="#" class="button button-secondary">Accedi alla dashboard interattiva</a>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p>&copy; <span data-year></span> Ronaldo Riska — Textile Intelligence Portfolio</p>
+    <a href="#top">Torna su ↑</a>
+  </div>
+</footer>
+
+<script src="project-data.js" defer></script>
+<script src="main.js" defer></script>
+
+</body>
 </html>
