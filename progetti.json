@@ -62,35 +62,6 @@
     "url": "filieraos.html"
   },
   {
-    "id": "mrp-iphone-planner",
-    "nome": "MRP iPhone Planner",
-    "sottotitolo": "Pianificazione MRP mobile-first",
-    "area": "supply-chain",
-    "tipo": "tool",
-    "stato": "live",
-    "anno": 2025,
-    "descrizione": "Simulatore MRP ottimizzato per iPhone. Piano di produzione editabile settimana per settimana, calcolo automatico fabbisogni componenti con politiche FOQ e LFL, gestione ordini aperti, gestione clienti e fornitori. Dati reali dall'esercizio Excel MPS/MRP (Pantony + Jacket-shirt, 6 componenti, 20 settimane).",
-    "valore": "Tool MRP completamente configurabile direttamente da mobile, senza installazione.",
-    "tags": [
-      "MRP",
-      "MPS",
-      "Mobile",
-      "Supply Chain",
-      "React"
-    ],
-    "tech": [
-      "React",
-      "JSX",
-      "Hooks",
-      "MRP Engine"
-    ],
-    "linkLabel": "Apri planner",
-    "sorgente": "mrp-iphone-v3.jsx",
-    "scheda": "progetto.html?id=mrp-iphone-planner",
-    "highlight": false,
-    "url": "mrp-iphone-v3.html"
-  },
-  {
     "id": "sketchhd-artifact",
     "nome": "SketchHD",
     "sottotitolo": "Sketch → AI → HD Image",
