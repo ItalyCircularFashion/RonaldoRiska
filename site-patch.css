@@ -21,12 +21,22 @@
 
 .metrics-header {
   display: grid;
-  gap: 2rem;
-  margin-bottom: 3rem;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+@media (min-width: 720px) {
+  .metrics-header {
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+  }
 }
 
 .metrics-heading h2 {
   margin-top: 0.6rem;
+  font-size: clamp(1.6rem, 2.4vw, 2.6rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
 }
 
 .metrics-intro {
