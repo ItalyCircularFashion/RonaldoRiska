@@ -145,23 +145,6 @@ window.portfolioProjects = [
     },
   },
 
-  {
-    id:          "cartamodelli-jeans",
-    title:       "Cartamodelli Jeans Digitali",
-    description: "Visualizzazione interattiva della costruzione di cartamodelli jeans uomo e donna con misure standard. Mostra logiche costruttive, tolleranze e sequenza di tracciatura. Risorsa didattica e tecnica per il comparto denim.",
-    category:    "cad",
-    status:      "Live",
-    type:        "html",
-    url:         "cartamodelli-jeans.html",
-    featured:    false,
-    tags:        ["CAD", "Cartamodelli", "Jeans", "Modellistica", "Denim"],
-    detail: {
-      value:      "Documentazione tecnica interattiva per cartamodelli denim.",
-      tech:       ["SVG", "JavaScript", "HTML"],
-      highlights: ["Misure standard EU", "Costruzione passo-passo", "Tolleranze cuciture"],
-    },
-  },
-
   // ── TESSITURA ──────────────────────────────────────────────────────────────
 
   {
