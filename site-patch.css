@@ -20,34 +20,35 @@
 }
 
 .metrics-header {
-  display: grid;
-  gap: 1.5rem;
-  margin-bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 50ch;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 12px;
 }
 
-@media (min-width: 720px) {
-  .metrics-header {
-    grid-template-columns: 1.1fr 0.9fr;
-    align-items: center;
-  }
+.metrics-heading {
+  margin: 0;
 }
 
 .metrics-heading h2 {
-  margin-top: 0.6rem;
+  margin: 0.6rem 0 0;
   font-size: clamp(1.6rem, 2.4vw, 2.6rem);
   line-height: 1.15;
   letter-spacing: -0.01em;
 }
 
 .metrics-intro {
-  display: grid;
-  gap: 1rem;
-  align-content: start;
+  margin: 0;
 }
 
 .metrics-intro p {
   color: var(--muted);
-  max-width: 64ch;
+  max-width: none;
 }
 
 .metrics-badges {
