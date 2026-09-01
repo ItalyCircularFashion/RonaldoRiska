@@ -305,6 +305,49 @@
   }
 }
 
+/* ── 3B. MACRO-CATEGORIE — blocco rettangolare semplice ─────────────────────── */
+
+.categories-stack {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.category-block {
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+}
+
+.category-block h3 {
+  margin: 0.5rem 0 0.4rem;
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.category-block p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.category-cta {
+  margin-top: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .categories-stack {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 980px) {
+  .categories-stack {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 /* ── 4. PROJECT-CARD GLOBAL (fix: era solo in @980px) ──────────────────────── */
 
 /* Riapplica globalmente il backdrop (era scoped dentro @media 980px) */
