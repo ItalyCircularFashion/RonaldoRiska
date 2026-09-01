@@ -46,7 +46,25 @@ RonaldoRiska/
 - Font: Inter, DM Sans, Cormorant Garamond
 
 ---
-   
+
+## 🔄 Convenzione commit
+
+Usa messaggi descrittivi nella forma:
+`type(scope): descrizione`
+
+Tipi:
+- `feat(scope)`: nuova funzionalità
+- `fix(scope)`: correzione bug
+- `docs(scope)`: documentazione
+- `refactor(scope)`: refactor senza cambio comportamento
+- `chore(scope)`: manutenzione, build, dipendenze
+
+Esempi:
+- `feat(tessitura): aggiungi preset armatura saia 2/2`
+- `fix(supply-chain): correggi calcolo MRP L4L`
+- `docs(readme): aggiorna struttura progetto`
+
+---
 
 📄 Licenza
 Tutti i contenuti (testi, immagini, codice) sono © Ronaldo Riska.
