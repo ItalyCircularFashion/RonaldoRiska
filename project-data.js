@@ -64,8 +64,8 @@ window.portfolioProjects = [
     description: "Simulatore MRP mobile-first con piano di produzione editabile, calcolo automatico fabbisogni componenti FOQ/LFL, gestione ordini aperti, clienti e fornitori. Dati reali dell'esercizio MPS/MRP (Pantony + Jacket-shirt, 20 settimane).",
     category:    "supply",
     status:      "Live",
-    type:        "jsx",
-    url:         "mrp-iphone-v3.jsx",
+    type:        "html",
+    url:         "mrp-iphone-planner.html",
     featured:    false,
     tags:        ["MRP", "MPS", "Mobile", "React", "Pianificazione"],
     detail: {
@@ -117,8 +117,8 @@ window.portfolioProjects = [
     description: "Workflow AI per la trasformazione di sketch digitali in immagini ad alta definizione. Canvas di disegno integrato con Claude Vision per analisi e generazione prompt Stable Diffusion. Preset stilistici: Fashion, Realistic, Product, Concept, Textile.",
     category:    "cad",
     status:      "Live",
-    type:        "jsx",
-    url:         "sketchhd-artifact.jsx",
+    type:        "html",
+    url:         "sketchhd-artifact.html",
     featured:    true,
     tags:        ["AI", "Fashion", "Sketch", "Claude Vision", "Stability AI", "React"],
     detail: {
