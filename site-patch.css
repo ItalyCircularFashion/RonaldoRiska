@@ -142,7 +142,7 @@
   align-items: center;
   gap: 0.35rem;
   padding: 0.26rem 0.55rem;
-  color: #08110c;
+  color: var(--accent-ink);
   background: var(--accent);
   border-radius: 999px;
   font-size: 0.68rem;

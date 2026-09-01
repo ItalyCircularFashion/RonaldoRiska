@@ -25,6 +25,8 @@
   --space-section-tight: clamp(3.5rem, 7vw, 5.75rem);
   --space-card: clamp(1.4rem, 2.5vw, 2rem);
   --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --accent-ink: #08110c;
+  --footer-bg: color-mix(in srgb, var(--bg) 88%, transparent);
 }
 
 :root[data-theme="light"] {
@@ -41,6 +43,8 @@
   --line: rgba(19, 32, 25, 0.14);
   --line-strong: rgba(19, 32, 25, 0.24);
   --chart-fill: rgba(31, 111, 74, 0.16);
+  --accent-ink: #ffffff;
+  --footer-bg: color-mix(in srgb, var(--surface) 88%, transparent);
 }
 
 * {
@@ -226,7 +230,7 @@ dt {
   width: 44px;
   height: 44px;
   place-items: center;
-  color: #08110c;
+  color: var(--accent-ink);
   background: var(--accent);
   border-radius: var(--radius);
 }
@@ -406,7 +410,7 @@ dt {
 }
 
 .button-primary {
-  color: #08110c;
+  color: var(--accent-ink);
   background: var(--accent);
 }
 
@@ -691,7 +695,7 @@ dt {
 
 .filter-button:hover,
 .filter-button.is-active {
-  color: #08110c;
+  color: var(--accent-ink);
   background: var(--accent);
   border-color: var(--accent);
 }
@@ -770,7 +774,7 @@ dt {
   right: 1rem;
   bottom: 1rem;
   padding: 0.36rem 0.5rem;
-  color: #08110c;
+  color: var(--accent-ink);
   background: var(--accent);
   border-radius: 999px;
   font-size: 0.72rem;
@@ -882,7 +886,7 @@ dt {
   width: max-content;
   align-items: center;
   padding: 0.36rem 0.52rem;
-  color: #08110c;
+  color: var(--accent-ink);
   background: var(--accent);
   border-radius: 999px;
   font-size: 0.74rem;
@@ -936,7 +940,7 @@ dt {
 }
 
 .contact-section {
-  background: #08110c;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
   border-top: 1px solid var(--line);
 }
 
@@ -965,7 +969,7 @@ dt {
 
 .site-footer {
   border-top: 1px solid var(--line);
-  background: color-mix(in srgb, var(--bg) 88%, #000);
+  background: var(--footer-bg);
 }
 
 .footer-inner {
