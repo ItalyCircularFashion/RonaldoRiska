@@ -248,29 +248,63 @@
   border-top: 1px solid var(--line);
 }
 
-.intelligence-grid {
+.intelligence-stack {
   display: grid;
-  gap: 2rem;
+  gap: 1.5rem;
   margin-top: 2rem;
 }
 
-.intel-column {
-  display: grid;
-  gap: 1.5rem;
+.intel-block {
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
 }
 
-@media (min-width: 860px) {
-  .intelligence-grid {
-    grid-template-columns: 0.8fr 1.4fr 0.8fr;
+.intel-label {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  background: rgba(201, 168, 76, 0.12);
+  color: #c9a84c;
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  margin-bottom: 0.75rem;
+}
+
+.intel-block h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.intel-block p,
+.intel-block ul {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.intel-block ul {
+  padding-left: 1.1rem;
+  margin: 0.25rem 0 0;
+}
+
+@media (min-width: 720px) {
+  .intelligence-stack {
+    grid-template-columns: repeat(2, 1fr);
   }
-  .intel-column .category-card:first-child,
-  .intel-column .category-card {
-    position: static; /* Override sticky on mobile */
+  .intel-block.full-width {
+    grid-column: 1 / -1;
   }
-  .left-column > div,
-  .right-column > div {
-    position: sticky;
-    top: 96px;
+}
+
+@media (min-width: 980px) {
+  .intelligence-stack {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
