@@ -176,10 +176,6 @@
 }
 
 @media (min-width: 720px) {
-  .metrics-header {
-    grid-template-columns: minmax(220px, 0.4fr) 1fr;
-    align-items: end;
-  }
   .metrics-dashboard {
     grid-template-columns: repeat(3, 1fr);
   }
