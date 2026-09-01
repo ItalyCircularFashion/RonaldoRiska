@@ -15,7 +15,7 @@ window.portfolioCategories = {
     label:      "Tessitura",
     shortLabel: "Tessitura",
     tone:       "Simulatori produttivi · Armature · Pianificazione",
-    summary:    "Simulatori di armatura tessile, note colore, Gantt ciclo lanificio e strumenti per la produzione distretto-Prato.",
+    summary:    "Simulatori di armatura tessile, note colore, Gantt ciclo lanificio e strumenti per il distretto tessile pratese.",
     page:       "tessitura.html",
   },
 
