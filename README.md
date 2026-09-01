@@ -244,7 +244,6 @@ Il codice è rilasciato a scopo dimostrativo — per usi commerciali contattare 
 ## 📬 Contatti
 
 - **Email:** [ronaldo.riska@gmail.com](mailto:ronaldo.riska@gmail.com)
-- **Telefono:** [+39 351 913 4887](tel:+393519134887)
 - **GitHub:** [@ItalyCircularFashion](https://github.com/ItalyCircularFashion)
 - **Location:** Prato, Toscana — Italia
 
