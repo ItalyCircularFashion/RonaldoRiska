@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html style="font-family:'Space Grotesk', 'Inter', system-ui, sans-serif" data-page="supply" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1094,7 +1094,11 @@ canvas { display: block; }
 .text-muted { color: var(--text-muted); font-size: 12.5px; }
 .text-sm { font-size: 12px; }
 </style>
-</head>
+    <link rel="stylesheet" href="site-patch.css"></head>
+  <body>
+    <a href="./" class="logo-animated-container" aria-label="Torna alla home">
+      <canvas id="animatedLogoCanvas"></canvas>
+    </a>
 <body>
 
 <!-- ═══ TOAST CONTAINER ═══ -->
@@ -4008,5 +4012,6 @@ function drawWastesChart(data, total) {
 // Boot
 App.init();
 </script>
-</body>
+    <script src="logo-loom-animated.js" defer></script>
+  </body>
 </html>

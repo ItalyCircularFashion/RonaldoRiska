@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html style="font-family:'Overpass', 'Open Sans', Arial, sans-serif" data-page="project" lang="it">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -108,8 +108,11 @@
     .spinner{width:26px;height:26px;border:2px solid rgba(255,255,255,.1);
              border-top-color:#c9a84c;border-radius:50%;
              animation:spin .7s linear infinite;margin:0 auto 14px}
-  </style>
-</head>
+  </style></head>
+  <body>
+    <a href="./" class="logo-animated-container" aria-label="Torna alla home">
+      <canvas id="animatedLogoCanvas"></canvas>
+    </a>
 <body>
   <a class="skip-link" href="#main">Salta al contenuto</a>
 
@@ -316,5 +319,6 @@
       ? document.addEventListener("DOMContentLoaded", init)
       : init();
   </script>
-</body>
+    <script src="logo-loom-animated.js" defer></script>
+  </body>
 </html>

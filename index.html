@@ -46,9 +46,10 @@
     </script>
   </head>
   <body>
-    <a class="skip-link" href="#main">Salta al contenuto</a>
-
-    <!-- ── HEADER ── -->
+    <a href="./" class="logo-animated-container" aria-label="Torna alla home">
+      <canvas id="animatedLogoCanvas"></canvas>
+    </a>
+    <a class="skip-link" href="#main">Salta al contenuto</a><!-- ── HEADER ── -->
     <header class="site-header">
       <nav class="nav container" aria-label="Navigazione principale">
         <a class="brand" href="./" aria-label="Homepage Ronaldo Riska">
@@ -69,7 +70,6 @@
           <a href="cad-moda.html">CAD Moda</a>
           <a href="supply-chain-production.html">Supply Chain</a>
           <a href="#contatti">Contatti</a>
-          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Attiva tema light">Light</button>
         </div>
       </nav>
     </header>
@@ -191,6 +191,105 @@
               </div>
             </article>
 
+          </div>
+        </div>
+      <!-- WEB CAPABILITIES STUDIO -->
+      <section class="section section-band web-capabilities" id="web-capabilities" aria-labelledby="web-title">
+        <div class="container">
+          <div class="section-heading reveal">
+            <div>
+              <p class="eyebrow">Web Studio</p>
+              <h2 id="web-title">Capacità di creare siti web</h2>
+            </div>
+            <p>Progettazione, interfacce e strumenti navigabili rilasciati come esperienze web complete: dashboard, tool, simulatori e interfacce produttive.</p>
+          </div>
+
+          <div class="web-grid reveal">
+            <article class="web-card glass tilt">
+              <div class="web-icon" aria-hidden="true">🧵</div>
+              <h3>Textile Platform</h3>
+              <p>ERP-grade dashboard con MRP reale, lot sizing, sketch AI e modulo progetti.</p>
+              <div class="web-badges">
+                <span class="web-badge">React</span>
+                <span class="web-badge">ERP</span>
+                <span class="web-badge">MRP</span>
+              </div>
+            </article>
+            <article class="web-card glass tilt">
+              <div class="web-icon" aria-hidden="true">✏️</div>
+              <h3>SketchHD</h3>
+              <p>Workflow AI da sketch a immagini HD con canvas integrato e generazione prompt.</p>
+              <div class="web-badges">
+                <span class="web-badge">AI</span>
+                <span class="web-badge">Canvas</span>
+                <span class="web-badge">Fashion</span>
+              </div>
+            </article>
+            <article class="web-card glass tilt">
+              <div class="web-icon" aria-hidden="true">📐</div>
+              <h3>ModaCAD Studio</h3>
+              <p>CAD moda web-based per modellistica, cartamodelli e gradazione taglie.</p>
+              <div class="web-badges">
+                <span class="web-badge">CAD</span>
+                <span class="web-badge">Pattern</span>
+                <span class="web-badge">Dark UI</span>
+              </div>
+            </article>
+            <article class="web-card glass tilt">
+              <div class="web-icon" aria-hidden="true">📊</div>
+              <h3>MRP iPhone Planner</h3>
+              <p>Simulatore MRP mobile-first con piano produzione editabile e calcolo fabbisogni.</p>
+              <div class="web-badges">
+                <span class="web-badge">MRP</span>
+                <span class="web-badge">Mobile</span>
+                <span class="web-badge">MPS</span>
+              </div>
+            </article>
+            <article class="web-card glass tilt">
+              <div class="web-icon" aria-hidden="true">🏭</div>
+              <h3>Gantt Ciclo Tessile</h3>
+              <p>Pianificazione interattiva delle fasi di lavorazione: orditura, tessitura, tintoria.</p>
+              <div class="web-badges">
+                <span class="web-badge">Planning</span>
+                <span class="web-badge">Gantt</span>
+                <span class="web-badge">WIP</span>
+              </div>
+            </article>
+            <article class="web-card glass tilt">
+              <div class="web-icon" aria-hidden="true">🧶</div>
+              <h3>WeaveCAD Draft</h3>
+              <p>Simulatore di armature tessili con calcolo note colore e spezzature in tempo reale.</p>
+              <div class="web-badges">
+                <span class="web-badge">Tessitura</span>
+                <span class="web-badge">Armature</span>
+                <span class="web-badge">Tool</span>
+              </div>
+            </article>
+            <article class="web-card glass tilt">
+              <div class="web-icon" aria-hidden="true">🚚</div>
+              <h3>FilieraOS</h3>
+              <p>Simulatore make-or-buy, CVP, Kraljic e margine di sicurezza per supply chain.</p>
+              <div class="web-badges">
+                <span class="web-badge">SCM</span>
+                <span class="web-badge">Simulatore</span>
+                <span class="web-badge">Decisioni</span>
+              </div>
+            </article>
+            <article class="web-card glass tilt">
+              <div class="web-icon" aria-hidden="true">📒</div>
+              <h3>Business Plan</h3>
+              <p>Documento interattivo con analisi di mercato, modello finanziario e pitch.</p>
+              <div class="web-badges">
+                <span class="web-badge">Finanza</span>
+                <span class="web-badge">Startup</span>
+                <span class="web-badge">Pitch</span>
+              </div>
+            </article>
+          </div>
+
+          <div class="web-signature reveal">
+            <span class="web-signature-mark">RR</span>
+            <span>Progettati e sviluppati da <strong>Ronaldo Riska</strong></span>
           </div>
         </div>
       </section>
@@ -453,6 +552,168 @@
     <!-- Script: project-data.js PRIMA di main.js (dipendenza) -->
     <script src="project-data.js" defer></script>
     <script src="main.js" defer></script>
+    <script src="logo-loom-animated.js" defer></script>
+    <script>
+    (function(){
+      const canvas = document.getElementById('animatedLogoCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      const dpr = window.devicePixelRatio || 1;
+      const size = 300;
+      canvas.width = size * dpr;
+      canvas.height = size * dpr;
+      ctx.scale(dpr, dpr);
+
+      const cols = 9;
+      const spacing = size / cols;
+      const cycleFrames = 140;
+      let frames = 0;
+
+      let wefts = [
+        { y: 40 + spacing * 4, pattern: 0 },
+        { y: 40 + spacing * 3, pattern: 1 },
+        { y: 40 + spacing * 2, pattern: 0 },
+        { y: 40 + spacing * 1, pattern: 1 },
+        { y: 40 + spacing * 0, pattern: 0 }
+      ];
+
+      function draw() {
+        ctx.clearRect(0, 0, size, size);
+
+        let p = (frames % cycleFrames) / cycleFrames;
+        let cycleIndex = Math.floor(frames / cycleFrames);
+        let isEven = cycleIndex % 2 === 0;
+
+        let shuttleX = -20;
+        let newWeftY = 25;
+        let beaterY = -20;
+        let shiftOffset = 0;
+        let newWeftWidth = 0;
+
+        if (p < 0.4) {
+          let tp = p / 0.4;
+          tp = tp < 0.5 ? 2 * tp * tp : -1 + (4 - 2 * tp) * tp;
+          if (isEven) {
+            shuttleX = tp * (size + 40) - 20;
+            newWeftWidth = Math.max(0, Math.min(size, shuttleX));
+          } else {
+            shuttleX = (size + 20) - tp * (size + 40);
+            newWeftWidth = Math.max(0, Math.min(size, size - shuttleX));
+          }
+        } else {
+          shuttleX = isEven ? size + 20 : -20;
+          newWeftWidth = size;
+        }
+
+        if (p > 0.4 && p <= 0.5) {
+          let tp = (p - 0.4) / 0.1;
+          beaterY = -15 + tp * (newWeftY + 5);
+        } else if (p > 0.5 && p <= 0.7) {
+          let tp = (p - 0.5) / 0.2;
+          tp = 1 - Math.pow(1 - tp, 3);
+          beaterY = (25 + 5) + tp * (40 - 25);
+          newWeftY = 25 + tp * (40 - 25);
+          shiftOffset = tp * spacing;
+        } else if (p > 0.7 && p <= 0.85) {
+          let tp = (p - 0.7) / 0.15;
+          tp = tp * tp;
+          beaterY = (40 + 5) - tp * (40 + 5 + 15);
+          newWeftY = 40;
+          shiftOffset = spacing;
+        } else if (p > 0.85) {
+          beaterY = -15;
+          newWeftY = 40;
+          shiftOffset = spacing;
+        }
+
+        if (frames > 0 && frames % cycleFrames === 0) {
+          wefts.unshift({ y: 40, pattern: isEven ? 1 : 0 });
+          for (let w of wefts) w.y += spacing;
+          if (wefts.length > 8) wefts.pop();
+          shiftOffset = 0;
+        }
+
+        ctx.lineWidth = 3.5;
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineCap = 'round';
+        for (let i = 1; i < cols; i++) {
+          ctx.beginPath();
+          ctx.moveTo(i * spacing, 0);
+          ctx.lineTo(i * spacing, size);
+          ctx.stroke();
+        }
+
+        function drawWeft(yPos, pattern, width, fromLeft) {
+          ctx.lineWidth = 4;
+          ctx.strokeStyle = '#dc2626';
+          ctx.beginPath();
+          if (fromLeft) {
+            ctx.moveTo(0, yPos);
+            ctx.lineTo(width, yPos);
+          } else {
+            ctx.moveTo(size, yPos);
+            ctx.lineTo(size - width, yPos);
+          }
+          ctx.stroke();
+
+          ctx.strokeStyle = '#ffffff';
+          for (let i = 1; i < cols; i++) {
+            if ((i + pattern) % 2 === 0) {
+              let x = i * spacing;
+              let isCrossed = fromLeft ? (width >= x - 2) : (size - width <= x + 2);
+              if (isCrossed) {
+                ctx.beginPath();
+                ctx.moveTo(x, yPos - 5);
+                ctx.lineTo(x, yPos + 5);
+                ctx.stroke();
+              }
+            }
+          }
+        }
+
+        for (let w of wefts) {
+          drawWeft(w.y + shiftOffset, w.pattern, size, true);
+        }
+        if (p < 0.9) drawWeft(newWeftY, isEven ? 1 : 0, newWeftWidth, isEven);
+
+        if (p < 0.45) {
+          ctx.fillStyle = '#dc2626';
+          ctx.beginPath();
+          let w = 24, h = 9;
+          ctx.moveTo(shuttleX - w/2, 25);
+          ctx.lineTo(shuttleX - w/4, 25 - h/2);
+          ctx.lineTo(shuttleX + w/4, 25 - h/2);
+          ctx.lineTo(shuttleX + w/2, 25);
+          ctx.lineTo(shuttleX + w/4, 25 + h/2);
+          ctx.lineTo(shuttleX - w/4, 25 + h/2);
+          ctx.fill();
+        }
+
+        if (beaterY > -10) {
+          ctx.strokeStyle = '#16a34a';
+          ctx.lineWidth = 1.5;
+          for (let i = 0; i <= cols; i++) {
+            let x = (i * spacing) - (spacing / 2);
+            if (x > 0 && x < size) {
+              ctx.beginPath();
+              ctx.moveTo(x, beaterY - 18);
+              ctx.lineTo(x, beaterY + 2);
+              ctx.stroke();
+            }
+          }
+          ctx.fillStyle = '#15803d';
+          ctx.fillRect(0, beaterY - 20, size, 5);
+          ctx.fillRect(0, beaterY, size, 4);
+        }
+
+        frames++;
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    })();
+    </script>
     <!-- script.js RIMOSSO: era orphaned, tutta la logica è in main.js -->
 
   </body>

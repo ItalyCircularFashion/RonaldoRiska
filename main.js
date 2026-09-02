@@ -43,28 +43,6 @@ const projectTypeLabel = {
   zip: "Scarica asset",
 };
 
-const initTheme = () => {
-  const toggle = qs("[data-theme-toggle]");
-  const savedTheme = localStorage.getItem("portfolio-theme") || "dark";
-  document.documentElement.dataset.theme = savedTheme;
-
-  const syncLabel = () => {
-    if (toggle) {
-      toggle.textContent = document.documentElement.dataset.theme === "dark" ? "Light" : "Dark";
-      toggle.setAttribute("aria-label", `Attiva tema ${toggle.textContent.toLowerCase()}`);
-    }
-  };
-
-  syncLabel();
-
-  toggle?.addEventListener("click", () => {
-    const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-    document.documentElement.dataset.theme = nextTheme;
-    localStorage.setItem("portfolio-theme", nextTheme);
-    syncLabel();
-  });
-};
-
 const initNavigation = () => {
   const toggle = qs("[data-nav-toggle]");
   const menu = qs("[data-nav-menu]");
@@ -541,8 +519,9 @@ const initInternalNavigation = () => {
   });
 };
 
+
+
 document.addEventListener("DOMContentLoaded", () => {
-  initTheme();
   initNavigation();
   hydrateCategoryBlocks();
   renderProjectLists();
@@ -555,3 +534,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initInternalNavigation();
   window.addEventListener("resize", drawKpiCanvas);
 });
+
+

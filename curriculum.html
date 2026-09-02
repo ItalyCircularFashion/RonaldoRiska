@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="it" data-theme="dark">
+<html style="font-family:'Crimson Text', 'Noto Serif', Georgia, serif" lang="it" data-theme="dark" data-page="paper">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,8 +7,11 @@
     <meta name="description" content="Curriculum online di Ronaldo Riska: supply chain tessile, qualita, operations, CAD moda e strumenti digitali.">
     <meta name="theme-color" content="#08110c">
     <link rel="stylesheet" href="site.css">
-  </head>
-  <body>
+      <link rel="stylesheet" href="site-patch.css">
+</head>
+  <body><a href="./" class="logo-animated-container" aria-label="Torna alla home">
+      <canvas id="animatedLogoCanvas"></canvas>
+    </a>
     <a class="skip-link" href="#main">Salta al contenuto</a>
 
     <header class="site-header">
@@ -27,7 +30,6 @@
           <a href="cad-moda.html">CAD Moda</a>
           <a href="supply-chain-production.html">Supply Chain</a>
           <a href="#contatti">Contatti</a>
-          <button class="theme-toggle" type="button" data-theme-toggle>Light</button>
         </div>
       </nav>
     </header>
@@ -67,54 +69,6 @@
                 <p class="eyebrow">Sintesi</p>
                 <h2 id="profilo-title">Esperienza operativa nella filiera tessile, con visione digitale.</h2>
                 <p>Ho maturato esperienza nel distretto tessile pratese, lavorando a diretto contatto con produzione, confezione e finissaggio. Conosco la filiera dalla materia prima al tessuto finito e integro questa base con strumenti digitali, dashboard e modelli di controllo industriale.</p>
-              </div>
-            </section>
-
-            <section class="section-tight" aria-labelledby="esperienze-title">
-              <div class="section-heading reveal">
-                <p class="eyebrow">Esperienze lavorative</p>
-                <h2 id="esperienze-title">Timeline professionale</h2>
-              </div>
-
-              <div class="timeline">
-                <article class="timeline-item reveal">
-                  <div class="timeline-marker" aria-hidden="true"></div>
-                  <div class="timeline-card">
-                    <div class="timeline-header">
-                      <div>
-                        <h3>Back Office Insurance Credit Specialist</h3>
-                        <p>Aliante Assicurazioni s.r.l. - Direct Mandate from Atradius Group</p>
-                      </div>
-                      <span class="date-pill">2022 - 2023</span>
-                    </div>
-                    <ul class="clean-list">
-                      <li>Gestione portafoglio crediti commerciali per PMI e analisi di merito.</li>
-                      <li>Analisi finanziaria e valutazione prospect con supporto dati e reportistica.</li>
-                      <li>Supporto decisionale per polizze credito e risk management.</li>
-                      <li>Reportistica commerciale, gestione rinnovi e corrispondenza clienti.</li>
-                      <li>CRM e monitoraggio obiettivi commerciali su area Toscana.</li>
-                    </ul>
-                  </div>
-                </article>
-
-                <article class="timeline-item reveal">
-                  <div class="timeline-marker" aria-hidden="true"></div>
-                  <div class="timeline-card">
-                    <div class="timeline-header">
-                      <div>
-                        <h3>Operations &amp; Quality Coordinator</h3>
-                        <p>Stireria Il Futuro</p>
-                      </div>
-                      <span class="date-pill">2020 - 2021</span>
-                    </div>
-                    <ul class="clean-list">
-                      <li>Gestione fornitori e terzisti: finissaggio, volumi, scadenze e livelli di servizio.</li>
-                      <li>Controllo qualità finale capo: estetica, conformità e standard.</li>
-                      <li>Documentazione logistica: packing list, DDT, fatture pro-forma e spedizioni.</li>
-                      <li>Gestione operativa di dettagli: asolatura, bottoni, etichettatura e ciclo a catena.</li>
-                    </ul>
-                  </div>
-                </article>
               </div>
             </section>
 
@@ -166,6 +120,108 @@
                     <li>React prototype</li>
                     <li>AI workflow e automazione</li>
                   </ul>
+                </article>
+              </div>
+            </section>
+
+            <section class="section-tight" aria-labelledby="competenze-digitali-title">
+              <div class="section-heading reveal">
+                <p class="eyebrow">Competenze digitali</p>
+                <h2 id="competenze-digitali-title">Strumenti, linguaggi e piattaforme</h2>
+              </div>
+
+              <div class="skill-grid">
+                <article class="skill-card reveal">
+                  <span class="skill-index">01</span>
+                  <h3>Sviluppo web e applicazioni</h3>
+                  <ul class="tag-list">
+                    <li>HTML5, CSS3, JavaScript ES6+</li>
+                    <li>React e architetture SPA</li>
+                    <li>TypeScript e Node.js</li>
+                    <li>Vite, Vite-plugin, bundler tooling</li>
+                    <li>Vitest e testing frontend</li>
+                  </ul>
+                </article>
+                <article class="skill-card reveal">
+                  <span class="skill-index">02</span>
+                  <h3>Backend e dati</h3>
+                  <ul class="tag-list">
+                    <li>NestJS e pattern modulari</li>
+                    <li>Prisma ORM e migrazioni database</li>
+                    <li>PostgreSQL e modellazione dati</li>
+                    <li>API REST e contratti dati</li>
+                    <li>Environment config e deploy</li>
+                  </ul>
+                </article>
+                <article class="skill-card reveal">
+                  <span class="skill-index">03</span>
+                  <h3>CAD, simulazioni e strumenti tessili</h3>
+                  <ul class="tag-list">
+                    <li>Applicazioni CAD tessili web-based</li>
+                    <li>Simulatori di armature e note colore</li>
+                    <li>Pianificazione Gantt ciclo tessile</li>
+                    <li>Strumenti MRP e supply chain simulation</li>
+                    <li>Dashboard KPI e analytics industriali</li>
+                  </ul>
+                </article>
+                <article class="skill-card reveal">
+                  <span class="skill-index">04</span>
+                  <h3>Design, automazione e AI</h3>
+                  <ul class="tag-list">
+                    <li>UI/UX e design system</li>
+                    <li>Canvas API e animazioni 2D</li>
+                    <li>Automazione workflow e script CLI</li>
+                    <li>AI-assisted development</li>
+                    <li>Prompt engineering e workflow AI</li>
+                  </ul>
+                </article>
+              </div>
+            </section>
+
+            <section class="section-tight" aria-labelledby="esperienze-title">
+              <div class="section-heading reveal">
+                <p class="eyebrow">Esperienze lavorative</p>
+                <h2 id="esperienze-title">Timeline professionale</h2>
+              </div>
+
+              <div class="timeline">
+                <article class="timeline-item reveal">
+                  <div class="timeline-marker" aria-hidden="true"></div>
+                  <div class="timeline-card">
+                    <div class="timeline-header">
+                      <div>
+                        <h3>Back Office Insurance Credit Specialist</h3>
+                        <p>Aliante Assicurazioni s.r.l. - Direct Mandate from Atradius Group</p>
+                      </div>
+                      <span class="date-pill">2022 - 2023</span>
+                    </div>
+                    <ul class="clean-list">
+                      <li>Gestione portafoglio crediti commerciali per PMI e analisi di merito.</li>
+                      <li>Analisi finanziaria e valutazione prospect con supporto dati e reportistica.</li>
+                      <li>Supporto decisionale per polizze credito e risk management.</li>
+                      <li>Reportistica commerciale, gestione rinnovi e corrispondenza clienti.</li>
+                      <li>CRM e monitoraggio obiettivi commerciali su area Toscana.</li>
+                    </ul>
+                  </div>
+                </article>
+
+                <article class="timeline-item reveal">
+                  <div class="timeline-marker" aria-hidden="true"></div>
+                  <div class="timeline-card">
+                    <div class="timeline-header">
+                      <div>
+                        <h3>Operations &amp; Quality Coordinator</h3>
+                        <p>Stireria Il Futuro</p>
+                      </div>
+                      <span class="date-pill">2020 - 2021</span>
+                    </div>
+                    <ul class="clean-list">
+                      <li>Gestione fornitori e terzisti: finissaggio, volumi, scadenze e livelli di servizio.</li>
+                      <li>Controllo qualità finale capo: estetica, conformità e standard.</li>
+                      <li>Documentazione logistica: packing list, DDT, fatture pro-forma e spedizioni.</li>
+                      <li>Gestione operativa di dettagli: asolatura, bottoni, etichettatura e ciclo a catena.</li>
+                    </ul>
+                  </div>
                 </article>
               </div>
             </section>
@@ -228,5 +284,6 @@
 
     <script src="project-data.js" defer></script>
     <script src="main.js" defer></script>
+      <script src="logo-loom-animated.js" defer></script>
   </body>
 </html>

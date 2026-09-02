@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="it">
+<html style="font-family:'Lora', 'Merriweather', Georgia, serif" data-page="natural" lang="it">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -579,7 +579,11 @@
       }
     }
   </style>
-</head>
+    <link rel="stylesheet" href="site-patch.css"></head>
+  <body>
+    <a href="./" class="logo-animated-container" aria-label="Torna alla home">
+      <canvas id="animatedLogoCanvas"></canvas>
+    </a>
 <body>
   <div class="app-shell">
     <aside class="sidebar" aria-label="Toolbar tecnica">
@@ -1504,5 +1508,6 @@
     })();
   </script>
   <script src="loader.js"></script>
-</body>
+    <script src="logo-loom-animated.js" defer></script>
+  </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html style="font-family:'Cormorant Garamond', 'Palatino', Georgia, serif" data-page="craft" lang="it">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -14,7 +14,11 @@
     body { overflow: hidden; height: 100vh; background: #1a1a18; }
     #root { height: 100%; }
   </style>
-</head>
+    <link rel="stylesheet" href="site-patch.css"></head>
+  <body>
+    <a href="./" class="logo-animated-container" aria-label="Torna alla home">
+      <canvas id="animatedLogoCanvas"></canvas>
+    </a>
 <body>
 <div id="root"></div>
 
@@ -521,5 +525,6 @@ function WeaveStudio() {
 
 ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(WeaveStudio));
 </script>
-</body>
+    <script src="logo-loom-animated.js" defer></script>
+  </body>
 </html>

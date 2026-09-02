@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html style="font-family:'Orbitron', 'Rajdhani', 'Segoe UI', sans-serif" data-page="tech" lang="it">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -13,7 +13,11 @@
   <style>
     html, body, #root { margin:0; padding:0; height:100%; background:#0D0E12; }
   </style>
-</head>
+    <link rel="stylesheet" href="site-patch.css"></head>
+  <body>
+    <a href="./" class="logo-animated-container" aria-label="Torna alla home">
+      <canvas id="animatedLogoCanvas"></canvas>
+    </a>
 <body>
   <div id="root"></div>
   <script type="text/babel" data-presets="react">
@@ -1424,5 +1428,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   React.createElement(App)
 );
   </script>
-</body>
+    <script src="logo-loom-animated.js" defer></script>
+  </body>
 </html>

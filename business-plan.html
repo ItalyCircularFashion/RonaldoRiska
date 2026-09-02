@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html style="font-family:'Inter', 'Helvetica Neue', Arial, sans-serif" data-page="corporate" lang="it">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -465,7 +465,11 @@ body{
 .fade-in-delay-3{transition-delay:.3s}
 .fade-in-delay-4{transition-delay:.4s}
 </style>
-</head>
+    <link rel="stylesheet" href="site-patch.css"></head>
+  <body>
+    <a href="./" class="logo-animated-container" aria-label="Torna alla home">
+      <canvas id="animatedLogoCanvas"></canvas>
+    </a>
 <body>
 
 <!-- PROGRESS BAR -->
@@ -1059,5 +1063,6 @@ document.addEventListener('click', function(e) {
   }
 });
 </script>
-</body>
+    <script src="logo-loom-animated.js" defer></script>
+  </body>
 </html>

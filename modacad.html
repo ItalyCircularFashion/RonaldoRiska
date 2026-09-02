@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="it" data-theme="dark">
+<html style="font-family:'Bahnschrift', 'Segoe UI', 'Arial', sans-serif" lang="it" data-theme="dark" data-page="cad">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,7 +7,11 @@
     <meta name="description" content="CAD moda, modellistica digitale, cartamodelli jeans, concept design e workflow prodotto interattivi.">
     <meta name="theme-color" content="#08110c">
     <link rel="stylesheet" href="site.css">
-  </head>
+      <link rel="stylesheet" href="site-patch.css"></head>
+  <body>
+    <a href="./" class="logo-animated-container" aria-label="Torna alla home">
+      <canvas id="animatedLogoCanvas"></canvas>
+    </a>
   <body data-category-page="cad">
     <a class="skip-link" href="#main">Salta al contenuto</a>
     <header class="site-header">
@@ -20,7 +24,6 @@
           <a href="tessitura.html">Tessitura</a>
           <a href="supply-chain-production.html">Supply Chain</a>
           <a href="index.html#contatti">Contatti</a>
-          <button class="theme-toggle" type="button" data-theme-toggle>Light</button>
         </div>
       </nav>
     </header>
@@ -78,5 +81,6 @@
     
     <script src="main.js" defer></script>
   <script src="loader.js"></script>
+      <script src="logo-loom-animated.js" defer></script>
   </body>
 </html>
