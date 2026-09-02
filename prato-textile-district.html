@@ -178,6 +178,16 @@
             <div class="kpi-chart reveal">
               <span class="kpi-label">Composizione export</span>
               <canvas data-kpi-donut aria-label="Composizione export per categoria merceologica"></canvas>
+              <div class="kpi-chart-legend">
+                <span class="kpi-legend-item"><span class="kpi-legend-dot" style="background:#ef4444"></span>Maglieria</span>
+                <span class="kpi-legend-item"><span class="kpi-legend-dot" style="background:#f97316"></span>Tessuti</span>
+                <span class="kpi-legend-item"><span class="kpi-legend-dot" style="background:#eab308"></span>Filati</span>
+                <span class="kpi-legend-item"><span class="kpi-legend-dot" style="background:#22c55e"></span>Confezione</span>
+                <span class="kpi-legend-item"><span class="kpi-legend-dot" style="background:#3b82f6"></span>Tintoria</span>
+                <span class="kpi-legend-item"><span class="kpi-legend-dot" style="background:#a855f7"></span>Accessori</span>
+                <span class="kpi-legend-item"><span class="kpi-legend-dot" style="background:#ec4899"></span>Servizi</span>
+                <span class="kpi-legend-item"><span class="kpi-legend-dot" style="background:#06b6d4"></span>Riciclo</span>
+              </div>
             </div>
           </div>
 
@@ -330,16 +340,20 @@
         function drawDonutChart(canvas) {
           const { ctx, w, h } = setupCanvas(canvas);
           const data = [
-            { label: 'Maglieria', value: 35, color: 'rgba(196, 92, 62, 0.85)' },
-            { label: 'Tessuti', value: 30, color: 'rgba(244, 161, 97, 0.85)' },
-            { label: 'Filati', value: 20, color: 'rgba(180, 83, 9, 0.85)' },
-            { label: 'Confezione', value: 15, color: 'rgba(120, 53, 15, 0.85)' }
+            { label: 'Maglieria', value: 18, color: '#ef4444' },
+            { label: 'Tessuti', value: 16, color: '#f97316' },
+            { label: 'Filati', value: 14, color: '#eab308' },
+            { label: 'Confezione', value: 12, color: '#22c55e' },
+            { label: 'Tintoria', value: 10, color: '#3b82f6' },
+            { label: 'Accessori', value: 10, color: '#a855f7' },
+            { label: 'Servizi', value: 10, color: '#ec4899' },
+            { label: 'Riciclo', value: 10, color: '#06b6d4' }
           ];
           const total = data.reduce((s, d) => s + d.value, 0);
           const cx = w / 2;
           const cy = h / 2;
-          const outer = Math.min(w, h) / 2 - 8;
-          const inner = outer * 0.55;
+          const outer = Math.min(w, h) / 2 - 14;
+          const inner = outer * 0.58;
           const slices = [];
           let start = -Math.PI / 2;
           data.forEach(d => {
@@ -352,29 +366,48 @@
             ctx.clearRect(0, 0, w, h);
             slices.forEach((s, i) => {
               const isHover = i === hoverIdx;
+              const mid = (s.start + s.end) / 2;
+              const offset = isHover ? 6 : 0;
+              const ox = Math.cos(mid) * offset;
+              const oy = Math.sin(mid) * offset;
               ctx.beginPath();
-              ctx.arc(cx, cy, isHover ? outer + 3 : outer, s.start, s.end);
-              ctx.arc(cx, cy, inner, s.end, s.start, true);
+              ctx.arc(cx + ox, cy + oy, isHover ? outer + 2 : outer, s.start, s.end);
+              ctx.arc(cx + ox, cy + oy, inner, s.end, s.start, true);
               ctx.closePath();
               ctx.fillStyle = s.color;
               ctx.fill();
+              ctx.strokeStyle = 'rgba(10,8,5,0.6)';
+              ctx.lineWidth = 1.2;
+              ctx.stroke();
             });
+            // Center label
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 13px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(total + '%', cx, cy - 6);
+            ctx.fillStyle = 'rgba(244, 161, 97, 0.9)';
+            ctx.font = '10px sans-serif';
+            ctx.fillText('export', cx, cy + 12);
             // Tooltip
             if (hoverIdx >= 0 && hoverIdx < slices.length) {
               const s = slices[hoverIdx];
               const mid = (s.start + s.end) / 2;
-              const tx = cx + Math.cos(mid) * (outer + 18);
-              const ty = cy + Math.sin(mid) * (outer + 18);
-              ctx.fillStyle = 'rgba(10, 8, 5, 0.9)';
-              ctx.roundRect(tx - 30, ty - 18, 60, 28, 4);
+              const tx = cx + Math.cos(mid) * (outer + 22);
+              const ty = cy + Math.sin(mid) * (outer + 22);
+              ctx.fillStyle = 'rgba(10, 8, 5, 0.95)';
+              ctx.roundRect(tx - 34, ty - 20, 68, 34, 5);
               ctx.fill();
+              ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+              ctx.lineWidth = 1;
+              ctx.stroke();
               ctx.fillStyle = '#fff';
-              ctx.font = 'bold 11px sans-serif';
+              ctx.font = 'bold 12px sans-serif';
               ctx.textAlign = 'center';
-              ctx.fillText(s.value + '%', tx, ty - 2);
-              ctx.fillStyle = 'rgba(244, 161, 97, 0.9)';
+              ctx.fillText(s.value + '%', tx, ty - 4);
+              ctx.fillStyle = s.color;
               ctx.font = '10px sans-serif';
-              ctx.fillText(s.label, tx, ty + 12);
+              ctx.fillText(s.label, tx, ty + 10);
             }
           }
 
@@ -391,7 +424,7 @@
             if (angle < -Math.PI / 2) angle += Math.PI * 2;
             let best = -1;
             slices.forEach((s, i) => {
-              if (dist >= inner && dist <= outer + 4 && angle >= s.start && angle <= s.end) best = i;
+              if (dist >= inner && dist <= outer + 6 && angle >= s.start && angle <= s.end) best = i;
             });
             render(best);
           });
