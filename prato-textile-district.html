@@ -110,6 +110,7 @@
               <span class="kpi-number">4 200+</span>
               <span class="kpi-caption">Unità produttive nel distretto pratese</span>
               <div class="kpi-bar-track"><div class="kpi-bar" style="--pct:0.82"></div></div>
+              <span class="kpi-delta positive">+3.2% y/y</span>
             </div>
 
             <div class="kpi-panel reveal">
@@ -117,6 +118,7 @@
               <span class="kpi-number">€ 2,8 mld</span>
               <span class="kpi-caption">Valore della produzione tessile locale</span>
               <div class="kpi-bar-track"><div class="kpi-bar" style="--pct:0.71"></div></div>
+              <span class="kpi-delta positive">+5.1% y/y</span>
             </div>
 
             <div class="kpi-panel reveal">
@@ -124,6 +126,7 @@
               <span class="kpi-number">23 000+</span>
               <span class="kpi-caption">Addetti diretti e indotto filiera</span>
               <div class="kpi-bar-track"><div class="kpi-bar" style="--pct:0.68"></div></div>
+              <span class="kpi-delta neutral">Stabile</span>
             </div>
 
             <div class="kpi-panel reveal">
@@ -131,6 +134,39 @@
               <span class="kpi-number">€ 1,4 mld</span>
               <span class="kpi-caption">Quota export sul fatturato distrettuale</span>
               <div class="kpi-bar-track"><div class="kpi-bar" style="--pct:0.59"></div></div>
+              <span class="kpi-delta positive">+2.8% y/y</span>
+            </div>
+
+            <div class="kpi-panel reveal">
+              <span class="kpi-label">Tasso di riciclo</span>
+              <span class="kpi-number">78%</span>
+              <span class="kpi-caption">Fibre rigenerate su produzione totale</span>
+              <div class="kpi-bar-track"><div class="kpi-bar" style="--pct:0.78"></div></div>
+              <span class="kpi-delta positive">+12% y/y</span>
+            </div>
+
+            <div class="kpi-panel reveal">
+              <span class="kpi-label">Digital maturity</span>
+              <span class="kpi-number">64%</span>
+              <span class="kpi-caption">Imprese con MES/dashboard attive</span>
+              <div class="kpi-bar-track"><div class="kpi-bar" style="--pct:0.64"></div></div>
+              <span class="kpi-delta positive">+18% y/y</span>
+            </div>
+
+            <div class="kpi-panel reveal">
+              <span class="kpi-label">Lead time medio</span>
+              <span class="kpi-number">14 gg</span>
+              <span class="kpi-caption">Dall’ordine alla spedizione</span>
+              <div class="kpi-bar-track"><div class="kpi-bar" style="--pct:0.45"></div></div>
+              <span class="kpi-delta negative">-8% miglioramento</span>
+            </div>
+
+            <div class="kpi-panel reveal">
+              <span class="kpi-label">Certificazioni ESG</span>
+              <span class="kpi-number">38%</span>
+              <span class="kpi-caption">Imprese certificate su totale</span>
+              <div class="kpi-bar-track"><div class="kpi-bar" style="--pct:0.38"></div></div>
+              <span class="kpi-delta positive">+9% y/y</span>
             </div>
           </div>
 
@@ -213,28 +249,82 @@
           return { ctx, w: rect.width, h: rect.height };
         }
 
+        // Interpolazione lineare per hover
+        function lerp(a, b, t) { return a + (b - a) * t; }
+
         function drawLineChart(canvas) {
           const { ctx, w, h } = setupCanvas(canvas);
           const data = [18, 20, 19, 22, 24, 23, 26, 28, 27, 30];
-          const max = Math.max(...data);
+          const labels = ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'];
+          const max = Math.max(...data) * 1.1;
           const step = w / (data.length - 1);
           const pad = 12;
-          ctx.clearRect(0, 0, w, h);
-          ctx.strokeStyle = 'rgba(196, 92, 62, 0.9)';
-          ctx.lineWidth = 2.2;
-          ctx.lineJoin = 'round';
-          ctx.beginPath();
-          data.forEach((v, i) => {
-            const x = i * step;
-            const y = h - pad - (v / max) * (h - pad * 2);
-            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          const points = data.map((v, i) => ({ x: i * step, y: h - pad - (v / max) * (h - pad * 2), v, label: labels[i] }));
+
+          function render(hoverIdx) {
+            ctx.clearRect(0, 0, w, h);
+            // Griglia
+            ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+            ctx.lineWidth = 1;
+            for (let i = 1; i < 5; i++) {
+              const y = pad + (h - pad * 2) * (i / 5);
+              ctx.beginPath();
+              ctx.moveTo(0, y);
+              ctx.lineTo(w, y);
+              ctx.stroke();
+            }
+            // Area
+            ctx.beginPath();
+            points.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+            ctx.lineTo(w, h);
+            ctx.lineTo(0, h);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(196, 92, 62, 0.1)';
+            ctx.fill();
+            // Linea
+            ctx.beginPath();
+            points.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+            ctx.strokeStyle = 'rgba(196, 92, 62, 0.9)';
+            ctx.lineWidth = 2.2;
+            ctx.lineJoin = 'round';
+            ctx.stroke();
+            // Punti
+            points.forEach((p, i) => {
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, hoverIdx === i ? 5 : 3, 0, Math.PI * 2);
+              ctx.fillStyle = hoverIdx === i ? '#fff' : 'rgba(196, 92, 62, 0.9)';
+              ctx.fill();
+            });
+            // Tooltip
+            if (hoverIdx >= 0 && hoverIdx < points.length) {
+              const p = points[hoverIdx];
+              ctx.fillStyle = 'rgba(10, 8, 5, 0.9)';
+              ctx.roundRect(p.x - 28, p.y - 44, 56, 32, 4);
+              ctx.fill();
+              ctx.fillStyle = '#fff';
+              ctx.font = 'bold 11px sans-serif';
+              ctx.textAlign = 'center';
+              ctx.fillText(p.v + ' mln', p.x, p.y - 26);
+              ctx.fillStyle = 'rgba(244, 161, 97, 0.9)';
+              ctx.font = '10px sans-serif';
+              ctx.fillText(p.label, p.x, p.y - 12);
+            }
+          }
+
+          render(-1);
+
+          canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            let best = -1;
+            let bestDist = Infinity;
+            points.forEach((p, i) => {
+              const d = Math.abs(p.x - x);
+              if (d < bestDist) { bestDist = d; best = i; }
+            });
+            if (bestDist < step * 0.6) render(best); else render(-1);
           });
-          ctx.stroke();
-          ctx.fillStyle = 'rgba(196, 92, 62, 0.08)';
-          ctx.lineTo(w, h);
-          ctx.lineTo(0, h);
-          ctx.closePath();
-          ctx.fill();
+          canvas.addEventListener('mouseleave', () => render(-1));
         }
 
         function drawDonutChart(canvas) {
@@ -250,18 +340,62 @@
           const cy = h / 2;
           const outer = Math.min(w, h) / 2 - 8;
           const inner = outer * 0.55;
-          ctx.clearRect(0, 0, w, h);
+          const slices = [];
           let start = -Math.PI / 2;
           data.forEach(d => {
             const slice = (d.value / total) * Math.PI * 2;
-            ctx.beginPath();
-            ctx.arc(cx, cy, outer, start, start + slice);
-            ctx.arc(cx, cy, inner, start + slice, start, true);
-            ctx.closePath();
-            ctx.fillStyle = d.color;
-            ctx.fill();
+            slices.push({ start, end: start + slice, ...d });
             start += slice;
           });
+
+          function render(hoverIdx) {
+            ctx.clearRect(0, 0, w, h);
+            slices.forEach((s, i) => {
+              const isHover = i === hoverIdx;
+              ctx.beginPath();
+              ctx.arc(cx, cy, isHover ? outer + 3 : outer, s.start, s.end);
+              ctx.arc(cx, cy, inner, s.end, s.start, true);
+              ctx.closePath();
+              ctx.fillStyle = s.color;
+              ctx.fill();
+            });
+            // Tooltip
+            if (hoverIdx >= 0 && hoverIdx < slices.length) {
+              const s = slices[hoverIdx];
+              const mid = (s.start + s.end) / 2;
+              const tx = cx + Math.cos(mid) * (outer + 18);
+              const ty = cy + Math.sin(mid) * (outer + 18);
+              ctx.fillStyle = 'rgba(10, 8, 5, 0.9)';
+              ctx.roundRect(tx - 30, ty - 18, 60, 28, 4);
+              ctx.fill();
+              ctx.fillStyle = '#fff';
+              ctx.font = 'bold 11px sans-serif';
+              ctx.textAlign = 'center';
+              ctx.fillText(s.value + '%', tx, ty - 2);
+              ctx.fillStyle = 'rgba(244, 161, 97, 0.9)';
+              ctx.font = '10px sans-serif';
+              ctx.fillText(s.label, tx, ty + 12);
+            }
+          }
+
+          render(-1);
+
+          canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const dx = x - cx;
+            const dy = y - cy;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            let angle = Math.atan2(dy, dx);
+            if (angle < -Math.PI / 2) angle += Math.PI * 2;
+            let best = -1;
+            slices.forEach((s, i) => {
+              if (dist >= inner && dist <= outer + 4 && angle >= s.start && angle <= s.end) best = i;
+            });
+            render(best);
+          });
+          canvas.addEventListener('mouseleave', () => render(-1));
         }
 
         function initCharts() {
