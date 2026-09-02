@@ -12,11 +12,18 @@
 
   const cols = 9;
   const spacing = size / cols;
-  const cycleFrames = 140;
+  const cycleFrames = 90;
   let frames = 0;
+  const palette = ['#ef4444','#f97316','#eab308','#22c55e','#3b82f6','#a855f7','#ec4899','#14b8a6','#f43f5e'];
+  let colorIdx = 0;
+  function nextColor() {
+    const c = palette[colorIdx % palette.length];
+    colorIdx++;
+    return c;
+  }
   let wefts = [];
   for (let i = 0; i < 6; i++) {
-    wefts.push({ y: 40 + spacing * i, pattern: i % 2 });
+    wefts.push({ y: 40 + spacing * i, pattern: i % 2, color: nextColor() });
   }
 
   // Disegna un filo ondulato invece di una linea retta
@@ -56,11 +63,12 @@
     ctx.stroke();
   }
 
-  function drawWeft(yPos, pattern, width, fromLeft) {
+  function drawWeft(yPos, pattern, width, fromLeft, color) {
+    const yarnColor = color || '#ef4444';
     if (fromLeft) {
-      drawYarn(0, yPos, width, yPos, '#ef4444', 4.2);
+      drawYarn(0, yPos, width, yPos, yarnColor, 4.2);
     } else {
-      drawYarn(size, yPos, size - width, yPos, '#ef4444', 4.2);
+      drawYarn(size, yPos, size - width, yPos, yarnColor, 4.2);
     }
     // Intreccio: pezzetti di ordito che stanno sopra
     for (let i = 1; i < cols; i++) {
@@ -127,7 +135,7 @@
     }
 
     if (frames > 0 && frames % cycleFrames === 0) {
-      wefts.unshift({ y: 40, pattern: isEven ? 1 : 0 });
+      wefts.unshift({ y: 40, pattern: isEven ? 1 : 0, color: nextColor() });
       for (let w of wefts) w.y += spacing;
       if (wefts.length > 8) wefts.pop();
       shiftOffset = 0;
@@ -139,7 +147,7 @@
     }
 
     for (let w of wefts) {
-      drawWeft(w.y + shiftOffset, w.pattern, size, true);
+      drawWeft(w.y + shiftOffset, w.pattern, size, true, w.color);
     }
     if (p < 0.9) drawWeft(newWeftY, isEven ? 1 : 0, newWeftWidth, isEven);
 
