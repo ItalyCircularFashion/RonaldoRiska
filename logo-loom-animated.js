@@ -12,21 +12,32 @@
 
   const cols = 9;
   const spacing = size / cols;
-  const cycleFrames = 90;
+  const cycleFrames = 100;
   let frames = 0;
+  let wefts = [];
+  for (let i = 0; i < 6; i++) {
+    wefts.push({ y: 40 + spacing * i, pattern: i % 2 });
+  }
+  let prevColor = '#ef4444';
   const palette = ['#ef4444','#f97316','#eab308','#22c55e','#3b82f6','#a855f7','#ec4899','#14b8a6','#f43f5e'];
   let colorIdx = 0;
   function nextColor() {
-    const c = palette[colorIdx % palette.length];
+    prevColor = palette[colorIdx % palette.length];
     colorIdx++;
-    return c;
-  }
-  let wefts = [];
-  for (let i = 0; i < 6; i++) {
-    wefts.push({ y: 40 + spacing * i, pattern: i % 2, color: nextColor() });
+    return prevColor;
   }
 
-  // Disegna un filo ondulato invece di una linea retta
+  // Smooth easing
+  function easeInOutSine(t) {
+    return -(Math.cos(Math.PI * t) - 1) / 2;
+  }
+  function easeOutCubic(t) {
+    return 1 - Math.pow(1 - t, 3);
+  }
+  function easeInOutQuad(t) {
+    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+  }
+
   function drawYarn(x1, y1, x2, y2, color, width) {
     ctx.strokeStyle = color;
     ctx.lineWidth = width;
@@ -36,7 +47,7 @@
     const segments = Math.max(10, Math.floor(dist / 4));
     const dx = (x2 - x1) / segments;
     const dy = (y2 - y1) / segments;
-    const amp = 1.2; // ampiezza ondulazione
+    const amp = 1.2;
     const freq = 0.4;
     ctx.moveTo(x1, y1);
     for (let i = 1; i < segments; i++) {
@@ -47,8 +58,6 @@
     }
     ctx.lineTo(x2, y2);
     ctx.stroke();
-
-    // Ombra/texture sottile per effetto filato
     ctx.strokeStyle = 'rgba(0,0,0,0.12)';
     ctx.lineWidth = width * 0.35;
     ctx.beginPath();
@@ -64,13 +73,12 @@
   }
 
   function drawWeft(yPos, pattern, width, fromLeft, color) {
-    const yarnColor = color || '#ef4444';
+    const yarnColor = color || prevColor;
     if (fromLeft) {
       drawYarn(0, yPos, width, yPos, yarnColor, 4.2);
     } else {
       drawYarn(size, yPos, size - width, yPos, yarnColor, 4.2);
     }
-    // Intreccio: pezzetti di ordito che stanno sopra
     for (let i = 1; i < cols; i++) {
       if ((i + pattern) % 2 === 0) {
         let x = i * spacing;
@@ -88,9 +96,19 @@
       return;
     }
     ctx.clearRect(0, 0, size, size);
-    let p = (frames % cycleFrames) / cycleFrames;
-    let cycleIndex = Math.floor(frames / cycleFrames);
-    let isEven = cycleIndex % 2 === 0;
+
+    // Smooth continuous phase
+    const totalCycle = cycleFrames;
+    const phase = (frames % totalCycle) / totalCycle;
+    const cycleIndex = Math.floor(frames / totalCycle);
+    const isEven = cycleIndex % 2 === 0;
+
+    // Smooth motion with overlapping phases
+    // Phase 0.0 - 0.5: shuttle moves across (with ease)
+    // Phase 0.35 - 0.6: beater starts dropping
+    // Phase 0.5 - 0.7: beat and compress
+    // Phase 0.65 - 0.85: beater lifts
+    // Phase 0.8 - 1.0: smooth reset
 
     let shuttleX = -20;
     let newWeftY = 25;
@@ -98,14 +116,14 @@
     let shiftOffset = 0;
     let newWeftWidth = 0;
 
-    if (p < 0.4) {
-      let tp = p / 0.4;
-      tp = tp < 0.5 ? 2 * tp * tp : -1 + (4 - 2 * tp) * tp;
+    // Shuttle motion: smooth ease in-out
+    if (phase < 0.5) {
+      const t = easeInOutSine(phase / 0.5);
       if (isEven) {
-        shuttleX = tp * (size + 40) - 20;
+        shuttleX = t * (size + 40) - 20;
         newWeftWidth = Math.max(0, Math.min(size, shuttleX));
       } else {
-        shuttleX = (size + 20) - tp * (size + 40);
+        shuttleX = (size + 20) - t * (size + 40);
         newWeftWidth = Math.max(0, Math.min(size, size - shuttleX));
       }
     } else {
@@ -113,46 +131,49 @@
       newWeftWidth = size;
     }
 
-    if (p > 0.4 && p <= 0.5) {
-      let tp = (p - 0.4) / 0.1;
-      beaterY = -15 + tp * (newWeftY + 5);
-    } else if (p > 0.5 && p <= 0.7) {
-      let tp = (p - 0.5) / 0.2;
-      tp = 1 - Math.pow(1 - tp, 3);
-      beaterY = (25 + 5) + tp * (40 - 25);
-      newWeftY = 25 + tp * (40 - 25);
-      shiftOffset = tp * spacing;
-    } else if (p > 0.7 && p <= 0.85) {
-      let tp = (p - 0.7) / 0.15;
-      tp = tp * tp;
-      beaterY = (40 + 5) - tp * (40 + 5 + 15);
+    // Beater: smooth overlapping motion
+    if (phase > 0.35 && phase <= 0.6) {
+      const t = easeInOutSine((phase - 0.35) / 0.25);
+      beaterY = -15 + t * (25 + 5 - (-15));
+      newWeftY = 25;
+    } else if (phase > 0.6 && phase <= 0.75) {
+      const t = easeOutCubic((phase - 0.6) / 0.15);
+      beaterY = (25 + 5) + t * (40 - 25);
+      newWeftY = 25 + t * (40 - 25);
+      shiftOffset = t * spacing;
+    } else if (phase > 0.75 && phase <= 0.85) {
+      const t = easeInOutSine((phase - 0.75) / 0.1);
+      beaterY = (40 + 5) - t * (40 + 5 + 15);
       newWeftY = 40;
       shiftOffset = spacing;
-    } else if (p > 0.85) {
+    } else {
       beaterY = -15;
       newWeftY = 40;
-      shiftOffset = spacing;
     }
 
-    if (frames > 0 && frames % cycleFrames === 0) {
+    // Smooth cycle transition
+    if (frames > 0 && frames % totalCycle === 0) {
       wefts.unshift({ y: 40, pattern: isEven ? 1 : 0, color: nextColor() });
       for (let w of wefts) w.y += spacing;
       if (wefts.length > 8) wefts.pop();
       shiftOffset = 0;
     }
 
-    // Ordito come filati ondulati
+    // Draw warp
     for (let i = 1; i < cols; i++) {
       drawYarn(i * spacing, 0, i * spacing, size, '#ffffff', 3.8);
     }
 
+    // Draw wefts
     for (let w of wefts) {
       drawWeft(w.y + shiftOffset, w.pattern, size, true, w.color);
     }
-    if (p < 0.9) drawWeft(newWeftY, isEven ? 1 : 0, newWeftWidth, isEven);
+    if (phase < 0.85) {
+      drawWeft(newWeftY, isEven ? 1 : 0, newWeftWidth, isEven);
+    }
 
-    // Navetta
-    if (p < 0.45) {
+    // Shuttle
+    if (phase < 0.5) {
       ctx.fillStyle = '#22c55e';
       ctx.beginPath();
       let w = 24, h = 9;
@@ -165,17 +186,14 @@
       ctx.fill();
     }
 
-    // Pettine - design migliorato
+    // Beater
     if (beaterY > -10) {
-      // Cornice metallica
       const gradient = ctx.createLinearGradient(0, beaterY - 22, 0, beaterY + 6);
       gradient.addColorStop(0, '#64748b');
       gradient.addColorStop(0.5, '#94a3b8');
       gradient.addColorStop(1, '#475569');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, beaterY - 22, size, 28);
-      
-      // Denti del pettine con effetto metallico
       ctx.strokeStyle = '#e2e8f0';
       ctx.lineWidth = 1.2;
       for (let i = 0; i <= cols; i++) {
@@ -187,8 +205,6 @@
           ctx.stroke();
         }
       }
-      
-      // Denti effetto filato tessile
       ctx.strokeStyle = '#f1f5f9';
       ctx.lineWidth = 0.8;
       for (let i = 0; i <= cols; i++) {
@@ -200,16 +216,12 @@
           ctx.stroke();
         }
       }
-      
-      // Bordo superiore lucido
       ctx.strokeStyle = '#f8fafc';
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(0, beaterY - 22);
       ctx.lineTo(size, beaterY - 22);
       ctx.stroke();
-      
-      // Bordo inferiore
       ctx.strokeStyle = '#334155';
       ctx.lineWidth = 2;
       ctx.beginPath();
