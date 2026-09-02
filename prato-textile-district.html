@@ -104,54 +104,58 @@
             <p class="lead">Analisi operative su filiera, sostenibilità, manifattura e transizione digitale nel distretto moda‑tessile pratese.</p>
           </div>
 
-          <div class="newspaper-columns">
+          <div class="kpi-dashboard">
+            <div class="kpi-panel reveal">
+              <span class="kpi-label">Imprese attive</span>
+              <span class="kpi-number">4 200+</span>
+              <span class="kpi-caption">Unità produttive nel distretto pratese</span>
+              <div class="kpi-bar-track"><div class="kpi-bar" style="--pct:0.82"></div></div>
+            </div>
+
+            <div class="kpi-panel reveal">
+              <span class="kpi-label">Fatturato annuo</span>
+              <span class="kpi-number">€ 2,8 mld</span>
+              <span class="kpi-caption">Valore della produzione tessile locale</span>
+              <div class="kpi-bar-track"><div class="kpi-bar" style="--pct:0.71"></div></div>
+            </div>
+
+            <div class="kpi-panel reveal">
+              <span class="kpi-label">Occupazione</span>
+              <span class="kpi-number">23 000+</span>
+              <span class="kpi-caption">Addetti diretti e indotto filiera</span>
+              <div class="kpi-bar-track"><div class="kpi-bar" style="--pct:0.68"></div></div>
+            </div>
+
+            <div class="kpi-panel reveal">
+              <span class="kpi-label">Export</span>
+              <span class="kpi-number">€ 1,4 mld</span>
+              <span class="kpi-caption">Quota export sul fatturato distrettuale</span>
+              <div class="kpi-bar-track"><div class="kpi-bar" style="--pct:0.59"></div></div>
+            </div>
+          </div>
+
+          <div class="kpi-charts">
+            <div class="kpi-chart reveal">
+              <span class="kpi-label">Fatturato distretto</span>
+              <canvas data-kpi-line aria-label="Andamento fatturato distretto tessile pratese"></canvas>
+            </div>
+            <div class="kpi-chart reveal">
+              <span class="kpi-label">Composizione export</span>
+              <canvas data-kpi-donut aria-label="Composizione export per categoria merceologica"></canvas>
+            </div>
+          </div>
+
+          <div class="newspaper-columns" style="margin-top:3rem">
             <article class="intel-block reveal">
-              <span class="intel-label">Profilo operativo</span>
-              <h3>Profilo operativo nativo‑digitale</h3>
-              <p>Integrazione tra manifattura tessile, analytics di filiera e orchestrazione di flussi produttivi verso sistemi interconnessi e centri decisionali data‑driven.</p>
-              <p>Capacità produttive tradizionali combinate con architetture web‑based, cruscotti KPI predittivi e automazione dei processi per ridurre il time‑to‑market.</p>
+              <span class="intel-label">Sostenibilità</span>
+              <h3>Riciclo e rigenerazione</h3>
+              <p>Prato mantiene un primato storico nel riciclo della lana e nella rigenerazione delle fibre, con processi produttivi orientati alla circolarità e alla riduzione dell’impatto ambientale.</p>
             </article>
 
             <article class="intel-block reveal">
-              <span class="intel-label">Report</span>
-              <h3>La manifattura sostenibile diventa leva competitiva per l'ecosistema tessile di Prato</h3>
-              <p>La domanda globale di produzioni certificate sta riscrivendo le gerarchie di valore nel tessile. Il distretto di Prato, storicamente radicato nel riciclo e nella rigenerazione, si trasforma in un avamposto di innovazione industriale.</p>
-              <p>Le imprese all'avanguardia investono in workflow digitali e piattaforme di operational intelligence che riducono gli sprechi. L'adozione di sistemi MES abilitati da AI consente una riconfigurazione rapida delle linee produttive.</p>
-            </article>
-
-            <article class="intel-block reveal">
-              <span class="intel-label">Transizione</span>
-              <h3>Transizione industriale</h3>
-              <p>Le imprese tessili leader accelerano verso modelli data‑driven. La competitività passa dalla visibilità end‑to‑end sulla filiera e dall'adozione di sistemi di process intelligence.</p>
-            </article>
-
-            <article class="intel-block reveal">
-              <span class="intel-label">Market Signal</span>
-              <h3>I buyer europei premiano tracciabilità e produzione agile</h3>
-              <p>I grandi gruppi del lusso selezionano fornitori con supply chain trasparenti, lead time reattivi e piattaforme di customizzazione digitale.</p>
-            </article>
-
-            <article class="intel-block reveal">
-              <span class="intel-label">Supply Chain · KPI</span>
-              <h3>I cruscotti KPI diventano centrali nella pianificazione produttiva</h3>
-              <p>L'uso di dashboard operative per monitorare saturazione macchinari, WIP, performance fornitori e rotazione stock è in forte crescita nel distretto pratese.</p>
-            </article>
-
-            <article class="intel-block reveal">
-              <span class="intel-label">Indicatori</span>
-              <h3>Dinamiche produttive</h3>
-              <ul class="clean-list">
-                <li>Adozione workflow digitali in crescita (y/y)</li>
-                <li>Lead time come KPI strategico → focus time‑to‑market</li>
-                <li>Domanda approvvigionamento sostenibile in aumento</li>
-                <li>Investimenti in automazione industriale in crescita</li>
-              </ul>
-            </article>
-
-            <article class="intel-block reveal">
-              <span class="intel-label">AI Commentary</span>
-              <h3>Il nuovo paradigma produttivo</h3>
-              <p>La convergenza tra AI, IoT di fabbrica e piattaforme web‑based ridefinisce il modello operativo dell'industria tessile verso agenti autonomi per la pianificazione dinamica.</p>
+              <span class="intel-label">Transizione digitale</span>
+              <h3>Dalla manifattura ai dati</h3>
+              <p>L’adozione di dashboard, MES e strumenti di tracciabilità digitale sta ridisegnando il distretto: meno sprechi, più visibilità e una programmazione della produzione più reattiva.</p>
             </article>
           </div>
         </div>
@@ -194,6 +198,81 @@
           const d = new Date();
           const options = { day: "2-digit", month: "long", year: "numeric" };
           dateEl.textContent = d.toLocaleDateString("it-IT", options);
+        }
+      })();
+    </script>
+    <script>
+      (function(){
+        const dpr = window.devicePixelRatio || 1;
+        function setupCanvas(canvas) {
+          const rect = canvas.getBoundingClientRect();
+          canvas.width = rect.width * dpr;
+          canvas.height = rect.height * dpr;
+          const ctx = canvas.getContext('2d');
+          ctx.scale(dpr, dpr);
+          return { ctx, w: rect.width, h: rect.height };
+        }
+
+        function drawLineChart(canvas) {
+          const { ctx, w, h } = setupCanvas(canvas);
+          const data = [18, 20, 19, 22, 24, 23, 26, 28, 27, 30];
+          const max = Math.max(...data);
+          const step = w / (data.length - 1);
+          const pad = 12;
+          ctx.clearRect(0, 0, w, h);
+          ctx.strokeStyle = 'rgba(196, 92, 62, 0.9)';
+          ctx.lineWidth = 2.2;
+          ctx.lineJoin = 'round';
+          ctx.beginPath();
+          data.forEach((v, i) => {
+            const x = i * step;
+            const y = h - pad - (v / max) * (h - pad * 2);
+            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          });
+          ctx.stroke();
+          ctx.fillStyle = 'rgba(196, 92, 62, 0.08)';
+          ctx.lineTo(w, h);
+          ctx.lineTo(0, h);
+          ctx.closePath();
+          ctx.fill();
+        }
+
+        function drawDonutChart(canvas) {
+          const { ctx, w, h } = setupCanvas(canvas);
+          const data = [
+            { label: 'Maglieria', value: 35, color: 'rgba(196, 92, 62, 0.85)' },
+            { label: 'Tessuti', value: 30, color: 'rgba(244, 161, 97, 0.85)' },
+            { label: 'Filati', value: 20, color: 'rgba(180, 83, 9, 0.85)' },
+            { label: 'Confezione', value: 15, color: 'rgba(120, 53, 15, 0.85)' }
+          ];
+          const total = data.reduce((s, d) => s + d.value, 0);
+          const cx = w / 2;
+          const cy = h / 2;
+          const outer = Math.min(w, h) / 2 - 8;
+          const inner = outer * 0.55;
+          ctx.clearRect(0, 0, w, h);
+          let start = -Math.PI / 2;
+          data.forEach(d => {
+            const slice = (d.value / total) * Math.PI * 2;
+            ctx.beginPath();
+            ctx.arc(cx, cy, outer, start, start + slice);
+            ctx.arc(cx, cy, inner, start + slice, start, true);
+            ctx.closePath();
+            ctx.fillStyle = d.color;
+            ctx.fill();
+            start += slice;
+          });
+        }
+
+        function initCharts() {
+          document.querySelectorAll('[data-kpi-line]').forEach(drawLineChart);
+          document.querySelectorAll('[data-kpi-donut]').forEach(drawDonutChart);
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initCharts);
+        } else {
+          initCharts();
         }
       })();
     </script>
