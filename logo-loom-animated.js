@@ -19,28 +19,56 @@
     wefts.push({ y: 40 + spacing * i, pattern: i % 2 });
   }
 
-  function drawWeft(yPos, pattern, width, fromLeft) {
-    ctx.lineWidth = 4;
-    ctx.strokeStyle = '#ef4444';
+  // Disegna un filo ondulato invece di una linea retta
+  function drawYarn(x1, y1, x2, y2, color, width) {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.lineCap = 'round';
     ctx.beginPath();
-    if (fromLeft) {
-      ctx.moveTo(0, yPos);
-      ctx.lineTo(width, yPos);
-    } else {
-      ctx.moveTo(size, yPos);
-      ctx.lineTo(size - width, yPos);
+    const dist = Math.hypot(x2 - x1, y2 - y1);
+    const segments = Math.max(10, Math.floor(dist / 4));
+    const dx = (x2 - x1) / segments;
+    const dy = (y2 - y1) / segments;
+    const amp = 1.2; // ampiezza ondulazione
+    const freq = 0.4;
+    ctx.moveTo(x1, y1);
+    for (let i = 1; i < segments; i++) {
+      const t = i / segments;
+      const x = x1 + dx * i + Math.sin(t * Math.PI * 6) * amp;
+      const y = y1 + dy * i + Math.cos(t * Math.PI * 6) * amp;
+      ctx.lineTo(x, y);
     }
+    ctx.lineTo(x2, y2);
     ctx.stroke();
-    ctx.strokeStyle = '#ffffff';
+
+    // Ombra/texture sottile per effetto filato
+    ctx.strokeStyle = 'rgba(0,0,0,0.12)';
+    ctx.lineWidth = width * 0.35;
+    ctx.beginPath();
+    ctx.moveTo(x1 + 0.5, y1 + 0.5);
+    for (let i = 1; i < segments; i++) {
+      const t = i / segments;
+      const x = x1 + dx * i + Math.sin(t * Math.PI * 6) * amp + 0.5;
+      const y = y1 + dy * i + Math.cos(t * Math.PI * 6) * amp + 0.5;
+      ctx.lineTo(x, y);
+    }
+    ctx.lineTo(x2 + 0.5, y2 + 0.5);
+    ctx.stroke();
+  }
+
+  function drawWeft(yPos, pattern, width, fromLeft) {
+    if (fromLeft) {
+      drawYarn(0, yPos, width, yPos, '#ef4444', 4.2);
+    } else {
+      drawYarn(size, yPos, size - width, yPos, '#ef4444', 4.2);
+    }
+    // Intreccio: pezzetti di ordito che stanno sopra
     for (let i = 1; i < cols; i++) {
       if ((i + pattern) % 2 === 0) {
         let x = i * spacing;
         let isCrossed = fromLeft ? (width >= x - 2) : (size - width <= x + 2);
         if (isCrossed) {
-          ctx.beginPath();
-          ctx.moveTo(x, yPos - 5);
-          ctx.lineTo(x, yPos + 5);
-          ctx.stroke();
+          drawYarn(x, yPos - 5, x, yPos + 5, '#ffffff', 3.6);
         }
       }
     }
@@ -105,14 +133,9 @@
       shiftOffset = 0;
     }
 
-    ctx.lineWidth = 3.5;
-    ctx.strokeStyle = '#ffffff';
-    ctx.lineCap = 'round';
+    // Ordito come filati ondulati
     for (let i = 1; i < cols; i++) {
-      ctx.beginPath();
-      ctx.moveTo(i * spacing, 0);
-      ctx.lineTo(i * spacing, size);
-      ctx.stroke();
+      drawYarn(i * spacing, 0, i * spacing, size, '#ffffff', 3.8);
     }
 
     for (let w of wefts) {
@@ -120,6 +143,7 @@
     }
     if (p < 0.9) drawWeft(newWeftY, isEven ? 1 : 0, newWeftWidth, isEven);
 
+    // Navetta
     if (p < 0.45) {
       ctx.fillStyle = '#22c55e';
       ctx.beginPath();
@@ -133,16 +157,14 @@
       ctx.fill();
     }
 
+    // Pettine
     if (beaterY > -10) {
       ctx.strokeStyle = '#16a34a';
       ctx.lineWidth = 1.5;
       for (let i = 0; i <= cols; i++) {
         let x = (i * spacing) - (spacing / 2);
         if (x > 0 && x < size) {
-          ctx.beginPath();
-          ctx.moveTo(x, beaterY - 18);
-          ctx.lineTo(x, beaterY + 2);
-          ctx.stroke();
+          drawYarn(x, beaterY - 18, x, beaterY + 2, '#16a34a', 2);
         }
       }
       ctx.fillStyle = '#15803d';
