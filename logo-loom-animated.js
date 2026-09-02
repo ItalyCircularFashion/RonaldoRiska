@@ -3,11 +3,11 @@
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
-  const size = 300;
+  const size = 150;
   canvas.width = size * dpr;
   canvas.height = size * dpr;
-  canvas.style.width = '240px';
-  canvas.style.height = '240px';
+  canvas.style.width = '120px';
+  canvas.style.height = '120px';
   ctx.scale(dpr, dpr);
 
   const cols = 9;
