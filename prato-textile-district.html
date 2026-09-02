@@ -8,11 +8,14 @@
     <meta name="theme-color" content="#0a0805">
     <link rel="stylesheet" href="site.css">
       <link rel="stylesheet" href="site-patch.css">
+    </head>
+  <body>
+    <div class="sheep-walk-container" aria-hidden="true">
+      <canvas id="sheepCanvas"></canvas>
+    </div>
     <a href="./" class="logo-animated-container" aria-label="Torna alla home">
       <canvas id="animatedLogoCanvas"></canvas>
     </a>
-</head>
-  <body>
     <a class="skip-link" href="#main">Salta al contenuto</a>
 
     <header class="site-header">
@@ -36,15 +39,24 @@
     </header>
 
     <main id="main">
+      <!-- TESTATA GIORNALISTICA -->
       <section class="page-hero section">
         <div class="container">
-          <div class="reveal">
-            <nav class="breadcrumb" aria-label="Breadcrumb">
-              <a href="index.html">Home</a><span>/</span><span>Osservatorio tessile</span>
-            </nav>
-            <p class="eyebrow">Distretto pratese</p>
-            <h1>Osservatorio tessile — Prato Textile District</h1>
-            <p class="lead">Analisi operative su filiera, sostenibilità, manifattura e transizione digitale nel distretto moda‑tessile pratese.</p>
+          <div class="newspaper-masthead reveal">
+            <div class="newspaper-meta">
+              <span class="newspaper-edition">Edizione distretto pratese</span>
+              <span class="newspaper-date"></span>
+              <span class="newspaper-section">Osservatorio tessile</span>
+            </div>
+            <h1 class="newspaper-title">Prato Textile District</h1>
+            <p class="newspaper-overline">Analisi, storia e transizione digitale della manifattura pratese</p>
+            <div class="newspaper-rule"></div>
+          </div>
+
+          <div class="newspaper-lead reveal">
+            <p class="lead">
+              Dalle origini lanerie del Medioevo all’odierno distretto della circular fashion, il territorio pratese ha trasformato la tessitura in un modello produttivo capace di rinnovarsi senza perdere identità. Questa sezione racconta quella storia e ne analizza le trasformazioni attuali.
+            </p>
           </div>
         </div>
       </section>
@@ -56,7 +68,7 @@
             <h2 id="storia-title">Da ieri a oggi: Prato come laboratorio tessile europeo</h2>
           </div>
 
-          <div class="intelligence-stack">
+          <div class="newspaper-columns">
             <article class="intel-block reveal">
               <span class="intel-label">XII — XIV secolo</span>
               <h3>Le origini lanerie</h3>
@@ -92,7 +104,7 @@
             <p class="lead">Analisi operative su filiera, sostenibilità, manifattura e transizione digitale nel distretto moda‑tessile pratese.</p>
           </div>
 
-          <div class="intelligence-stack">
+          <div class="newspaper-columns">
             <article class="intel-block reveal">
               <span class="intel-label">Profilo operativo</span>
               <h3>Profilo operativo nativo‑digitale</h3>
@@ -175,5 +187,15 @@
     <script src="main.js" defer></script>
     <script src="logo-loom-animated.js" defer></script>
     <script src="sheep-walk.js" defer></script>
+    <script>
+      (function(){
+        const dateEl = document.querySelector(".newspaper-date");
+        if (dateEl) {
+          const d = new Date();
+          const options = { day: "2-digit", month: "long", year: "numeric" };
+          dateEl.textContent = d.toLocaleDateString("it-IT", options);
+        }
+      })();
+    </script>
   </body>
 </html>

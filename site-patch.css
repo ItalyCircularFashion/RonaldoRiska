@@ -1517,3 +1517,101 @@ body::before {
   pointer-events: none;
   z-index: -1;
 }
+
+/* ── NEWSPAPER / GIORNALE STYLE ── */
+.newspaper-masthead {
+  text-align: center;
+  padding: 2.5rem 0 1.5rem;
+  border-bottom: 3px double rgba(196, 92, 62, 0.45);
+  margin-bottom: 2rem;
+}
+.newspaper-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Crimson Text', 'Noto Serif', Georgia, serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(244, 161, 97, 0.8);
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+}
+.newspaper-edition {
+  font-weight: 700;
+}
+.newspaper-section {
+  font-style: italic;
+}
+.newspaper-title {
+  font-family: 'Playfair Display', 'Bodoni Moda', 'Times New Roman', serif;
+  font-size: clamp(2.8rem, 6vw, 4.2rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  margin: 0.5rem 0 0.75rem;
+}
+.newspaper-overline {
+  font-family: 'Crimson Text', 'Noto Serif', Georgia, serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  color: rgba(244, 161, 97, 0.85);
+  letter-spacing: 0.03em;
+  margin: 0;
+}
+.newspaper-rule {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(196, 92, 62, 0.6), transparent);
+  margin-top: 1.25rem;
+}
+.newspaper-lead {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(196, 92, 62, 0.25);
+}
+.newspaper-lead .lead {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  text-align: justify;
+  hyphens: auto;
+  color: rgba(226, 232, 240, 0.92);
+}
+.newspaper-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+.newspaper-columns .intel-block {
+  border-left: 3px solid rgba(196, 92, 62, 0.5);
+  padding-left: 1.25rem;
+  background: transparent;
+  box-shadow: none;
+}
+.newspaper-columns .intel-block h3 {
+  font-family: 'Playfair Display', 'Bodoni Moda', 'Times New Roman', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+.newspaper-columns .intel-block p {
+  text-align: justify;
+  hyphens: auto;
+  line-height: 1.65;
+  color: rgba(203, 213, 225, 0.9);
+}
+.newspaper-columns .intel-block .intel-label {
+  font-family: 'Crimson Text', 'Noto Serif', Georgia, serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(244, 161, 97, 0.9);
+  display: block;
+  margin-bottom: 0.5rem;
+}
