@@ -81,7 +81,7 @@ const initReveal = () => {
         }
       });
     },
-    { threshold: 0.12 }
+    { threshold: 0.08, rootMargin: "0px 0px -24px 0px" }
   );
 
   items.forEach((item) => observer.observe(item));
