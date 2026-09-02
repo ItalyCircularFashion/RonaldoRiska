@@ -157,19 +157,57 @@
       ctx.fill();
     }
 
-    // Pettine
+    // Pettine - design migliorato
     if (beaterY > -10) {
-      ctx.strokeStyle = '#16a34a';
-      ctx.lineWidth = 1.5;
+      // Cornice metallica
+      const gradient = ctx.createLinearGradient(0, beaterY - 22, 0, beaterY + 6);
+      gradient.addColorStop(0, '#64748b');
+      gradient.addColorStop(0.5, '#94a3b8');
+      gradient.addColorStop(1, '#475569');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, beaterY - 22, size, 28);
+      
+      // Denti del pettine con effetto metallico
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 1.2;
       for (let i = 0; i <= cols; i++) {
         let x = (i * spacing) - (spacing / 2);
         if (x > 0 && x < size) {
-          drawYarn(x, beaterY - 18, x, beaterY + 2, '#16a34a', 2);
+          ctx.beginPath();
+          ctx.moveTo(x, beaterY - 22);
+          ctx.lineTo(x, beaterY + 6);
+          ctx.stroke();
         }
       }
-      ctx.fillStyle = '#15803d';
-      ctx.fillRect(0, beaterY - 20, size, 5);
-      ctx.fillRect(0, beaterY, size, 4);
+      
+      // Denti effetto filato tessile
+      ctx.strokeStyle = '#f1f5f9';
+      ctx.lineWidth = 0.8;
+      for (let i = 0; i <= cols; i++) {
+        let x = (i * spacing) - (spacing / 2);
+        if (x > 0 && x < size) {
+          ctx.beginPath();
+          ctx.moveTo(x - 0.3, beaterY - 22);
+          ctx.lineTo(x + 0.3, beaterY + 6);
+          ctx.stroke();
+        }
+      }
+      
+      // Bordo superiore lucido
+      ctx.strokeStyle = '#f8fafc';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(0, beaterY - 22);
+      ctx.lineTo(size, beaterY - 22);
+      ctx.stroke();
+      
+      // Bordo inferiore
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, beaterY + 6);
+      ctx.lineTo(size, beaterY + 6);
+      ctx.stroke();
     }
 
     frames++;
