@@ -1416,3 +1416,36 @@ a:hover, button:hover {
   height: 100%;
   display: block;
 }
+
+/* ── EXTERNAL SITE BAR ── */
+.external-site-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(77, 124, 255, 0.15));
+  border-bottom: 1px solid rgba(0, 240, 255, 0.3);
+  color: #e2e8f0;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: all 250ms ease;
+  z-index: 9997;
+  position: relative;
+}
+.external-site-bar:hover {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.25), rgba(77, 124, 255, 0.25));
+  border-bottom-color: rgba(0, 240, 255, 0.6);
+  color: #fff;
+}
+.external-site-bar__icon {
+  display: inline-block;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+.external-site-bar__text {
+  line-height: 1.3;
+}
