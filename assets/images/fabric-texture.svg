@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
+  <defs>
+    <pattern id="batavia" patternUnits="userSpaceOnUse" width="16" height="16">
+      <rect width="16" height="16" fill="#080808"/>
+      <!-- Doppia batavia: 2x2 over/under -->
+      <!-- Filo ordito ORIZZONTALE sopra -->
+      <rect x="0" y="0" width="8" height="2" fill="#121212"/>
+      <rect x="0" y="4" width="8" height="2" fill="#121212"/>
+      <rect x="0" y="8" width="8" height="2" fill="#121212"/>
+      <rect x="0" y="12" width="8" height="2" fill="#121212"/>
+      <!-- Filo trama VERTICALE sopra (sfalsato) -->
+      <rect x="2" y="0" width="2" height="8" fill="#181818"/>
+      <rect x="6" y="0" width="2" height="8" fill="#181818"/>
+      <rect x="10" y="0" width="2" height="8" fill="#181818"/>
+      <rect x="14" y="0" width="2" height="8" fill="#181818"/>
+      <rect x="2" y="8" width="2" height="8" fill="#181818"/>
+      <rect x="6" y="8" width="2" height="8" fill="#181818"/>
+      <rect x="10" y="8" width="2" height="8" fill="#181818"/>
+      <rect x="14" y="8" width="2" height="8" fill="#181818"/>
+      <!-- Intersezioni per effetto intreccio -->
+      <rect x="2" y="0" width="2" height="2" fill="#1c1c1c"/>
+      <rect x="6" y="4" width="2" height="2" fill="#1c1c1c"/>
+      <rect x="10" y="0" width="2" height="2" fill="#1c1c1c"/>
+      <rect x="14" y="4" width="2" height="2" fill="#1c1c1c"/>
+      <rect x="2" y="8" width="2" height="2" fill="#1c1c1c"/>
+      <rect x="6" y="12" width="2" height="2" fill="#1c1c1c"/>
+      <rect x="10" y="8" width="2" height="2" fill="#1c1c1c"/>
+      <rect x="14" y="12" width="2" height="2" fill="#1c1c1c"/>
+    </pattern>
+  </defs>
+  <rect width="80" height="80" fill="url(#batavia)"/>
+</svg>

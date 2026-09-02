@@ -1498,7 +1498,7 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background-image: url('assets/images/fabric-texture.png');
+  background-image: url('assets/images/fabric-texture.svg');
   background-repeat: repeat;
   background-size: 256px 256px;
   background-position: center;
