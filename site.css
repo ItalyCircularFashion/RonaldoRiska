@@ -79,35 +79,6 @@ iframe {
   max-width: 100%;
 }
 
-/* ── YouTube full-width hero ── */
-.yt-hero {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 9999;
-  overflow: hidden;
-  pointer-events: none;
-}
-.yt-hero iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  max-width: 100vw;
-  border: 0;
-  pointer-events: auto;
-}
-.yt-hero__unmute {
-  position: absolute;
-  z-index: 10;
-  bottom: 1.2rem;
-  right: 1.2rem;
-  pointer-events: auto;
-}
-
 a {
   color: inherit;
   text-decoration: none;
@@ -536,6 +507,88 @@ dt {
   margin: 0.25rem 0 0;
   color: var(--ink-strong);
   font-weight: 900;
+}
+
+/* ── YouTube Full-Screen Hero ── */
+.hero-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 640px;
+  overflow: hidden;
+  background-color: var(--bg, #0b0c0f);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.video-background iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 177.77vh;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  border: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .video-background iframe {
+    width: 100vw;
+    height: 56.25vw;
+    min-height: 100vh;
+    min-width: 177.77vh;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(11, 12, 15, 0.75) 0%, rgba(11, 12, 15, 0.4) 50%, #0b0c0f 100%);
+  z-index: 2;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 clamp(1rem, 2.2vw, 2.5rem);
+  text-align: center;
+}
+
+.hero-title {
+  font-size: clamp(3.2rem, 11vw, 8.5rem);
+  line-height: 1.02;
+  color: var(--ink-strong);
+}
+
+.hero-description {
+  margin-top: 1rem;
+  color: var(--ink);
+  font-size: clamp(1.1rem, 2vw, 1.6rem);
+  font-weight: 600;
+}
+
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 2rem;
 }
 
 /* --- GRID COMPONENTS --- */
