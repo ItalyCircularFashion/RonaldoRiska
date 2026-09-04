@@ -20,6 +20,11 @@
   </url>
 
   <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/business-plan.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://italycircularfashion.github.io/RonaldoRiska/business-plan-web.html</loc>
     <priority>0.8</priority>
   </url>
@@ -136,4 +141,49 @@
     <priority>0.8</priority>
   </url>
 
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/filieraos.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/gantt-tessile.html</loc>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/modacad.html</loc>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/mrp-iphone-planner.html</loc>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/note-colore.html</loc>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/prato-textile-district.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/sketchhd-artifact.html</loc>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/textile-platform-v5.html</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/weavecad.html</loc>
+    <priority>0.8</priority>
+  </url>
 </urlset>
