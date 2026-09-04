@@ -330,59 +330,10 @@
                 </div>
               </div>
               <div class="insight-visual" aria-hidden="true">
-                <div class="beste-window">
-                  <div class="beste-frame">
-                    <img src="assets/images/beste-spa/Analisi Pareto.png" alt="Analisi Pareto difetti" class="beste-slide" data-index="0">
-                    <img src="assets/images/beste-spa/Cost By Machine.png" alt="Costo per macchina" class="beste-slide" data-index="1">
-                    <img src="assets/images/beste-spa/Losses by Operator.png" alt="Perdite per operatore" class="beste-slide" data-index="2">
-                  </div>
-                  <div class="beste-nav">
-                    <button class="beste-dot active" data-index="0" aria-label="Analisi Pareto"></button>
-                    <button class="beste-dot" data-index="1" aria-label="Cost By Machine"></button>
-                    <button class="beste-dot" data-index="2" aria-label="Losses by Operator"></button>
-                  </div>
-                  <script>
-                    (function(){
-                      const slides = document.querySelectorAll('.beste-slide');
-                      const dots = document.querySelectorAll('.beste-dot');
-                      let current = 0;
-                      let timer = null;
-
-                      function show(index) {
-                        slides.forEach((img, i) => img.classList.toggle('active', i === index));
-                        dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
-                        current = index;
-                      }
-
-                      function next() {
-                        show((current + 1) % slides.length);
-                      }
-
-                      function startAuto() {
-                        stopAuto();
-                        timer = setInterval(next, 4000);
-                      }
-
-                      function stopAuto() {
-                        if (timer) { clearInterval(timer); timer = null; }
-                      }
-
-                      dots.forEach((dot, i) => {
-                        dot.addEventListener('click', () => {
-                          show(i);
-                          startAuto();
-                        });
-                      });
-
-                      const win = document.querySelector('.beste-window');
-                      if (win) {
-                        win.addEventListener('mouseenter', stopAuto);
-                        win.addEventListener('mouseleave', startAuto);
-                      }
-
-                      startAuto();
-                    })();
-                  </script>
+                <div class="beste-strip">
+                  <img src="assets/images/beste-spa/Analisi Pareto.png" alt="Analisi Pareto difetti">
+                  <img src="assets/images/beste-spa/Cost By Machine.png" alt="Costo per macchina">
+                  <img src="assets/images/beste-spa/Losses by Operator.png" alt="Perdite per operatore">
                 </div>
               </div>
             </article>
