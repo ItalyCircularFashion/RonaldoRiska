@@ -48,6 +48,16 @@
     </script>
   </head>
   <body>
+    <!-- ── YOUTUBE FULL-WIDTH VIDEO HERO ── -->
+    <div class="yt-hero" id="ytHero" aria-label="Video iniziale">
+      <iframe id="ytPlayer" type="text/html"
+        src="https://www.youtube.com/embed/ETxUpOIPiIc?autoplay=1&mute=0&controls=1&rel=0&modestbranding=1&playsinline=1&loop=1&playlist=ETxUpOIPiIc"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowfullscreen
+        title="Video iniziale"></iframe>
+      <button class="yt-hero__unmute" id="ytUnmute" aria-label="Attiva audio">🔇</button>
+    </div>
+
     <a class="external-site-bar" href="https://italycircularfashion.github.io/RonaldoRiskaCV/" target="_blank" rel="noopener noreferrer">
       <span class="external-site-bar__icon">↗</span>
       <span class="external-site-bar__text">Qui puoi vedere un altro sito realizzato interamente da me</span>
@@ -87,40 +97,42 @@
     <main id="main">
 
       <!-- HERO -->
-      <section class="hero" id="top" aria-labelledby="hero-title">
-        <div class="container hero-grid">
-          <div class="hero-copy reveal">
-            <p class="eyebrow">Portfolio tecnico operativo</p>
-            <h1 id="hero-title">Ronaldo Riska</h1>
-            <p class="hero-role">Tessitura · CAD moda · Supply chain · Industrial tech</p>
-            <p class="lead">
+      <section class="hero-container" id="top" aria-labelledby="hero-title">
+        <!-- Wrapper per il Video di Sfondo YouTube -->
+        <div class="video-background">
+          <iframe 
+            src="https://www.youtube.com/embed/ETxUpOIPiIc?autoplay=1&mute=1&loop=1&playlist=ETxUpOIPiIc&controls=0&showinfo=0&rel=0&enablejsapi=1&disablekb=1&modestbranding=1&iv_load_policy=3" 
+            title="Hero Background Video"
+            frameborder="0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen>
+          </iframe>
+        </div>
+
+        <!-- Overlay Scuro per garantire il contrasto del testo (Dark-Tech style) -->
+        <div class="hero-overlay"></div>
+
+        <!-- Contenuto dell'Hero (Titoli, Typewriter, Bottoni) -->
+        <div class="hero-content">
+          <div class="eyebrow">Portfolio tecnico operativo</div>
+          <h1 class="hero-title" id="hero-title">Ronaldo Riska</h1>
+          <p class="hero-description">Tessitura · CAD moda · Supply chain · Industrial tech</p>
+          <p class="lead">
             Ogni parte del sito e ogni tool sono stati realizzati dal sottoscritto come dimostrazione di competenza
             per filiera moda‑tessile, operations e controllo industriale.
-            </p>
-            <div class="hero-actions">
-              <a class="button button-primary" href="#progetti">Esplora i progetti →</a>
-              <a class="button button-secondary" href="curriculum.html">Leggi il CV</a>
-              <a class="button button-ghost" href="Ronaldo-Riska-CV-2026.pdf" download>Scarica PDF</a>
-            </div>
-            <dl class="hero-meta" aria-label="Informazioni rapide">
-              <div><dt>Base</dt><dd>Prato, Italia</dd></div>
-              <div><dt>Focus</dt><dd>Textile operations</dd></div>
-              <div><dt>Digitale</dt><dd>Dashboard + web tools</dd></div>
-              <div><dt>Approccio</dt><dd>Industrial tech</dd></div>
-            </dl>
+          </p>
+          <div class="hero-buttons">
+            <a href="#progetti" class="button button-primary">Esplora i progetti →</a>
+            <a href="curriculum.html" class="button button-secondary">Leggi il CV</a>
+            <a href="Ronaldo-Riska-CV-2026.pdf" download class="button button-ghost">Scarica PDF</a>
           </div>
-          <figure class="hero-visual reveal" style="margin:0">
-            <!-- loading="eager" (era lazy: BUG CORRETTO — peggiora LCP) -->
-            <img src="profile.jpg" width="870" height="1260"
-                 alt="Ritratto professionale di Ronaldo Riska"
-                 loading="eager" fetchpriority="high">
-            <figcaption class="visual-caption" aria-hidden="true">
-              <span>Supply chain tessile</span>
-              <span>CAD prodotto</span>
-              <span>Process intelligence</span>
-            </figcaption>
-          </figure>
-          <a class="external-site-card" href="https://italycircularfashion.github.io/RonaldoRiskaCV/" target="_blank" rel="noopener noreferrer" style="margin-top:1rem; display:inline-flex;">
+          <div class="hero-meta" aria-label="Informazioni rapide">
+            <div><dt>Base</dt><dd>Prato, Italia</dd></div>
+            <div><dt>Focus</dt><dd>Textile operations</dd></div>
+            <div><dt>Digitale</dt><dd>Dashboard + web tools</dd></div>
+            <div><dt>Approccio</dt><dd>Industrial tech</dd></div>
+          </div>
+          <a class="external-site-card" href="https://italycircularfashion.github.io/RonaldoRiskaCV/" target="_blank" rel="noopener noreferrer">
             <span class="external-site-card__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>
@@ -906,5 +918,26 @@
     <!-- script.js RIMOSSO: era orphaned, tutta la logica è in main.js -->
 
       <script src="sheep-walk.js" defer></script>
+      <script>
+        (function () {
+          const btn = document.getElementById('ytUnmute');
+          const iframe = document.getElementById('ytPlayer');
+          if (!btn || !iframe) return;
+          let unmuted = false;
+          btn.addEventListener('click', function () {
+            if (!unmuted) {
+              try { iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":[]}', '*'); } catch (e) {}
+              unmuted = true;
+              btn.textContent = '🔊';
+              btn.setAttribute('aria-label', 'Disattiva audio');
+            } else {
+              try { iframe.contentWindow.postMessage('{"event":"command","func":"mute","args":[]}', '*'); } catch (e) {}
+              unmuted = false;
+              btn.textContent = '🔇';
+              btn.setAttribute('aria-label', 'Attiva audio');
+            }
+          });
+        })();
+      </script>
   </body>
 </html>
