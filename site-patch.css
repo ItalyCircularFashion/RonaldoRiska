@@ -700,34 +700,69 @@ body::after {
   overflow: hidden;
   position: relative;
 }
-.beste-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--line-strong);
+.beste-window {
   border: 1px solid var(--line-strong);
   border-radius: var(--radius);
+  background:
+    repeating-linear-gradient(0deg, transparent 0px, transparent 23px, rgba(0, 240, 255, 0.03) 23px, rgba(0, 240, 255, 0.03) 24px),
+    linear-gradient(135deg, color-mix(in srgb, var(--surface-2) 60%, transparent), color-mix(in srgb, var(--surface) 92%, transparent));
   overflow: hidden;
-}
-.beste-grid img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  display: block;
-  background: color-mix(in srgb, var(--surface) 88%, transparent);
-  transition: transform .4s cubic-bezier(0.16, 1, 0.3, 1), filter .4s;
-  filter: grayscale(18%) contrast(1.05);
-}
-.beste-grid img:hover {
-  transform: scale(1.03);
-  filter: grayscale(0%) contrast(1.1);
-  box-shadow: 0 0 30px rgba(0, 240, 255, 0.18);
-  z-index: 2;
   position: relative;
 }
+.beste-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+}
+.beste-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity .8s ease, transform .8s ease;
+  filter: grayscale(12%) contrast(1.05);
+  will-change: opacity, transform;
+}
+.beste-slide.active {
+  opacity: 1;
+  transform: scale(1);
+}
+.beste-nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border-top: 1px solid var(--line-strong);
+}
+.beste-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: background .3s, box-shadow .3s;
+  -webkit-tap-highlight-color: transparent;
+}
+.beste-dot.active {
+  background: #00f6ff;
+  box-shadow: 0 0 14px rgba(0, 240, 255, 0.9);
+}
+.beste-dot:hover {
+  background: rgba(0, 240, 255, 0.5);
+}
 @media (max-width: 900px) {
-  .beste-grid { grid-template-columns: 1fr; }
-  .beste-grid img { height: 260px; }
+  .beste-window { border-radius: 0; }
+  .beste-frame { aspect-ratio: 4/3; }
+  .beste-slide { object-position: center; }
+  .beste-dot { width: 12px; height: 12px; }
 }
 
 
