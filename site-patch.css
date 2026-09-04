@@ -714,8 +714,8 @@ body::after {
 }
 .beste-strip img {
   width: 100%;
-  height: 240px;
-  object-fit: cover;
+  height: 320px;
+  object-fit: contain;
   display: block;
   scroll-snap-align: start;
   background: color-mix(in srgb, var(--surface) 88%, transparent);
@@ -727,7 +727,7 @@ body::after {
 }
 @media (max-width: 900px) {
   .beste-strip { border-radius: 0; }
-  .beste-strip img { height: 220px; }
+  .beste-strip img { height: 260px; }
 }
 
 /* ── KPI PIE CHARTS + BOTTLENECK ICONS ── */
