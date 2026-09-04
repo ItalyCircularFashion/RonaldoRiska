@@ -30,7 +30,18 @@
       "about": { "@type": "Person", "name": "Ronaldo Riska" }
     }
     </script>
-    <link rel="stylesheet" href="site-patch.css"></head>
+        <link rel="preload" as="style" href="site.css" onload="this.rel='stylesheet'">
+    <link rel="preload" as="style" href="site-patch.css" onload="this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="site.css"><link rel="stylesheet" href="site-patch.css"></noscript>    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://italycircularfashion.github.io/RonaldoRiska/" }
+      ]
+    }
+    </script>
+  </head>
   <body>
     <h1>Textile Platform v5</h1>
     <div class="sheep-walk-container" aria-hidden="true">
@@ -1451,5 +1462,36 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   </script>
     <script src="logo-loom-animated.js" defer></script>
       <script src="sheep-walk.js" defer></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Ronaldo Riska",
+      "url": "https://italycircularfashion.github.io/RonaldoRiska/",
+      "logo": "https://italycircularfashion.github.io/RonaldoRiska/profile.jpg",
+      "email": "ronaldo.riska@gmail.com",
+      "sameAs": [
+        "https://github.com/ItalyCircularFashion",
+        "https://italycircularfashion.github.io/RonaldoRiskaCV/"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Prato",
+        "addressCountry": "IT"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Ronaldo Riska — Tool",
+      "url": "https://italycircularfashion.github.io/RonaldoRiska/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "author": { "@type": "Person", "name": "Ronaldo Riska" },
+      "description": "Tool digitale per la filiera tessile e la supply chain."
+    }
+    </script>
   </body>
 </html>

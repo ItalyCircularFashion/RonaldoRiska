@@ -30,8 +30,9 @@
     <!-- ── PRELOAD hero image (era lazy: BUG CORRETTO — LCP) ── -->
     <link rel="preload" as="image" href="profile.jpg">
     <!-- ── CSS ── -->
-    <link rel="stylesheet" href="site.css">
-    <link rel="stylesheet" href="site-patch.css">
+        <link rel="preload" as="style" href="site.css" onload="this.rel='stylesheet'">
+    <link rel="preload" as="style" href="site-patch.css" onload="this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="site.css"><link rel="stylesheet" href="site-patch.css"></noscript>
     <!-- ── STRUCTURED DATA ── -->
     <script type="application/ld+json">
     {
@@ -54,6 +55,40 @@
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://italycircularfashion.github.io/RonaldoRiska/" }
       ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Ronaldo Riska",
+      "url": "https://italycircularfashion.github.io/RonaldoRiska/",
+      "description": "Portfolio tessile, supply chain e tool digitali by Ronaldo Riska",
+      "inLanguage": "it",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://italycircularfashion.github.io/RonaldoRiska/?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Ronaldo Riska",
+      "url": "https://italycircularfashion.github.io/RonaldoRiska/",
+      "logo": "https://italycircularfashion.github.io/RonaldoRiska/profile.jpg",
+      "email": "ronaldo.riska@gmail.com",
+      "sameAs": [
+        "https://github.com/ItalyCircularFashion",
+        "https://italycircularfashion.github.io/RonaldoRiskaCV/"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Prato",
+        "addressCountry": "IT"
+      }
     }
     </script>
   </head>
@@ -123,7 +158,7 @@
             <!-- loading="eager" (era lazy: BUG CORRETTO — peggiora LCP) -->
             <img src="profile.jpg" width="870" height="1260"
                  alt="Ritratto professionale di Ronaldo Riska"
-                 loading="eager" fetchpriority="high">
+                 loading="eager" fetchpriority="high" decoding="async">
             <figcaption class="visual-caption" aria-hidden="true">
               <span>Supply chain tessile</span>
               <span>CAD prodotto</span>
@@ -313,7 +348,7 @@
                 <div class="insight-header">
                   <div>
                     <span class="insight-label">Textile Intelligence</span>
-                    <h3>Digitalizza la tua impresa con dati misurabili.</h3>
+                    <h3 class="insight-title">Digitalizza la tua impresa<br>con dati misurabili.</h3>
                   </div>
                   <div class="insight-badge">
                     <span class="pulse"></span>
@@ -554,47 +589,68 @@
 
           <div class="section-heading reveal">
             <div>
-              <p class="eyebrow">Macro-categorie</p>
-              <h2 id="categorie-title">Progetti organizzati per competenza professionale.</h2>
+              <p class="eyebrow">MACRO-CATEGORIE</p>
+              <h2 id="categorie-title">Tessitura · CAD Moda · Supply Chain</h2>
             </div>
-            <p>Ogni modulo è stato sviluppato per rispondere a un caso d'uso concreto: dalla progettazione di armature alla gestione fornitori, dal calcolo note colore alla simulazione produttiva.</p>
+            <p>Moduli sviluppati su casi d’uso concreti: armatura, note colore, MRP, make-or-buy, simulazione e operations analytics.</p>
           </div>
 
           <div class="categories-stack">
 
             <article class="category-block reveal" data-category-card="tessitura">
-              <div>
-                <span class="eyebrow" data-category-tone></span>
-                <h3 data-category-title>Tessitura</h3>
-                <p data-category-summary>Simulatori di armatura, note colore, Gantt ciclo produttivo.</p>
+              <div class="category-header">
+                <div>
+                  <span class="category-id" data-category-tone>T01</span>
+                  <h3 class="category-name" data-category-title>Tessitura</h3>
+                  <p class="category-desc" data-category-summary>Simulatori di armatura, note colore, Gantt ciclo produttivo.</p>
+                </div>
+                <div class="category-meta">
+                  <span class="category-badge"><strong data-category-count>0</strong> <span>moduli</span></span>
+                  <a class="button button-primary category-cta" data-category-link href="tessitura.html">Apri area →</a>
+                </div>
               </div>
-              <div>
-                <p class="category-count"><strong data-category-count>0</strong><span>moduli</span></p>
-                <a class="button button-primary category-cta" data-category-link href="tessitura.html">Apri area →</a>
+              <div class="category-tags">
+                <span>Simulatori produttivi</span>
+                <span>Armature</span>
+                <span>Pianificazione</span>
               </div>
             </article>
 
             <article class="category-block reveal" data-category-card="cad">
-              <div>
-                <span class="eyebrow" data-category-tone></span>
-                <h3 data-category-title>CAD Moda</h3>
-                <p data-category-summary>Modellistica, cartamodelli, SketchHD AI e concept digitale.</p>
+              <div class="category-header">
+                <div>
+                  <span class="category-id" data-category-tone>C01</span>
+                  <h3 class="category-name" data-category-title>CAD Moda</h3>
+                  <p class="category-desc" data-category-summary>Modellistica, cartamodelli, SketchHD AI e concept digitale.</p>
+                </div>
+                <div class="category-meta">
+                  <span class="category-badge"><strong data-category-count>0</strong> <span>moduli</span></span>
+                  <a class="button button-primary category-cta" data-category-link href="cad-moda.html">Apri area →</a>
+                </div>
               </div>
-              <div>
-                <p class="category-count"><strong data-category-count>0</strong><span>moduli</span></p>
-                <a class="button button-primary category-cta" data-category-link href="cad-moda.html">Apri area →</a>
+              <div class="category-tags">
+                <span>Modellistica</span>
+                <span>Sketch AI</span>
+                <span>Prodotto</span>
               </div>
             </article>
 
             <article class="category-block reveal" data-category-card="supply">
-              <div>
-                <span class="eyebrow" data-category-tone></span>
-                <h3 data-category-title>Supply Chain</h3>
-                <p data-category-summary>MRP, dashboard SCM, make-or-buy e operations analytics.</p>
+              <div class="category-header">
+                <div>
+                  <span class="category-id" data-category-tone>S01</span>
+                  <h3 class="category-name" data-category-title>Supply Chain</h3>
+                  <p class="category-desc" data-category-summary>MRP, dashboard SCM, make-or-buy e operations analytics.</p>
+                </div>
+                <div class="category-meta">
+                  <span class="category-badge"><strong data-category-count>0</strong> <span>moduli</span></span>
+                  <a class="button button-primary category-cta" data-category-link href="supply-chain-production.html">Apri area →</a>
+                </div>
               </div>
-              <div>
-                <p class="category-count"><strong data-category-count>0</strong><span>moduli</span></p>
-                <a class="button button-primary category-cta" data-category-link href="supply-chain-production.html">Apri area →</a>
+              <div class="category-tags">
+                <span>MRP</span>
+                <span>Dashboard</span>
+                <span>Operations Analytics</span>
               </div>
             </article>
 
@@ -608,10 +664,10 @@
         <div class="container">
           <div class="section-heading reveal">
             <div>
-              <p class="eyebrow">Progetti</p>
-              <h2 id="progetti-title">Tool, simulatori e dashboard già collegati.</h2>
+              <p class="eyebrow">PROGETTI</p>
+              <h2 id="progetti-title">TOOL // SIMULATORI // DASHBOARD</h2>
             </div>
-            <p>Strumenti interattivi e prototipi applicativi. Ogni scheda riporta valore tecnico, stack e casi d'uso industriali.</p>
+            <p>Interfacce applicative e prototipi industriali. Stack tecnico e casi d’uso in ogni scheda.</p>
           </div>
           <div class="toolbar reveal">
             <div class="filter-group" role="group" aria-label="Filtri categoria progetto">

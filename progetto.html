@@ -25,8 +25,8 @@
       "about": { "@type": "Person", "name": "Ronaldo Riska" }
     }
     </script>
-    <link rel="stylesheet" href="site.css"/>
-  <link rel="stylesheet" href="site-patch.css"/>
+    <link rel="preload" as="style" href="site.css" onload="this.rel='stylesheet'">
+  <link rel="preload" as="style" href="site-patch.css" onload="this.rel='stylesheet'">
   <style>
     /* ── Scheda Progetto — stili specifici ── */
     .scheda-breadcrumb{
@@ -125,7 +125,16 @@
     .spinner{width:26px;height:26px;border:2px solid rgba(255,255,255,.1);
              border-top-color:#c9a84c;border-radius:50%;
              animation:spin .7s linear infinite;margin:0 auto 14px}
-  </style></head>
+  </style>    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://italycircularfashion.github.io/RonaldoRiska/" }
+      ]
+    }
+    </script>
+  </head>
   <body>
     <div class="sheep-walk-container" aria-hidden="true">
       <canvas id="sheepCanvas"></canvas>
@@ -341,5 +350,34 @@
   </script>
     <script src="logo-loom-animated.js" defer></script>
       <script src="sheep-walk.js" defer></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Ronaldo Riska",
+      "url": "https://italycircularfashion.github.io/RonaldoRiska/",
+      "logo": "https://italycircularfashion.github.io/RonaldoRiska/profile.jpg",
+      "email": "ronaldo.riska@gmail.com",
+      "sameAs": [
+        "https://github.com/ItalyCircularFashion",
+        "https://italycircularfashion.github.io/RonaldoRiskaCV/"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Prato",
+        "addressCountry": "IT"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Project",
+      "name": "Ronaldo Riska — Progetto",
+      "url": "https://italycircularfashion.github.io/RonaldoRiska/",
+      "author": { "@type": "Person", "name": "Ronaldo Riska" },
+      "description": "Progetto operativo tessile, supply chain e digitalizzazione."
+    }
+    </script>
   </body>
 </html>
