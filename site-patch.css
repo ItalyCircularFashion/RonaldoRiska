@@ -595,7 +595,207 @@ body::after {
   display: grid;
   gap: 0.75rem;
 }
-
+.insight-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.insight-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  border-radius: 999px;
+  background: rgba(0, 240, 255, 0.08);
+  color: #00f6ff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00f6ff;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.9);
+  animation: pulseDot 1.4s ease-in-out infinite;
+}
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+.executive {
+  color: var(--ink-strong);
+  font-size: 0.92rem;
+  line-height: 1.7;
+  border-left: 2px solid rgba(0, 240, 255, 0.35);
+  padding-left: 1rem;
+  margin: 0 0 1rem;
+}
+.schematic-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #00ff9d;
+  margin: 0 0 0.4rem;
+}
+.schematic-heading {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink-strong);
+  margin: 0 0 0.5rem;
+}
+.schematic-intro {
+  color: var(--muted);
+  font-size: 0.88rem;
+  margin: 0 0 0.75rem;
+}
+.schematic-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+.schematic-list li {
+  padding: 0.7rem 0.9rem;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+.schematic-list li strong {
+  color: #00f6ff;
+  font-weight: 700;
+}
+.schematic-list ul {
+  list-style: square;
+  padding-left: 1.1rem;
+  margin: 0.4rem 0 0;
+  color: var(--muted);
+}
+.schematic-list ul li {
+  padding: 0.2rem 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+.insight-visual {
+  margin-top: 1.2rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background:
+    repeating-linear-gradient(0deg, transparent 0px, transparent 23px, rgba(0, 240, 255, 0.03) 23px, rgba(0, 240, 255, 0.03) 24px),
+    repeating-linear-gradient(90deg, transparent 0px, transparent 23px, rgba(0, 240, 255, 0.03) 23px, rgba(0, 240, 255, 0.03) 24px),
+    linear-gradient(135deg, color-mix(in srgb, var(--surface-2) 60%, transparent), color-mix(in srgb, var(--surface) 92%, transparent));
+  overflow: hidden;
+  position: relative;
+}
+.digital-twin {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+}
+.twin-ring {
+  position: absolute;
+  inset: 18%;
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: 50%;
+  animation: ringPulse 6s linear infinite;
+}
+.twin-ring:nth-child(2) {
+  inset: 26%;
+  animation-delay: -2s;
+  border-color: rgba(0, 240, 255, 0.18);
+}
+.twin-ring:nth-child(3) {
+  inset: 34%;
+  animation-delay: -4s;
+  border-color: rgba(0, 240, 255, 0.12);
+}
+@keyframes ringPulse {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.twin-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(0, 240, 255, 0.12);
+  border: 1px solid rgba(0, 240, 255, 0.55);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.35);
+  z-index: 5;
+}
+.twin-icon {
+  color: #00f6ff;
+  font-size: 22px;
+}
+.twin-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #00f6ff;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.twin-orbital {
+  position: absolute;
+  inset: 0;
+  animation: orbitSpin 12s linear infinite;
+  animation-delay: calc(var(--angle) * 0.01s);
+}
+@keyframes orbitSpin {
+  0% { transform: rotate(var(--angle)); }
+  100% { transform: rotate(calc(var(--angle) + 360deg)); }
+}
+.twin-dot {
+  position: absolute;
+  top: 18%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #00f6ff;
+  box-shadow: 0 0 18px rgba(0, 240, 255, 0.9);
+}
+.twin-connector {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 1px;
+  height: 18%;
+  background: linear-gradient(180deg, rgba(0, 240, 255, 0.55), transparent);
+  transform: rotate(-18deg);
+  opacity: 0.6;
+}
+.twin-data {
+  position: absolute;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #00f6ff;
+  background: rgba(0, 0, 0, 0.72);
+  padding: 4px 10px;
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  border-radius: 6px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
 
 
 /* ── WEB CARD COMBINED SPECTACULAR HOVER ── */
