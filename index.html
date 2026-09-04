@@ -87,35 +87,40 @@
     <main id="main">
 
       <!-- HERO -->
-      <section class="hero-container" id="top">
-        <!-- Wrapper per il Video di Sfondo YouTube -->
-        <div class="video-background">
-          <iframe 
-            src="https://www.youtube.com/embed/ETxUpOIPiIc?autoplay=1&mute=1&loop=1&playlist=ETxUpOIPiIc&controls=0&showinfo=0&rel=0&enablejsapi=1&disablekb=1&modestbranding=1&iv_load_policy=3" 
-            title="Hero Background Video"
-            frameborder="0" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen>
-          </iframe>
-        </div>
-
-        <!-- Contenuto dell'Hero (Titoli, Typewriter, Bottoni) -->
-        <div class="hero-content">
-          <div class="eyebrow">Portfolio tecnico operativo</div>
-          <p class="hero-description">Tessitura · CAD moda · Supply chain · Industrial tech</p>
-          <p class="lead">Ogni parte del sito e ogni tool sono stati realizzati dal sottoscritto come dimostrazione di competenza per filiera moda‑tessile, operations e controllo industriale.</p>
-          <div class="hero-buttons">
-            <a href="#progetti" class="button button-primary">Esplora i progetti →</a>
-            <a href="curriculum.html" class="button button-secondary">Leggi il CV</a>
-            <a href="Ronaldo-Riska-CV-2026.pdf" download class="button button-ghost">Scarica PDF</a>
+      <section class="hero" id="top">
+        <div class="container hero-grid">
+          <div class="hero-copy reveal">
+            <p class="eyebrow">Portfolio tecnico operativo</p>
+            <h1>Ronaldo Riska</h1>
+            <p class="hero-role">Tessitura · CAD moda · Supply chain · Industrial tech</p>
+            <p class="lead">
+            Ogni parte del sito e ogni tool sono stati realizzati dal sottoscritto come dimostrazione di competenza
+            per filiera moda‑tessile, operations e controllo industriale.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#progetti">Esplora i progetti →</a>
+              <a class="button button-secondary" href="curriculum.html">Leggi il CV</a>
+              <a class="button button-ghost" href="Ronaldo-Riska-CV-2026.pdf" download>Scarica PDF</a>
+            </div>
+            <dl class="hero-meta" aria-label="Informazioni rapide">
+              <div><dt>Base</dt><dd>Prato, Italia</dd></div>
+              <div><dt>Focus</dt><dd>Textile operations</dd></div>
+              <div><dt>Digitale</dt><dd>Dashboard + web tools</dd></div>
+              <div><dt>Approccio</dt><dd>Industrial tech</dd></div>
+            </dl>
           </div>
-          <div class="hero-meta" aria-label="Informazioni rapide">
-            <div><dt>Base</dt><dd>Prato, Italia</dd></div>
-            <div><dt>Focus</dt><dd>Textile operations</dd></div>
-            <div><dt>Digitale</dt><dd>Dashboard + web tools</dd></div>
-            <div><dt>Approccio</dt><dd>Industrial tech</dd></div>
-          </div>
-          <a class="external-site-card" href="https://italycircularfashion.github.io/RonaldoRiskaCV/" target="_blank" rel="noopener noreferrer">
+          <figure class="hero-visual reveal" style="margin:0">
+            <!-- loading="eager" (era lazy: BUG CORRETTO — peggiora LCP) -->
+            <img src="profile.jpg" width="870" height="1260"
+                 alt="Ritratto professionale di Ronaldo Riska"
+                 loading="eager" fetchpriority="high">
+            <figcaption class="visual-caption" aria-hidden="true">
+              <span>Supply chain tessile</span>
+              <span>CAD prodotto</span>
+              <span>Process intelligence</span>
+            </figcaption>
+          </figure>
+          <a class="external-site-card" href="https://italycircularfashion.github.io/RonaldoRiskaCV/" target="_blank" rel="noopener noreferrer" style="margin-top:1rem; display:inline-flex;">
             <span class="external-site-card__icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>
