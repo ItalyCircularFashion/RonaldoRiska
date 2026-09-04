@@ -391,21 +391,130 @@
         </div>
       <!-- DIGITAL COMMAND CENTER -->
       <section class="section" aria-labelledby="command-title">
-        <div class="container dashboard-grid">
-          <div class="dashboard-panel reveal">
-            <canvas data-kpi-canvas aria-label="Grafico maturità digitale" role="img">
-              <p>Grafico della maturità digitale: indice crescente da 18 a 96 nel corso dell'anno.</p>
-            </canvas>
+        <div class="container">
+          <div class="section-heading reveal">
+            <div>
+              <p class="eyebrow">Digital command center</p>
+              <h2 id="command-title">Profilo tecnico in una lettura immediata.</h2>
+              <p class="lead">Sito organizzato come piattaforma operativa: processi tessili, tool CAD, dashboard SCM e produzione.</p>
+            </div>
           </div>
-          <div class="reveal">
-            <p class="eyebrow">Digital command center</p>
-            <h2 id="command-title">Profilo tecnico in una lettura immediata.</h2>
-            <p class="lead">Sito organizzato come piattaforma operativa: processi tessili, tool CAD, dashboard SCM e produzione.</p>
-            <ul class="process-list" aria-label="Percorso portfolio">
-              <li><strong>01</strong><span>Tessitura: armature, note colore, Gantt ciclo tessile, lanificio digitale.</span></li>
-              <li><strong>02</strong><span>CAD moda: modellistica, cartamodelli, SketchHD e concept digitale.</span></li>
-              <li><strong>03</strong><span>Supply chain: dashboard, Kanban, make-or-buy, business planning e KPI.</span></li>
-            </ul>
+
+          <!-- KPI PIE CHARTS ROW -->
+          <div class="kpi-pie-row">
+            <div class="kpi-pie reveal">
+              <div class="pie-chart pie-2d" data-percent="78" data-color="#00f6ff">
+                <svg viewBox="0 0 36 36">
+                  <path class="pie-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path class="pie-fill" stroke-dasharray="78, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <div class="pie-center">
+                  <span class="pie-value">78%</span>
+                  <span class="pie-label">OEE</span>
+                </div>
+              </div>
+              <div class="kpi-meta">
+                <span class="kpi-icon" aria-hidden="true">⚙️</span>
+                <span class="kpi-title">Efficienza impianto</span>
+              </div>
+            </div>
+
+            <div class="kpi-pie reveal">
+              <div class="pie-chart pie-3d" data-percent="65" data-color="#00ff9d">
+                <svg viewBox="0 0 36 36">
+                  <path class="pie-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path class="pie-fill" stroke-dasharray="65, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <div class="pie-center">
+                  <span class="pie-value">65%</span>
+                  <span class="pie-label">Saturazione</span>
+                </div>
+              </div>
+              <div class="kpi-meta">
+                <span class="kpi-icon" aria-hidden="true">🏭</span>
+                <span class="kpi-title">Utilizzo macchine</span>
+              </div>
+            </div>
+
+            <div class="kpi-pie reveal">
+              <div class="pie-chart pie-2d" data-percent="92" data-color="#ff4d4d">
+                <svg viewBox="0 0 36 36">
+                  <path class="pie-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path class="pie-fill" stroke-dasharray="92, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <div class="pie-center">
+                  <span class="pie-value">92%</span>
+                  <span class="pie-label">Qualità</span>
+                </div>
+              </div>
+              <div class="kpi-meta">
+                <span class="kpi-icon" aria-hidden="true">✅</span>
+                <span class="kpi-title">First pass yield</span>
+              </div>
+            </div>
+
+            <div class="kpi-pie reveal">
+              <div class="pie-chart pie-3d" data-percent="45" data-color="#ffaa00">
+                <svg viewBox="0 0 36 36">
+                  <path class="pie-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path class="pie-fill" stroke-dasharray="45, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <div class="pie-center">
+                  <span class="pie-value">45%</span>
+                  <span class="pie-label">Riduzione scarti</span>
+                </div>
+              </div>
+              <div class="kpi-meta">
+                <span class="kpi-icon" aria-hidden="true">📉</span>
+                <span class="kpi-title">Miglioramento scarti</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- BOTTLENECK ICONS ROW -->
+          <div class="bottleneck-icons">
+            <div class="b-icon reveal">
+              <div class="b-icon-circle">
+                <span aria-hidden="true">⏱️</span>
+              </div>
+              <h4>Tempi ciclo</h4>
+              <p>Confronto teorico vs reale per ogni fase</p>
+            </div>
+            <div class="b-icon reveal">
+              <div class="b-icon-circle">
+                <span aria-hidden="true">📦</span>
+              </div>
+              <h4>WIP</h4>
+              <p>Work in progress tra reparti</p>
+            </div>
+            <div class="b-icon reveal">
+              <div class="b-icon-circle">
+                <span aria-hidden="true">🎯</span>
+              </div>
+              <h4>Advancement</h4>
+              <p>Produzione prevista vs attuale</p>
+            </div>
+            <div class="b-icon reveal">
+              <div class="b-icon-circle">
+                <span aria-hidden="true">💡</span>
+              </div>
+              <h4>Colli di bottiglia</h4>
+              <p>Identificazione automatica criticità</p>
+            </div>
+            <div class="b-icon reveal">
+              <div class="b-icon-circle">
+                <span aria-hidden="true">📊</span>
+              </div>
+              <h4>KPI dashboard</h4>
+              <p>Metriche in tempo reale</p>
+            </div>
+            <div class="b-icon reveal">
+              <div class="b-icon-circle">
+                <span aria-hidden="true">🤖</span>
+              </div>
+              <h4>AI Systems</h4>
+              <p>Modelli predittivi e suggerimenti</p>
+            </div>
           </div>
         </div>
       </section>

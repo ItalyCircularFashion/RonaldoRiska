@@ -765,6 +765,153 @@ body::after {
   .beste-dot { width: 12px; height: 12px; }
 }
 
+/* ── KPI PIE CHARTS + BOTTLENECK ICONS ── */
+.kpi-pie-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line-strong);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 1px;
+}
+.kpi-pie {
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  padding: 24px;
+  text-align: center;
+  transition: background .3s;
+}
+.kpi-pie:hover {
+  background: color-mix(in srgb, var(--surface-2) 60%, transparent);
+}
+.pie-chart {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 18px;
+}
+.pie-chart svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.pie-bg {
+  fill: none;
+  stroke: rgba(255,255,255,0.06);
+  stroke-width: 3;
+}
+.pie-fill {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke-dasharray 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pie-2d .pie-fill {
+  stroke: var(--pie-color, #00f6ff);
+  filter: drop-shadow(0 0 6px var(--pie-color, #00f6ff));
+}
+.pie-3d .pie-fill {
+  stroke: var(--pie-color, #00f6ff);
+  filter: drop-shadow(0 0 10px var(--pie-color, #00f6ff)) drop-shadow(0 2px 0 rgba(0,0,0,0.6));
+}
+.pie-center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+.pie-value {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ink-strong);
+}
+.pie-label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.kpi-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.kpi-icon {
+  font-size: 18px;
+}
+.kpi-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-strong);
+}
+
+.bottleneck-icons {
+  margin-top: 1px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1px;
+  background: var(--line-strong);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.b-icon {
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  padding: 24px 18px;
+  text-align: center;
+  transition: background .3s;
+}
+.b-icon:hover {
+  background: color-mix(in srgb, var(--surface-2) 60%, transparent);
+}
+.b-icon-circle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  display: grid;
+  place-items: center;
+  margin: 0 auto 14px;
+  font-size: 22px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  transition: border-color .3s, box-shadow .3s;
+}
+.b-icon:hover .b-icon-circle {
+  border-color: rgba(0, 240, 255, 0.5);
+  box-shadow: 0 0 22px rgba(0, 240, 255, 0.18);
+}
+.b-icon h4 {
+  margin: 0 0 6px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--ink-strong);
+  letter-spacing: 0.04em;
+}
+.b-icon p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .kpi-pie-row { grid-template-columns: 1fr 1fr; }
+  .bottleneck-icons { grid-template-columns: 1fr 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .kpi-pie-row { grid-template-columns: 1fr; }
+  .bottleneck-icons { grid-template-columns: 1fr 1fr; }
+  .pie-chart { width: 120px; height: 120px; }
+}
+
 
 /* ── WEB CARD COMBINED SPECTACULAR HOVER ── */
 .web-card {
