@@ -2,6 +2,7 @@
 <html style="font-family:'Orbitron', 'Rajdhani', 'Segoe UI', sans-serif" data-page="tech" lang="it">
 <head>
   <meta name="description" content="Textile Platform v5: MRP, Project Management e SketchHD. Piattaforma industriale completa per il tessile.">
+    <meta name="keywords" content="Ronaldo Riska, Textile, Platform, Project, Management, SketchHD, Piattaforma, industriale, completa, tessile">
     <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Textile Platform v5 | Ronaldo Riska</title>
@@ -1001,7 +1002,7 @@ Respond ONLY with valid JSON (no markdown, no code blocks):
         {result&&<>
           {result.url&&<>
             <div style={{fontSize:11,fontWeight:700,color:DS.teal,marginBottom:6}}>✅ Immagine HD</div>
-            <img src={result.url} alt="HD result" style={{width:"100%",borderRadius:8,border:`1px solid ${DS.border}`,marginBottom:10}}/>
+            <img src={result.url} alt="HD result" loading="lazy" style={{width:"100%",borderRadius:8,border:`1px solid ${DS.border}`,marginBottom:10}}/>
             <button onClick={()=>{const a=document.createElement("a");a.href=result.url;a.download=`SketchHD-${Date.now()}.png`;a.click();}} style={{width:"100%",padding:"8px",borderRadius:7,border:`1px solid ${DS.teal}`,background:DS.teal+"18",color:DS.teal,fontWeight:700,fontSize:12,cursor:"pointer",marginBottom:10}}>⬇ Download PNG</button>
           </>}
           {result.analysis&&<>

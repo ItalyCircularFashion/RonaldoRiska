@@ -1,189 +1,154 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <!-- HOME -->
   <url>
     <loc>https://italycircularfashion.github.io/RonaldoRiska/</loc>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
   </url>
 
-  <!-- CORE PAGES -->
   <url>
     <loc>https://italycircularfashion.github.io/RonaldoRiska/curriculum.html</loc>
     <priority>0.9</priority>
+    <changefreq>monthly</changefreq>
   </url>
 
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html</loc>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/business-plan.html</loc>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/business-plan-web.html</loc>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- CAD / MODA -->
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/cad-moda.html</loc>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/cartamodello-jeans.html</loc>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/cartamodello-jeans-donna.html</loc>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- TEXTILE / SUPPLY CHAIN -->
   <url>
     <loc>https://italycircularfashion.github.io/RonaldoRiska/tessitura.html</loc>
     <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/cad-moda.html</loc>
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
   </url>
 
   <url>
     <loc>https://italycircularfashion.github.io/RonaldoRiska/supply-chain-production.html</loc>
     <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
   </url>
 
   <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/gantt-ciclo-tessile-prato.html</loc>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- SCM -->
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/scm-gefites-evolved.html</loc>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- ENGINEERING / TOOLS -->
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/calcolatore-note-colore-tessili.html</loc>
-    <priority>0.7</priority>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/textile-platform-v5.html</loc>
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
   </url>
 
   <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/kanbanflow.html</loc>
-    <priority>0.7</priority>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/weavecad.html</loc>
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
   </url>
-
-  <!-- MODACAD SYSTEM -->
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/modacad-studio-ep1.html</loc>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/modacad-studio-ep2.html</loc>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/modacad-mvp-ep3.html</loc>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/modacad-ep4.html</loc>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- DEMO SHOWCASE -->
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-giornalistico.html</loc>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-industriale.html</loc>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-servizi.html</loc>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-moda.html</loc>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-acqua.html</loc>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-agricoltura.html</loc>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-callcenter.html</loc>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- PROJECTS -->
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto-digitalizzazione-impresa.html</loc>
-    <priority>0.8</priority>
-  </url>
-
 
   <url>
     <loc>https://italycircularfashion.github.io/RonaldoRiska/filieraos.html</loc>
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/business-plan.html</loc>
     <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
   </url>
 
   <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/gantt-tessile.html</loc>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/modacad.html</loc>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/mrp-iphone-planner.html</loc>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/note-colore.html</loc>
-    <priority>0.7</priority>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto-digitalizzazione-impresa.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
   </url>
 
   <url>
     <loc>https://italycircularfashion.github.io/RonaldoRiska/prato-textile-district.html</loc>
     <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/gantt-tessile.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
   </url>
 
   <url>
     <loc>https://italycircularfashion.github.io/RonaldoRiska/sketchhd-artifact.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/calcolatore-note-colore-tessili.html</loc>
     <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
   </url>
 
   <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/textile-platform-v5.html</loc>
-    <priority>0.8</priority>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/mrp-iphone-planner.html</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
   </url>
 
   <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/weavecad.html</loc>
-    <priority>0.8</priority>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/note-colore.html</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
   </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/modacad.html</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-moda.html</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-industriale.html</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-servizi.html</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-giornalistico.html</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-acqua.html</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-agricoltura.html</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-callcenter.html</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
 </urlset>
