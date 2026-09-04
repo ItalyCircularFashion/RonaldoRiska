@@ -130,4 +130,10 @@
     <priority>0.7</priority>
   </url>
 
+  <!-- PROJECTS -->
+  <url>
+    <loc>https://italycircularfashion.github.io/RonaldoRiska/progetto-digitalizzazione-impresa.html</loc>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>

@@ -145,6 +145,23 @@ window.portfolioProjects = [
     },
   },
 
+  {
+    id:          "digitalizzazione-impresa",
+    title:       "Digitalizzazione Impresa",
+    description: "Progetto di digitalizzazione aziendale completo: creazione della 'fotografia' digitale dell'impresa, mappatura processi, dashboard KPI con formule matematiche e logiche produttive, identificazione colli di bottiglia e sistemi AI per il miglioramento continuo. KPI: produzione totale €, produzione oraria, produzione prevista, produzione attuale, tempi ciclo.",
+    category:    "supply",
+    status:      "Live",
+    type:        "html",
+    url:         "progetto-digitalizzazione-impresa.html",
+    featured:    true,
+    tags:        ["Digitalizzazione", "AI", "KPI", "Dashboard", "Industria 4.0", "Data-Driven"],
+    detail: {
+      value:      "Trasforma i processi produttivi in dati misurabili: KPI chiari, colli di bottiglia identificati, sistemi intelligenti basati su calcoli matematici e logiche produttive.",
+      tech:       ["JavaScript", "AI Systems", "KPI Engine", "Mathematical Models", "Real-time Dashboard"],
+      highlights: ["Fotografia digitale dell'azienda", "Dashboard KPI in tempo reale", "Identificazione automatica colli di bottiglia", "Sistemi AI programmati per il tuo business"],
+    },
+  },
+
   // ── TESSITURA ──────────────────────────────────────────────────────────────
 
   {
