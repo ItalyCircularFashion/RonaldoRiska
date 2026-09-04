@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial=1">
+<title>Demo Moda — Ronaldo Riska</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0c0b0a;
+    color: #f4f2ef;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: #e8c47c; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 24px;
+    mix-blend-mode: difference;
+    color: #fff;
+  }
+  .brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    color: #fff;
+    font-size: 20px;
+    letter-spacing: 2px;
+  }
+  .brand small {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #a89f91;
+    margin-top: 4px;
+    font-weight: 400;
+  }
+  nav a {
+    color: #e8e4dc;
+    margin-left: 24px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color .3s;
+  }
+  nav a:hover { color: #e8c47c; text-decoration: none; }
+
+  /* HERO WITH CANVAS BACKGROUND */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #0c0b0a;
+  }
+  #weave-canvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1;
+    opacity: 0.6;
+  }
+  .hero-frame {
+    position: absolute;
+    top: 24px; left: 24px; right: 24px; bottom: 24px;
+    border: 1px solid rgba(232,196,124,0.15);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .hero-frame::before, .hero-frame::after {
+    content: '';
+    position: absolute;
+    width: 12px; height: 12px;
+    border: 1px solid rgba(232,196,124,0.4);
+  }
+  .hero-frame::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+  .hero-frame::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    width: 90%;
+    max-width: 900px;
+    background: rgba(12,11,10,0.4);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 3.5rem 2.5rem;
+    border: 1px solid rgba(232,196,124,0.12);
+    color: #fff;
+  }
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 11px;
+    color: #e8c47c;
+    margin: 0 0 16px;
+    font-weight: 700;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 5vw, 68px);
+    margin: 0 0 18px;
+    line-height: 1.05;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.01em;
+  }
+  .lead {
+    font-size: 15px;
+    color: #b8b4ab;
+    max-width: 560px;
+    margin: 0 auto 26px;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+  .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    padding: 14px 22px;
+    border: 1px solid #e8c47c;
+    background: transparent;
+    color: #e8c47c;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all .35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:hover { background: #e8c47c; color: #0c0b0a; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(232,196,124,0.2); }
+
+  /* SECTIONS */
+  section { padding: 80px 0; border-bottom: 1px solid #1f1d1a; position: relative; z-index: 5; background: #0c0b0a; }
+  .section-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 3rem;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 3.2vw, 42px);
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.01em;
+  }
+  .section-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #e8c47c;
+  }
+
+  /* LOOKBOOK MASONRY */
+  .masonry {
+    column-count: 3;
+    column-gap: 22px;
+  }
+  .look {
+    break-inside: avoid;
+    margin-bottom: 22px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #1f1d1a;
+    background: linear-gradient(180deg,#141310,#0e0d0b);
+    transition: border-color .4s, transform .4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .look:hover {
+    border-color: #e8c47c;
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  }
+  .look .visual {
+    height: 320px;
+    background:
+      repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(232,196,124,0.03) 13px),
+      linear-gradient(135deg,#1a1815,#121110);
+    display: grid; place-items: center;
+    color: #2a2722; font-size: 13px;
+    font-family: 'Space Mono', monospace;
+    border-bottom: 1px solid #1f1d1a;
+    position: relative;
+    overflow: hidden;
+  }
+  .look .visual::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(12,11,10,0.8));
+  }
+  .look .body {
+    padding: 22px;
+    position: relative;
+  }
+  .look .tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 9px;
+    color: #e8c47c;
+    margin-bottom: 10px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border: 1px solid rgba(232,196,124,0.2);
+    background: rgba(232,196,124,0.05);
+  }
+  .look h3 {
+    margin: 0 0 8px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: #fff;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .look p {
+    margin: 0;
+    color: #8a867d;
+    font-size: 13px;
+    font-weight: 300;
+  }
+  .look .price {
+    margin-top: 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: #e8c47c;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* PROCESS STRIP */
+  .process {
+    padding: 60px 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: #1f1d1a;
+    border: 1px solid #1f1d1a;
+  }
+  .step {
+    background: #0c0b0a;
+    padding: 28px 22px;
+    transition: background .35s;
+  }
+  .step:hover { background: #12110f; }
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    color: #e8c47c;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 12px;
+    opacity: 0.6;
+  }
+  .step h4 {
+    margin: 0 0 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .step p {
+    margin: 0;
+    color: #8a867d;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  /* FABRIC DETAIL SECTION */
+  .fabric-detail {
+    padding: 80px 0;
+    border-bottom: 1px solid #1f1d1a;
+  }
+  .fabric-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 40px;
+    align-items: center;
+  }
+  .fabric-visual {
+    grid-column: span 5;
+    height: 480px;
+    border: 1px solid #1f1d1a;
+    background:
+      repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(232,196,124,0.02) 11px),
+      repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.01) 11px),
+      linear-gradient(135deg,#121110,#0e0d0b);
+    position: relative;
+    overflow: hidden;
+  }
+  .fabric-visual::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px; height: 120px;
+    border: 1px solid rgba(232,196,124,0.2);
+    border-radius: 50%;
+  }
+  .fabric-visual::after {
+    content: 'WEAVE';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    color: rgba(232,196,124,0.15);
+    letter-spacing: 8px;
+  }
+  .fabric-text {
+    grid-column: span 7;
+  }
+  .fabric-text h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 3.2vw, 42px);
+    color: #fff;
+    margin: 0 0 18px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .fabric-text p {
+    color: #8a867d;
+    margin: 0 0 14px;
+    font-size: 14px;
+    font-weight: 300;
+  }
+  .specs {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: #1f1d1a;
+    border: 1px solid #1f1d1a;
+  }
+  .spec {
+    background: #0c0b0a;
+    padding: 18px;
+    text-align: center;
+  }
+  .spec .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    color: #e8c47c;
+    font-weight: 700;
+  }
+  .spec .lbl {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    color: #8a867d;
+    letter-spacing: 1.5px;
+    margin-top: 6px;
+  }
+
+  /* FOOTER */
+  footer {
+    background: #0c0b0a;
+    color: #fafafa;
+    padding: 60px 0 24px;
+    border-top: 1px solid #1f1d1a;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 2.5rem;
+    margin-bottom: 3rem;
+  }
+  .footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: #fff;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+  .footer-brand small {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: #e8c47c;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+  .footer-col h4 {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #e8c47c;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+  .footer-col ul { list-style: none; padding: 0; margin: 0; }
+  .footer-col ul li { margin-bottom: 0.6rem; font-size: 13px; color: #b8b4ab; font-weight: 300; }
+  .footer-bottom {
+    border-top: 1px solid #1f1d1a;
+    padding-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #5a574f;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .reveal:nth-child(1) { animation-delay: 0.05s; }
+  .reveal:nth-child(2) { animation-delay: 0.15s; }
+  .reveal:nth-child(3) { animation-delay: 0.25s; }
+  @keyframes reveal {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    .masonry { column-count: 1; }
+    .process { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .fabric-grid { grid-template-columns: 1fr; }
+    .fabric-visual, .fabric-text { grid-column: span 12; }
+    .section-header { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+  <nav>
+    <div class="brand">VELVET<small>Atelier contemporaneo</small></div>
+    <div>
+      <a href="#">Collezione</a>
+      <a href="#">Atelier</a>
+      <a href="#">Lookbook</a>
+      <a href="#">Contatti</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <canvas id="weave-canvas" aria-hidden="true"></canvas>
+    <div class="hero-frame" aria-hidden="true"></div>
+    <div class="hero-content">
+      <p class="eyebrow">Autunno Inverno 2026</p>
+      <h1>Tessuti che definiscono<br>il carattere</h1>
+      <p class="lead">Filati rigenerati, tinture a basso impatto e tagli contemporanei per una moda che dura oltre la stagione.</p>
+      <div class="cta-row">
+        <a class="btn" href="#">Scopri la collezione</a>
+        <a class="btn" href="#">Prenota una visita</a>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap">
+      <div class="section-header">
+        <h2 class="section-title reveal">I nostri valori</h2>
+        <span class="section-meta reveal">01 / 04</span>
+      </div>
+      <div class="masonry">
+        <article class="look reveal">
+          <div class="visual">[Immagine: maglieria strutturata]</div>
+          <div class="body">
+            <span class="tag">Materiali</span>
+            <h3>Lana rigenerata e cotone organico</h3>
+            <p>Costruzione basketweave e filati rigenerati da pre-consumer waste.</p>
+          </div>
+        </article>
+        <article class="look reveal">
+          <div class="visual">[Immagine: taglio laser]</div>
+          <div class="body">
+            <span class="tag">Produzione</span>
+            <h3>Taglio e cucitura in Italia</h3>
+            <p>Tracciabilità di ogni lotto, tempi certi e zero sprechi di tessuto.</p>
+          </div>
+        </article>
+        <article class="look reveal">
+          <div class="visual">[Immagine: palette colori]</div>
+          <div class="body">
+            <span class="tag">Design</span>
+            <h3>Design senza stagione</h3>
+            <p>Silhouette versatili, palette neutre e dettagli funzionali.</p>
+          </div>
+        </article>
+        <article class="look reveal">
+          <div class="visual">[Immagine: tintura]</div>
+          <div class="body">
+            <span class="tag">Sostenibilità</span>
+            <h3>Tintura a basso impatto</h3>
+            <p>Processo chiuso, riciclo acque e certificazioni ambientali.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-header">
+        <h2 class="section-title reveal">Collezione</h2>
+        <span class="section-meta reveal">02 / 04</span>
+      </div>
+      <div class="masonry">
+        <article class="look reveal">
+          <div class="visual">[Immagine: maglieria]</div>
+          <div class="body">
+            <span class="tag">Maglieria</span>
+            <h3>Maglieria strutturata</h3>
+            <p>Lana rigenerata e cotone organico in costruzione basketweave.</p>
+            <div class="price">€ 78,00</div>
+          </div>
+        </article>
+        <article class="look reveal">
+          <div class="visual">[Immagine: outerwear]</div>
+          <div class="body">
+            <span class="tag">Outerwear</span>
+            <h3>OuterTech shell</h3>
+            <p>Tessuto tecnico riciclato con membrane traspiranti.</p>
+            <div class="price">€ 145,00</div>
+          </div>
+        </article>
+        <article class="look reveal">
+          <div class="visual">[Immagine: accessori]</div>
+          <div class="body">
+            <span class="tag">Accessori</span>
+            <h3>Accessori sistema</h3>
+            <p>Cinture, borsellini e patch in e-leather conciato vegetale.</p>
+            <div class="price">€ 42,00</div>
+          </div>
+        </article>
+        <article class="look reveal">
+          <div class="visual">[Immagine: denim]</div>
+          <div class="body">
+            <span class="tag">Denim</span>
+            <h3>Denim rigenerato</h3>
+            <p>Filato riciclato da vecchi jeans, tintura indigo naturale.</p>
+            <div class="price">€ 98,00</div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="fabric-detail">
+    <div class="wrap">
+      <div class="fabric-grid">
+        <div class="fabric-visual"></div>
+        <div class="fabric-text">
+          <h2>Dettaglio<br>tessuto</h2>
+          <p>Armatura in sargia 2/2 con filati di lana rigenerata cardata. Il risultato è una superficie morbida ma strutturata, ideale per capispalla e sovrapposizioni.</p>
+          <p>Ogni campione viene tracciato per peso, titolo, tintura e fornitura del filato.</p>
+          <div class="specs">
+            <div class="spec">
+              <div class="num">2/2</div>
+              <div class="lbl">Armatura</div>
+            </div>
+            <div class="spec">
+              <div class="num">18,5</div>
+              <div class="lbl">Titolo Nm</div>
+            </div>
+            <div class="spec">
+              <div class="num">340</div>
+              <div class="lbl">Gr/m²</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: 0; border: none;">
+    <div class="wrap" style="padding: 0;">
+      <div class="section-header" style="padding: 60px 0 20px;">
+        <h2 class="section-title reveal">Processo</h2>
+        <span class="section-meta reveal">03 / 04</span>
+      </div>
+    </div>
+    <div class="process">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <h4>Concept</h4>
+        <p>Ricerca materiali, palette e moodboard con il team creativo.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">02</div>
+        <h4>Prototipo</h4>
+        <p>Taglio campione, prova fitting e selezione fornitori.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">03</div>
+        <h4>Produzione</h4>
+        <p>Lotti piccoli, controllo qualità e tracciabilità per ogni pezzo.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">04</div>
+        <h4>Distribuzione</h4>
+        <p>Consegna tracciata, packaging riciclato e reso facilitato.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">VELVET<small>Atelier contemporaneo</small></div>
+          <p style="color:#8a867d;font-size:13px;margin:0;max-width:260px;font-weight:300;">Moda responsabile per un guardaroba senza tempo. Progettato a Prato, prodotto in Italia.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Negozio</h4>
+          <ul>
+            <li>Nuovi arrivi</li>
+            <li>Donna</li>
+            <li>Uomo</li>
+            <li>Accessori</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Info</h4>
+          <ul>
+            <li>Spedizioni</li>
+            <li>Resi</li>
+            <li>Guida taglie</li>
+            <li>Materiali</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Social</h4>
+          <ul>
+            <li>Instagram</li>
+            <li>Pinterest</li>
+            <li>TikTok</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; <span id="y"></span> VELVET</span>
+        <span>Demo by Ronaldo Riska</span>
+      </div>
+    </div>
+  </footer>
+  <script>
+    document.getElementById('y').textContent=new Date().getFullYear();
+    // Simple weave canvas background inspired by Bianco Tessuti tela effects
+    (function(){
+      const canvas = document.getElementById('weave-canvas');
+      const ctx = canvas.getContext('2d');
+      let W, H;
+      function resize(){
+        W = canvas.width = canvas.offsetWidth;
+        H = canvas.height = canvas.offsetHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      const size = 40;
+      const gap = 8;
+      const spacing = size + gap;
+      const cols = Math.ceil(W / spacing) + 1;
+      const rows = Math.ceil(H / spacing) + 1;
+
+      let time = 0;
+      function draw(){
+        ctx.clearRect(0,0,W,H);
+        for(let y=0; y<rows; y++){
+          for(let x=0; x<cols; x++){
+            const cx = x * spacing;
+            const cy = y * spacing;
+            const warp = (x + y + Math.floor(time)) % 2 === 0;
+            ctx.save();
+            ctx.translate(cx + size/2, cy + size/2);
+            ctx.rotate(warp ? Math.PI/2 : 0);
+            ctx.fillStyle = warp ? 'rgba(232,196,124,0.25)' : 'rgba(232,196,124,0.08)';
+            ctx.fillRect(-size/2, -size/2, size, size);
+            ctx.strokeStyle = 'rgba(232,196,124,0.15)';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(-size/2, -size/2, size, size);
+            ctx.restore();
+          }
+        }
+        time += 0.03;
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+  </script>
+</body>
+</html>

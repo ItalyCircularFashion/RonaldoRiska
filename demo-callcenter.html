@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial=1">
+<title>Demo CallCenter — Ronaldo Riska</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Geist:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #ffffff;
+    color: #0f172a;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    border-bottom: 1px solid #e2e8f0;
+    padding: 18px 0;
+    display: flex; justify-content: space-between; align-items: center;
+    background: #ffffff;
+  }
+  .brand {
+    font-family: 'Geist', sans-serif;
+    font-size: 24px;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+  .brand small {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #16a34a;
+    margin-top: 2px;
+  }
+  nav a {
+    color: #475569;
+    margin-left: 22px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  nav a:hover { color: #16a34a; text-decoration: none; }
+
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 21px, rgba(22,163,74,0.04) 22px),
+      repeating-linear-gradient(90deg, transparent, transparent 21px, rgba(22,163,74,0.04) 22px),
+      linear-gradient(180deg,#f8faf9,#eef6f0);
+    border-bottom: 1px solid #cfe6d3;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at 70% 20%, rgba(22,163,74,0.08), transparent 40%);
+    pointer-events: none;
+  }
+  .hero-frame {
+    position: absolute; top: 24px; left: 24px; right: 24px; bottom: 24px;
+    border: 1px solid rgba(22,163,74,0.15);
+    z-index: 2; pointer-events: none;
+  }
+  .hero-content {
+    position: relative; z-index: 10;
+    text-align: center; width: 90%; max-width: 900px;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 3.5rem 2.5rem; border: 1px solid rgba(22,163,74,0.15);
+  }
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 11px;
+    color: #16a34a;
+    margin: 0 0 16px;
+    font-weight: 700;
+  }
+  h1 {
+    font-family: 'Geist', sans-serif;
+    font-size: clamp(36px, 5vw, 64px);
+    margin: 0 0 18px;
+    line-height: 1.05;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+  }
+  .lead {
+    font-size: 15px;
+    color: #475569;
+    max-width: 640px;
+    margin: 0 auto 26px;
+    font-weight: 400;
+  }
+  .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    padding: 14px 22px;
+    border: 1px solid #16a34a;
+    background: transparent;
+    color: #16a34a;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all .3s ease;
+  }
+  .btn:hover { background: #16a34a; color: #fff; }
+
+  section { padding: 80px 0; border-bottom: 1px solid #cfe6d3; }
+  .section-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 3rem;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .section-title {
+    font-family: 'Geist', sans-serif;
+    font-size: clamp(28px, 3.2vw, 42px);
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+  }
+  .section-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #16a34a;
+  }
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .card {
+    background: #ffffff;
+    border: 1px solid #cfe6d3;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform .25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .25s;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(22,163,74,0.08);
+    border-color: #16a34a;
+  }
+  .card .thumb {
+    height: 180px;
+    background:
+      repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(22,163,74,0.02) 13px),
+      linear-gradient(135deg,#f0fdf4,#dcfce7);
+    display: grid; place-items: center;
+    color: #16a34a; font-size: 13px;
+    font-family: 'Space Mono', monospace;
+    border-bottom: 1px solid #cfe6d3;
+  }
+  .card .body { padding: 22px; }
+  .card h3 {
+    margin: 0 0 8px;
+    font-size: 15px;
+    color: #0f172a;
+    font-weight: 600;
+  }
+  .card p {
+    margin: 0;
+    color: #475569;
+    font-size: 13px;
+  }
+  .tech-spec {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    background: #f0fdf4;
+    padding: 6px 10px;
+    display: inline-block;
+    border: 1px solid #cfe6d3;
+    color: #16a34a;
+    margin-top: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .kpis {
+    padding: 60px 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 21px, rgba(22,163,74,0.03) 22px),
+      linear-gradient(180deg,#ffffff,#f8faf9);
+    border-top: 1px solid #cfe6d3;
+    border-bottom: 1px solid #cfe6d3;
+  }
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+  .kpi { text-align: center; }
+  .kpi .num {
+    font-family: 'Geist', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .kpi .lbl {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #16a34a;
+  }
+
+  footer {
+    padding: 24px 0;
+    color: #78716c;
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-top: 1px solid #e2e8f0;
+  }
+  @media (max-width: 900px) {
+    .grid-3 { grid-template-columns: 1fr; }
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">NEXTFIELD<small>Customer experience</small></div>
+      <nav>
+        <a href="#">Servizi</a>
+        <a href="#">Qualità</a>
+        <a href="#">Clienti</a>
+        <a href="#">Contatti</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-frame" aria-hidden="true"></div>
+      <div class="hero-content">
+        <p class="eyebrow">Supporto intelligente</p>
+        <h1>Esperienza cliente<br>senza attesa</h1>
+        <p class="lead">Voice, chat, email e WhatsApp gestiti da team specializzati con dashboard in tempo reale.</p>
+        <div class="cta-row">
+          <a class="btn" href="#">Parla con un consulente</a>
+          <a class="btn" href="#">Scarica offerta</a>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2 class="section-title">Attività</h2>
+        <div class="grid-3">
+          <article class="card">
+            <div class="thumb">[VOICE]</div>
+            <div class="body">
+              <h3>Inbound & outbound</h3>
+              <p>Gestione chiamate con routing intelligente, IVR e registrazione qualità.</p>
+              <div class="tech-spec">VOICE • IVR</div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="thumb">[CHAT]</div>
+            <div class="body">
+              <h3>Messaggistica</h3>
+              <p>Chat, WhatsApp e email con automazioni e handoff umano garantito.</p>
+              <div class="tech-spec">CHAT • WA</div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="thumb">[QA]</div>
+            <div class="body">
+              <h3>Quality & analytics</h3>
+              <p>Monitoraggio KPI, speech analytics e reportistica per miglioramento continuo.</p>
+              <div class="tech-spec">QA • SPEECH</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="kpis">
+      <div class="wrap">
+        <div class="section-header">
+          <h2 class="section-title">KPI</h2>
+          <span class="section-meta">Performance live</span>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi"><div class="num">94%</div><div class="lbl">SLA medio</div></div>
+          <div class="kpi"><div class="num">12s</div><div class="lbl">Tempo risposta</div></div>
+          <div class="kpi"><div class="num">4.8/5</div><div class="lbl">Customer satisfaction</div></div>
+          <div class="kpi"><div class="num">124</div><div class="lbl">Agent disponibili</div></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <footer>
+        <div>&copy; <span id="y"></span> NEXTFIELD — Demo by Ronaldo Riska</div>
+      </footer>
+    </div>
+  <script>document.getElementById('y').textContent=new Date().getFullYear()</script>
+</body>
+</html>

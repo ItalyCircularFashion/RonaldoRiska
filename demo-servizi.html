@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial=1">
+<title>Demo Servizi — Ronaldo Riska</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f3f4f6;
+    color: #111827;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 18px 0;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    color: #111827;
+    letter-spacing: -0.01em;
+  }
+  .brand small {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #2563eb;
+    margin-top: 2px;
+  }
+  nav a {
+    color: #374151;
+    margin-left: 22px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  nav a:hover { color: #2563eb; text-decoration: none; }
+
+  .hero {
+    padding: 100px 0 80px;
+    border-bottom: 1px solid #111827;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(37,99,235,0.08), transparent 40%),
+      radial-gradient(circle at 80% 90%, rgba(16,185,129,0.06), transparent 40%),
+      linear-gradient(180deg,#f9fafb,#f3f4f6);
+  }
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 11px;
+    color: #2563eb;
+    margin: 0 0 12px;
+    font-weight: 700;
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    margin: 0 0 16px;
+    line-height: 1.05;
+    font-weight: 400;
+    color: #111827;
+    max-width: 900px;
+  }
+  .lead {
+    font-size: 17px;
+    color: #4b5563;
+    max-width: 720px;
+    margin: 0 0 24px;
+    font-weight: 400;
+  }
+  .meta-line {
+    display: flex;
+    gap: 18px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6b7280;
+    border-top: 1px solid #111827;
+    padding-top: 14px;
+    max-width: 720px;
+  }
+  .meta-line span { color: #2563eb; font-weight: 700; }
+
+  section { padding: 60px 0; border-bottom: 1px solid #e5e7eb; }
+  .section-title { font-size: 2rem; margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; }
+
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    border-color: #2563eb;
+  }
+  .card .thumb {
+    height: 200px;
+    background:
+      repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(0,0,0,0.02) 13px),
+      linear-gradient(135deg,#eef2ff,#e0e7ff);
+    display: grid; place-items: center;
+    color: #6366f1; font-size: 13px;
+    border-bottom: 2px solid #111827;
+    font-family: 'Space Mono', monospace;
+    position: relative;
+  }
+  .card .thumb::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(255,255,255,0.6));
+  }
+  .card .body { padding: 22px; position: relative; }
+  .tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 10px;
+    color: #2563eb;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  .card h3 {
+    margin: 0 0 10px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: #111827;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+  .card p {
+    margin: 0;
+    color: #4b5563;
+    font-size: 14px;
+  }
+
+  .proof-band {
+    padding: 60px 0;
+    background: #111827;
+    color: #fff;
+  }
+  .proof-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+  .proof .value {
+    font-family: 'Space Mono', monospace;
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #10b981;
+    margin-bottom: 0.5rem;
+  }
+  .proof .label {
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #9ca3af;
+    letter-spacing: 0.08em;
+  }
+
+  footer {
+    padding: 24px 0;
+    color: #6b7280;
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-top: 1px solid #111827;
+  }
+  @media (max-width: 900px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    .proof-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">PULSE<small>Business services</small></div>
+      <nav>
+        <a href="#">Servizi</a>
+        <a href="#">Metodo</a>
+        <a href="#">Clienti</a>
+        <a href="#">Contatti</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Consulenza & outsourcing</p>
+      <h1>Servizi che fanno crescere il tuo business</h1>
+      <p class="lead">Processi ottimizzati, team dedicati e tecnologia applicata: risultati misurabili in tempi certi.</p>
+      <div class="meta-line">
+        <span>Approccio</span>
+        <span>Data-driven</span>
+        <span>Settembre 2026</span>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2 class="section-title">Cosa facciamo</h2>
+        <div class="grid-2">
+          <article class="card">
+            <div class="thumb">[Immagine: strategia]</div>
+            <div class="body">
+              <span class="tag">Strategy</span>
+              <h3>Pianificazione operativa</h3>
+              <p>Definizione obiettivi, budget, staffing e roadmap per ogni reparto.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="thumb">[Immagine: tecnologia]</div>
+            <div class="body">
+              <span class="tag">Technology</span>
+              <h3>Digitalizzazione processi</h3>
+              <p>Implementazione ERP, automazioni, dashboard e integrazioni API.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="thumb">[Immagine: formazione]</div>
+            <div class="body">
+              <span class="tag">People</span>
+              <h3>Formazione & change management</h3>
+              <p>Programmi su misura per accelerare l’adozione e ridurre la resistenza.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="thumb">[Immagine: analisi]</div>
+            <div class="body">
+              <span class="tag">Analytics</span>
+              <h3>Business intelligence</h3>
+              <p>KPI, forecast, analisi scostamento e report automatici per il management.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="proof-band">
+    <div class="wrap">
+      <h2 class="section-title" style="color:#fff;border-color:#fff;">Risultati</h2>
+      <div class="proof-grid">
+        <div class="proof"><div class="value">+32%</div><div class="label">Efficienza</div></div>
+        <div class="proof"><div class="value">-24%</div><div class="label">Costi operativi</div></div>
+        <div class="proof"><div class="value">18</div><div class="label">Progetti attivi</div></div>
+        <div class="proof"><div class="value">98%</div><div class="label">Customer satisfaction</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <footer>
+      <div>&copy; <span id="y"></span> PULSE — Demo by Ronaldo Riska</div>
+    </footer>
+  </div>
+  <script>document.getElementById('y').textContent=new Date().getFullYear()</script>
+</body>
+</html>

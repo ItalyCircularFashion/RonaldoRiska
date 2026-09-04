@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial=1">
+<title>Demo Agricoltura — Ronaldo Riska</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #faf8f5;
+    color: #1c1917;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    border-bottom: 1px solid #e7e5e4;
+    padding: 18px 0;
+    display: flex; justify-content: space-between; align-items: center;
+    background: #ffffff;
+  }
+  .brand {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 24px;
+    color: #1c1917;
+    letter-spacing: -0.01em;
+  }
+  .brand small {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #15803d;
+    margin-top: 2px;
+  }
+  nav a {
+    color: #57534e;
+    margin-left: 22px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  nav a:hover { color: #15803d; text-decoration: none; }
+
+  .hero {
+    padding: 100px 0 80px;
+    border-bottom: 1px solid #1c1917;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(21,128,61,0.04) 28px),
+      linear-gradient(180deg,#faf8f5,#f5f3ef);
+  }
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 11px;
+    color: #15803d;
+    margin: 0 0 12px;
+    font-weight: 700;
+  }
+  h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    margin: 0 0 16px;
+    line-height: 1.05;
+    font-weight: 700;
+    color: #1c1917;
+    max-width: 900px;
+  }
+  .lead {
+    font-size: 17px;
+    color: #57534e;
+    max-width: 720px;
+    margin: 0 0 24px;
+    font-weight: 400;
+  }
+  .meta-line {
+    display: flex;
+    gap: 18px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #78716c;
+    border-top: 1px solid #1c1917;
+    padding-top: 14px;
+    max-width: 720px;
+  }
+  .meta-line span { color: #15803d; font-weight: 700; }
+
+  section { padding: 60px 0; border-bottom: 1px solid #e7e5e4; }
+  .section-title { font-size: 2rem; margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; }
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .card {
+    background: #fff;
+    border: 1px solid #e7e5e4;
+    border-radius: 0;
+    overflow: hidden;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 6px 6px 0 #1c1917;
+  }
+  .card .thumb {
+    height: 220px;
+    background:
+      repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.02) 11px),
+      linear-gradient(135deg,#ecfdf5,#d1fae5);
+    display: grid; place-items: center;
+    color: #15803d; font-size: 13px;
+    border-bottom: 2px solid #1c1917;
+    font-family: 'Space Mono', monospace;
+  }
+  .card .body { padding: 22px; }
+  .tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 10px;
+    color: #15803d;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  .card h3 {
+    margin: 0 0 10px;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 20px;
+    color: #1c1917;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .card p {
+    margin: 0;
+    color: #57534e;
+    font-size: 14px;
+  }
+  .meta {
+    margin-top: 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: #78716c;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .tracci {
+    padding: 60px 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(21,128,61,0.03) 28px),
+      linear-gradient(180deg,#faf8f5,#f0fdf4);
+    border-top: 1px solid #1c1917;
+    border-bottom: 1px solid #1c1917;
+  }
+  .tracci-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: #e7e5e4;
+    border: 1px solid #e7e5e4;
+  }
+  .tstep {
+    background: #fff;
+    padding: 24px;
+    transition: background .3s;
+  }
+  .tstep:hover { background: #f0fdf4; }
+  .tstep .n {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 32px;
+    color: #15803d;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .tstep h4 {
+    margin: 0 0 6px;
+    font-size: 13px;
+    color: #1c1917;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .tstep p {
+    margin: 0;
+    color: #57534e;
+    font-size: 13px;
+  }
+
+  footer {
+    padding: 24px 0;
+    color: #78716c;
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-top: 1px solid #1c1917;
+  }
+  @media (max-width: 900px) {
+    .grid-3 { grid-template-columns: 1fr; }
+    .tracci-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">TERRA<small>Filiera controllata</small></div>
+      <nav>
+        <a href="#">Colture</a>
+        <a href="#">Metodo</a>
+        <a href="#">Tracciabilità</a>
+        <a href="#">Contatti</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Biologico certificato</p>
+      <h1>Dal campo alla tavola,<br>con tracciabilità</h1>
+      <p class="lead">Coltivazioni biologiche certificate, monitoraggio sensori e tracciabilità lotto per garantire qualità, stagionalità e basso impatto.</p>
+      <div class="meta-line">
+        <span>Filiera</span>
+        <span>Controllata</span>
+        <span>2026</span>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2 class="section-title">Prodotti</h2>
+        <div class="grid-3">
+          <article class="card">
+            <div class="thumb">[Immagine: grano]</div>
+            <div class="body">
+              <span class="tag">Cereali</span>
+              <h3>Grano tenero bio</h3>
+              <p>Semina diretta, raccolta precoce e macinazione a pietra.</p>
+              <div class="meta">ICEA • Stone-mill</div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="thumb">[Immagine: olio]</div>
+            <div class="body">
+              <span class="tag">Oleario</span>
+              <h3>Olio EVO locale</h3>
+              <p>Frantoio aziendale, raccolta precoce e bassa acidità.</p>
+              <div class="meta">DOP Toscano</div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="thumb">[Immagine: legumi]</div>
+            <div class="body">
+              <span class="tag">Legumi</span>
+              <h3>Legumi da seme</h3>
+              <p>Ceci, lenticchie e fagioli selezionati per tracciabilità genetica.</p>
+              <div class="meta">Seed • Traceable</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="tracci">
+      <div class="wrap">
+        <div class="section-header">
+          <h2 class="section-title">Tracciabilità</h2>
+          <span class="section-meta">Dal seme al magazzino</span>
+        </div>
+        <div class="tracci-grid">
+          <div class="tstep">
+            <div class="n">01</div>
+            <h4>Semina</h4>
+            <p>Selezione seme, mappatura campo e posa in periodo ottimale.</p>
+          </div>
+          <div class="tstep">
+            <div class="n">02</div>
+            <h4>Coltivazione</h4>
+            <p>Monitoraggio sensori, irrigazione controllata e difesa integrata.</p>
+          </div>
+          <div class="tstep">
+            <div class="n">03</div>
+            <h4>Raccolta</h4>
+            <p>Raccolta meccanizzata, pulizia e stoccaggio in silo certificato.</p>
+          </div>
+          <div class="tstep">
+            <div class="n">04</div>
+            <h4>Trasformazione</h4>
+            <p>Macinazione, molitura o confezionamento diretto tracciato.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <footer>
+        <div>&copy; <span id="y"></span> TERRA — Demo by Ronaldo Riska</div>
+      </footer>
+    </div>
+  <script>document.getElementById('y').textContent=new Date().getFullYear()</script>
+</body>
+</html>

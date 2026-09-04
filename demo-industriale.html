@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial=1">
+<title>Demo Industriale — Ronaldo Riska</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0b0c0f;
+    color: #e6e8ec;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    border-bottom: 1px solid #1f2937;
+    padding: 18px 0;
+    display: flex; justify-content: space-between; align-items: center;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255,255,255,0.02) 20px),
+      linear-gradient(180deg,#0b0c0f,#090a0d);
+  }
+  .brand {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    color: #fff;
+    font-size: 24px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .brand small {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #22d3ee;
+    margin-top: 4px;
+    text-transform: uppercase;
+  }
+  nav a {
+    color: #9ca3ab;
+    margin-left: 22px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  nav a:hover { color: #22d3ee; text-decoration: none; }
+
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 23px, rgba(34,211,238,0.04) 24px),
+      repeating-linear-gradient(90deg, transparent, transparent 23px, rgba(34,211,238,0.04) 24px),
+      linear-gradient(135deg,#0b0c0f,#0a0b0e);
+    border-bottom: 1px solid #1f2937;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(34,211,238,0.08), transparent 40%),
+      radial-gradient(circle at 70% 70%, rgba(255,255,255,0.03), transparent 40%);
+    pointer-events: none;
+  }
+  .hero-frame {
+    position: absolute; top: 18px; left: 18px; right: 18px; bottom: 18px;
+    border: 1px solid rgba(34,211,238,0.12);
+    z-index: 2; pointer-events: none;
+  }
+  .hero-content {
+    position: relative; z-index: 10;
+    text-align: center; width: 90%; max-width: 1000px;
+  }
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 11px;
+    color: #22d3ee;
+    margin: 0 0 16px;
+    font-weight: 700;
+  }
+  h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(36px, 5vw, 72px);
+    margin: 0 0 18px;
+    line-height: 1;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+  .lead {
+    font-size: 16px;
+    color: #9ca3ab;
+    max-width: 720px;
+    margin: 0 auto 28px;
+    font-weight: 400;
+  }
+  .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    padding: 14px 22px;
+    border: 1px solid #22d3ee;
+    background: transparent;
+    color: #22d3ee;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all .3s ease;
+  }
+  .btn:hover { background: #22d3ee; color: #0b0c0f; }
+
+  .kpis {
+    padding: 40px 0 60px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: #1f2937;
+    border-bottom: 1px solid #1f2937;
+  }
+  .kpi {
+    background: #0b0c0f;
+    padding: 28px 24px;
+    border-top: 2px solid #22d3ee;
+  }
+  .kpi .num {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .kpi .lbl {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #22d3ee;
+    letter-spacing: 1.5px;
+  }
+
+  .manifesto {
+    padding: 100px 0;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 40px;
+    align-items: center;
+  }
+  .manifesto-text { grid-column: span 6; }
+  .manifesto-visual {
+    grid-column: span 6;
+    height: 420px;
+    border: 1px solid #1f2937;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 23px, rgba(34,211,238,0.04) 24px),
+      repeating-linear-gradient(90deg, transparent, transparent 23px, rgba(34,211,238,0.04) 24px),
+      linear-gradient(135deg,#0a0b0e,#0b0c0f);
+    position: relative;
+    overflow: hidden;
+  }
+  .manifesto-visual::before {
+    content: '';
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%; height: 60%;
+    border: 1px solid rgba(34,211,238,0.15);
+  }
+  .manifesto-visual::after {
+    content: 'IIoT';
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Oswald', sans-serif;
+    font-size: 64px;
+    font-weight: 700;
+    color: rgba(34,211,238,0.08);
+    letter-spacing: 4px;
+  }
+  .manifesto h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(32px, 3.6vw, 48px);
+    color: #fff;
+    text-transform: uppercase;
+    margin: 0 0 18px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .manifesto p {
+    color: #9ca3ab;
+    font-size: 15px;
+    margin: 0 0 16px;
+  }
+  .manifesto a {
+    color: #22d3ee;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #1f2937; border: 1px solid #1f2937; }
+  .card {
+    background: #0b0c0f;
+    padding: 28px;
+    transition: background .3s ease;
+  }
+  .card:hover { background: #0f1014; }
+  .card .icon {
+    width: 36px; height: 36px;
+    border: 1px solid #22d3ee;
+    display: grid; place-items: center;
+    color: #22d3ee;
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    margin-bottom: 18px;
+  }
+  .card h3 {
+    margin: 0 0 10px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .card p {
+    margin: 0;
+    color: #9ca3ab;
+    font-size: 13px;
+  }
+
+  .cta-band {
+    padding: 80px 0;
+    border-top: 1px solid #1f2937;
+    text-align: center;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 23px, rgba(34,211,238,0.03) 24px),
+      linear-gradient(180deg,#0b0c0f,#0a0b0e);
+  }
+  .cta-band h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(32px, 4vw, 52px);
+    color: #fff;
+    text-transform: uppercase;
+    margin: 0 0 18px;
+    letter-spacing: -0.01em;
+  }
+  .cta-band p { color: #9ca3ab; margin: 0 0 24px; }
+
+  footer {
+    padding: 24px 0;
+    color: #6b7280;
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-top: 1px solid #1f2937;
+  }
+  @media (max-width: 900px) {
+    .manifesto { grid-template-columns: 1fr; }
+    .manifesto-text, .manifesto-visual { grid-column: span 12; }
+    .grid-3 { grid-template-columns: 1fr; }
+    .kpis { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="wrap" style="display:flex;justify-content:space-between;width:100%;align-items:center;">
+      <div class="brand">FORGE<small>Plant engineering</small></div>
+      <nav>
+        <a href="#">Soluzioni</a>
+        <a href="#">KPI</a>
+        <a href="#">Casi</a>
+        <a href="#">Contatti</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-frame" aria-hidden="true"></div>
+    <div class="hero-content">
+      <p class="eyebrow">IIoT dashboard</p>
+      <h1>Impianti connessi,<br>dati in tempo reale</h1>
+      <p class="lead">Dashboard KPI per ogni reparto, manutenzione predittiva e controllo qualità senza sprechi.</p>
+      <div class="cta-row">
+        <a class="btn" href="#">Richiedi demo</a>
+        <a class="btn" href="#">Scarica brochure</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="kpis">
+      <div class="kpi">
+        <div class="num">-18%</div>
+        <div class="lbl">Scarti</div>
+      </div>
+      <div class="kpi">
+        <div class="num">+24%</div>
+        <div class="lbl">OEE</div>
+      </div>
+      <div class="kpi">
+        <div class="num">12s</div>
+        <div class="lbl">Tempo risposta</div>
+      </div>
+      <div class="kpi">
+        <div class="num">99,8%</div>
+        <div class="lbl">Disponibilità</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="manifesto">
+    <div class="wrap" style="max-width:1200px;margin:0 auto;padding:0 24px;width:100%;">
+      <div class="manifesto-text">
+        <h2>Dal campo al<br>reparto,<br>connesso.</h2>
+        <p>Sistemi di acquisizione dati da sensori, telemetria macchina e integrazione ERP per una visione unica dell’impianto.</p>
+        <p>Report automatici, alert predittivi e pannelli operativi per turnisti e reparti qualità.</p>
+        <a href="#">Esplora le soluzioni →</a>
+      </div>
+      <div class="manifesto-visual"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="grid-3">
+        <article class="card">
+          <div class="icon">01</div>
+          <h3>Dashboard KPI</h3>
+          <p>OEE, MTBF, scarti e consumi in tempo reale per ogni linea produttiva.</p>
+        </article>
+        <article class="card">
+          <div class="icon">02</div>
+          <h3>Manutenzione</h3>
+          <p>Piani di manutenzione predittiva basati su soglie e anomalie di sensori.</p>
+        </article>
+        <article class="card">
+          <div class="icon">03</div>
+          <h3>Qualità</h3>
+          <p>Controlli in linea, tracciabilità lotto e istanze NC con traceback.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="wrap">
+      <h2>Trasforma il tuo<br>impianto in dati</h2>
+      <p>Progetti chiavi in mano o affiancamento tecnico: scegli il modello.</p>
+      <a class="btn" href="#">Parla con un ingegnere</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">&copy; <span id="y"></span> FORGE — Demo by Ronaldo Riska</div>
+  </footer>
+  <script>document.getElementById('y').textContent=new Date().getFullYear()</script>
+</body>
+</html>

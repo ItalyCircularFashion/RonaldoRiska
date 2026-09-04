@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial=1">
+<title>Demo Giornalistico — Ronaldo Riska</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: #f4f1ea;
+    color: #1a1a1a;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    border-bottom: 3px solid #1a1a1a;
+    padding: 18px 0;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: -0.02em;
+  }
+  .brand small {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #b91c1c;
+    margin-top: 2px;
+  }
+  nav a {
+    color: #1a1a1a;
+    margin-left: 22px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2px;
+  }
+  nav a:hover { border-bottom-color: #b91c1c; text-decoration: none; }
+
+  .hero {
+    padding: 80px 0 50px;
+    border-bottom: 1px solid #1a1a1a;
+    background: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(0,0,0,0.04) 28px);
+  }
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 11px;
+    color: #b91c1c;
+    margin: 0 0 12px;
+    font-weight: 700;
+  }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    margin: 0 0 16px;
+    line-height: 1.05;
+    font-weight: 700;
+    color: #1a1a1a;
+    max-width: 900px;
+  }
+  .lead {
+    font-size: 17px;
+    color: #4b4b4b;
+    max-width: 720px;
+    margin: 0 0 24px;
+    font-weight: 400;
+  }
+  .meta-line {
+    display: flex;
+    gap: 18px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #666;
+    border-top: 1px solid #1a1a1a;
+    padding-top: 14px;
+    max-width: 720px;
+  }
+  .meta-line span { color: #b91c1c; font-weight: 700; }
+
+  .ticker {
+    background: #1a1a1a;
+    color: #f4f1ea;
+    padding: 14px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+  .ticker strong { color: #ff4d4d; margin-right: 12px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 28px;
+    padding: 44px 0;
+  }
+  .col-8 { grid-column: span 8; }
+  .col-4 { grid-column: span 4; }
+  .col-6 { grid-column: span 6; }
+  .card {
+    background: #fff;
+    border: 1px solid #1a1a1a;
+    border-radius: 0;
+    overflow: hidden;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 6px 6px 0 #1a1a1a;
+  }
+  .card .thumb {
+    height: 220px;
+    background:
+      repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.03) 11px),
+      linear-gradient(135deg,#e8e4db,#d4cfc4);
+    display: grid; place-items: center;
+    color: #666; font-size: 13px;
+    border-bottom: 2px solid #1a1a1a;
+    font-family: 'Space Mono', monospace;
+  }
+  .card .body { padding: 20px; }
+  .tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 10px;
+    color: #b91c1c;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  .card h3 {
+    margin: 0 0 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: #1a1a1a;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .card p {
+    margin: 0;
+    color: #4b4b4b;
+    font-size: 14px;
+  }
+  .meta {
+    margin-top: 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .sidebar-block {
+    border: 2px solid #1a1a1a;
+    border-radius: 0;
+    padding: 20px;
+    background: #fff;
+    margin-bottom: 22px;
+  }
+  .sidebar-block h4 {
+    margin: 0 0 14px;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: #1a1a1a;
+  }
+  .sidebar-block ul { list-style: none; padding: 0; margin: 0; }
+  .sidebar-block li {
+    padding: 10px 0;
+    border-bottom: 1px solid #e5e5e5;
+    color: #1a1a1a;
+    font-size: 14px;
+  }
+  .sidebar-block li:last-child { border: 0; }
+  .sidebar-block li a { color: #b91c1c; font-weight: 600; }
+
+  footer {
+    border-top: 3px solid #1a1a1a;
+    padding: 22px 0;
+    color: #1a1a1a;
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  @media (max-width: 900px) {
+    .col-8, .col-4, .col-6 { grid-column: span 12; }
+    header { flex-direction: column; gap: 12px; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">IL TESSILE<small>Notizie dal distretto</small></div>
+      <nav>
+        <a href="#">Economia</a>
+        <a href="#">Innovazione</a>
+        <a href="#">Sostenibilità</a>
+        <a href="#">Chi siamo</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Edizione digitale</p>
+      <h1>Il distretto pratese ridisegna la filiera circolare</h1>
+      <p class="lead">Tracciabilità blockchain, nuovi contratti di rete e investimenti in re-shoring: il tessile italiano cambia modello senza perdere identità manifatturiera.</p>
+      <div class="meta-line">
+        <span>Redazione Economia</span>
+        <span>12 min read</span>
+        <span>04 SET 2026</span>
+      </div>
+    </section>
+
+    <div class="ticker">
+      <div class="wrap">
+        <strong>LIVE</strong>
+        Prato: export +6,8% • Nuovo bando per tessuti rigenerati • Laboratorio tintura CO₂ supercritica
+      </div>
+    </div>
+
+    <section class="grid">
+      <div class="col-8">
+        <article class="card">
+          <div class="thumb">[Immagine: magazzino automatizzato]</div>
+          <div class="body">
+            <span class="tag">In primo piano</span>
+            <h3><a href="#">Come l’automazione logistica riduce gli sprechi nel magazzino pratese</a></h3>
+            <p>Un sistema AGV integrato con il WMS permette di recuperare fino al 18% di stoccaggio inutile e tracciare ogni rotolo in tempo reale.</p>
+            <div class="meta">12 min read • Economia</div>
+          </div>
+        </article>
+
+        <div class="grid" style="grid-template-columns: repeat(2, 1fr); gap: 22px; padding-top: 0;">
+          <article class="card">
+            <div class="thumb">[Immagine: campioni tessili]</div>
+            <div class="body">
+              <span class="tag">Sostenibilità</span>
+              <h3><a href="#">Certificazioni ambientali: cosa cambia con il nuovo regolamento EU</a></h3>
+              <p>Dal 2027 ogni lotto esportato dovrà dichiarare l’impronta di carbonio.</p>
+              <div class="meta">6 min read</div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="thumb">[Immagine: operai in tessitura]</div>
+            <div class="body">
+              <span class="tag">Manifattura</span>
+              <h3><a href="#">Giovani tessitori: la scuola-lanificio che forma in sei mesi</a></h3>
+              <p>Dai banchi di prova ai telai reali: percorso pubblico-privato a Prato.</p>
+              <div class="meta">8 min read</div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <aside class="col-4">
+        <div class="sidebar-block">
+          <h4>Dalla redazione</h4>
+          <ul>
+            <li><a href="#">Mercato del lino: prezzi in salita del 12%</a></li>
+            <li><a href="#">Nuovi parametri UE per i PFAS nel finissaggio</a></li>
+            <li><a href="#">Intervista: il CEO di FilieraOS sulla supply chain resiliente</a></li>
+            <li><a href="#">Dati Confindustria: i distretti che crescono nel 2026</a></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-block">
+          <h4>Newsletter</h4>
+          <p style="color:#4b4b4b;font-size:14px;margin:0 0 12px;">Ogni venerdì analisi, dati e storie dal distretto.</p>
+          <input type="email" placeholder="Email" style="width:100%;padding:12px;background:#f4f1ea;border:2px solid #1a1a1a;color:#1a1a1a;font-family:'Space Mono',monospace;font-size:12px;">
+        </div>
+      </aside>
+    </section>
+
+    <footer>
+      <div class="wrap">&copy; <span id="y"></span> IL TESSILE — Demo by Ronaldo Riska</div>
+    </footer>
+  </div>
+  <script>document.getElementById('y').textContent=new Date().getFullYear()</script>
+</body>
+</html>

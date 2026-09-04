@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial=1">
+<title>Demo Acqua — Ronaldo Riska</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Source+Serif+4:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: #f5fafc;
+    color: #083344;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid #c7e3e9;
+    padding: 18px 0;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .brand {
+    font-family: 'Source Serif 4', serif;
+    font-size: 26px;
+    color: #083344;
+    letter-spacing: -0.01em;
+  }
+  .brand small {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #0891b2;
+    margin-top: 2px;
+  }
+  nav a {
+    color: #155e75;
+    margin-left: 22px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  nav a:hover { color: #06b6d4; text-decoration: none; }
+
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 21px, rgba(8,145,178,0.04) 22px),
+      repeating-linear-gradient(90deg, transparent, transparent 21px, rgba(8,145,178,0.04) 22px),
+      linear-gradient(180deg,#e0f7fa,#c8eef4);
+    border-bottom: 1px solid #c7e3e9;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; bottom: 0; left: 0; width: 100%; height: 35%;
+    background: linear-gradient(180deg, transparent, rgba(8,145,178,0.06));
+    pointer-events: none;
+  }
+  .hero-frame {
+    position: absolute; top: 24px; left: 24px; right: 24px; bottom: 24px;
+    border: 1px solid rgba(8,145,178,0.12);
+    z-index: 2; pointer-events: none;
+  }
+  .hero-content {
+    position: relative; z-index: 10;
+    text-align: center; width: 90%; max-width: 900px;
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 3.5rem 2.5rem; border: 1px solid rgba(8,145,178,0.15);
+  }
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 11px;
+    color: #0891b2;
+    margin: 0 0 16px;
+    font-weight: 700;
+  }
+  h1 {
+    font-family: 'Source Serif 4', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    margin: 0 0 18px;
+    line-height: 1.05;
+    font-weight: 600;
+    color: #083344;
+  }
+  .lead {
+    font-size: 15px;
+    color: #155e75;
+    max-width: 600px;
+    margin: 0 auto 26px;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+  .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    padding: 14px 22px;
+    border: 1px solid #0891b2;
+    background: transparent;
+    color: #0891b2;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all .3s ease;
+  }
+  .btn:hover { background: #0891b2; color: #fff; }
+
+  section { padding: 80px 0; border-bottom: 1px solid #c7e3e9; }
+  .section-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 3rem;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .section-title {
+    font-family: 'Source Serif 4', serif;
+    font-size: clamp(28px, 3.2vw, 42px);
+    font-weight: 600;
+    color: #083344;
+  }
+  .section-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #0891b2;
+  }
+
+  .data-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: #c7e3e9;
+    border: 1px solid #c7e3e9;
+  }
+  .data-card {
+    background: #ffffff;
+    padding: 28px;
+    transition: background .3s;
+  }
+  .data-card:hover { background: #f0fbfd; }
+  .data-card .label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #0891b2;
+    margin-bottom: 10px;
+  }
+  .data-card .value {
+    font-family: 'Source Serif 4', serif;
+    font-size: 24px;
+    color: #083344;
+    font-weight: 600;
+  }
+  .data-card .desc {
+    color: #155e75;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+
+  .products { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .product {
+    background: #fff;
+    border: 1px solid #c7e3e9;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform .3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .3s;
+  }
+  .product:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(8,145,178,0.1);
+  }
+  .product .visual {
+    height: 200px;
+    background:
+      repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(8,145,178,0.02) 13px),
+      linear-gradient(135deg,#e0f7fa,#b2ebf2);
+    display: grid; place-items: center;
+    color: #0891b2; font-size: 13px;
+    font-family: 'Space Mono', monospace;
+    border-bottom: 1px solid #c7e3e9;
+  }
+  .product .body { padding: 22px; }
+  .product h3 {
+    margin: 0 0 8px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 20px;
+    color: #083344;
+    font-weight: 600;
+  }
+  .product p {
+    margin: 0;
+    color: #155e75;
+    font-size: 13px;
+  }
+  .product .price {
+    margin-top: 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: #0891b2;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .cert-strip {
+    padding: 60px 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 21px, rgba(8,145,178,0.03) 22px),
+      linear-gradient(180deg,#f5fafc,#e0f7fa);
+    border-bottom: 1px solid #c7e3e9;
+  }
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+  .cert {
+    text-align: center;
+    padding: 24px;
+    border: 1px solid #c7e3e9;
+    background: #fff;
+    transition: border-color .3s;
+  }
+  .cert:hover { border-color: #0891b2; }
+  .cert .icon {
+    width: 40px; height: 40px;
+    border: 2px solid #0891b2;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    margin: 0 auto 12px;
+    color: #0891b2;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .cert h4 {
+    margin: 0 0 6px;
+    font-size: 13px;
+    color: #083344;
+    font-weight: 600;
+  }
+  .cert p {
+    margin: 0;
+    font-size: 12px;
+    color: #155e75;
+  }
+
+  footer {
+    padding: 24px 0;
+    color: #6b7280;
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-top: 1px solid #c7e3e9;
+  }
+  @media (max-width: 900px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    .data-grid { grid-template-columns: 1fr; }
+    .products { grid-template-columns: 1fr; }
+    .cert-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">AQUA<small>Acque minerali pure</small></div>
+      <nav>
+        <a href="#">Prodotti</a>
+        <a href="#">Qualità</a>
+        <a href="#">Sorgenti</a>
+        <a href="#">Contatti</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-frame" aria-hidden="true"></div>
+      <div class="hero-content">
+        <p class="eyebrow">Sorgente alpina</p>
+        <h1>Acqua che racconta<br>il territorio</h1>
+        <p class="lead">Formati per ogni uso: casa, ufficio, food service e hospitality. Qualità analizzata in 28 punti.</p>
+        <div class="cta-row">
+          <a class="btn" href="#">Scopri i formati</a>
+          <a class="btn" href="#">Richiedi analisi</a>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-header">
+          <h2 class="section-title">Dati chimici</h2>
+          <span class="section-meta">Trasparenza totale</span>
+        </div>
+        <div class="data-grid">
+          <div class="data-card">
+            <div class="label">Residuo fisso</div>
+            <div class="value">142 mg/l</div>
+            <div class="desc">Basso contenuto salino, ideale per diete iposodiche.</div>
+          </div>
+          <div class="data-card">
+            <div class="label">pH</div>
+            <div class="value">7,2</div>
+            <div class="desc">Equilibrio naturale, adatta a tutta la famiglia.</div>
+          </div>
+          <div class="data-card">
+            <div class="label">Durezza</div>
+            <div class="value">8,5 °F</div>
+            <div class="desc">Media, compatibile con elettrodomestici e cottura.</div>
+          </div>
+          <div class="data-card">
+            <div class="label">Calcio</div>
+            <div class="value">32 mg/l</div>
+            <div class="desc">Apporto utile per ossa e denti.</div>
+          </div>
+          <div class="data-card">
+            <div class="label">Magnesio</div>
+            <div class="value">12 mg/l</div>
+            <div class="desc">Benessere muscolare e nervoso.</div>
+          </div>
+          <div class="data-card">
+            <div class="label">Silice</div>
+            <div class="value">18 mg/l</div>
+            <div class="desc">Effetto beneficiante su pelle e capelli.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-header">
+          <h2 class="section-title">Prodotti</h2>
+          <span class="section-meta">Gamma completa</span>
+        </div>
+        <div class="products">
+          <article class="product">
+            <div class="visual">[Immagine: vetro 0,5L]</div>
+            <div class="body">
+              <h3>Vetro 0,5L</h3>
+              <p>Formato everyday, design minimal per casa e ufficio.</p>
+              <div class="price">VETRO</div>
+            </div>
+          </article>
+          <article class="product">
+            <div class="visual">[Immagine: PET 1L]</div>
+            <div class="body">
+              <h3>PET 1L</h3>
+              <p>Pratico per sport e viaggi, riciclabile al 100%.</p>
+              <div class="price">PET</div>
+            </div>
+          </article>
+          <article class="product">
+            <div class="visual">[Immagine: tanica 5L]</div>
+            <div class="body">
+              <h3>Tanica 5L</h3>
+              <p>Formato concentrato, consegna a domicilio su richiesta.</p>
+              <div class="price">HOME</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cert-strip">
+      <div class="wrap">
+        <div class="section-header">
+          <h2 class="section-title">Certificazioni</h2>
+          <span class="section-meta">Standard internazionali</span>
+        </div>
+        <div class="cert-grid">
+          <div class="cert">
+            <div class="icon">ISO</div>
+            <h4>ISO 22000</h4>
+            <p>Sicurezza alimentare</p>
+          </div>
+          <div class="cert">
+            <div class="icon">IFS</div>
+            <h4>IFS Food</h4>
+            <p>Standard internazionale</p>
+          </div>
+          <div class="cert">
+            <div class="icon">HACCP</div>
+            <h4>HACCP</h4>
+            <p>Piano di autocontrollo</p>
+          </div>
+          <div class="cert">
+            <div class="icon">BCD</div>
+            <h4>Biodegradabile</h4>
+            <p>Packaging sostenibile</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <footer>
+        <div>&copy; <span id="y"></span> AQUA — Demo by Ronaldo Riska</div>
+      </footer>
+    </div>
+  <script>document.getElementById('y').textContent=new Date().getFullYear()</script>
+</body>
+</html>
