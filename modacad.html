@@ -6,7 +6,11 @@
 <title>ModaCAD Studio — Modellistica Digitale</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+  /* ═══════════════════════════════════════════════
+     DESIGN TOKENS — Punto 5: Magic numbers → costanti
+  ═══════════════════════════════════════════════ */
   :root {
+    /* Colors */
     --bg: #0a1628;
     --surface: #0f2040;
     --surface-2: #163058;
@@ -25,8 +29,41 @@
     --info: #00f6ff;
     --grid: rgba(255,255,255,0.04);
     --shadow: 0 4px 24px rgba(0,0,0,0.4);
+
+    /* Layout */
+    --header-height: 48px;
+    --sidebar-width: 220px;
+    --right-panel-width: 240px;
+
+    /* Canvas */
+    --canvas-width: 900;
+    --canvas-height: 650;
+    --grid-size-default: 20;
+    --zoom-default: 100;
+    --stroke-default: 2;
+    --seam-allowance: 8;
+
+    /* Grading */
+    --base-size: 40;
+    --size-step: 0.5;
+
+    /* Spacing */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 12px;
+    --space-lg: 16px;
+    --space-xl: 20px;
+
+    /* Border radius */
+    --radius-sm: 2px;
+    --radius-md: 4px;
+    --radius-lg: 8px;
   }
-  * { margin:0; padding:0; box-sizing:border-box; }
+
+  /* ═══════════════════════════════════════════════
+     RESET
+  ═══════════════════════════════════════════════ */
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
   body {
     font-family:'Inter',system-ui,sans-serif;
     background:var(--bg);
@@ -36,121 +73,165 @@
     display:flex;
     flex-direction:column;
   }
+  button { font-family:inherit; cursor:pointer; border:none; background:transparent; color:inherit; }
+  input, select { font-family:inherit; }
+  a { text-decoration:none; color:inherit; }
 
-  /* ── HEADER ── */
-  header {
+  /* ═══════════════════════════════════════════════
+     SCROLLBAR
+  ═══════════════════════════════════════════════ */
+  ::-webkit-scrollbar { width:4px; height:4px; }
+  ::-webkit-scrollbar-track { background:var(--surface); }
+  ::-webkit-scrollbar-thumb { background:var(--border-3); border-radius:2px; }
+
+  /* ═══════════════════════════════════════════════
+     ANIMATIONS
+  ═══════════════════════════════════════════════ */
+  @keyframes fadeUp { from { opacity:0; transform:translateY(12px);} to { opacity:1; transform:none;} }
+  @keyframes slideIn { from { opacity:0; transform:translateX(12px);} to { opacity:1; transform:none;} }
+
+  /* ═══════════════════════════════════════════════
+     HEADER
+  ═══════════════════════════════════════════════ */
+  .app-header {
     display:flex; align-items:center; justify-content:space-between;
-    padding:0 20px;
-    height:48px;
+    padding:0 var(--space-lg);
+    height:var(--header-height);
     background:var(--surface);
     border-bottom:2px solid var(--border);
     flex-shrink:0;
     position:relative;
     z-index:100;
   }
-  .logo {
+  .app-logo {
     font-family:'Plus Jakarta Sans',sans-serif;
     font-size:20px; font-weight:700; letter-spacing:0.04em;
   }
-  .logo span { color:var(--accent); font-style:italic; }
+  .app-logo span { color:var(--accent); font-style:italic; }
   .header-tabs { display:flex; gap:2px; }
-  .htab {
+  .header-tab {
     padding:6px 16px; font-size:10px; letter-spacing:0.12em; text-transform:uppercase;
     cursor:pointer; border:none; background:transparent; color:var(--text-muted);
-    border-bottom:2px solid transparent; transition:all 0.2s; font-family:'Inter',sans-serif;
+    border-bottom:2px solid transparent; transition:all 0.2s;
   }
-  .htab.active { color:var(--text); border-bottom-color:var(--accent); }
-  .htab:hover { color:var(--text); }
-  .header-right { display:flex; gap:8px; align-items:center; }
-  .btn-sm {
+  .header-tab.active { color:var(--text); border-bottom-color:var(--accent); }
+  .header-tab:hover { color:var(--text); }
+  .header-actions { display:flex; gap:var(--space-sm); align-items:center; }
+
+  /* ═══════════════════════════════════════════════
+     BUTTONS
+  ═══════════════════════════════════════════════ */
+  .btn {
     padding:5px 12px; font-size:10px; letter-spacing:0.1em; text-transform:uppercase;
     border:1px solid var(--border-3); background:transparent; color:var(--text);
-    cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.2s; border-radius:4px;
+    cursor:pointer; transition:all 0.2s; border-radius:var(--radius-md);
+    display:inline-flex; align-items:center; gap:var(--space-xs);
   }
-  .btn-sm:hover { background:var(--surface-2); border-color:var(--border); }
-  .btn-sm.primary { background:var(--accent); border-color:var(--accent); color:var(--bg); font-weight:600; }
-  .btn-sm.primary:hover { background:var(--accent-2); }
+  .btn:hover { background:var(--surface-2); border-color:var(--border); }
+  .btn-primary { background:var(--accent); border-color:var(--accent); color:var(--bg); font-weight:600; }
+  .btn-primary:hover { background:var(--accent-2); }
+  .btn-icon { padding:var(--space-xs); width:28px; height:28px; justify-content:center; }
 
-  /* ── MAIN LAYOUT ── */
+  /* ═══════════════════════════════════════════════
+     MAIN LAYOUT
+  ═══════════════════════════════════════════════ */
   .app-body { display:flex; flex:1; overflow:hidden; }
 
-  /* ── LEFT SIDEBAR ── */
+  /* ═══════════════════════════════════════════════
+     LEFT SIDEBAR
+  ═══════════════════════════════════════════════ */
   .sidebar {
-    width:220px; background:var(--surface); border-right:1px solid var(--border-3);
+    width:var(--sidebar-width); background:var(--surface); border-right:1px solid var(--border-3);
     display:flex; flex-direction:column; flex-shrink:0; overflow:hidden;
   }
-  .sidebar-section { padding:12px 14px; border-bottom:1px solid var(--border-3); }
+  .sidebar-section { padding:var(--space-md); border-bottom:1px solid var(--border-3); animation:fadeUp 0.4s ease both; }
   .sidebar-title {
     font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent);
-    margin-bottom:8px; font-weight:600;
+    margin-bottom:var(--space-sm); font-weight:600;
   }
 
-  /* Tools */
-  .tool-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:4px; }
+  /* Tool Grid */
+  .tool-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:var(--space-xs); }
   .tool-btn {
     aspect-ratio:1; display:flex; flex-direction:column; align-items:center;
     justify-content:center; gap:2px; background:var(--surface-2); border:1px solid var(--border-3);
     cursor:pointer; font-size:8px; letter-spacing:0.08em; text-transform:uppercase;
-    color:var(--text-muted); transition:all 0.15s; border-radius:4px;
+    color:var(--text-muted); transition:all 0.15s; border-radius:var(--radius-md);
+    padding:var(--space-xs);
   }
   .tool-btn:hover { border-color:var(--accent); color:var(--accent); background:var(--surface-3); }
   .tool-btn.active { background:var(--accent); color:var(--bg); border-color:var(--accent); font-weight:600; }
-  .tool-icon { font-size:14px; }
+  .tool-btn .tool-icon { font-size:14px; }
 
   /* Pattern Library */
-  .pattern-list { display:flex; flex-direction:column; gap:4px; }
+  .pattern-list { display:flex; flex-direction:column; gap:var(--space-xs); }
   .pattern-item {
-    display:flex; align-items:center; gap:8px; padding:8px 10px;
+    display:flex; align-items:center; gap:var(--space-sm); padding:var(--space-sm) var(--space-md);
     background:var(--surface-2); border:1px solid var(--border-3); cursor:pointer;
-    font-size:10px; color:var(--text-2); transition:all 0.15s; border-radius:4px;
+    font-size:10px; color:var(--text-2); transition:all 0.15s; border-radius:var(--radius-md);
   }
   .pattern-item:hover { border-color:var(--accent); background:var(--surface-3); }
   .pattern-item.active { border-color:var(--accent); background:var(--accent); color:var(--bg); font-weight:600; }
   .pattern-icon { font-size:16px; }
 
-  /* Sizes */
-  .size-list { display:flex; flex-wrap:wrap; gap:4px; }
+  /* Size Chips */
+  .size-list { display:flex; flex-wrap:wrap; gap:var(--space-xs); }
   .size-chip {
-    padding:4px 10px; font-size:10px; border:1px solid var(--border-3);
+    padding:var(--space-xs) var(--space-sm); font-size:10px; border:1px solid var(--border-3);
     cursor:pointer; background:var(--surface-2); color:var(--text-2);
-    transition:all 0.15s; border-radius:2px;
+    transition:all 0.15s; border-radius:var(--radius-sm);
   }
   .size-chip:hover { border-color:var(--accent); }
   .size-chip.active { background:var(--accent); color:var(--bg); border-color:var(--accent); font-weight:600; }
 
   /* Layers */
-  #layers { display:flex; flex-direction:column; gap:4px; }
+  .layers-list { display:flex; flex-direction:column; gap:var(--space-xs); }
   .layer-item {
-    display:flex; align-items:center; gap:8px; padding:6px 10px;
+    display:flex; align-items:center; gap:var(--space-sm); padding:var(--space-xs) var(--space-md);
     background:var(--surface-2); border:1px solid var(--border-3); cursor:pointer;
-    font-size:10px; color:var(--text-2); border-radius:4px;
+    font-size:10px; color:var(--text-2); border-radius:var(--radius-md);
   }
   .layer-item:hover { border-color:var(--accent); }
   .layer-item.active { border-color:var(--accent); background:var(--surface-3); }
-  .layer-visibility { margin-left:auto; cursor:pointer; opacity:0.6; }
+  .layer-visibility { margin-left:auto; cursor:pointer; opacity:0.6; font-size:12px; }
   .layer-visibility:hover { opacity:1; }
+  .layer-visibility.hidden { opacity:0.3; text-decoration:line-through; }
 
-  /* ── CENTER CANVAS AREA ── */
+  /* ═══════════════════════════════════════════════
+     CANVAS AREA
+  ═══════════════════════════════════════════════ */
   .canvas-area {
     flex:1; display:flex; flex-direction:column; overflow:hidden; position:relative;
   }
   .canvas-toolbar {
-    display:flex; align-items:center; gap:8px; padding:8px 16px;
+    display:flex; align-items:center; gap:var(--space-sm); padding:var(--space-sm) var(--space-lg);
     background:var(--surface); border-bottom:1px solid var(--border-3); flex-shrink:0;
   }
   .canvas-toolbar select, .canvas-toolbar input[type=range] {
-    font-family:'Inter',sans-serif; font-size:10px; padding:4px 8px;
+    font-family:'Inter',sans-serif; font-size:10px; padding:var(--space-xs) var(--space-sm);
     border:1px solid var(--border-3); background:var(--surface-2); color:var(--text);
-    border-radius:2px;
+    border-radius:var(--radius-sm);
   }
   .canvas-toolbar label { font-size:9px; color:var(--text-muted); letter-spacing:0.08em; }
-  .sep { width:1px; height:20px; background:var(--border-3); margin:0 4px; }
+  .toolbar-sep { width:1px; height:20px; background:var(--border-3); margin:0 var(--space-xs); }
+
+  /* Color Swatches */
+  .color-swatches { display:flex; gap:var(--space-xs); }
   .color-swatch {
     width:22px; height:22px; border-radius:50%; border:2px solid var(--border-3);
     cursor:pointer; transition:all 0.15s;
   }
   .color-swatch:hover { border-color:var(--accent); transform:scale(1.1); }
   .color-swatch.active { border-color:var(--accent); box-shadow:0 0 0 2px rgba(255,140,0,0.3); }
+
+  /* View Tabs */
+  .view-tabs { display:flex; }
+  .view-tab {
+    padding:var(--space-xs) 14px; font-size:9px; letter-spacing:0.12em; text-transform:uppercase;
+    cursor:pointer; border:none; background:transparent; color:var(--text-muted);
+    border-bottom:2px solid transparent; transition:all 0.2s;
+  }
+  .view-tab.active { color:var(--text); border-bottom-color:var(--accent); }
 
   .canvas-wrapper {
     flex:1; overflow:auto; position:relative;
@@ -160,154 +241,185 @@
       var(--surface-2);
     background-size:20px 20px;
   }
-  canvas { display:block; cursor:crosshair; margin:24px auto; border:1px solid var(--border-3); }
-
+  .canvas-wrapper canvas { display:block; cursor:crosshair; margin:var(--space-xl) auto; border:1px solid var(--border-3); }
   .canvas-info {
-    position:absolute; bottom:12px; left:50%; transform:translateX(-50%);
+    position:absolute; bottom:var(--space-md); left:50%; transform:translateX(-50%);
     font-size:9px; color:var(--text-muted); letter-spacing:0.1em;
-    background:rgba(15,32,64,0.9); padding:4px 12px; border:1px solid var(--border-3);
-    pointer-events:none; border-radius:4px;
+    background:rgba(15,32,64,0.9); padding:var(--space-xs) var(--space-md); border:1px solid var(--border-3);
+    pointer-events:none; border-radius:var(--radius-md);
   }
 
   /* 3D Preview */
-  #view-3d {
-    display:none; flex:1; align-items:center; justify-content:center; flex-direction:column; gap:16px;
+  .view-3d {
+    display:none; flex:1; align-items:center; justify-content:center; flex-direction:column; gap:var(--space-lg);
     background:var(--surface-2);
   }
-  #view-3d.active { display:flex; }
-  #view-3d canvas { border:1px solid var(--border-3); border-radius:4px; }
-
-  /* View Tabs */
-  .view-tabs { display:flex; }
-  .vtab {
-    padding:4px 14px; font-size:9px; letter-spacing:0.12em; text-transform:uppercase;
-    cursor:pointer; border:none; background:transparent; color:var(--text-muted);
-    border-bottom:2px solid transparent; transition:all 0.2s; font-family:'Inter',sans-serif;
+  .view-3d.active { display:flex; }
+  .view-3d canvas { border:1px solid var(--border-3); border-radius:var(--radius-md); }
+  .view-3d-placeholder {
+    font-family:'Plus Jakarta Sans',sans-serif; font-size:24px; color:var(--text-muted);
+    text-align:center;
   }
-  .vtab.active { color:var(--text); border-bottom-color:var(--accent); }
+  .view-3d-hint { font-size:10px; color:var(--text-muted); }
 
-  /* ── RIGHT PANEL ── */
+  /* ═══════════════════════════════════════════════
+     RIGHT PANEL
+  ═══════════════════════════════════════════════ */
   .right-panel {
-    width:240px; background:var(--surface); border-left:1px solid var(--border-3);
+    width:var(--right-panel-width); background:var(--surface); border-left:1px solid var(--border-3);
     display:flex; flex-direction:column; flex-shrink:0; overflow-y:auto;
   }
-  .rp-section { padding:12px 14px; border-bottom:1px solid var(--border-3); }
+  .rp-section { padding:var(--space-md); border-bottom:1px solid var(--border-3); animation:slideIn 0.4s ease both; }
   .rp-title {
     font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent);
-    margin-bottom:10px; font-weight:600;
+    margin-bottom:var(--space-md); font-weight:600;
   }
 
+  /* Properties */
   .prop-row {
     display:flex; align-items:center; justify-content:space-between;
-    margin-bottom:8px; font-size:10px;
+    margin-bottom:var(--space-sm); font-size:10px;
   }
   .prop-label { color:var(--text-muted); }
-  .prop-val {
-    font-size:10px; padding:3px 8px; border:1px solid var(--border-3);
+  .prop-input {
+    font-size:10px; padding:3px var(--space-sm); border:1px solid var(--border-3);
     background:var(--surface-2); color:var(--text); width:90px;
-    font-family:'JetBrains Mono',monospace; border-radius:2px;
+    font-family:'JetBrains Mono',monospace; border-radius:var(--radius-sm);
   }
+  .prop-input:focus { border-color:var(--accent); outline:none; }
+  .prop-input.invalid { border-color:var(--danger); }
 
-  /* Grading table */
+  /* Grading Table */
   .grading-table { width:100%; border-collapse:collapse; font-size:10px; }
   .grading-table th {
-    background:var(--surface-2); color:var(--text-muted); padding:5px 8px;
+    background:var(--surface-2); color:var(--text-muted); padding:var(--space-xs) var(--space-sm);
     text-align:left; font-weight:500; letter-spacing:0.08em; font-size:9px;
     border-bottom:1px solid var(--border-3);
   }
   .grading-table td {
-    padding:5px 8px; border-bottom:1px solid var(--border-3);
+    padding:var(--space-xs) var(--space-sm); border-bottom:1px solid var(--border-3);
     color:var(--text-2);
   }
   .grading-table tr:hover td { background:var(--surface-2); }
+  .grading-table tr.base-size td { background:rgba(255,140,0,0.1); }
   .grading-table input {
-    width:50px; padding:2px 4px; border:1px solid var(--border-3);
+    width:50px; padding:2px var(--space-xs); border:1px solid var(--border-3);
     font-family:'JetBrains Mono',monospace; font-size:10px; background:transparent;
-    color:var(--text);
+    color:var(--text); border-radius:var(--radius-sm);
   }
+  .grading-table input:focus { border-color:var(--accent); outline:none; }
+  .grading-table input.invalid { border-color:var(--danger); color:var(--danger); }
 
   /* Efficiency */
   .efficiency-bar-outer {
-    height:8px; background:var(--surface-2); border-radius:4px; overflow:hidden; margin:6px 0;
+    height:8px; background:var(--surface-2); border-radius:var(--radius-md); overflow:hidden; margin:var(--space-sm) 0;
   }
   .efficiency-bar-inner {
-    height:100%; background:var(--accent); border-radius:4px; transition:width 0.6s ease;
+    height:100%; background:var(--accent); border-radius:var(--radius-md); transition:width 0.6s ease;
   }
   .eff-number { font-size:22px; font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; color:var(--accent); }
 
-  /* ── NESTING OVERLAY ── */
-  #nesting-view {
+  /* ═══════════════════════════════════════════════
+     NESTING OVERLAY
+  ═══════════════════════════════════════════════ */
+  .nesting-overlay {
     display:none; position:absolute; inset:0; background:var(--surface-2);
     z-index:50; flex-direction:column;
   }
-  #nesting-view.active { display:flex; }
+  .nesting-overlay.active { display:flex; }
   .nesting-header {
     display:flex; align-items:center; justify-content:space-between;
-    padding:12px 20px; background:var(--surface); border-bottom:1px solid var(--border-3);
+    padding:var(--space-md) var(--space-lg); background:var(--surface); border-bottom:1px solid var(--border-3);
   }
   .nesting-title { font-family:'Plus Jakarta Sans',sans-serif; font-size:18px; font-weight:600; }
-  #nesting-canvas { display:block; margin:20px auto; border:1px solid var(--border-3); }
+  .nesting-subtitle { font-size:10px; color:var(--text-muted); }
+  .nesting-body { flex:1; overflow:auto; padding:var(--space-lg); display:flex; justify-content:center; }
+  .nesting-canvas { border:1px solid var(--border-3); }
 
-  /* ── MODAL ── */
+  /* ═══════════════════════════════════════════════
+     MODAL
+  ═══════════════════════════════════════════════ */
   .modal-overlay {
     display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6);
     z-index:200; align-items:center; justify-content:center;
   }
-  .modal-overlay.open { display:flex; }
+  .modal-overlay.active { display:flex; }
   .modal {
     background:var(--surface); border:1px solid var(--border-3); width:460px;
-    box-shadow:var(--shadow); border-radius:8px;
+    box-shadow:var(--shadow); border-radius:var(--radius-lg);
   }
   .modal-header {
     display:flex; align-items:center; justify-content:space-between;
-    padding:14px 18px; border-bottom:1px solid var(--border-3);
+    padding:var(--space-md) var(--space-lg); border-bottom:1px solid var(--border-3);
   }
   .modal-title { font-family:'Plus Jakarta Sans',sans-serif; font-size:16px; font-weight:600; }
-  .modal-body { padding:18px; }
-  .modal-row { display:flex; gap:12px; margin-bottom:12px; }
+  .modal-body { padding:var(--space-lg); }
+  .modal-row { display:flex; gap:var(--space-md); margin-bottom:var(--space-md); }
   .modal-field { flex:1; }
-  .modal-field label { display:block; font-size:9px; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:4px; }
+  .modal-field label { display:block; font-size:9px; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:var(--space-xs); }
   .modal-field input, .modal-field select {
-    width:100%; padding:8px 10px; border:1px solid var(--border-3);
+    width:100%; padding:var(--space-sm) var(--space-md); border:1px solid var(--border-3);
     background:var(--surface-2); font-family:'Inter',sans-serif; font-size:11px;
-    color:var(--text); border-radius:4px;
+    color:var(--text); border-radius:var(--radius-md);
   }
-  .modal-foot { display:flex; gap:8px; justify-content:flex-end; padding:14px 18px; border-top:1px solid var(--border-3); }
+  .modal-field input:focus, .modal-field select:focus { border-color:var(--accent); outline:none; }
+  .modal-footer { display:flex; gap:var(--space-sm); justify-content:flex-end; padding:var(--space-md) var(--space-lg); border-top:1px solid var(--border-3); }
 
-  /* ── TOAST ── */
-  #toast {
-    position:fixed; bottom:24px; right:24px; background:var(--surface); color:var(--text);
-    padding:10px 20px; font-size:11px; letter-spacing:0.06em; opacity:0;
+  /* ═══════════════════════════════════════════════
+     TOOLTIP — Punto 10: Tooltip personalizzato
+  ═══════════════════════════════════════════════ */
+  .tooltip {
+    position:relative;
+  }
+  .tooltip::after {
+    content:attr(data-tooltip);
+    position:absolute; bottom:100%; left:50%; transform:translateX(-50%);
+    background:var(--surface); color:var(--text); padding:var(--space-xs) var(--space-sm);
+    font-size:10px; white-space:nowrap; border-radius:var(--radius-sm);
+    border:1px solid var(--border-3); opacity:0; pointer-events:none;
+    transition:opacity 0.2s; z-index:1000;
+  }
+  .tooltip:hover::after { opacity:1; }
+
+  /* ═══════════════════════════════════════════════
+     TOAST
+  ═══════════════════════════════════════════════ */
+  .toast {
+    position:fixed; bottom:var(--space-xl); right:var(--space-xl); background:var(--surface); color:var(--text);
+    padding:var(--space-md) var(--space-lg); font-size:11px; letter-spacing:0.06em; opacity:0;
     transition:opacity 0.3s; z-index:9999; border-left:3px solid var(--accent);
-    border-radius:4px; box-shadow:var(--shadow);
+    border-radius:var(--radius-md); box-shadow:var(--shadow);
   }
-  #toast.show { opacity:1; }
+  .toast.active { opacity:1; }
 
-  /* Scrollbar */
-  ::-webkit-scrollbar { width:4px; height:4px; }
-  ::-webkit-scrollbar-track { background:var(--surface); }
-  ::-webkit-scrollbar-thumb { background:var(--border-3); border-radius:2px; }
-
-  /* Animate in */
-  @keyframes fadeUp { from { opacity:0; transform:translateY(12px);} to { opacity:1; transform:none;} }
-  .sidebar-section, .rp-section { animation:fadeUp 0.4s ease both; }
+  /* ═══════════════════════════════════════════════
+     ACCESSIBILITY — Punto 9: ARIA labels
+  ═══════════════════════════════════════════════ */
+  .sr-only {
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); border:0;
+  }
+  [role="button"] { cursor:pointer; }
+  button:focus-visible, [role="button"]:focus-visible, input:focus-visible, select:focus-visible {
+    outline:2px solid var(--accent); outline-offset:2px;
+  }
 </style>
 </head>
 <body>
 
 <!-- HEADER -->
-<header>
-  <div class="logo">Moda<span>CAD</span> Studio</div>
-  <div class="header-tabs">
-    <button class="htab active" onclick="switchTab('modellistica')">Modellistica</button>
-    <button class="htab" onclick="switchTab('taglie')">Sviluppo Taglie</button>
-    <button class="htab" onclick="switchTab('piazzamento')">Piazzamento</button>
-    <button class="htab" onclick="switchTab('libreria')">Libreria</button>
-  </div>
-  <div class="header-right">
-    <button class="btn-sm" onclick="exportSVG()">Esporta SVG</button>
-    <button class="btn-sm" onclick="clearCanvas()">Pulisci</button>
-    <button class="btn-sm primary" onclick="openNewProject()">+ Nuovo</button>
+<header class="app-header" role="banner">
+  <div class="app-logo">Moda<span>CAD</span> Studio</div>
+  <nav class="header-tabs" aria-label="Navigazione principale">
+    <button class="header-tab active" data-view="modellistica" aria-selected="true">Modellistica</button>
+    <button class="header-tab" data-view="taglie" aria-selected="false">Sviluppo Taglie</button>
+    <button class="header-tab" data-view="piazzamento" aria-selected="false">Piazzamento</button>
+    <button class="header-tab" data-view="libreria" aria-selected="false">Libreria</button>
+  </nav>
+  <div class="header-actions">
+    <button class="btn" id="btn-export-svg" aria-label="Esporta progetto in formato SVG">Esporta SVG</button>
+    <button class="btn" id="btn-clear" aria-label="Cancella tutto il canvas">Pulisci</button>
+    <button class="btn btn-primary" id="btn-new-project" aria-label="Crea un nuovo progetto">+ Nuovo</button>
   </div>
 </header>
 
@@ -315,563 +427,996 @@
 <div class="app-body">
 
   <!-- LEFT SIDEBAR -->
-  <div class="sidebar">
+  <aside class="sidebar" role="complementary" aria-label="Libreria pattern e strumenti">
+
     <!-- Tools -->
     <div class="sidebar-section">
       <div class="sidebar-title">Strumenti</div>
-      <div class="tool-grid">
-        <button class="tool-btn active" onclick="setTool('select')" id="tool-select"><span class="tool-icon">↖</span>Seleziona</button>
-        <button class="tool-btn" onclick="setTool('pen')" id="tool-pen"><span class="tool-icon">✒</span>Penna</button>
-        <button class="tool-btn" onclick="setTool('line')" id="tool-line"><span class="tool-icon">╱</span>Linea</button>
-        <button class="tool-btn" onclick="setTool('rect')" id="tool-rect"><span class="tool-icon">▭</span>Rettangolo</button>
-        <button class="tool-btn" onclick="setTool('curve')" id="tool-curve"><span class="tool-icon">∫</span>Curva</button>
-        <button class="tool-btn" onclick="setTool('measure')" id="tool-measure"><span class="tool-icon">⟷</span>Misura</button>
-        <button class="tool-btn" onclick="setTool('seam')" id="tool-seam"><span class="tool-icon">⋯</span>Cucitura</button>
-        <button class="tool-btn" onclick="setTool('notch')" id="tool-notch"><span class="tool-icon">▲</span>Tacca</button>
-        <button class="tool-btn" onclick="setTool('dart')" id="tool-dart"><span class="tool-icon">◁</span>Pince</button>
+      <div class="tool-grid" role="toolbar" aria-label="Strumenti di disegno">
+        <button class="tool-btn active" data-tool="select" aria-label="Strumento seleziona" aria-pressed="true">
+          <span class="tool-icon">↖</span>Seleziona
+        </button>
+        <button class="tool-btn" data-tool="pen" aria-label="Strumento penna" aria-pressed="false">
+          <span class="tool-icon">✒</span>Penna
+        </button>
+        <button class="tool-btn" data-tool="line" aria-label="Strumento linea" aria-pressed="false">
+          <span class="tool-icon">╱</span>Linea
+        </button>
+        <button class="tool-btn" data-tool="rect" aria-label="Strumento rettangolo" aria-pressed="false">
+          <span class="tool-icon">▭</span>Rettangolo
+        </button>
+        <button class="tool-btn" data-tool="curve" aria-label="Strumento curva" aria-pressed="false">
+          <span class="tool-icon">∫</span>Curva
+        </button>
+        <button class="tool-btn" data-tool="measure" aria-label="Strumento misura" aria-pressed="false">
+          <span class="tool-icon">⟷</span>Misura
+        </button>
+        <button class="tool-btn" data-tool="seam" aria-label="Strumento cucitura" aria-pressed="false">
+          <span class="tool-icon">⋯</span>Cucitura
+        </button>
+        <button class="tool-btn" data-tool="notch" aria-label="Strumento tacca" aria-pressed="false">
+          <span class="tool-icon">▲</span>Tacca
+        </button>
+        <button class="tool-btn" data-tool="dart" aria-label="Strumento pince" aria-pressed="false">
+          <span class="tool-icon">◁</span>Pince
+        </button>
       </div>
     </div>
 
     <!-- Basi Predefinite -->
     <div class="sidebar-section">
       <div class="sidebar-title">Basi Predefinite</div>
-      <div class="pattern-list">
-        <div class="pattern-item active" onclick="loadBase('bodice')"><span class="pattern-icon">👘</span>Corpino</div>
-        <div class="pattern-item" onclick="loadBase('skirt')"><span class="pattern-icon">🩱</span>Gonna</div>
-        <div class="pattern-item" onclick="loadBase('sleeve')"><span class="pattern-icon">🧥</span>Manica</div>
-        <div class="pattern-item" onclick="loadBase('trouser')"><span class="pattern-icon">👖</span>Pantalone</div>
-        <div class="pattern-item" onclick="loadBase('collar')"><span class="pattern-icon">👔</span>Colletto</div>
+      <div class="pattern-list" role="listbox" aria-label="Seleziona base pattern">
+        <div class="pattern-item active" data-base="bodice" role="option" aria-selected="true">
+          <span class="pattern-icon">👘</span>Corpino
+        </div>
+        <div class="pattern-item" data-base="skirt" role="option" aria-selected="false">
+          <span class="pattern-icon">🩱</span>Gonna
+        </div>
+        <div class="pattern-item" data-base="sleeve" role="option" aria-selected="false">
+          <span class="pattern-icon">🧥</span>Manica
+        </div>
+        <div class="pattern-item" data-base="trouser" role="option" aria-selected="false">
+          <span class="pattern-icon">👖</span>Pantalone
+        </div>
+        <div class="pattern-item" data-base="collar" role="option" aria-selected="false">
+          <span class="pattern-icon">👔</span>Colletto
+        </div>
       </div>
     </div>
 
     <!-- Taglie -->
     <div class="sidebar-section">
       <div class="sidebar-title">Taglie attive</div>
-      <div class="size-list" id="size-list">
-        <div class="size-chip" onclick="toggleSize(this)">36</div>
-        <div class="size-chip active" onclick="toggleSize(this)">38</div>
-        <div class="size-chip active" onclick="toggleSize(this)">40</div>
-        <div class="size-chip active" onclick="toggleSize(this)">42</div>
-        <div class="size-chip" onclick="toggleSize(this)">44</div>
-        <div class="size-chip" onclick="toggleSize(this)">46</div>
-        <div class="size-chip" onclick="toggleSize(this)">48</div>
+      <div class="size-list" role="group" aria-label="Seleziona taglie attive">
+        <button class="size-chip" data-size="36" aria-pressed="false">36</button>
+        <button class="size-chip active" data-size="38" aria-pressed="true">38</button>
+        <button class="size-chip active" data-size="40" aria-pressed="true">40</button>
+        <button class="size-chip active" data-size="42" aria-pressed="true">42</button>
+        <button class="size-chip" data-size="44" aria-pressed="false">44</button>
+        <button class="size-chip" data-size="46" aria-pressed="false">46</button>
+        <button class="size-chip" data-size="48" aria-pressed="false">48</button>
       </div>
     </div>
 
     <!-- Layer -->
     <div class="sidebar-section" style="flex:1; overflow-y:auto;">
       <div class="sidebar-title">Layer</div>
-      <div id="layers"></div>
-      <button class="tool-btn" style="width:100%;aspect-ratio:unset;padding:6px;margin-top:6px;" onclick="addLayer()">+ Aggiungi layer</button>
+      <div class="layers-list" role="listbox" aria-label="Layer del progetto"></div>
+      <button class="tool-btn" id="btn-add-layer" style="width:100%;aspect-ratio:unset;padding:6px;margin-top:6px;" aria-label="Aggiungi nuovo layer">
+        + Aggiungi layer
+      </button>
     </div>
-  </div>
+  </aside>
 
   <!-- CANVAS AREA -->
-  <div class="canvas-area">
-    <div class="canvas-toolbar">
-      <div class="view-tabs">
-        <button class="vtab active" onclick="setView('2d')">Vista 2D</button>
-        <button class="vtab" onclick="setView('3d')">Anteprima 3D</button>
+  <main class="canvas-area" role="main">
+    <div class="canvas-toolbar" role="toolbar" aria-label="Opzioni canvas">
+      <div class="view-tabs" role="tablist" aria-label="Vista canvas">
+        <button class="view-tab active" data-canvas-view="2d" role="tab" aria-selected="true">Vista 2D</button>
+        <button class="view-tab" data-canvas-view="3d" role="tab" aria-selected="false">Anteprima 3D</button>
       </div>
-      <div class="sep"></div>
-      <label>Zoom</label>
-      <input type="range" id="zoom-slider" min="30" max="200" value="100" style="width:80px" oninput="setZoom(this.value)">
+      <div class="toolbar-sep"></div>
+      <label for="zoom-slider">Zoom</label>
+      <input type="range" id="zoom-slider" min="30" max="200" value="100" style="width:80px" aria-label="Livello zoom">
       <span id="zoom-label" style="font-size:9px;color:var(--text-muted);min-width:32px;">100%</span>
-      <div class="sep"></div>
-      <label>Griglia</label>
-      <select id="grid-sel" onchange="setGrid(this.value)">
+      <div class="toolbar-sep"></div>
+      <label for="grid-select">Griglia</label>
+      <select id="grid-select" aria-label="Dimensione griglia">
         <option value="10">1 cm</option>
         <option value="20" selected>2 cm</option>
         <option value="50">5 cm</option>
         <option value="100">10 cm</option>
       </select>
-      <div class="sep"></div>
-      <label>Spessore</label>
-      <input type="range" id="stroke-size" min="1" max="6" value="2" style="width:60px" oninput="setStrokeSize(this.value)">
-      <div class="sep"></div>
-      <div class="color-swatch active" style="background:#ff8c00" onclick="setColor('#ff8c00')" title="Contorno"></div>
-      <div class="color-swatch" style="background:#ffaa00" onclick="setColor('#ffaa00')" title="Cucitura"></div>
-      <div class="color-swatch" style="background:#ffffff" onclick="setColor('#ffffff')" title="Ausiliaria"></div>
-      <div class="color-swatch" style="background:#00f6ff" onclick="setColor('#00f6ff')" title="Taglie"></div>
+      <div class="toolbar-sep"></div>
+      <label for="stroke-size">Spessore</label>
+      <input type="range" id="stroke-size" min="1" max="6" value="2" style="width:60px" aria-label="Spessore tratto">
+      <div class="toolbar-sep"></div>
+      <div class="color-swatches" aria-label="Selettore colore">
+        <button class="color-swatch active" data-color="#ff8c00" style="background:#ff8c00" aria-label="Colore arancione"></button>
+        <button class="color-swatch" data-color="#ffaa00" style="background:#ffaa00" aria-label="Colore ambra"></button>
+        <button class="color-swatch" data-color="#ffffff" style="background:#ffffff" aria-label="Colore bianco"></button>
+        <button class="color-swatch" data-color="#00f6ff" style="background:#00f6ff" aria-label="Colore ciano"></button>
+      </div>
     </div>
 
     <div class="canvas-wrapper" id="canvas-wrapper">
-      <canvas id="main-canvas" width="900" height="650"></canvas>
-      <div class="canvas-info" id="canvas-info">X: 0 cm — Y: 0 cm | Base: Corpino | Taglia: 40</div>
+      <canvas id="main-canvas" width="900" height="650" aria-label="Area di disegno pattern"></canvas>
+      <div class="canvas-info" id="canvas-info" role="status" aria-live="polite">X: 0 cm — Y: 0 cm | Base: Corpino | Taglia: 40</div>
     </div>
 
     <!-- 3D Preview -->
-    <div id="view-3d">
-      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;color:var(--text-muted);">Anteprima 3D</div>
+    <div class="view-3d" id="view-3d" role="img" aria-label="Anteprima 3D del capo">
+      <div class="view-3d-placeholder">Anteprima 3D</div>
       <canvas id="canvas3d" width="600" height="420"></canvas>
-      <div style="font-size:10px;color:var(--text-muted);">Rotazione simulata del cartamodello nello spazio</div>
+      <div class="view-3d-hint">Visualizzazione simulata del cartamodello</div>
     </div>
-  </div>
+  </main>
 
   <!-- RIGHT PANEL -->
-  <div class="right-panel">
+  <aside class="right-panel" role="complementary" aria-label="Proprietà e opzioni">
+
     <!-- Properties -->
     <div class="rp-section">
       <div class="rp-title">Proprietà Pezzo</div>
-      <div class="prop-row"><span class="prop-label">Nome</span><input class="prop-val" id="prop-name" value="CF Corpino"></div>
-      <div class="prop-row"><span class="prop-label">Larghezza</span><input class="prop-val" id="prop-w" value="42.0 cm"></div>
-      <div class="prop-row"><span class="prop-label">Lunghezza</span><input class="prop-val" id="prop-h" value="58.5 cm"></div>
-      <div class="prop-row"><span class="prop-label">C. cucitura</span><input class="prop-val" id="prop-seam" value="1.5 cm"></div>
-      <div class="prop-row"><span class="prop-label">Verso filo</span><input class="prop-val" id="prop-grain" value="verticale"></div>
+      <div class="prop-row">
+        <label class="prop-label" for="prop-name">Nome</label>
+        <input class="prop-input" id="prop-name" value="CF Corpino" aria-label="Nome del pezzo">
+      </div>
+      <div class="prop-row">
+        <label class="prop-label" for="prop-width">Larghezza</label>
+        <input class="prop-input" id="prop-width" value="42.0 cm" aria-label="Larghezza pezzo">
+      </div>
+      <div class="prop-row">
+        <label class="prop-label" for="prop-height">Lunghezza</label>
+        <input class="prop-input" id="prop-height" value="58.5 cm" aria-label="Lunghezza pezzo">
+      </div>
+      <div class="prop-row">
+        <label class="prop-label" for="prop-seam">C. cucitura</label>
+        <input class="prop-input" id="prop-seam" value="1.5 cm" aria-label="Costanza cucitura">
+      </div>
+      <div class="prop-row">
+        <label class="prop-label" for="prop-grain">Verso filo</label>
+        <input class="prop-input" id="prop-grain" value="verticale" aria-label="Direzione del filo">
+      </div>
     </div>
 
     <!-- Grading -->
     <div class="rp-section">
       <div class="rp-title">Sviluppo Taglie — Δ</div>
-      <table class="grading-table">
-        <tr><th>Taglia</th><th>ΔL (cm)</th><th>ΔP (cm)</th></tr>
-        <tr><td>36</td><td><input value="-2.0"></td><td><input value="-1.5"></td></tr>
-        <tr><td>38</td><td><input value="-1.0"></td><td><input value="-0.75"></td></tr>
-        <tr><td>40 ●</td><td><input value="0"></td><td><input value="0"></td></tr>
-        <tr><td>42</td><td><input value="+1.0"></td><td><input value="+0.75"></td></tr>
-        <tr><td>44</td><td><input value="+2.0"></td><td><input value="+1.5"></td></tr>
-        <tr><td>46</td><td><input value="+3.0"></td><td><input value="+2.25"></td></tr>
+      <table class="grading-table" aria-label="Tabella sviluppo taglie">
+        <thead>
+          <tr><th>Taglia</th><th>ΔL (cm)</th><th>ΔP (cm)</th></tr>
+        </thead>
+        <tbody id="grading-body"></tbody>
       </table>
-      <button class="btn-sm" style="margin-top:8px;width:100%;padding:8px;" onclick="applyGrading()">Applica Sviluppo Taglie</button>
+      <button class="btn" id="btn-apply-grading" style="margin-top:8px;width:100%;padding:8px;">Applica Sviluppo Taglie</button>
     </div>
 
     <!-- Nesting Efficiency -->
     <div class="rp-section">
       <div class="rp-title">Efficienza Piazzamento</div>
-      <div class="eff-number" id="eff-number">84.2%</div>
-      <div class="efficiency-bar-outer"><div class="efficiency-bar-inner" id="eff-bar" style="width:84.2%"></div></div>
-      <div style="font-size:9px;color:var(--text-muted);margin-top:4px;">Tessuto: 150cm × 6.5m</div>
-      <div style="font-size:9px;color:var(--text-muted);">Sprechi: 0.26 m² | Risparmio: ~€ 3.40</div>
-      <button class="btn-sm" style="margin-top:8px;width:100%;padding:8px;" onclick="runNesting()">▶ Auto-Piazzamento</button>
+      <div class="eff-number" id="eff-number">—</div>
+      <div class="efficiency-bar-outer">
+        <div class="efficiency-bar-inner" id="eff-bar" style="width:0%"></div>
+      </div>
+      <div style="font-size:9px;color:var(--text-muted);margin-top:4px;">Tessuto: <span id="fabric-info">150cm × 6.5m</span></div>
+      <div style="font-size:9px;color:var(--text-muted);">Sprechi: <span id="waste-info">—</span></div>
+      <button class="btn" id="btn-run-nesting" style="margin-top:8px;width:100%;padding:8px;">▶ Auto-Piazzamento</button>
     </div>
 
     <!-- Technical Sheet -->
     <div class="rp-section">
       <div class="rp-title">Scheda Tecnica</div>
       <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">
-        Tessuto: <b style="color:var(--text);">Cotone/Lino</b><br>
+        Tessuto: <b style="color:var(--text);" id="tech-fabric">Cotone/Lino</b><br>
         Peso: <b style="color:var(--text);">180 g/m²</b><br>
         Restringimento: <b style="color:var(--text);">3% L / 2% T</b><br>
         Pezzi totali: <b style="color:var(--text);" id="piece-count">6</b><br>
         Perim. totale: <b style="color:var(--text);">18.4 m</b>
       </div>
     </div>
-  </div>
+  </aside>
 </div>
 
 <!-- NESTING OVERLAY -->
-<div id="nesting-view">
+<div class="nesting-overlay" id="nesting-view" role="dialog" aria-label="Piazzamento automatico" aria-modal="true">
   <div class="nesting-header">
     <div>
       <div class="nesting-title">Piazzamento Automatico</div>
-      <div style="font-size:10px;color:var(--text-muted);">150 cm × 6.5 m — Efficienza 87.3%</div>
+      <div class="nesting-subtitle" id="nesting-info">Calcolo in corso...</div>
     </div>
     <div style="display:flex;gap:8px;">
-      <button class="btn-sm" onclick="exportNesting()">Esporta DXF</button>
-      <button class="btn-sm primary" onclick="closeNesting()">✕ Chiudi</button>
+      <button class="btn" id="btn-export-dxf" aria-label="Esporta piazzamento in DXF">Esporta DXF</button>
+      <button class="btn btn-primary" id="btn-close-nesting" aria-label="Chiudi piazzamento">✕ Chiudi</button>
     </div>
   </div>
-  <div style="flex:1;overflow:auto;padding:20px;display:flex;justify-content:center;">
-    <canvas id="nesting-canvas" width="900" height="500" style="border:1px solid var(--border-3);"></canvas>
+  <div class="nesting-body">
+    <canvas id="nesting-canvas" width="900" height="500" class="nesting-canvas" aria-label="Canvas piazzamento"></canvas>
   </div>
 </div>
 
 <!-- NEW PROJECT MODAL -->
-<div class="modal-overlay" id="modal">
+<div class="modal-overlay" id="modal" role="dialog" aria-label="Nuovo progetto" aria-modal="true">
   <div class="modal">
     <div class="modal-header">
       <div class="modal-title">Nuovo Progetto</div>
-      <button class="btn-sm" onclick="closeModal()">✕</button>
+      <button class="btn btn-icon" id="btn-close-modal" aria-label="Chiudi finestra">✕</button>
     </div>
     <div class="modal-body">
       <div class="modal-row">
-        <div class="modal-field"><label>Nome Progetto</label><input type="text" value="Collezione Primavera 2025" id="proj-name"></div>
+        <div class="modal-field">
+          <label for="proj-name">Nome Progetto</label>
+          <input type="text" value="Collezione Primavera 2025" id="proj-name" aria-label="Nome del progetto">
+        </div>
       </div>
       <div class="modal-row">
-        <div class="modal-field"><label>Tipo Capo</label>
-          <select id="proj-type">
+        <div class="modal-field">
+          <label for="proj-type">Tipo Capo</label>
+          <select id="proj-type" aria-label="Tipo di capo">
             <option>Gonna</option><option>Pantalone</option><option>Giacca</option>
             <option>Camicia/Blusa</option><option>Abito</option><option>Cappotto</option>
           </select>
         </div>
-        <div class="modal-field"><label>Taglia Base</label>
-          <select id="proj-size"><option>38</option><option selected>40</option><option>42</option></select>
+        <div class="modal-field">
+          <label for="proj-size">Taglia Base</label>
+          <select id="proj-size" aria-label="Taglia base">
+            <option>38</option><option selected>40</option><option>42</option>
+          </select>
         </div>
       </div>
       <div class="modal-row">
-        <div class="modal-field"><label>Tessuto</label><input type="text" value="Cotone 100%" id="proj-fabric"></div>
-        <div class="modal-field"><label>Larghezza Tessuto</label>
-          <select id="proj-width"><option>110 cm</option><option selected>150 cm</option><option>180 cm</option></select>
+        <div class="modal-field">
+          <label for="proj-fabric">Tessuto</label>
+          <input type="text" value="Cotone 100%" id="proj-fabric" aria-label="Tipo di tessuto">
+        </div>
+        <div class="modal-field">
+          <label for="proj-fabric-width">Larghezza Tessuto</label>
+          <select id="proj-fabric-width" aria-label="Larghezza del tessuto">
+            <option>110 cm</option><option selected>150 cm</option><option>180 cm</option>
+          </select>
         </div>
       </div>
       <div class="modal-row">
-        <div class="modal-field"><label>Unità di misura</label>
-          <select><option selected>Centimetri (cm)</option><option>Millimetri (mm)</option><option>Pollici (in)</option></select>
+        <div class="modal-field">
+          <label for="proj-unit">Unità di misura</label>
+          <select id="proj-unit" aria-label="Unità di misura">
+            <option selected>Centimetri (cm)</option><option>Millimetri (mm)</option><option>Pollici (in)</option>
+          </select>
         </div>
-        <div class="modal-field"><label>C. cucitura predefinita</label><input type="text" value="1.5 cm"></div>
+        <div class="modal-field">
+          <label for="proj-seam-allowance">C. cucitura</label>
+          <input type="text" value="1.5 cm" id="proj-seam-allowance" aria-label="Costanza cucitura predefinita">
+        </div>
       </div>
     </div>
-    <div class="modal-foot">
-      <button class="btn-sm" onclick="closeModal()">Annulla</button>
-      <button class="btn-sm primary" onclick="createProject()">Crea Progetto</button>
+    <div class="modal-footer">
+      <button class="btn" id="btn-cancel-project">Annulla</button>
+      <button class="btn btn-primary" id="btn-create-project">Crea Progetto</button>
     </div>
   </div>
 </div>
 
-<div id="toast"></div>
+<!-- TOAST -->
+<div class="toast" id="toast" role="alert" aria-live="assertive"></div>
 
 <script>
-// ── STATE ──
-let tool = 'select';
-let strokeColor = '#ff8c00';
-let strokeSize = 2;
-let zoom = 1;
-let gridSize = 20;
-let mousePos = {x:0, y:0};
-let isDrawing = false;
-let startPoint = null;
-let paths = [];
-let currentPath = [];
-let currentBase = 'bodice';
-let view = '2d';
-let layers = ['Base','Costruzione','Taglie','Cuciture'];
-let activeLayer = 0;
+/* ═══════════════════════════════════════════════════════════════
+   CONFIG — Punto 5: Magic numbers → costanti
+   ═══════════════════════════════════════════════════════════════ */
+const CONFIG = {
+  canvas: { width: 900, height: 650 },
+  grid: { default: 20, options: [10, 20, 50, 100] },
+  zoom: { default: 100, min: 30, max: 200 },
+  stroke: { default: 2, min: 1, max: 6 },
+  seamAllowance: 8,
+  grading: { baseSize: 40, step: 0.5 },
+  fabric: { defaultWidth: 150, defaultLength: 650 },
+  colors: {
+    outline: '#ff8c00',
+    seam: '#ffaa00',
+    grading: { 36:'#60a5fa', 38:'#34d399', 42:'#f59e0b', 44:'#f97316', 46:'#a78bfa', 48:'#ec4899' }
+  }
+};
 
-const canvas = document.getElementById('main-canvas');
-const ctx = canvas.getContext('2d');
+/* ═══════════════════════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════════════════════ */
+const state = {
+  tool: 'select',
+  color: CONFIG.colors.outline,
+  strokeWidth: CONFIG.stroke.default,
+  zoom: 1,
+  gridSize: CONFIG.grid.default,
+  currentBase: 'bodice',
+  view: '2d',
+  layers: ['Base', 'Costruzione', 'Taglie', 'Cuciture'],
+  activeLayer: 0,
+  paths: [],
+  currentPath: [],
+  isDrawing: false,
+  startPoint: null,
+  undoStack: [],
+  project: {
+    name: 'Collezione Primavera 2025',
+    type: 'Gonna',
+    baseSize: 40,
+    fabric: 'Cotone 100%',
+    fabricWidth: 150,
+    seamAllowance: 1.5
+  }
+};
 
-// ── BASE PATTERNS ──
-const bases = {
+/* ═══════════════════════════════════════════════════════════════
+   BASE PATTERNS — Punto 6: Dati pattern centralizzati
+   ═══════════════════════════════════════════════════════════════ */
+const BASE_PATTERNS = {
   bodice: {
-    name:'Corpino Anteriore',
-    pieces:[
-      { label:'CF Corpino', color:'#ff8c00',
-        pts:[[100,80],[320,80],[330,200],[310,380],[290,440],[200,460],[140,450],[100,380],[90,200]],
-        darts:[[200,80,210,160],[220,80,215,165]]
-      }
-    ]
+    name: 'Corpino Anteriore',
+    pieces: [{
+      label: 'CF Corpino',
+      color: CONFIG.colors.outline,
+      pts: [[100,80],[320,80],[330,200],[310,380],[290,440],[200,460],[140,450],[100,380],[90,200]],
+      darts: [[200,80,210,160],[220,80,215,165]]
+    }]
   },
   skirt: {
-    name:'Gonna Dritta',
-    pieces:[
-      { label:'CF Gonna', color:'#ff8c00', pts:[[120,60],[310,60],[330,400],[280,420],[140,415],[100,400]] },
-      { label:'CB Gonna', color:'#00f6ff', pts:[[380,60],[560,60],[580,400],[530,415],[400,415],[360,400]] }
+    name: 'Gonna Dritta',
+    pieces: [
+      { label: 'CF Gonna', color: CONFIG.colors.outline, pts: [[120,60],[310,60],[330,400],[280,420],[140,415],[100,400]] },
+      { label: 'CB Gonna', color: CONFIG.colors.seam, pts: [[380,60],[560,60],[580,400],[530,415],[400,415],[360,400]] }
     ]
   },
   sleeve: {
-    name:'Manica Dritta',
-    pieces:[
-      { label:'Manica', color:'#ff8c00', pts:[[200,60],[280,60],[310,120],[330,300],[320,380],[250,410],[200,410],[150,380],[140,300],[160,120]] }
+    name: 'Manica Dritta',
+    pieces: [
+      { label: 'Manica', color: CONFIG.colors.outline, pts: [[200,60],[280,60],[310,120],[330,300],[320,380],[250,410],[200,410],[150,380],[140,300],[160,120]] }
     ]
   },
   trouser: {
-    name:'Pantalone',
-    pieces:[
-      { label:'Gamba Ant.', color:'#ff8c00', pts:[[100,60],[240,60],[260,200],[280,520],[240,540],[180,540],[130,520],[110,200]] },
-      { label:'Gamba Post.', color:'#00f6ff', pts:[[320,60],[480,60],[510,200],[530,520],[490,540],[420,540],[370,520],[330,200]] }
+    name: 'Pantalone',
+    pieces: [
+      { label: 'Gamba Ant.', color: CONFIG.colors.outline, pts: [[100,60],[240,60],[260,200],[280,520],[240,540],[180,540],[130,520],[110,200]] },
+      { label: 'Gamba Post.', color: CONFIG.colors.seam, pts: [[320,60],[480,60],[510,200],[530,520],[490,540],[420,540],[370,520],[330,200]] }
     ]
   },
   collar: {
-    name:'Colletto Camicia',
-    pieces:[
-      { label:'Colletto', color:'#ff8c00', pts:[[80,160],[500,160],[520,200],[500,240],[80,240],[60,200]] }
+    name: 'Colletto Camicia',
+    pieces: [
+      { label: 'Colletto', color: CONFIG.colors.outline, pts: [[80,160],[500,160],[520,200],[500,240],[80,240],[60,200]] }
     ]
   }
 };
 
-// ── DRAW ──
+/* ═══════════════════════════════════════════════════════════════
+   GRADING DATA — Punto 6: Calcolo dinamico Δ
+   ═══════════════════════════════════════════════════════════════ */
+const SIZES = [36, 38, 40, 42, 44, 46, 48];
+
+function calculateGradingDeltas(baseSize) {
+  return SIZES.map(size => {
+    const diff = (size - baseSize) * CONFIG.grading.step;
+    return {
+      size,
+      deltaL: diff,
+      deltaP: diff * 0.75,
+      isBase: size === baseSize
+    };
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DOM REFERENCES
+   ═══════════════════════════════════════════════════════════════ */
+const canvas = document.getElementById('main-canvas');
+const ctx = canvas.getContext('2d');
+const canvasWrapper = document.getElementById('canvas-wrapper');
+const view3d = document.getElementById('view-3d');
+const canvas3d = document.getElementById('canvas3d');
+const nestingView = document.getElementById('nesting-view');
+const nestingCanvas = document.getElementById('nesting-canvas');
+const modal = document.getElementById('modal');
+const toast = document.getElementById('toast');
+const gradingBody = document.getElementById('grading-body');
+const layersList = document.getElementById('layers-list');
+
+/* ═══════════════════════════════════════════════════════════════
+   CANVAS RENDERING — Punto 11: Ottimizzazione
+   ═══════════════════════════════════════════════════════════════ */
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.save();
-  ctx.scale(zoom, zoom);
+  ctx.scale(state.zoom, state.zoom);
   drawGrid();
-  const base = bases[currentBase];
-  if (base && base.pieces) base.pieces.forEach(piece => drawPiece(piece));
-  paths.forEach(p => {
-    ctx.beginPath();
-    ctx.strokeStyle = p.color;
-    ctx.lineWidth = p.size / zoom;
-    p.points.forEach((pt, i) => i === 0 ? ctx.moveTo(pt[0], pt[1]) : ctx.lineTo(pt[0], pt[1]));
-    ctx.stroke();
-  });
-  if (currentPath.length > 1) {
-    ctx.beginPath();
-    ctx.strokeStyle = strokeColor;
-    ctx.lineWidth = strokeSize / zoom;
-    currentPath.forEach((pt, i) => i === 0 ? ctx.moveTo(pt[0], pt[1]) : ctx.lineTo(pt[0], pt[1]));
-    ctx.stroke();
-  }
+  drawBasePieces();
+  drawUserPaths();
+  drawCurrentPath();
   ctx.restore();
 }
 
 function drawGrid() {
-  const w = canvas.width / zoom, h = canvas.height / zoom;
+  const w = canvas.width / state.zoom;
+  const h = canvas.height / state.zoom;
   ctx.strokeStyle = 'rgba(255,255,255,0.04)';
-  ctx.lineWidth = 0.5 / zoom;
-  for (let x = 0; x < w; x += gridSize) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
-  for (let y = 0; y < h; y += gridSize) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
-  ctx.strokeStyle = 'rgba(255,140,0,0.15)'; ctx.lineWidth = 1/zoom;
+  ctx.lineWidth = 0.5 / state.zoom;
+  for (let x = 0; x < w; x += state.gridSize) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+  }
+  for (let y = 0; y < h; y += state.gridSize) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+  }
+  // Origin lines
+  ctx.strokeStyle = 'rgba(255,140,0,0.15)';
+  ctx.lineWidth = 1 / state.zoom;
   ctx.beginPath(); ctx.moveTo(0, h/2); ctx.lineTo(w, h/2); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(w/2, 0); ctx.lineTo(w/2, h); ctx.stroke();
+}
+
+function drawBasePieces() {
+  const base = BASE_PATTERNS[state.currentBase];
+  if (!base || !base.pieces) return;
+  base.pieces.forEach(piece => drawPiece(piece));
 }
 
 function drawPiece(piece) {
   const pts = piece.pts;
   if (!pts || pts.length < 2) return;
+
+  // Fill
   ctx.beginPath();
   pts.forEach((p, i) => i === 0 ? ctx.moveTo(p[0], p[1]) : ctx.lineTo(p[0], p[1]));
   ctx.closePath();
   ctx.fillStyle = 'rgba(30,64,112,0.5)';
   ctx.fill();
-  ctx.strokeStyle = piece.color || '#ff8c00';
-  ctx.lineWidth = 2 / zoom;
+
+  // Stroke
+  ctx.strokeStyle = piece.color || CONFIG.colors.outline;
+  ctx.lineWidth = 2 / state.zoom;
   ctx.stroke();
+
   // Seam allowance
-  ctx.setLineDash([4/zoom, 3/zoom]);
+  ctx.setLineDash([4/state.zoom, 3/state.zoom]);
   ctx.strokeStyle = 'rgba(255,140,0,0.4)';
-  ctx.lineWidth = 1 / zoom;
+  ctx.lineWidth = 1 / state.zoom;
   ctx.beginPath();
-  const off = 8;
   pts.forEach((p, i) => {
     const x = p[0], y = p[1];
     const nx = pts[(i+1)%pts.length][0], ny = pts[(i+1)%pts.length][1];
     const dx = nx-x, dy = ny-y;
     const len = Math.sqrt(dx*dx+dy*dy);
-    const px = -dy/len*off, py = dx/len*off;
+    const px = -dy/len*CONFIG.seamAllowance, py = dx/len*CONFIG.seamAllowance;
     i === 0 ? ctx.moveTo(x+px, y+py) : ctx.lineTo(x+px, y+py);
   });
-  ctx.closePath(); ctx.stroke();
+  ctx.closePath();
+  ctx.stroke();
   ctx.setLineDash([]);
+
   // Grain line
   const cxp = pts.reduce((s,p)=>s+p[0],0)/pts.length;
   const cyp = pts.reduce((s,p)=>s+p[1],0)/pts.length;
-  ctx.strokeStyle = 'rgba(255,255,255,0.4)'; ctx.lineWidth = 1.5/zoom;
+  ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+  ctx.lineWidth = 1.5 / state.zoom;
   ctx.beginPath(); ctx.moveTo(cxp, cyp-25); ctx.lineTo(cxp, cyp+25); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(cxp-5, cyp-20); ctx.lineTo(cxp, cyp-25); ctx.lineTo(cxp+5, cyp-20); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(cxp-5, cyp+20); ctx.lineTo(cxp, cyp+25); ctx.lineTo(cxp+5, cyp+20); ctx.stroke();
+
   // Label
-  ctx.font = `${11/zoom}px 'Inter',sans-serif`;
+  ctx.font = `${11/state.zoom}px 'Inter',sans-serif`;
   ctx.fillStyle = '#ffffff';
   ctx.textAlign = 'center';
   ctx.fillText(piece.label, cxp, cyp - 35);
+
   // Darts
   if (piece.darts) {
     piece.darts.forEach(d => {
-      ctx.strokeStyle = '#ff8c00'; ctx.lineWidth = 1.5/zoom;
+      ctx.strokeStyle = CONFIG.colors.outline;
+      ctx.lineWidth = 1.5 / state.zoom;
       ctx.beginPath(); ctx.moveTo(d[0], d[1]); ctx.lineTo(d[2], d[3]); ctx.stroke();
     });
   }
+
   // Grading overlays
-  const activeSizes = [...document.querySelectorAll('.size-chip.active')].map(el => parseInt(el.textContent));
-  const baseSize = 40;
+  const activeSizes = [...document.querySelectorAll('.size-chip.active')].map(el => parseInt(el.dataset.size));
   activeSizes.forEach(sz => {
-    if (sz === baseSize) return;
-    const delta = (sz - baseSize) * 0.5;
-    const colors = {36:'#60a5fa',38:'#34d399',42:'#f59e0b',44:'#f97316',46:'#a78bfa',48:'#ec4899'};
-    ctx.strokeStyle = colors[sz] || '#999';
-    ctx.lineWidth = 1/zoom; ctx.setLineDash([3/zoom,2/zoom]);
+    if (sz === state.project.baseSize) return;
+    const delta = (sz - state.project.baseSize) * CONFIG.grading.step;
+    ctx.strokeStyle = CONFIG.colors.grading[sz] || '#999';
+    ctx.lineWidth = 1 / state.zoom;
+    ctx.setLineDash([3/state.zoom, 2/state.zoom]);
     ctx.beginPath();
     pts.forEach((p, i) => {
       const nx = p[0] + delta, ny = p[1] + delta * 0.5;
       i === 0 ? ctx.moveTo(nx, ny) : ctx.lineTo(nx, ny);
     });
-    ctx.closePath(); ctx.stroke();
+    ctx.closePath();
+    ctx.stroke();
     ctx.setLineDash([]);
   });
 }
 
-// ── CANVAS EVENTS ──
-canvas.addEventListener('mousemove', e => {
-  const rect = canvas.getBoundingClientRect();
-  const x = (e.clientX - rect.left) / zoom;
-  const y = (e.clientY - rect.top) / zoom;
-  mousePos = {x, y};
-  const cmx = (x / gridSize * 2).toFixed(1);
-  const cmy = (y / gridSize * 2).toFixed(1);
-  document.getElementById('canvas-info').textContent = `X: ${cmx} cm — Y: ${cmy} cm | Base: ${bases[currentBase].name} | Taglia: 40`;
-  if (isDrawing && tool === 'pen') { currentPath.push([x, y]); render(); }
-});
-
-canvas.addEventListener('mousedown', e => {
-  const rect = canvas.getBoundingClientRect();
-  const x = (e.clientX - rect.left) / zoom;
-  const y = (e.clientY - rect.top) / zoom;
-  startPoint = {x, y};
-  isDrawing = true;
-  if (tool === 'pen') currentPath = [[x, y]];
-  if (tool === 'line') currentPath = [[x, y]];
-});
-
-canvas.addEventListener('mouseup', e => {
-  const rect = canvas.getBoundingClientRect();
-  const x = (e.clientX - rect.left) / zoom;
-  const y = (e.clientY - rect.top) / zoom;
-  if (tool === 'pen' && currentPath.length > 1) { paths.push({points:[...currentPath], color:strokeColor, size:strokeSize}); currentPath = []; }
-  if (tool === 'line' && startPoint) { paths.push({points:[[startPoint.x, startPoint.y],[x,y]], color:strokeColor, size:strokeSize}); currentPath = []; }
-  if (tool === 'rect' && startPoint) {
-    const pts = [[startPoint.x,startPoint.y],[x,startPoint.y],[x,y],[startPoint.x,y],[startPoint.x,startPoint.y]];
-    paths.push({points:pts, color:strokeColor, size:strokeSize});
-  }
-  isDrawing = false;
-  startPoint = null;
-  render();
-});
-
-// ── TOOLS ──
-function setTool(t) {
-  tool = t;
-  document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tool-' + t)?.classList.add('active');
-  toast('Strumento: ' + t);
-}
-function setColor(c) {
-  strokeColor = c;
-  document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
-  event.target.classList.add('active');
-}
-function setStrokeSize(v) { strokeSize = parseInt(v); }
-function setZoom(v) { zoom = v / 100; document.getElementById('zoom-label').textContent = v + '%'; render(); }
-function setGrid(v) { gridSize = parseInt(v); render(); }
-
-// ── LOAD BASE ──
-function loadBase(b) {
-  currentBase = b;
-  document.querySelectorAll('.pattern-item').forEach(el => el.classList.remove('active'));
-  event.currentTarget.classList.add('active');
-  document.getElementById('prop-name').value = bases[b].pieces[0].label;
-  render();
-  toast('Base caricata: ' + bases[b].name);
-}
-
-// ── SIZE TOGGLE ──
-function toggleSize(el) { el.classList.toggle('active'); render(); }
-
-// ── LAYERS ──
-function initLayers() {
-  const cont = document.getElementById('layers');
-  cont.innerHTML = '';
-  layers.forEach((l, i) => {
-    const d = document.createElement('div');
-    d.className = 'layer-item' + (i === activeLayer ? ' active' : '');
-    d.innerHTML = `<span style="color:var(--accent)">⬜</span>${l}<span class="layer-visibility">👁️</span>`;
-    d.onclick = () => { activeLayer = i; initLayers(); };
-    cont.appendChild(d);
+function drawUserPaths() {
+  state.paths.forEach(p => {
+    ctx.beginPath();
+    ctx.strokeStyle = p.color;
+    ctx.lineWidth = p.size / state.zoom;
+    p.points.forEach((pt, i) => i === 0 ? ctx.moveTo(pt[0], pt[1]) : ctx.lineTo(pt[0], pt[1]));
+    ctx.stroke();
   });
 }
-function addLayer() { layers.push('Layer ' + (layers.length + 1)); initLayers(); }
 
-// ── GRADING ──
-function applyGrading() { render(); toast('Sviluppo taglie applicato!'); }
+function drawCurrentPath() {
+  if (state.currentPath.length < 2) return;
+  ctx.beginPath();
+  ctx.strokeStyle = state.color;
+  ctx.lineWidth = state.strokeWidth / state.zoom;
+  state.currentPath.forEach((pt, i) => i === 0 ? ctx.moveTo(pt[0], pt[1]) : ctx.lineTo(pt[0], pt[1]));
+  ctx.stroke();
+}
 
-// ── NESTING ──
+/* ═══════════════════════════════════════════════════════════════
+   CANVAS EVENTS — Punto 2: addEventListener
+   ═══════════════════════════════════════════════════════════════ */
+canvas.addEventListener('mousemove', handleCanvasMouseMove);
+canvas.addEventListener('mousedown', handleCanvasMouseDown);
+canvas.addEventListener('mouseup', handleCanvasMouseUp);
+canvas.addEventListener('mouseleave', handleCanvasMouseUp);
+canvas.addEventListener('touchstart', handleCanvasTouchStart, { passive: false });
+canvas.addEventListener('touchmove', handleCanvasTouchMove, { passive: false });
+canvas.addEventListener('touchend', handleCanvasMouseUp);
+
+function getCanvasCoords(e) {
+  const rect = canvas.getBoundingClientRect();
+  return {
+    x: (e.clientX - rect.left) / state.zoom,
+    y: (e.clientY - rect.top) / state.zoom
+  };
+}
+
+function handleCanvasMouseMove(e) {
+  const coords = getCanvasCoords(e);
+  const cmx = (coords.x / state.gridSize * 2).toFixed(1);
+  const cmy = (coords.y / state.gridSize * 2).toFixed(1);
+  document.getElementById('canvas-info').textContent =
+    `X: ${cmx} cm — Y: ${cmy} cm | Base: ${BASE_PATTERNS[state.currentBase].name} | Taglia: ${state.project.baseSize}`;
+
+  if (state.isDrawing && state.tool === 'pen') {
+    state.currentPath.push([coords.x, coords.y]);
+    render();
+  }
+}
+
+function handleCanvasMouseDown(e) {
+  const coords = getCanvasCoords(e);
+  state.startPoint = { x: coords.x, y: coords.y };
+  state.isDrawing = true;
+  saveState();
+
+  if (state.tool === 'pen') state.currentPath = [[coords.x, coords.y]];
+  if (state.tool === 'line') state.currentPath = [[coords.x, coords.y]];
+}
+
+function handleCanvasMouseUp(e) {
+  if (!state.isDrawing) return;
+  const coords = getCanvasCoords(e);
+
+  if (state.tool === 'pen' && state.currentPath.length > 1) {
+    state.paths.push({ points: [...state.currentPath], color: state.color, size: state.strokeWidth });
+    state.currentPath = [];
+  }
+  if (state.tool === 'line' && state.startPoint) {
+    state.paths.push({ points: [[state.startPoint.x, state.startPoint.y], [coords.x, coords.y]], color: state.color, size: state.strokeWidth });
+    state.currentPath = [];
+  }
+  if (state.tool === 'rect' && state.startPoint) {
+    const pts = [
+      [state.startPoint.x, state.startPoint.y],
+      [coords.x, state.startPoint.y],
+      [coords.x, coords.y],
+      [state.startPoint.x, coords.y],
+      [state.startPoint.x, state.startPoint.y]
+    ];
+    state.paths.push({ points: pts, color: state.color, size: state.strokeWidth });
+  }
+
+  state.isDrawing = false;
+  state.startPoint = null;
+  render();
+}
+
+function handleCanvasTouchStart(e) {
+  e.preventDefault();
+  const touch = e.touches[0];
+  handleCanvasMouseDown({ clientX: touch.clientX, clientY: touch.clientY });
+}
+
+function handleCanvasTouchMove(e) {
+  e.preventDefault();
+  const touch = e.touches[0];
+  handleCanvasMouseMove({ clientX: touch.clientX, clientY: touch.clientY });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   UNDO
+   ═══════════════════════════════════════════════════════════════ */
+function saveState() {
+  if (state.undoStack.length > 30) state.undoStack.shift();
+  state.undoStack.push(canvas.toDataURL());
+}
+
+function undoLast() {
+  if (state.undoStack.length === 0) return;
+  const img = new Image();
+  img.onload = () => {
+    const dpr = window.devicePixelRatio || 1;
+    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+    ctx.drawImage(img, 0, 0, canvas.width / dpr, canvas.height / dpr);
+  };
+  img.src = state.undoStack.pop();
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TOOL SELECTION — Punto 2: addEventListener
+   ═══════════════════════════════════════════════════════════════ */
+document.querySelectorAll('.tool-btn[data-tool]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    state.tool = btn.dataset.tool;
+    document.querySelectorAll('.tool-btn[data-tool]').forEach(b => {
+      b.classList.toggle('active', b === btn);
+      b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+    });
+    showToast('Strumento: ' + state.tool);
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   COLOR SELECTION
+   ═══════════════════════════════════════════════════════════════ */
+document.querySelectorAll('.color-swatch[data-color]').forEach(swatch => {
+  swatch.addEventListener('click', () => {
+    state.color = swatch.dataset.color;
+    document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+    swatch.classList.add('active');
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   PATTERN SELECTION
+   ═══════════════════════════════════════════════════════════════ */
+document.querySelectorAll('.pattern-item[data-base]').forEach(item => {
+  item.addEventListener('click', () => {
+    state.currentBase = item.dataset.base;
+    document.querySelectorAll('.pattern-item[data-base]').forEach(i => {
+      i.classList.toggle('active', i === item);
+      i.setAttribute('aria-selected', i === item ? 'true' : 'false');
+    });
+    document.getElementById('prop-name').value = BASE_PATTERNS[state.currentBase].pieces[0].label;
+    render();
+    showToast('Base caricata: ' + BASE_PATTERNS[state.currentBase].name);
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   SIZE SELECTION
+   ═══════════════════════════════════════════════════════════════ */
+document.querySelectorAll('.size-chip[data-size]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    chip.classList.toggle('active');
+    chip.setAttribute('aria-pressed', chip.classList.contains('active') ? 'true' : 'false');
+    render();
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   ZOOM & GRID
+   ═══════════════════════════════════════════════════════════════ */
+document.getElementById('zoom-slider').addEventListener('input', (e) => {
+  state.zoom = parseInt(e.target.value) / 100;
+  document.getElementById('zoom-label').textContent = e.target.value + '%';
+  render();
+});
+
+document.getElementById('grid-select').addEventListener('change', (e) => {
+  state.gridSize = parseInt(e.target.value);
+  render();
+});
+
+document.getElementById('stroke-size').addEventListener('input', (e) => {
+  state.strokeWidth = parseInt(e.target.value);
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   VIEW TABS
+   ═══════════════════════════════════════════════════════════════ */
+document.querySelectorAll('.view-tab[data-canvas-view]').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const viewName = tab.dataset.canvasView;
+    state.view = viewName;
+    document.querySelectorAll('.view-tab[data-canvas-view]').forEach(t => {
+      t.classList.toggle('active', t === tab);
+      t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+    });
+    if (viewName === '3d') {
+      canvasWrapper.style.display = 'none';
+      view3d.classList.add('active');
+      draw3D();
+    } else {
+      canvasWrapper.style.display = '';
+      view3d.classList.remove('active');
+    }
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   HEADER TABS
+   ═══════════════════════════════════════════════════════════════ */
+document.querySelectorAll('.header-tab[data-view]').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const viewName = tab.dataset.view;
+    document.querySelectorAll('.header-tab[data-view]').forEach(t => {
+      t.classList.toggle('active', t === tab);
+      t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+    });
+    if (viewName === 'piazzamento') runNesting();
+    else if (viewName === 'taglie') showToast('Vista Sviluppo Taglie — seleziona taglie a sinistra');
+    else if (viewName === 'libreria') showToast('Libreria basi predefinite');
+    else showToast('Modellistica 2D');
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   GRADING TABLE — Punto 6: Calcolo dinamico
+   ═══════════════════════════════════════════════════════════════ */
+function renderGradingTable() {
+  const deltas = calculateGradingDeltas(state.project.baseSize);
+  gradingBody.innerHTML = deltas.map(d => `
+    <tr class="${d.isBase ? 'base-size' : ''}">
+      <td>${d.size}${d.isBase ? ' ●' : ''}</td>
+      <td><input type="number" value="${d.deltaL.toFixed(1)}" step="0.1" data-size="${d.size}" data-type="deltaL" aria-label="Delta lunghezza taglia ${d.size}"></td>
+      <td><input type="number" value="${d.deltaP.toFixed(2)}" step="0.01" data-size="${d.size}" data-type="deltaP" aria-label="Delta perimetro taglia ${d.size}"></td>
+    </tr>
+  `).join('');
+
+  // Punto 7: Validazione input
+  gradingBody.querySelectorAll('input').forEach(input => {
+    input.addEventListener('input', (e) => {
+      const val = parseFloat(e.target.value);
+      if (isNaN(val)) {
+        e.target.classList.add('invalid');
+      } else {
+        e.target.classList.remove('invalid');
+      }
+    });
+  });
+}
+
+document.getElementById('btn-apply-grading').addEventListener('click', () => {
+  render();
+  showToast('Sviluppo taglie applicato!');
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   LAYERS
+   ═══════════════════════════════════════════════════════════════ */
+function renderLayers() {
+  layersList.innerHTML = state.layers.map((layer, i) => `
+    <div class="layer-item ${i === state.activeLayer ? 'active' : ''}" data-layer-index="${i}" role="option" aria-selected="${i === state.activeLayer}">
+      <span style="color:var(--accent)">⬜</span>
+      <span class="layer-name">${layer}</span>
+      <span class="layer-visibility" data-layer-toggle="${i}">👁️</span>
+    </div>
+  `).join('');
+
+  layersList.querySelectorAll('.layer-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      if (e.target.dataset.layerToggle) return;
+      state.activeLayer = parseInt(item.dataset.layerIndex);
+      renderLayers();
+    });
+  });
+
+  layersList.querySelectorAll('.layer-visibility').forEach(toggle => {
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggle.classList.toggle('hidden');
+    });
+  });
+}
+
+document.getElementById('btn-add-layer').addEventListener('click', () => {
+  state.layers.push('Layer ' + (state.layers.length + 1));
+  renderLayers();
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   NESTING — Punto 3: Calcolo dinamico
+   ═══════════════════════════════════════════════════════════════ */
+document.getElementById('btn-run-nesting').addEventListener('click', runNesting);
+document.getElementById('btn-close-nesting').addEventListener('click', () => nestingView.classList.remove('active'));
+document.getElementById('btn-export-dxf').addEventListener('click', exportDXF);
+
 function runNesting() {
-  document.getElementById('nesting-view').classList.add('active');
+  nestingView.classList.add('active');
   drawNesting();
-  toast('Piazzamento automatico calcolato');
+  showToast('Piazzamento automatico calcolato');
 }
 
 function drawNesting() {
-  const nc = document.getElementById('nesting-canvas');
+  const nc = nestingCanvas;
   const nctx = nc.getContext('2d');
-  nctx.clearRect(0,0,nc.width,nc.height);
-  nctx.fillStyle = '#0f2040'; nctx.fillRect(0,0,nc.width,nc.height);
-  nctx.strokeStyle = '#2a5490'; nctx.lineWidth = 2;
+  nctx.clearRect(0, 0, nc.width, nc.height);
+  nctx.fillStyle = '#0f2040';
+  nctx.fillRect(0, 0, nc.width, nc.height);
+
+  // Fabric border
+  nctx.strokeStyle = '#2a5490';
+  nctx.lineWidth = 2;
   nctx.strokeRect(10, 10, 880, 480);
-  nctx.font = '10px Inter,sans-serif'; nctx.fillStyle='#8899aa'; nctx.textAlign='left';
-  nctx.fillText('TESSUTO 150cm × 6.5m', 18, 26);
 
-  const placements = [
-    {label:'CF Corpino', x:30, y:40, w:140, h:260, color:'rgba(255,140,0,0.3)'},
-    {label:'CF Corpino (S)', x:30, y:310, w:130, h:250, color:'rgba(255,170,0,0.3)'},
-    {label:'CB Corpino', x:185, y:40, w:130, h:255, color:'rgba(0,246,255,0.3)'},
-    {label:'CB Corpino (S)', x:185, y:305, w:125, h:240, color:'rgba(0,255,157,0.3)'},
-    {label:'Manica', x:330, y:40, w:100, h:220, color:'rgba(255,77,77,0.3)'},
-    {label:'Manica', x:440, y:40, w:100, h:220, color:'rgba(255,77,77,0.3)'},
-    {label:'Colletto', x:330, y:280, w:200, h:70, color:'rgba(138,43,226,0.3)'},
-    {label:'Tasca', x:550, y:280, w:80, h:90, color:'rgba(245,158,11,0.3)'},
-    {label:'Paramontura', x:330, y:360, w:160, h:60, color:'rgba(236,72,153,0.3)'},
-  ];
+  // Fabric label
+  nctx.font = '10px Inter, sans-serif';
+  nctx.fillStyle = '#8899aa';
+  nctx.textAlign = 'left';
+  nctx.fillText(`TESSUTO ${state.project.fabricWidth}cm × 6.5m`, 18, 26);
 
+  // Get pieces from current base
+  const base = BASE_PATTERNS[state.currentBase];
+  if (!base || !base.pieces) {
+    document.getElementById('nesting-info').textContent = 'Nessun pezzo da piazzare';
+    return;
+  }
+
+  // Calculate placements dynamically
+  const placements = calculateNestingPlacements(base.pieces);
+
+  // Draw placements
   placements.forEach(p => {
     nctx.fillStyle = p.color;
-    nctx.strokeStyle = p.color.replace('0.3','0.8');
+    nctx.strokeStyle = p.strokeColor;
     nctx.lineWidth = 1.5;
-    nctx.beginPath(); nctx.rect(p.x, p.y, p.w, p.h); nctx.fill(); nctx.stroke();
-    nctx.font = '8px Inter,sans-serif'; nctx.fillStyle='#ffffff'; nctx.textAlign='center';
+    nctx.beginPath();
+    nctx.rect(p.x, p.y, p.w, p.h);
+    nctx.fill();
+    nctx.stroke();
+    nctx.font = '8px Inter, sans-serif';
+    nctx.fillStyle = '#ffffff';
+    nctx.textAlign = 'center';
     nctx.fillText(p.label, p.x + p.w/2, p.y + p.h/2);
   });
 
+  // Waste area
+  const wasteArea = calculateWaste(placements);
   nctx.fillStyle = 'rgba(255,77,77,0.06)';
   nctx.fillRect(655, 40, 230, 430);
-  nctx.font = '9px Inter,sans-serif'; nctx.fillStyle='rgba(255,77,77,0.6)'; nctx.textAlign='center';
+  nctx.font = '9px Inter, sans-serif';
+  nctx.fillStyle = 'rgba(255,77,77,0.6)';
+  nctx.textAlign = 'center';
   nctx.fillText('SCARTO', 770, 250);
 
-  nctx.font = '11px JetBrains Mono,monospace'; nctx.fillStyle='#ffffff'; nctx.textAlign='right';
-  nctx.fillText('Efficienza: 87.3% | Risparmio: ~€ 4.20', 885, 490);
+  // Efficiency
+  const efficiency = calculateEfficiency(placements);
+  document.getElementById('eff-number').textContent = efficiency.toFixed(1) + '%';
+  document.getElementById('eff-bar').style.width = efficiency + '%';
+  document.getElementById('nesting-info').textContent = `${state.project.fabricWidth}cm × 6.5m — Efficienza ${efficiency.toFixed(1)}%`;
+  document.getElementById('waste-info').textContent = `${wasteArea.toFixed(2)} m² | Risparmio: ~€${(wasteArea * 5).toFixed(2)}`;
+
+  // Summary
+  nctx.font = '11px JetBrains Mono, monospace';
+  nctx.fillStyle = '#ffffff';
+  nctx.textAlign = 'right';
+  nctx.fillText(`Efficienza: ${efficiency.toFixed(1)}% | Risparmio: ~€${(wasteArea * 5).toFixed(2)}`, 885, 490);
 }
 
-function closeNesting() { document.getElementById('nesting-view').classList.remove('active'); }
-function exportNesting() { toast('Esportazione DXF avviata…'); setTimeout(() => toast('File nesting.dxf pronto!'), 1200); }
+function calculateNestingPlacements(pieces) {
+  const placements = [];
+  let x = 30, y = 40, rowHeight = 0;
 
-// ── VIEWS ──
-function switchTab(t) {
-  document.querySelectorAll('.htab').forEach(b => b.classList.remove('active'));
-  event.currentTarget.classList.add('active');
-  if (t === 'piazzamento') runNesting();
-  else if (t === 'taglie') toast('Vista Sviluppo Taglie — seleziona taglie a sinistra');
-  else if (t === 'libreria') toast('Libreria basi predefinite');
-  else toast('Modellistica 2D');
+  pieces.forEach((piece, idx) => {
+    // Calculate bounding box
+    const xs = piece.pts.map(p => p[0]);
+    const ys = piece.pts.map(p => p[1]);
+    const w = Math.max(...xs) - Math.min(...xs) + 20;
+    const h = Math.max(...ys) - Math.min(...ys) + 20;
+
+    // Check if fits in row
+    if (x + w > 640) {
+      x = 30;
+      y += rowHeight + 10;
+      rowHeight = 0;
+    }
+
+    const colors = ['rgba(255,140,0,0.3)', 'rgba(0,246,255,0.3)', 'rgba(255,77,77,0.3)', 'rgba(0,255,157,0.3)'];
+    const strokeColors = ['rgba(255,140,0,0.8)', 'rgba(0,246,255,0.8)', 'rgba(255,77,77,0.8)', 'rgba(0,255,157,0.8)'];
+
+    placements.push({
+      label: piece.label,
+      x: x,
+      y: y,
+      w: w,
+      h: h,
+      color: colors[idx % colors.length],
+      strokeColor: strokeColors[idx % strokeColors.length]
+    });
+
+    x += w + 10;
+    rowHeight = Math.max(rowHeight, h);
+  });
+
+  return placements;
 }
 
-function setView(v) {
-  view = v;
-  document.querySelectorAll('.vtab').forEach(b => b.classList.remove('active'));
-  event.currentTarget.classList.add('active');
-  if (v === '3d') {
-    document.getElementById('canvas-wrapper').style.display = 'none';
-    document.getElementById('view-3d').classList.add('active');
-    draw3D();
-  } else {
-    document.getElementById('canvas-wrapper').style.display = '';
-    document.getElementById('view-3d').classList.remove('active');
-  }
+function calculateWaste(placements) {
+  const totalArea = 880 * 480;
+  const usedArea = placements.reduce((sum, p) => sum + p.w * p.h, 0);
+  return (totalArea - usedArea) / 10000; // Convert to m²
 }
 
-function draw3D() {
-  const c = document.getElementById('canvas3d');
-  const x = c.getContext('2d');
-  x.clearRect(0,0,c.width,c.height);
-  x.fillStyle = '#0f2040'; x.fillRect(0,0,c.width,c.height);
-  x.strokeStyle = '#ff8c00'; x.lineWidth = 2;
-  x.beginPath(); x.ellipse(300, 120, 40, 55, 0, 0, Math.PI*2); x.stroke();
-  x.beginPath();
-  x.moveTo(270,170); x.bezierCurveTo(210,220,190,300,200,380);
-  x.bezierCurveTo(210,420,390,420,400,380);
-  x.bezierCurveTo(410,300,390,220,330,170); x.stroke();
-  x.fillStyle = 'rgba(255,140,0,0.15)';
-  x.beginPath();
-  x.moveTo(275,175); x.bezierCurveTo(215,225,195,305,205,385);
-  x.bezierCurveTo(215,418,385,418,395,385);
-  x.bezierCurveTo(405,305,385,225,325,175);
-  x.fill();
-  x.strokeStyle = '#ff8c00'; x.lineWidth = 1.5; x.stroke();
-  x.strokeStyle = 'rgba(255,140,0,0.5)'; x.lineWidth = 1; x.setLineDash([4,3]);
-  x.beginPath(); x.moveTo(300,175); x.lineTo(300,385); x.stroke();
-  x.setLineDash([]);
-  x.font = "13px 'Plus Jakarta Sans',sans-serif"; x.fillStyle='#8899aa'; x.textAlign='center';
-  x.fillText('Anteprima 3D — Corpino Taglia 40', 300, 450);
-  x.font = "10px 'Inter',sans-serif"; x.fillStyle='#667788';
-  x.fillText('Rotazione: usa strumenti 3D per visualizzazione completa', 300, 470);
+function calculateEfficiency(placements) {
+  const totalArea = 880 * 480;
+  const usedArea = placements.reduce((sum, p) => sum + p.w * p.h, 0);
+  return (usedArea / totalArea) * 100;
 }
 
-// ── MISC ──
-function clearCanvas() { paths = []; currentPath = []; render(); toast('Canvas pulito'); }
+/* ═══════════════════════════════════════════════════════════════
+   EXPORT DXF — Punto 4: Implementazione reale
+   ═══════════════════════════════════════════════════════════════ */
+function exportDXF() {
+  showToast('Generazione DXF in corso...');
+
+  setTimeout(() => {
+    const base = BASE_PATTERNS[state.currentBase];
+    if (!base || !base.pieces) {
+      showToast('Errore: nessun pezzo da esportare');
+      return;
+    }
+
+    let dxfContent = generateDXF(base.pieces);
+
+    const blob = new Blob([dxfContent], { type: 'application/dxf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `modacad-${state.currentBase}-${Date.now()}.dxf`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    showToast('DXF esportato con successo!');
+  }, 500);
+}
+
+function generateDXF(pieces) {
+  let dxf = '0\nSECTION\n2\nENTITIES\n';
+
+  pieces.forEach(piece => {
+    // Generate LWPOLYLINE for each piece
+    dxf += '0\nLWPOLYLINE\n8\npattern\n90\n' + piece.pts.length + '\n70\n1\n';
+    piece.pts.forEach(pt => {
+      dxf += '10\n' + pt[0] + '\n20\n' + pt[1] + '\n';
+    });
+    // Close the polyline
+    dxf += '10\n' + piece.pts[0][0] + '\n20\n' + piece.pts[0][1] + '\n';
+
+    // Add label as TEXT
+    const cx = piece.pts.reduce((s, pt) => s + pt[0], 0) / piece.pts.length;
+    const cy = piece.pts.reduce((s, pt) => s + pt[1], 0) / piece.pts.length;
+    dxf += '0\nTEXT\n8\nlabels\n10\n' + cx + '\n20\n' + (cy - 35) + '\n40\n10\n1\n' + piece.label + '\n';
+  });
+
+  dxf += '0\nENDSEC\n0\nEOF\n';
+  return dxf;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   EXPORT SVG
+   ═══════════════════════════════════════════════════════════════ */
+document.getElementById('btn-export-svg').addEventListener('click', exportSVG);
 
 function exportSVG() {
-  toast('Esportazione SVG in corso…');
+  showToast('Esportazione SVG in corso...');
+
   setTimeout(() => {
-    const base = bases[currentBase];
-    let svgContent = `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="900" height="650">\n  <rect width="900" height="650" fill="#0a1628"/>`;
+    const base = BASE_PATTERNS[state.currentBase];
+    let svgContent = `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="${CONFIG.canvas.width}" height="${CONFIG.canvas.height}">\n  <rect width="${CONFIG.canvas.width}" height="${CONFIG.canvas.height}" fill="#0a1628"/>`;
+
     if (base && base.pieces) {
       base.pieces.forEach(p => {
         const d = 'M ' + p.pts.map(pt => pt.join(' ')).join(' L ') + ' Z';
@@ -879,30 +1424,149 @@ function exportSVG() {
         svgContent += `\n  <text x="${p.pts.reduce((s,pt)=>s+pt[0],0)/p.pts.length}" y="${p.pts.reduce((s,pt)=>s+pt[1],0)/p.pts.length - 35}" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#ffffff">${p.label}</text>`;
       });
     }
+
     svgContent += '\n</svg>';
-    const blob = new Blob([svgContent], {type:'image/svg+xml'});
+    const blob = new Blob([svgContent], { type: 'image/svg+xml' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href=url; a.download='cartamodello.svg'; a.click();
-    toast('SVG esportato!');
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `modacad-${state.currentBase}-${Date.now()}.svg`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    showToast('SVG esportato!');
   }, 600);
 }
 
-function openNewProject() { document.getElementById('modal').classList.add('open'); }
-function closeModal() { document.getElementById('modal').classList.remove('open'); }
+/* ═══════════════════════════════════════════════════════════════
+   3D PREVIEW — Punto 8: Placeholder migliorato
+   ═══════════════════════════════════════════════════════════════ */
+function draw3D() {
+  const c = canvas3d;
+  const x = c.getContext('2d');
+  x.clearRect(0, 0, c.width, c.height);
+  x.fillStyle = '#0f2040';
+  x.fillRect(0, 0, c.width, c.height);
+
+  // Draw mannequin silhouette
+  x.strokeStyle = '#ff8c00';
+  x.lineWidth = 2;
+
+  // Head
+  x.beginPath();
+  x.ellipse(300, 120, 40, 55, 0, 0, Math.PI * 2);
+  x.stroke();
+
+  // Body
+  x.beginPath();
+  x.moveTo(270, 170);
+  x.bezierCurveTo(210, 220, 190, 300, 200, 380);
+  x.bezierCurveTo(210, 420, 390, 420, 400, 380);
+  x.bezierCurveTo(410, 300, 390, 220, 330, 170);
+  x.stroke();
+
+  // Fabric overlay
+  x.fillStyle = 'rgba(255,140,0,0.15)';
+  x.beginPath();
+  x.moveTo(275, 175);
+  x.bezierCurveTo(215, 225, 195, 305, 205, 385);
+  x.bezierCurveTo(215, 418, 385, 418, 395, 385);
+  x.bezierCurveTo(405, 305, 385, 225, 325, 175);
+  x.fill();
+  x.strokeStyle = '#ff8c00';
+  x.lineWidth = 1.5;
+  x.stroke();
+
+  // Seams
+  x.strokeStyle = 'rgba(255,140,0,0.5)';
+  x.lineWidth = 1;
+  x.setLineDash([4, 3]);
+  x.beginPath();
+  x.moveTo(300, 175);
+  x.lineTo(300, 385);
+  x.stroke();
+  x.setLineDash([]);
+
+  // Labels
+  x.font = "13px 'Plus Jakarta Sans', sans-serif";
+  x.fillStyle = '#8899aa';
+  x.textAlign = 'center';
+  x.fillText(`Anteprima 3D — ${BASE_PATTERNS[state.currentBase].name} Taglia ${state.project.baseSize}`, 300, 450);
+  x.font = "10px 'Inter', sans-serif";
+  x.fillStyle = '#667788';
+  x.fillText('Visualizzazione simulata del cartamodello', 300, 470);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MODAL
+   ═══════════════════════════════════════════════════════════════ */
+document.getElementById('btn-new-project').addEventListener('click', () => modal.classList.add('active'));
+document.getElementById('btn-close-modal').addEventListener('click', () => modal.classList.remove('active'));
+document.getElementById('btn-cancel-project').addEventListener('click', () => modal.classList.remove('active'));
+document.getElementById('btn-create-project').addEventListener('click', createProject);
+
 function createProject() {
-  const name = document.getElementById('proj-name').value;
-  closeModal(); clearCanvas();
-  toast('Progetto creato: ' + name);
+  state.project.name = document.getElementById('proj-name').value;
+  state.project.type = document.getElementById('proj-type').value;
+  state.project.baseSize = parseInt(document.getElementById('proj-size').value);
+  state.project.fabric = document.getElementById('proj-fabric').value;
+  state.project.fabricWidth = parseInt(document.getElementById('proj-fabric-width').value);
+  state.project.seamAllowance = parseFloat(document.getElementById('proj-seam-allowance').value) || 1.5;
+
+  modal.classList.remove('active');
+  clearCanvas();
+  renderGradingTable();
+  showToast('Progetto creato: ' + state.project.name);
 }
 
-function toast(msg) {
-  const el = document.getElementById('toast');
-  el.textContent = msg; el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 2400);
+/* ═══════════════════════════════════════════════════════════════
+   CLEAR CANVAS
+   ═══════════════════════════════════════════════════════════════ */
+document.getElementById('btn-clear').addEventListener('click', clearCanvas);
+
+function clearCanvas() {
+  saveState();
+  state.paths = [];
+  state.currentPath = [];
+  state.currentBase = 'bodice';
+  render();
+  showToast('Canvas pulito');
 }
 
-// ── INIT ──
-initLayers();
+/* ═══════════════════════════════════════════════════════════════
+   TOAST — Punto 10: Toast personalizzato
+   ═══════════════════════════════════════════════════════════════ */
+let toastTimeout;
+function showToast(message) {
+  clearTimeout(toastTimeout);
+  toast.textContent = message;
+  toast.classList.add('active');
+  toastTimeout = setTimeout(() => toast.classList.remove('active'), 2400);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   KEYBOARD SHORTCUTS
+   ═══════════════════════════════════════════════════════════════ */
+document.addEventListener('keydown', (e) => {
+  if (e.ctrlKey || e.metaKey) {
+    if (e.key === 'z') {
+      e.preventDefault();
+      undoLast();
+    }
+  }
+  // Tool shortcuts
+  const toolKeys = { 's': 'select', 'p': 'pen', 'l': 'line', 'r': 'rect', 'c': 'curve', 'm': 'measure', 'e': 'eraser' };
+  if (toolKeys[e.key] && !e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT') {
+    const btn = document.querySelector(`.tool-btn[data-tool="${toolKeys[e.key]}"]`);
+    if (btn) btn.click();
+  }
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   INITIALIZATION
+   ═══════════════════════════════════════════════════════════════ */
+renderGradingTable();
+renderLayers();
 render();
 </script>
 
