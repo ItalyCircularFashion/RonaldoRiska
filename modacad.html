@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>ModaCAD Studio | Ronaldo Riska</title>
-  <meta name="description" content="ModaCAD Studio: workspace CAD per modellistica digitale, cartamodelli e gradazione taglie. Interfaccia professionale ispirata a Audaces e Lectra.">
+  <meta name="description" content="ModaCAD Studio: workspace CAD per modellistica digitale, cartamodelli e creazione capi di abbigliamento. Interfaccia professionale.">
   <meta name="keywords" content="Ronaldo Riska, ModaCAD, CAD, moda, cartamodelli, modellistica, pattern making">
   <meta name="theme-color" content="#0a1628">
   <link rel="alternate" hreflang="it" href="https://italycircularfashion.github.io/RonaldoRiska/modacad.html">
@@ -26,7 +26,7 @@
     .app-header {
       background: #0f2040;
       border-bottom: 2px solid #ff8c00;
-      padding: 12px 20px;
+      padding: 10px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -41,9 +41,9 @@
     .app-title span { color: #ff8c00; }
     .header-actions { display: flex; gap: 8px; }
     .btn {
-      padding: 8px 16px;
+      padding: 8px 14px;
       border-radius: 6px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 500;
       cursor: pointer;
       border: none;
@@ -59,53 +59,91 @@
       flex: 1;
       overflow: hidden;
     }
-    .toolbar {
-      width: 220px;
+
+    /* Left Panel - Pattern Library */
+    .pattern-panel {
+      width: 260px;
       background: #0f2040;
       border-right: 1px solid #2a5490;
-      padding: 16px;
-      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
       flex-shrink: 0;
     }
-    .tool-section { margin-bottom: 20px; }
-    .tool-label {
-      font-size: 11px;
+    .panel-header {
+      padding: 12px 16px;
+      background: #163058;
+      border-bottom: 1px solid #2a5490;
+      font-size: 12px;
+      font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       color: #ff8c00;
+    }
+    .panel-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+    }
+
+    /* Pattern Categories */
+    .pattern-category {
+      margin-bottom: 16px;
+    }
+    .category-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #8899aa;
       margin-bottom: 8px;
       font-weight: 600;
     }
-    .tool-grid {
+    .pattern-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 6px;
     }
-    .tool-btn {
-      padding: 10px 8px;
+    .pattern-btn {
+      padding: 10px 6px;
       background: #163058;
       border: 1px solid #2a5490;
       border-radius: 6px;
       color: #ffffff;
-      font-size: 12px;
+      font-size: 11px;
       cursor: pointer;
       text-align: center;
       transition: all 0.15s;
     }
-    .tool-btn:hover { background: #1e4070; border-color: #ff8c00; }
-    .tool-btn.active { background: #ff8c00; color: #0a1628; border-color: #ff8c00; }
-    .tool-btn .icon { font-size: 18px; display: block; margin-bottom: 2px; }
+    .pattern-btn:hover { background: #1e4070; border-color: #ff8c00; }
+    .pattern-btn.active { background: #ff8c00; color: #0a1628; border-color: #ff8c00; }
+    .pattern-btn .icon { font-size: 20px; display: block; margin-bottom: 4px; }
 
-    .color-palette { display: flex; flex-wrap: wrap; gap: 4px; }
-    .color-swatch {
-      width: 24px; height: 24px;
-      border-radius: 4px;
-      cursor: pointer;
-      border: 2px solid transparent;
+    /* Options Panel */
+    .options-panel {
+      padding: 12px;
+      border-top: 1px solid #2a5490;
+      background: #0a1628;
     }
-    .color-swatch:hover { border-color: #ffffff; }
-    .color-swatch.active { border-color: #ff8c00; }
+    .option-row {
+      margin-bottom: 10px;
+    }
+    .option-label {
+      font-size: 11px;
+      color: #8899aa;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .option-select, .option-input {
+      width: 100%;
+      padding: 6px 8px;
+      background: #163058;
+      border: 1px solid #2a5490;
+      border-radius: 4px;
+      color: #ffffff;
+      font-size: 12px;
+    }
+    .option-select:focus { border-color: #ff8c00; outline: none; }
 
+    /* Canvas Area */
     .canvas-container {
       flex: 1;
       position: relative;
@@ -123,25 +161,132 @@
       top: 0; left: 0;
       width: 100%; height: 100%;
       pointer-events: none;
-      opacity: 0.1;
+      opacity: 0.08;
       background-image:
-        linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);
       background-size: 20px 20px;
     }
-    .info-panel {
-      position: absolute;
-      bottom: 16px; right: 16px;
+
+    /* Right Panel - Colors & Layers */
+    .right-panel {
+      width: 200px;
       background: #0f2040;
-      border: 1px solid #2a5490;
-      border-radius: 8px;
-      padding: 12px;
-      font-size: 12px;
-      min-width: 160px;
+      border-left: 1px solid #2a5490;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
     }
-    .info-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+
+    /* Color Palette */
+    .color-section { padding: 12px; }
+    .color-section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #ff8c00;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .color-palette { display: flex; flex-wrap: wrap; gap: 4px; }
+    .color-swatch {
+      width: 28px; height: 28px;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .color-swatch:hover { border-color: #ffffff; transform: scale(1.1); }
+    .color-swatch.active { border-color: #ff8c00; box-shadow: 0 0 0 2px rgba(255,140,0,0.3); }
+
+    /* Layers */
+    .layers-section {
+      flex: 1;
+      padding: 12px;
+      border-top: 1px solid #2a5490;
+      overflow-y: auto;
+    }
+    .layer-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      background: #163058;
+      border: 1px solid #2a5490;
+      border-radius: 4px;
+      margin-bottom: 4px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .layer-item:hover { border-color: #ff8c00; }
+    .layer-item.active { border-color: #ff8c00; background: #1e4070; }
+    .layer-color {
+      width: 16px; height: 16px;
+      border-radius: 3px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .layer-name { flex: 1; }
+    .layer-visibility {
+      cursor: pointer;
+      opacity: 0.6;
+    }
+    .layer-visibility:hover { opacity: 1; }
+
+    /* Info Panel */
+    .info-panel {
+      padding: 12px;
+      border-top: 1px solid #2a5490;
+      background: #0a1628;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      font-size: 11px;
+    }
     .info-label { color: #8899aa; }
     .info-value { color: #ff8c00; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+
+    /* Toolbar */
+    .toolbar-section { padding: 12px; border-bottom: 1px solid #2a5490; }
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+    }
+    .tool-btn {
+      padding: 8px 4px;
+      background: #163058;
+      border: 1px solid #2a5490;
+      border-radius: 4px;
+      color: #ffffff;
+      font-size: 10px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+    }
+    .tool-btn:hover { background: #1e4070; border-color: #ff8c00; }
+    .tool-btn.active { background: #ff8c00; color: #0a1628; border-color: #ff8c00; }
+    .tool-btn .icon { font-size: 16px; display: block; }
+
+    /* Thickness */
+    .thickness-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+    }
+    .thick-btn {
+      padding: 6px;
+      background: #163058;
+      border: 1px solid #2a5490;
+      border-radius: 4px;
+      color: #ffffff;
+      font-size: 10px;
+      cursor: pointer;
+      text-align: center;
+    }
+    .thick-btn:hover { border-color: #ff8c00; }
+    .thick-btn.active { background: #ff8c00; color: #0a1628; border-color: #ff8c00; }
   </style>
 </head>
 <body>
@@ -151,62 +296,151 @@
     <div class="header-actions">
       <button class="btn btn-secondary" onclick="clearCanvas()">Cancella</button>
       <button class="btn btn-secondary" onclick="undoLast()">Annulla</button>
+      <button class="btn btn-secondary" onclick="salvaProgetto()">Salva</button>
       <button class="btn btn-primary" onclick="exportPNG()">Esporta PNG</button>
     </div>
   </header>
 
   <div class="app-body">
-    <!-- Toolbar -->
-    <aside class="toolbar">
-      <div class="tool-section">
-        <div class="tool-label">Strumenti</div>
-        <div class="tool-grid">
-          <button class="tool-btn active" data-tool="pencil" onclick="selectTool('pencil')">
-            <span class="icon">✏️</span>Matita
-          </button>
-          <button class="tool-btn" data-tool="line" onclick="selectTool('line')">
-            <span class="icon">📏</span>Linea
-          </button>
-          <button class="tool-btn" data-tool="rect" onclick="selectTool('rect')">
-            <span class="icon">⬜</span>Rettangolo
-          </button>
-          <button class="tool-btn" data-tool="eraser" onclick="selectTool('eraser')">
-            <span class="icon">🧽</span>Gomma
-          </button>
+    <!-- Left Panel: Pattern Library -->
+    <aside class="pattern-panel">
+      <div class="panel-header">Libreria Pattern</div>
+      <div class="panel-content">
+        <!-- Strumenti -->
+        <div class="pattern-category">
+          <div class="category-title">Strumenti</div>
+          <div class="tool-grid">
+            <button class="tool-btn active" data-tool="pencil" onclick="selectTool('pencil')">
+              <span class="icon">✏️</span>Matita
+            </button>
+            <button class="tool-btn" data-tool="line" onclick="selectTool('line')">
+              <span class="icon">📏</span>Linea
+            </button>
+            <button class="tool-btn" data-tool="rect" onclick="selectTool('rect')">
+              <span class="icon">⬜</span>Retta
+            </button>
+            <button class="tool-btn" data-tool="circle" onclick="selectTool('circle')">
+              <span class="icon">⭕</span>Cerchio
+            </button>
+            <button class="tool-btn" data-tool="eraser" onclick="selectTool('eraser')">
+              <span class="icon">🧽</span>Gomma
+            </button>
+            <button class="tool-btn" data-tool="text" onclick="selectTool('text')">
+              <span class="icon">🔤</span>Testo
+            </button>
+            <button class="tool-btn" data-tool="measure" onclick="selectTool('measure')">
+              <span class="icon">📐</span>Misura
+            </button>
+            <button class="tool-btn" data-tool="select" onclick="selectTool('select')">
+              <span class="icon">👆</span>Seleziona
+            </button>
+          </div>
+        </div>
+
+        <!-- Spessore -->
+        <div class="pattern-category">
+          <div class="category-title">Spessore</div>
+          <div class="thickness-grid">
+            <button class="thick-btn" data-width="1" onclick="setWidth(1)">1px</button>
+            <button class="thick-btn active" data-width="2" onclick="setWidth(2)">2px</button>
+            <button class="thick-btn" data-width="4" onclick="setWidth(4)">4px</button>
+            <button class="thick-btn" data-width="8" onclick="setWidth(8)">8px</button>
+          </div>
+        </div>
+
+        <!-- Pattern Base -->
+        <div class="pattern-category">
+          <div class="category-title">Pattern Base</div>
+          <div class="pattern-grid">
+            <button class="pattern-btn" onclick="loadPattern('front')">
+              <span class="icon">👕</span>Fronte
+            </button>
+            <button class="pattern-btn" onclick="loadPattern('back')">
+              <span class="icon">👕</span>Retro
+            </button>
+            <button class="pattern-btn" onclick="loadPattern('sleeve')">
+              <span class="icon">💪</span>Manica
+            </button>
+            <button class="pattern-btn" onclick="loadPattern('collar')">
+              <span class="icon">👔</span>Collo
+            </button>
+            <button class="pattern-btn" onclick="loadPattern('cuff')">
+              <span class="icon">🎗️</span>Polsino
+            </button>
+            <button class="pattern-btn" onclick="loadPattern('pocket')">
+              <span class="icon">👝</span>Tasca
+            </button>
+            <button class="pattern-btn" onclick="loadPattern('hem')">
+              <span class="icon">〰️</span>Orlo
+            </button>
+            <button class="pattern-btn" onclick="loadPattern('yoke')">
+              <span class="icon">🔷</span>Spalla
+            </button>
+          </div>
+        </div>
+
+        <!-- Capo Completo -->
+        <div class="pattern-category">
+          <div class="category-title">Capo Completo</div>
+          <div class="pattern-grid">
+            <button class="pattern-btn" onclick="loadGarment('tshirt')">
+              <span class="icon">👕</span>T-Shirt
+            </button>
+            <button class="pattern-btn" onclick="loadGarment('shirt')">
+              <span class="icon">👔</span>Camicia
+            </button>
+            <button class="pattern-btn" onclick="loadGarment('jacket')">
+              <span class="icon">🧥</span>Giacca
+            </button>
+            <button class="pattern-btn" onclick="loadGarment('pants')">
+              <span class="icon">👖</span>Pantaloni
+            </button>
+            <button class="pattern-btn" onclick="loadGarment('skirt')">
+              <span class="icon">👗</span>Gonna
+            </button>
+            <button class="pattern-btn" onclick="loadGarment('dress')">
+              <span class="icon">👗</span>Vestito
+            </button>
+          </div>
         </div>
       </div>
 
-      <div class="tool-section">
-        <div class="tool-label">Spessore</div>
-        <div class="tool-grid">
-          <button class="tool-btn" data-width="2" onclick="setWidth(2)">Sottile</button>
-          <button class="tool-btn active" data-width="4" onclick="setWidth(4)">Medio</button>
-          <button class="tool-btn" data-width="8" onclick="setWidth(8)">Spesso</button>
-          <button class="tool-btn" data-width="16" onclick="setWidth(16)">Extra</button>
+      <!-- Options Panel -->
+      <div class="options-panel" id="options-panel">
+        <div class="option-row">
+          <label class="option-label">Tipo di Collo</label>
+          <select class="option-select" id="opt-collar" onchange="updatePatternOptions()">
+            <option value="crew">Girocollo</option>
+            <option value="v-neck">V-Neck</option>
+            <option value="polo">Polo</option>
+            <option value="button-down">Button-Down</option>
+            <option value="mandarin">Mandarino</option>
+          </select>
         </div>
-      </div>
-
-      <div class="tool-section">
-        <div class="tool-label">Colore</div>
-        <div class="color-palette">
-          <div class="color-swatch active" style="background:#ff8c00" onclick="setColor('#ff8c00')"></div>
-          <div class="color-swatch" style="background:#ffaa00" onclick="setColor('#ffaa00')"></div>
-          <div class="color-swatch" style="background:#ffffff" onclick="setColor('#ffffff')"></div>
-          <div class="color-swatch" style="background:#00f6ff" onclick="setColor('#00f6ff')"></div>
-          <div class="color-swatch" style="background:#ff4d4d" onclick="setColor('#ff4d4d')"></div>
-          <div class="color-swatch" style="background:#00ff9d" onclick="setColor('#00ff9d')"></div>
-          <div class="color-swatch" style="background:#ffaa00" onclick="setColor('#ffaa00')"></div>
-          <div class="color-swatch" style="background:#3a6898" onclick="setColor('#3a6898')"></div>
+        <div class="option-row">
+          <label class="option-label">Lunghezza Manica</label>
+          <select class="option-select" id="opt-sleeve" onchange="updatePatternOptions()">
+            <option value="short">Corta</option>
+            <option value="3/4">3/4</option>
+            <option value="long">Lunga</option>
+            <option value="sleeveless">Senza</option>
+          </select>
         </div>
-      </div>
-
-      <div class="tool-section">
-        <div class="tool-label">Pattern Predefiniti</div>
-        <div class="tool-grid">
-          <button class="tool-btn" onclick="loadPattern('front')">Fronte</button>
-          <button class="tool-btn" onclick="loadPattern('back')">Retro</button>
-          <button class="tool-btn" onclick="loadPattern('sleeve')">Manica</button>
-          <button class="tool-btn" onclick="loadPattern('collar')">Collo</button>
+        <div class="option-row">
+          <label class="option-label">Lunghezza Capo</label>
+          <select class="option-select" id="opt-length" onchange="updatePatternOptions()">
+            <option value="standard">Standard</option>
+            <option value="lungo">Lungo</option>
+            <option value="corto">Corto</option>
+          </select>
+        </div>
+        <div class="option-row">
+          <label class="option-label">Vita</label>
+          <select class="option-select" id="opt-fit" onchange="updatePatternOptions()">
+            <option value="regular">Regolare</option>
+            <option value="slim">Slim</option>
+            <option value="relaxed">Relaxed</option>
+          </select>
         </div>
       </div>
     </aside>
@@ -215,13 +449,73 @@
     <main class="canvas-container">
       <canvas id="main-canvas"></canvas>
       <div class="grid-overlay"></div>
+    </main>
+
+    <!-- Right Panel: Colors & Layers -->
+    <aside class="right-panel">
+      <div class="color-section">
+        <div class="color-section-title">Colore Principale</div>
+        <div class="color-palette" id="primary-colors">
+          <div class="color-swatch active" style="background:#ff8c00" onclick="setColor('#ff8c00')"></div>
+          <div class="color-swatch" style="background:#ff6600" onclick="setColor('#ff6600')"></div>
+          <div class="color-swatch" style="background:#ffaa00" onclick="setColor('#ffaa00')"></div>
+          <div class="color-swatch" style="background:#cc4400" onclick="setColor('#cc4400')"></div>
+          <div class="color-swatch" style="background:#ffffff" onclick="setColor('#ffffff')"></div>
+          <div class="color-swatch" style="background:#e0e0e0" onclick="setColor('#e0e0e0')"></div>
+          <div class="color-swatch" style="background:#1e4070" onclick="setColor('#1e4070')"></div>
+          <div class="color-swatch" style="background:#0a1628" onclick="setColor('#0a1628')"></div>
+        </div>
+      </div>
+
+      <div class="color-section">
+        <div class="color-section-title">Colore Secondario</div>
+        <div class="color-palette" id="secondary-colors">
+          <div class="color-swatch" style="background:#00f6ff" onclick="setColor('#00f6ff')"></div>
+          <div class="color-swatch" style="background:#00ff9d" onclick="setColor('#00ff9d')"></div>
+          <div class="color-swatch" style="background:#ff4d4d" onclick="setColor('#ff4d4d')"></div>
+          <div class="color-swatch" style="background:#ff00ff" onclick="setColor('#ff00ff')"></div>
+          <div class="color-swatch" style="background:#ffff00" onclick="setColor('#ffff00')"></div>
+          <div class="color-swatch" style="background:#8800ff" onclick="setColor('#8800ff')"></div>
+          <div class="color-swatch" style="background:#0066ff" onclick="setColor('#0066ff')"></div>
+          <div class="color-swatch" style="background:#333333" onclick="setColor('#333333')"></div>
+        </div>
+      </div>
+
+      <div class="color-section">
+        <div class="color-section-title">Colore Bordi/Cuciture</div>
+        <div class="color-palette" id="border-colors">
+          <div class="color-swatch" style="background:#ff8c00" onclick="setColor('#ff8c00')"></div>
+          <div class="color-swatch" style="background:#ffaa00" onclick="setColor('#ffaa00')"></div>
+          <div class="color-swatch" style="background:#ffffff" onclick="setColor('#ffffff')"></div>
+          <div class="color-swatch" style="background:#8899aa" onclick="setColor('#8899aa')"></div>
+          <div class="color-swatch" style="background:#000000" onclick="setColor('#000000')"></div>
+        </div>
+      </div>
+
+      <div class="layers-section">
+        <div class="color-section-title">Layer</div>
+        <div id="layers-list">
+          <div class="layer-item active" data-layer="pattern">
+            <div class="layer-color" style="background:#ff8c00"></div>
+            <span class="layer-name">Pattern</span>
+            <span class="layer-visibility">👁️</span>
+          </div>
+          <div class="layer-item" data-layer="drawing">
+            <div class="layer-color" style="background:#ffffff"></div>
+            <span class="layer-name">Disegno</span>
+            <span class="layer-visibility">👁️</span>
+          </div>
+        </div>
+      </div>
+
       <div class="info-panel">
         <div class="info-row"><span class="info-label">Strumento:</span><span class="info-value" id="info-tool">Matita</span></div>
-        <div class="info-row"><span class="info-label">Spessore:</span><span class="info-value" id="info-width">4px</span></div>
+        <div class="info-row"><span class="info-label">Spessore:</span><span class="info-value" id="info-width">2px</span></div>
         <div class="info-row"><span class="info-label">Colore:</span><span class="info-value" id="info-color">#ff8c00</span></div>
         <div class="info-row"><span class="info-label">Tratti:</span><span class="info-value" id="info-strokes">0</span></div>
+        <div class="info-row"><span class="info-label">Pattern:</span><span class="info-value" id="info-pattern">Nessuno</span></div>
       </div>
-    </main>
+    </aside>
   </div>
 
   <script>
@@ -231,12 +525,18 @@
     // State
     let currentTool = 'pencil';
     let currentColor = '#ff8c00';
-    let currentWidth = 4;
+    let currentWidth = 2;
     let isDrawing = false;
     let startX = 0, startY = 0;
     let strokes = 0;
     let undoStack = [];
-    let tempCanvas = null;
+    let currentPattern = null;
+    let patternColor = '#ff8c00';
+    let drawingColor = '#ffffff';
+    let layers = {
+      pattern: { visible: true, color: '#ff8c00' },
+      drawing: { visible: true, color: '#ffffff' }
+    };
 
     // Resize canvas
     function resizeCanvas() {
@@ -257,7 +557,7 @@
 
     // Save state for undo
     function saveState() {
-      if (undoStack.length > 20) undoStack.shift();
+      if (undoStack.length > 30) undoStack.shift();
       undoStack.push(canvas.toDataURL());
     }
 
@@ -267,13 +567,17 @@
       document.querySelectorAll('.tool-btn[data-tool]').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.tool === tool);
       });
-      document.getElementById('info-tool').textContent = tool.charAt(0).toUpperCase() + tool.slice(1);
+      const names = {
+        pencil: 'Matita', line: 'Linea', rect: 'Rettangolo', circle: 'Cerchio',
+        eraser: 'Gomma', text: 'Testo', measure: 'Misura', select: 'Seleziona'
+      };
+      document.getElementById('info-tool').textContent = names[tool] || tool;
     }
 
     // Width selection
     function setWidth(width) {
       currentWidth = width;
-      document.querySelectorAll('.tool-btn[data-width]').forEach(btn => {
+      document.querySelectorAll('.thick-btn[data-width]').forEach(btn => {
         btn.classList.toggle('active', parseInt(btn.dataset.width) === width);
       });
       document.getElementById('info-width').textContent = width + 'px';
@@ -283,7 +587,14 @@
     function setColor(color) {
       currentColor = color;
       document.querySelectorAll('.color-swatch').forEach(s => {
-        s.classList.toggle('active', s.style.background === color || s.style.backgroundColor === color);
+        s.classList.remove('active');
+      });
+      // Find and activate matching swatch
+      document.querySelectorAll('.color-swatch').forEach(s => {
+        const bg = s.style.background;
+        if (bg === color || bg === color.toUpperCase()) {
+          s.classList.add('active');
+        }
       });
       document.getElementById('info-color').textContent = color;
     }
@@ -317,6 +628,14 @@
       if (currentTool === 'pencil' || currentTool === 'eraser') {
         ctx.beginPath();
         ctx.moveTo(startX, startY);
+      } else if (currentTool === 'text') {
+        const text = prompt('Inserisci testo:');
+        if (text) {
+          ctx.font = `${currentWidth * 4}px Inter, sans-serif`;
+          ctx.fillStyle = currentTool === 'eraser' ? '#163058' : currentColor;
+          ctx.fillText(text, startX, startY);
+        }
+        isDrawing = false;
       }
     }
 
@@ -328,35 +647,45 @@
       ctx.lineWidth = currentWidth;
 
       if (currentTool === 'pencil' || currentTool === 'eraser') {
-        ctx.lineTo(coords.x, coords.y);
-        ctx.stroke();
-      } else if (currentTool === 'line' || currentTool === 'rect') {
-        // For line/rect, redraw from saved state
-        if (tempCanvas) {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          const img = new Image();
-          img.onload = () => {
-            ctx.drawImage(img, 0, 0);
-            drawShape(coords);
-          };
-          img.src = tempCanvas;
-        } else {
-          drawShape(coords);
-        }
-      }
-    }
-
-    function drawShape(coords) {
-      ctx.strokeStyle = currentColor;
-      ctx.lineWidth = currentWidth;
-      ctx.beginPath();
-      if (currentTool === 'line') {
+        ctx.beginPath();
         ctx.moveTo(startX, startY);
         ctx.lineTo(coords.x, coords.y);
+        ctx.stroke();
+        startX = coords.x;
+        startY = coords.y;
+      } else if (currentTool === 'line') {
+        redrawCanvas();
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(coords.x, coords.y);
+        ctx.stroke();
       } else if (currentTool === 'rect') {
-        ctx.rect(startX, startY, coords.x - startX, coords.y - startY);
+        redrawCanvas();
+        ctx.strokeStyle = currentColor;
+        ctx.lineWidth = currentWidth;
+        ctx.strokeRect(startX, startY, coords.x - startX, coords.y - startY);
+      } else if (currentTool === 'circle') {
+        redrawCanvas();
+        ctx.beginPath();
+        const rx = Math.abs(coords.x - startX) / 2;
+        const ry = Math.abs(coords.y - startY) / 2;
+        const cx = startX + (coords.x - startX) / 2;
+        const cy = startY + (coords.y - startY) / 2;
+        ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+        ctx.stroke();
+      } else if (currentTool === 'measure') {
+        redrawCanvas();
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(coords.x, coords.y);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        const dist = Math.sqrt(Math.pow(coords.x - startX, 2) + Math.pow(coords.y - startY, 2));
+        ctx.font = '12px JetBrains Mono, monospace';
+        ctx.fillStyle = '#ff8c00';
+        ctx.fillText(`${(dist / 20).toFixed(1)}cm`, (startX + coords.x) / 2, (startY + coords.y) / 2 - 10);
       }
-      ctx.stroke();
     }
 
     function stopDrawing(e) {
@@ -364,7 +693,6 @@
       isDrawing = false;
       strokes++;
       document.getElementById('info-strokes').textContent = strokes;
-      tempCanvas = null;
     }
 
     function handleTouch(e) {
@@ -380,14 +708,21 @@
     }
 
     function redrawCanvas() {
+      const dpr = window.devicePixelRatio || 1;
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
       ctx.fillStyle = '#163058';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, w, h);
+      if (currentPattern && layers.pattern.visible) {
+        drawPattern(currentPattern);
+      }
     }
 
     function clearCanvas() {
       saveState();
-      ctx.fillStyle = '#163058';
-      ctx.fillRect(0, 0, canvas.width / (window.devicePixelRatio || 1), canvas.height / (window.devicePixelRatio || 1));
+      currentPattern = null;
+      document.getElementById('info-pattern').textContent = 'Nessuno';
+      redrawCanvas();
       strokes = 0;
       document.getElementById('info-strokes').textContent = '0';
     }
@@ -410,61 +745,246 @@
       link.click();
     }
 
-    // Pattern presets
-    function loadPattern(type) {
-      saveState();
-      const w = canvas.width / (window.devicePixelRatio || 1);
-      const h = canvas.height / (window.devicePixelRatio || 1);
-      ctx.fillStyle = '#163058';
-      ctx.fillRect(0, 0, w, h);
-      
-      ctx.strokeStyle = '#ff8c00';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
+    function salvaProgetto() {
+      const dataUrl = canvas.toDataURL();
+      localStorage.setItem('modacad-project', dataUrl);
+      alert('Progetto salvato!');
+    }
 
+    // Pattern drawing
+    function drawPattern(type) {
+      const dpr = window.devicePixelRatio || 1;
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
       const cx = w / 2;
       const cy = h / 2;
+      
+      ctx.strokeStyle = patternColor;
+      ctx.lineWidth = 2;
+      ctx.fillStyle = 'rgba(255,140,0,0.05)';
+
+      const collarType = document.getElementById('opt-collar')?.value || 'crew';
+      const sleeveType = document.getElementById('opt-sleeve')?.value || 'short';
+      const lengthType = document.getElementById('opt-length')?.value || 'standard';
+      const fitType = document.getElementById('opt-fit')?.value || 'regular';
 
       if (type === 'front') {
-        // Front bodice
-        ctx.moveTo(cx - 60, cy - 100);
-        ctx.lineTo(cx + 60, cy - 100);
-        ctx.lineTo(cx + 80, cy);
-        ctx.lineTo(cx + 70, cy + 120);
-        ctx.lineTo(cx - 70, cy + 120);
-        ctx.lineTo(cx - 80, cy);
-        ctx.closePath();
-        ctx.stroke();
-        // Neckline
+        // Front bodice with options
+        const fitOffset = fitType === 'slim' ? 10 : fitType === 'relaxed' ? -10 : 0;
+        const lengthMult = lengthType === 'lungo' ? 1.3 : lengthType === 'corto' ? 0.7 : 1;
+        
         ctx.beginPath();
-        ctx.arc(cx, cy - 100, 30, 0, Math.PI, false);
-        ctx.stroke();
-      } else if (type === 'back') {
-        // Back bodice
-        ctx.moveTo(cx - 60, cy - 100);
-        ctx.lineTo(cx + 60, cy - 100);
-        ctx.lineTo(cx + 80, cy);
-        ctx.lineTo(cx + 70, cy + 120);
-        ctx.lineTo(cx - 70, cy + 120);
-        ctx.lineTo(cx - 80, cy);
+        ctx.moveTo(cx - 60 + fitOffset, cy - 100);
+        ctx.lineTo(cx + 60 - fitOffset, cy - 100);
+        ctx.lineTo(cx + 80 - fitOffset, cy);
+        ctx.lineTo(cx + 70 - fitOffset, cy + 120 * lengthMult);
+        ctx.lineTo(cx - 70 + fitOffset, cy + 120 * lengthMult);
+        ctx.lineTo(cx - 80 + fitOffset, cy);
         ctx.closePath();
         ctx.stroke();
-      } else if (type === 'sleeve') {
-        // Sleeve
-        ctx.moveTo(cx - 80, cy - 60);
-        ctx.lineTo(cx + 80, cy - 60);
-        ctx.lineTo(cx + 60, cy + 80);
-        ctx.lineTo(cx - 60, cy + 80);
-        ctx.closePath();
-        ctx.stroke();
-      } else if (type === 'collar') {
+        ctx.fill();
+
         // Collar
-        ctx.moveTo(cx - 50, cy);
-        ctx.quadraticCurveTo(cx, cy - 40, cx + 50, cy);
-        ctx.quadraticCurveTo(cx, cy + 20, cx - 50, cy);
+        ctx.beginPath();
+        if (collarType === 'crew') {
+          ctx.arc(cx, cy - 100, 30, 0, Math.PI, false);
+        } else if (collarType === 'v-neck') {
+          ctx.moveTo(cx - 30, cy - 100);
+          ctx.lineTo(cx, cy - 60);
+          ctx.lineTo(cx + 30, cy - 100);
+        } else if (collarType === 'polo') {
+          ctx.moveTo(cx - 25, cy - 100);
+          ctx.lineTo(cx - 15, cy - 80);
+          ctx.lineTo(cx, cy - 90);
+          ctx.lineTo(cx + 15, cy - 80);
+          ctx.lineTo(cx + 25, cy - 100);
+        } else if (collarType === 'button-down') {
+          ctx.moveTo(cx - 30, cy - 100);
+          ctx.lineTo(cx - 20, cy - 70);
+          ctx.lineTo(cx, cy - 80);
+          ctx.lineTo(cx + 20, cy - 70);
+          ctx.lineTo(cx + 30, cy - 100);
+          ctx.stroke();
+          // Buttons
+          for (let i = 0; i < 4; i++) {
+            ctx.beginPath();
+            ctx.arc(cx, cy - 90 + i * 15, 3, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+        } else if (collarType === 'mandarin') {
+          ctx.rect(cx - 20, cy - 110, 40, 15);
+        }
+        ctx.stroke();
+
+        // Sleeves
+        if (sleeveType !== 'sleeveless') {
+          const sleeveLen = sleeveType === 'short' ? 40 : sleeveType === '3/4' ? 80 : 120;
+          // Left sleeve
+          ctx.beginPath();
+          ctx.moveTo(cx - 80 + fitOffset, cy);
+          ctx.lineTo(cx - 100 + fitOffset, cy + sleeveLen);
+          ctx.lineTo(cx - 70 + fitOffset, cy + sleeveLen - 10);
+          ctx.lineTo(cx - 60 + fitOffset, cy + 10);
+          ctx.stroke();
+          // Right sleeve
+          ctx.beginPath();
+          ctx.moveTo(cx + 80 - fitOffset, cy);
+          ctx.lineTo(cx + 100 - fitOffset, cy + sleeveLen);
+          ctx.lineTo(cx + 70 - fitOffset, cy + sleeveLen - 10);
+          ctx.lineTo(cx + 60 - fitOffset, cy + 10);
+          ctx.stroke();
+        }
+
+      } else if (type === 'back') {
+        const fitOffset = fitType === 'slim' ? 10 : fitType === 'relaxed' ? -10 : 0;
+        const lengthMult = lengthType === 'lungo' ? 1.3 : lengthType === 'corto' ? 0.7 : 1;
+        
+        ctx.beginPath();
+        ctx.moveTo(cx - 60 + fitOffset, cy - 100);
+        ctx.lineTo(cx + 60 - fitOffset, cy - 100);
+        ctx.lineTo(cx + 80 - fitOffset, cy);
+        ctx.lineTo(cx + 70 - fitOffset, cy + 120 * lengthMult);
+        ctx.lineTo(cx - 70 + fitOffset, cy + 120 * lengthMult);
+        ctx.lineTo(cx - 80 + fitOffset, cy);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.fill();
+
+        // Yoke
+        ctx.beginPath();
+        ctx.moveTo(cx - 50, cy - 80);
+        ctx.quadraticCurveTo(cx, cy - 90, cx + 50, cy - 80);
+        ctx.stroke();
+
+      } else if (type === 'sleeve') {
+        const sleeveLen = sleeveType === 'short' ? 80 : sleeveType === '3/4' ? 140 : 200;
+        ctx.beginPath();
+        ctx.moveTo(cx - 60, cy - 40);
+        ctx.quadraticCurveTo(cx, cy - 60, cx + 60, cy - 40);
+        ctx.lineTo(cx + 50, cy + sleeveLen);
+        ctx.lineTo(cx - 50, cy + sleeveLen);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.fill();
+        // Cuff
+        ctx.beginPath();
+        ctx.moveTo(cx - 50, cy + sleeveLen);
+        ctx.lineTo(cx + 50, cy + sleeveLen);
+        ctx.stroke();
+
+      } else if (type === 'collar') {
+        if (collarType === 'crew') {
+          ctx.beginPath();
+          ctx.ellipse(cx, cy, 50, 30, 0, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.ellipse(cx, cy, 35, 20, 0, 0, Math.PI * 2);
+          ctx.stroke();
+        } else if (collarType === 'polo') {
+          ctx.beginPath();
+          ctx.moveTo(cx - 40, cy - 20);
+          ctx.lineTo(cx - 30, cy + 20);
+          ctx.lineTo(cx - 15, cy + 10);
+          ctx.lineTo(cx, cy + 20);
+          ctx.lineTo(cx + 15, cy + 10);
+          ctx.lineTo(cx + 30, cy + 20);
+          ctx.lineTo(cx + 40, cy - 20);
+          ctx.stroke();
+        } else if (collarType === 'button-down') {
+          ctx.beginPath();
+          ctx.moveTo(cx - 40, cy - 20);
+          ctx.lineTo(cx - 30, cy + 30);
+          ctx.lineTo(cx + 30, cy + 30);
+          ctx.lineTo(cx + 40, cy - 20);
+          ctx.stroke();
+          // Buttons
+          for (let i = 0; i < 5; i++) {
+            ctx.beginPath();
+            ctx.arc(cx, cy - 10 + i * 12, 4, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+        } else {
+          ctx.beginPath();
+          ctx.ellipse(cx, cy, 50, 25, 0, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+
+      } else if (type === 'cuff') {
+        ctx.beginPath();
+        ctx.rect(cx - 40, cy - 20, 80, 40);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.rect(cx - 35, cy - 15, 70, 30);
+        ctx.stroke();
+        // Button
+        ctx.beginPath();
+        ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+        ctx.stroke();
+
+      } else if (type === 'pocket') {
+        ctx.beginPath();
+        ctx.rect(cx - 30, cy - 20, 60, 50);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(cx - 30, cy - 20);
+        ctx.lineTo(cx + 30, cy - 20);
+        ctx.stroke();
+        // Pocket flap
+        ctx.beginPath();
+        ctx.moveTo(cx - 25, cy - 15);
+        ctx.lineTo(cx + 25, cy - 15);
+        ctx.stroke();
+
+      } else if (type === 'hem') {
+        ctx.beginPath();
+        ctx.moveTo(cx - 80, cy);
+        for (let i = 0; i < 16; i++) {
+          const x = cx - 80 + i * 10;
+          const y = cy + (i % 2 === 0 ? 0 : 8);
+          ctx.lineTo(x, y);
+        }
+        ctx.lineTo(cx + 80, cy);
+        ctx.stroke();
+
+      } else if (type === 'yoke') {
+        ctx.beginPath();
+        ctx.moveTo(cx - 60, cy - 30);
+        ctx.quadraticCurveTo(cx, cy - 50, cx + 60, cy - 30);
+        ctx.quadraticCurveTo(cx, cy + 10, cx - 60, cy - 30);
         ctx.stroke();
       }
     }
+
+    function loadPattern(type) {
+      saveState();
+      currentPattern = type;
+      redrawCanvas();
+      const names = {
+        front: 'Fronte', back: 'Retro', sleeve: 'Manica', collar: 'Collo',
+        cuff: 'Polsino', pocket: 'Tasca', hem: 'Orlo', yoke: 'Spalla'
+      };
+      document.getElementById('info-pattern').textContent = names[type] || type;
+    }
+
+    function loadGarment(type) {
+      saveState();
+      currentPattern = type;
+      redrawCanvas();
+      const names = {
+        tshirt: 'T-Shirt', shirt: 'Camicia', jacket: 'Giacca',
+        pants: 'Pantaloni', skirt: 'Gonna', dress: 'Vestito'
+      };
+      document.getElementById('info-pattern').textContent = names[type] || type;
+    }
+
+    function updatePatternOptions() {
+      if (currentPattern === 'front' || currentPattern === 'back') {
+        redrawCanvas();
+      }
+    }
+
+    // Initialize
+    redrawCanvas();
   </script>
 
 </body>
