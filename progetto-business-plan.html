@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial=1">
+<meta name="description" content="Business Plan Tessile: strumento interattivo per startup textile-digital. Analisi di mercato, modello finanziario, piano operativo e pitch investitori. Orientato al distretto di Prato e alla conformità EU Digital Product Passport.">
+<meta name="keywords" content="Ronaldo Riska, Business Plan, Tessile, Startup, Digital, Prato, DPP, Digital Product Passport, Investitori, Finanza">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0a1628">
+<link rel="canonical" href="https://italycircularfashion.github.io/RonaldoRiska/progetto-business-plan.html">
+<link rel="alternate" hreflang="it" href="https://italycircularfashion.github.io/RonaldoRiska/progetto-business-plan.html">
+<link rel="alternate" hreflang="x-default" href="https://italycircularfashion.github.io/RonaldoRiska/progetto-business-plan.html">
+<title>Business Plan Tessile | Ronaldo Riska</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0a1628;
+    color: #ffffff;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    border-bottom: 1px solid rgba(255,140,0,0.2);
+    padding: 18px 0;
+    display: flex; justify-content: space-between; align-items: center;
+    background: linear-gradient(180deg,#0a1628,#081220);
+  }
+  .brand {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    color: #fff;
+    font-size: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .brand small {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #ff8c00;
+    margin-top: 4px;
+    text-transform: uppercase;
+  }
+  nav a {
+    color: #9ca3ab;
+    margin-left: 22px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  nav a:hover { color: #ff8c00; text-decoration: none; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 23px, rgba(255,140,0,0.04) 24px),
+      repeating-linear-gradient(90deg, transparent, transparent 23px, rgba(255,140,0,0.04) 24px),
+      linear-gradient(135deg,#0a1628,#081220);
+    border-bottom: 1px solid rgba(255,140,0,0.2);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(255,140,0,0.08), transparent 40%),
+      radial-gradient(circle at 70% 70%, rgba(255,255,255,0.03), transparent 40%);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    width: 90%;
+    max-width: 900px;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 11px;
+    color: #ff8c00;
+    margin: 0 0 16px;
+    font-weight: 700;
+  }
+  h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(36px, 5vw, 72px);
+    margin: 0 0 18px;
+    line-height: 1;
+    font-weight: 800;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+  .lead {
+    font-size: 16px;
+    color: #9ca3ab;
+    max-width: 720px;
+    margin: 0 auto 28px;
+    font-weight: 400;
+  }
+
+  /* STATUS BADGE */
+  .status-badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 6px 14px;
+    border: 1px solid #ff8c00;
+    color: #ff8c00;
+    margin-bottom: 20px;
+    background: rgba(255,140,0,0.1);
+  }
+
+  /* TAGS */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border: 1px solid rgba(255,140,0,0.3);
+    color: #9ca3ab;
+    background: rgba(255,140,0,0.05);
+  }
+
+  /* CTA BUTTON */
+  .cta-button {
+    display: inline-block;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 14px 32px;
+    background: #ff8c00;
+    color: #0a1628;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .cta-button:hover {
+    background: #ffa500;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255,140,0,0.3);
+  }
+
+  /* SECTIONS */
+  section { padding: 80px 0; border-bottom: 1px solid rgba(255,140,0,0.15); }
+  .section-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(28px, 3.6vw, 48px);
+    color: #fff;
+    text-transform: uppercase;
+    margin: 0 0 18px;
+    letter-spacing: -0.01em;
+    font-weight: 800;
+  }
+  .section-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #ff8c00;
+    margin-bottom: 40px;
+  }
+
+  /* FEATURE CARDS */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .feature-card {
+    background: linear-gradient(135deg,#0d1a30,#0a1628);
+    border: 1px solid rgba(255,140,0,0.2);
+    padding: 28px 24px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-card:hover {
+    border-color: #ff8c00;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(255,140,0,0.15);
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, #ff8c00, transparent);
+  }
+  .feature-icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    color: #ff8c00;
+    margin-bottom: 16px;
+  }
+  .feature-card h3 {
+    margin: 0 0 10px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 16px;
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .feature-card p {
+    margin: 0;
+    color: #9ca3ab;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  /* FORMULA BOXES */
+  .formula-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .formula-box {
+    background: linear-gradient(135deg,#0d1a30,#0a1628);
+    border: 1px solid rgba(255,140,0,0.3);
+    padding: 24px;
+    position: relative;
+  }
+  .formula-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: #ff8c00;
+  }
+  .formula-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #ff8c00;
+    margin-bottom: 12px;
+  }
+  .formula-expression {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .formula-desc {
+    font-size: 13px;
+    color: #9ca3ab;
+    line-height: 1.6;
+  }
+
+  /* USE CASES */
+  .usecase-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .usecase-card {
+    background: linear-gradient(135deg,#0d1a30,#0a1628);
+    border: 1px solid rgba(255,140,0,0.2);
+    padding: 28px 24px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+  .usecase-card:hover {
+    border-color: #ff8c00;
+    transform: translateY(-4px);
+  }
+  .usecase-icon {
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+  .usecase-card h3 {
+    margin: 0 0 10px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 16px;
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .usecase-card p {
+    margin: 0;
+    color: #9ca3ab;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  /* TECH ARCHITECTURE */
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .tech-card {
+    background: linear-gradient(135deg,#0d1a30,#0a1628);
+    border: 1px solid rgba(255,140,0,0.2);
+    padding: 24px;
+    text-align: center;
+  }
+  .tech-card h4 {
+    margin: 0 0 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: #ff8c00;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .tech-card p {
+    margin: 0;
+    color: #9ca3ab;
+    font-size: 12px;
+  }
+
+  /* CTA SECTION */
+  .cta-section {
+    text-align: center;
+    padding: 80px 0;
+  }
+  .cta-section h2 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(28px, 3.6vw, 48px);
+    color: #fff;
+    text-transform: uppercase;
+    margin: 0 0 18px;
+    font-weight: 800;
+  }
+  .cta-section p {
+    color: #9ca3ab;
+    font-size: 16px;
+    max-width: 600px;
+    margin: 0 auto 32px;
+  }
+
+  footer {
+    padding: 24px 0;
+    color: #6b7280;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-top: 1px solid rgba(255,140,0,0.15);
+  }
+
+  @media (max-width: 900px) {
+    .feature-grid { grid-template-columns: 1fr; }
+    .formula-grid { grid-template-columns: 1fr; }
+    .usecase-grid { grid-template-columns: 1fr; }
+    .tech-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+    <!-- ── STRUCTURED DATA ── -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Business Plan Tessile | Ronaldo Riska",
+      "url": "https://italycircularfashion.github.io/RonaldoRiska/progetto-business-plan.html",
+      "description": "Business Plan Tessile: strumento interattivo per startup textile-digital. Analisi di mercato, modello finanziario, piano operativo e pitch investitori.",
+      "inLanguage": "it",
+      "about": { "@type": "Person", "name": "Ronaldo Riska" }
+    }
+    </script>
+      <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://italycircularfashion.github.io/RonaldoRiska/" },
+        { "@type": "ListItem", "position": 2, "name": "Progetti", "item": "https://italycircularfashion.github.io/RonaldoRiska/index.html#progetti" }
+      ]
+    }
+    </script>
+  </head>
+<body>
+  <header>
+    <div class="wrap" style="display:flex;justify-content:space-between;width:100%;align-items:center;">
+      <div class="brand">BUSINESS PLAN TESSILE<small>Startup Digital-Textile</small></div>
+      <nav>
+        <a href="index.html#progetti">Progetti</a>
+        <a href="#">Demo</a>
+        <a href="#">Contatti</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <p class="eyebrow">Startup Tessile &amp; Digital Innovation</p>
+      <h1>Business Plan<br>Tessile Interattivo</h1>
+      <p class="lead">Strumento completo per startup textile-digital: analisi di mercato orientata al distretto di Prato, modello finanziario con proiezioni ROI, piano operativo e pitch per investitori. Conforme al EU Digital Product Passport.</p>
+      <div class="status-badge">Draft</div>
+      <div class="tags">
+        <span class="tag">Analisi di Mercato</span>
+        <span class="tag">Modello Finanziario</span>
+        <span class="tag">Piano Operativo</span>
+        <span class="tag">Pitch Investitori</span>
+        <span class="tag">EU DPP</span>
+        <span class="tag">Prato District</span>
+      </div>
+      <a href="#" class="cta-button">Accedi allo Strumento</a>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Funzionalità<br>Principali</h2>
+          <p class="section-meta">Cosa include lo strumento</p>
+        </div>
+      </div>
+      <p style="color:#9ca3ab;margin:0 0 40px;max-width:720px;font-size:15px;">
+        Un business plan interattivo progettato specificamente per startup che operano nella convergenza tra tessile e digitale, con focus sul distretto di Prato e la conformità alle normative europee emergenti.
+      </p>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Analisi di Mercato</h3>
+          <p>Studio approfondito del distretto tessile di Prato, competitor analysis, trend di mercato e posizionamento strategico per startup innovative.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💰</div>
+          <h3>Proiezioni Finanziarie</h3>
+          <p>Modello finanziario dinamico con proiezioni ricavi, analisi break-even, cash flow e scenari multipli per valutazione investibilità.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚙️</div>
+          <h3>Piano Operativo</h3>
+          <p>Roadmap operativa dettagliata: fasi di sviluppo, milestone, risorse necessarie, timeline e KPI di avanzamento.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Pitch Investitori</h3>
+          <p>Template pitch deck personalizzabile con value proposition, business model, go-to-market strategy e richieste di funding.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🇪🇺</div>
+          <h3>EU DPP Compliance</h3>
+          <p>Integrazione requisiti EU Digital Product Passport: tracciabilità, sostenibilità, circolarità e conformità normativa.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📈</div>
+          <h3>Metriche &amp; KPI</h3>
+          <p>Dashboard KPI finanziari e operativi con calcolo automatico di ROI, TCO, LTV e altre metriche chiave per investor e stakeholder.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Formule &amp; Metodologie</h2>
+          <p class="section-meta">Modello matematico del business plan</p>
+        </div>
+      </div>
+      <p style="color:#9ca3ab;margin:0 0 40px;max-width:720px;font-size:15px;">
+        Il motore finanziario del business plan si basa su formule standard di corporate finance, adattate al contesto delle startup textile-digital del distretto di Prato.
+      </p>
+      <div class="formula-grid">
+        <div class="formula-box">
+          <div class="formula-label">Proiezione Ricavi</div>
+          <div class="formula-expression">R = P × Q × (1 + g)^t</div>
+          <div class="formula-desc">Ricavi = Prezzo × Quantità × tasso di crescita composto nel tempo. Modello con crescita esponenziale per startup in fase di scale-up.</div>
+        </div>
+        <div class="formula-box">
+          <div class="formula-label">Break-Even Analysis</div>
+          <div class="formula-expression">BE = FC / (P - VC)</div>
+          <div class="formula-desc">Punto di pareggio = Costi Fissi / (Prezzo unitario - Costi Variabili unitari). Determina il volume minimo per coprire i costi.</div>
+        </div>
+        <div class="formula-box">
+          <div class="formula-label">Cash Flow Operativo</div>
+          <div class="formula-expression">CF = EBIT + D&A - ΔWC - CapEx</div>
+          <div class="formula-desc">Flusso di cassa = Utile operativo + Ammortamenti - Variazione capitale circolante - Investimenti. Metrica chiave per sostenibilità.</div>
+        </div>
+        <div class="formula-box">
+          <div class="formula-label">ROI (Return on Investment)</div>
+          <div class="formula-expression">ROI = (Gain - Cost) / Cost × 100</div>
+          <div class="formula-desc">Rendimento investimento = (Guadagno netto - Investimento) / Investimento × 100. Percentuale di ritorno per gli investitori.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Casi d'Uso</h2>
+          <p class="section-meta">Per chi è pensato</p>
+        </div>
+      </div>
+      <div class="usecase-grid">
+        <div class="usecase-card">
+          <div class="usecase-icon">🚀</div>
+          <h3>Startup Fundraising</h3>
+          <p>Preparazione completa per round di investimento: seed, pre-series A e series A. Documentazione pronta per venture capital e business angel.</p>
+        </div>
+        <div class="usecase-card">
+          <div class="usecase-icon">📋</div>
+          <h3>Pianificazione Strategica</h3>
+          <p>Strumento interno per allineare il team su obiettivi, risorse e timeline. Pianificazione trimestrale e annuale con scenari what-if.</p>
+        </div>
+        <div class="usecase-card">
+          <div class="usecase-icon">🤝</div>
+          <h3>Presentazioni Investitori</h3>
+          <p>Generazione automatica di slide e documenti per pitch meeting. Focus su metriche chiave, traction e proiezioni credibili.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Architettura Tecnica</h2>
+          <p class="section-meta">Stack e implementazione</p>
+        </div>
+      </div>
+      <div class="tech-grid">
+        <div class="tech-card">
+          <h4>HTML5</h4>
+          <p>Struttura semantica e accessibile</p>
+        </div>
+        <div class="tech-card">
+          <h4>CSS3</h4>
+          <p>Design responsive e animazioni</p>
+        </div>
+        <div class="tech-card">
+          <h4>JavaScript</h4>
+          <p>Logica interattiva e calcoli finanziari</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="wrap">
+      <h2>Pronto a creare il tuo business plan?</h2>
+      <p>Accedi allo strumento interattivo e genera un business plan professionale per la tua startup textile-digital, conforme alle normative EU e orientato al mercato di Prato.</p>
+      <a href="#" class="cta-button">Inizia Ora</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div>&copy; <span id="y"></span> BUSINESS PLAN TESSILE — Draft by Ronaldo Riska</div>
+    </div>
+  </footer>
+  <script>document.getElementById('y').textContent=new Date().getFullYear()</script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Ronaldo Riska",
+      "url": "https://italycircularfashion.github.io/RonaldoRiska/",
+      "logo": "https://italycircularfashion.github.io/RonaldoRiska/profile.jpg",
+      "email": "ronaldo.riska@gmail.com",
+      "sameAs": [
+        "https://github.com/ItalyCircularFashion",
+        "https://italycircularfashion.github.io/RonaldoRiskaCV/"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Prato",
+        "addressCountry": "IT"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Project",
+      "name": "Business Plan Tessile — Ronaldo Riska",
+      "url": "https://italycircularfashion.github.io/RonaldoRiska/progetto-business-plan.html",
+      "author": { "@type": "Person", "name": "Ronaldo Riska" },
+      "description": "Strumento interattivo per business plan di startup textile-digital, orientato al distretto di Prato e conforme al EU Digital Product Passport."
+    }
+    </script>
+</body>
+</html>

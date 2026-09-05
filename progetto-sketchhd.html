@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SketchHD — Sketch to HD | Ronaldo Riska</title>
+  <meta name="description" content="SketchHD: AI workflow per trasformare schizzi digitali in immagini ad alta definizione. Canvas di disegno integrato con Claude Vision per analisi e generazione prompt Stable Diffusion.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a1628;
+      --surface: #0f2040;
+      --surface-2: #163058;
+      --border: #ff8c00;
+      --border-2: #ffaa00;
+      --text: #ffffff;
+      --text-2: #e0e0e0;
+      --text-muted: #b0b0b0;
+      --accent: #ff8c00;
+      --accent-2: #ffaa00;
+      --blue: #1e4070;
+      --blue-2: #2a5490;
+      --radius: 12px;
+      --font: 'Inter', system-ui, sans-serif;
+      --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* Header */
+    .project-header {
+      padding: 80px 0 60px;
+      background: linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%);
+      border-bottom: 2px solid var(--border);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      margin-bottom: 32px;
+      transition: opacity 0.2s;
+    }
+    .back-link:hover { opacity: 0.8; }
+    .project-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .project-subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin-bottom: 32px;
+    }
+    .project-badges { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px; }
+    .badge {
+      padding: 6px 14px;
+      background: var(--blue);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .badge.accent { background: var(--accent); color: var(--bg); font-weight: 600; }
+    .header-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: var(--radius);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary { background: var(--accent); color: var(--bg); }
+    .btn-primary:hover { background: var(--accent-2); transform: translateY(-2px); }
+    .btn-secondary { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: var(--blue-2); }
+
+    /* Sections */
+    .section { padding: 80px 0; }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .section-desc { color: var(--text-muted); font-size: 16px; max-width: 700px; margin-bottom: 40px; }
+
+    /* Features grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: all 0.2s;
+    }
+    .feature-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .feature-icon {
+      width: 48px; height: 48px;
+      background: var(--blue);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+    .feature-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .feature-desc { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+
+    /* Formula box */
+    .formula-box {
+      background: var(--surface-2);
+      border: 2px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin: 20px 0;
+    }
+    .formula-title { font-weight: 600; color: var(--accent); margin-bottom: 8px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .formula { font-family: var(--font-mono); font-size: 15px; color: var(--text); margin-bottom: 8px; }
+    .formula-desc { color: var(--text-muted); font-size: 13px; }
+
+    /* Use cases */
+    .use-case {
+      background: var(--surface);
+      border: 1px solid var(--blue-2);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .use-case-title { font-weight: 600; color: var(--text); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+    .use-case-desc { color: var(--text-muted); font-size: 14px; }
+
+    /* CTA */
+    .cta-section {
+      text-align: center;
+      padding: 80px 0;
+      background: linear-gradient(180deg, var(--bg) 0%, var(--surface) 100%);
+      border-top: 2px solid var(--border);
+    }
+    .cta-title { font-family: var(--font-display); font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+    .cta-desc { color: var(--text-muted); margin-bottom: 32px; }
+
+    /* Footer */
+    .project-footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--blue-2);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    .project-footer a { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 768px) {
+      .section { padding: 60px 0; }
+      .project-header { padding: 60px 0 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="project-header">
+    <div class="container">
+      <a href="index.html#progetti" class="back-link">← Torna ai progetti</a>
+      <h1 class="project-title">SketchHD — Sketch to HD</h1>
+      <p class="project-subtitle">Workflow AI per trasformare schizzi digitali in immagini ad alta definizione. Canvas di disegno integrato con Claude Vision per l'analisi del disegno e la generazione automatica di prompt per Stable Diffusion.</p>
+      <div class="project-badges">
+        <span class="badge accent">Live</span>
+        <span class="badge">AI Image Generation</span>
+        <span class="badge">Claude Vision</span>
+        <span class="badge">Stable Diffusion</span>
+        <span class="badge">Canvas API</span>
+        <span class="badge">React</span>
+      </div>
+      <div class="header-actions">
+        <a href="#tool" class="btn btn-primary">🚀 Prova SketchHD</a>
+        <a href="index.html" class="btn btn-secondary">← Home</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- OVERVIEW -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Panoramica</h2>
+      <p class="section-desc">SketchHD trasforma schizzi a mano libera in immagini fotorealta grazie a un pipeline AI integrata: l'utente disegna su un canvas nativo, Claude Vision analizza il contenuto e lo stile, e Stable Diffusion genera immagini HD con 5 preset stilistici specializzati per il settore tessile e moda.</p>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🎨</div>
+          <h3 class="feature-title">Native Canvas Drawing</h3>
+          <p class="feature-desc">Canvas di disegno integrato con pennelli personalizzabili, gestione layer, e strumenti di disegto touch-friendly. Supporta input da mouse, touchscreen e pen digitale per schizzi naturali.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">👗</div>
+          <h3 class="feature-title">5 Textile Style Presets</h3>
+          <p class="feature-desc">Preset stilistici specializzati: Fashion (illustrazione moda), Realistic (fotorealismo), Product (rendering prodotto), Concept (concept art), Textile (visualizzazione tessuto/tessitura).</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🧠</div>
+          <h3 class="feature-title">AI Prompt Analysis</h3>
+          <p class="feature-desc">Claude Vision analizza il disegno, identifica forme, composizione e intento, poi genera un prompt ottimizzato per la generazione dell'immagine. Zero configurazione manuale richiesta.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🖼️</div>
+          <h3 class="feature-title">HD PNG Download</h3>
+          <p class="feature-desc">Generazione immagini in alta definizione con download diretto in formato PNG. Risoluzioni fino a 1024×1024 pixel, pronte per presentazioni, cataloghi e social media.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">👁️</div>
+          <h3 class="feature-title">Claude Vision Integration</h3>
+          <p class="feature-desc">Integrazione nativa con Claude Vision API per l'analisi intelligente dello schizzo. Il modello comprende il contesto visivo e adatta lo stile della generazione all'intento creativo.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3 class="feature-title">Real-Time Generation</h3>
+          <p class="feature-desc">Pipeline completa dal disegno all'immagine HD in pochi secondi. Feedback visivo immediato con anteprima e possibilità di iterare modificando schizzo o prompt.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULE -->
+  <section class="section" style="background: var(--surface);">
+    <div class="container">
+      <h2 class="section-title">Formule e Parametri</h2>
+      <p class="section-desc">Il prompt engineering e i parametri di generazione immagine sono ottimizzati per ogni preset stilistico.</p>
+      
+      <div class="formula-box">
+        <div class="formula-title">Prompt Engineering — Struttura Base</div>
+        <div class="formula">[Subject Analysis] + [Style Preset] + [Quality Modifiers] + [Negative Prompt]</div>
+        <div class="formula-desc">Il prompt finale è composto da: analisi del soggetto (da Claude Vision), preset stilistico, modificatori di qualità (HD, detailed, professional), e prompt negativo per escludere elementi indesiderati.</div>
+      </div>
+
+      <div class="formula-box">
+        <div class="formula-title">CFG Scale — Classifier-Free Guidance</div>
+        <div class="formula">CFG = 7.0 (default) | Fashion: 6.5 | Realistic: 8.0 | Concept: 5.5</div>
+        <div class="formula-desc">Il CFG scale controlla la fedeltà al prompt. Valori alti = maggiore aderenza al testo ma meno creatività. Valori bassi = più libertà artistica. Ogni preset ha un valore ottimizzato.</div>
+      </div>
+
+      <div class="formula-box">
+        <div class="formula-title">Steps — Iterazioni Denoising</div>
+        <div class="formula">Steps = 30 (default) | Realistic: 50 | Concept: 20 | Textile: 40</div>
+        <div class="formula-desc">Numero di passaggi di denoising. Più steps = più dettagli ma tempi più lunghi. 30 è il punto di equilibrio per la maggior parte degli stili.</div>
+      </div>
+
+      <div class="formula-box">
+        <div class="formula-title">Seed — Ripetibilità</div>
+        <div class="formula">Seed = random (default) | Seed = [user-defined] per riproducibilità</div>
+        <div class="formula-desc">Il seed determina il rumore iniziale. Stesso seed + stesso prompt = stessa immagine. Utile per varianti controllate o riproducibilità di risultati.</div>
+      </div>
+
+      <div class="formula-box">
+        <div class="formula-title">Preset Stilistici — Mappatura Parametri</div>
+        <div class="formula">Fashion: cfg=6.5, steps=30 | Realistic: cfg=8.0, steps=50 | Product: cfg=7.5, steps=35 | Concept: cfg=5.5, steps=20 | Textile: cfg=7.0, steps=40</div>
+        <div class="formula-desc">Ogni preset ha parametri ottimizzati per il tipo di immagine target: Fashion privilegia l'eleganza, Realistic massimizza il fotorealismo, Textile enfatizza texture e pattern tessili.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRESETS DETTAGLIATI -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Preset Stilistici</h2>
+      <p class="section-desc">Cinque preset ottimizzati per diversi casi d'uso nel settore moda e tessile.</p>
+      
+      <div class="features-grid">
+        <div class="feature-card" style="border-color: #ff8c00;">
+          <h3 class="feature-title">👗 Fashion</h3>
+          <p class="feature-desc"><strong>Illustrazione moda professionale.</strong><br>Genera illustrazioni di moda editoriali dallo schizzo. Enfatizza silhouette, drappeggi, texture dei tessuti. Ideale per mood board e presentazioni collezioni.</p>
+        </div>
+        <div class="feature-card" style="border-color: #5a80c0;">
+          <h3 class="feature-title">📸 Realistic</h3>
+          <p class="feature-desc"><strong>Fotorealismo prodotto.</strong><strong>Rendering fotorealistico</strong> dello schizzo come se fosse una foto. Massima definizione di dettagli, luci e ombre naturali. Per cataloghi e e-commerce.</p>
+        </div>
+        <div class="feature-card">
+          <h3 class="feature-title">📦 Product</h3>
+          <p class="feature-desc"><strong>Mockup prodotto pulito.</strong><br>Genera immagini prodotto con sfondo neutro, illuminazione studio e proporzioni precise. Ottimo per schede prodotto e listini.</p>
+        </div>
+        <div class="feature-card">
+          <h3 class="feature-title">🎨 Concept</h3>
+          <p class="feature-desc"><strong>Concept art creativa.</strong><br>Maggiore libertà artistica e interpretazione creativa. Colori vibranti, composizioni dinamiche. Per esplorazione idee e brainstorming visivo.</p>
+        </div>
+        <div class="feature-card">
+          <h3 class="feature-title">🧵 Textile</h3>
+          <p class="feature-desc"><strong>Visualizzazione tessuto.</strong><br>Specializzato per pattern tessili, texture di tessuto e ricami. Mantiene la ripetitilità del pattern e la fedeltà del colore. Specifico per il settore tessile.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASI D'USO -->
+  <section class="section" style="background: var(--surface);">
+    <div class="container">
+      <h2 class="section-title">Casi d'Uso</h2>
+      <p class="section-desc">Applicazioni concrete per designer, stilisti, product manager e art director nel settore moda e tessile.</p>
+      
+      <div class="use-case">
+        <div class="use-case-title">👗 Scenario 1: Fashion Design Concept-to-Image</div>
+        <div class="use-case-desc">Una stilista schizza un'idea per un abito su SketchHD. Claude Vision analizza la silhouette e il drappeggio, il preset Fashion genera un'illustrazione editoriale in pochi secondi. Il risultato viene utilizzato per presentare il concept al team creativo senza dover realizzare un prototipo fisico.</div>
+      </div>
+
+      <div class="use-case">
+        <div class="use-case-title">🧵 Scenario 2: Textile Pattern Visualization</div>
+        <div class="use-case-desc">Un designer tessile disegna un motivo geometrico sul canvas. Il preset Textile genera una visualizzazione realistica del pattern applicato a un tessuto, con texture e drappeggio naturali. Utile per valutare l'effetto finale del pattern prima della tessitura.</div>
+      </div>
+
+      <div class="use-case">
+        <div class="use-case-title">📦 Scenario 3: Product Mockup Generation</div>
+        <div class="use-case-desc">Un product manager schizza un nuovo accessorio (borsa, cintura) e utilizza il preset Product per generare un'immagine mockup pronta per il listino e-commerce. Risparia ore di lavoro di rendering 3D tradizionale.</div>
+      </div>
+
+      <div class="use-case">
+        <div class="use-case-title">🎨 Scenario 4: Mood Board e Brainstorming</div>
+        <div class="use-case-desc">Un art director crea schizzi rapidi per un concept campagna. Il preset Concept interpreta liberamente le idee, generando varianti creative in stili diversi. Le migliori immagini vengono raccolte nella mood board della campagna.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECNOLOGIE -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Architettura Tecnica</h2>
+      <p class="section-desc">Stack tecnico e pipeline di generazione immagini.</p>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3 class="feature-title">Frontend — React</h3>
+          <p class="feature-desc">Interfaccia React con componenti modulari: DrawingCanvas, StyleSelector, PreviewPanel, DownloadManager. Stato centralizzato con hooks personalizzati per il workflow di generazione.</p>
+        </div>
+        <div class="feature-card">
+          <h3 class="feature-title">Canvas API</h3>
+          <p class="feature-desc">HTML5 Canvas API per il disegno nativo nel browser. Supporto a tratti, colori, spessore pennello, undo/redo. Export del disegno come base64 per l'analisi AI.</p>
+        </div>
+        <div class="feature-card">
+          <h3 class="feature-title">Claude Vision API</h3>
+          <p class="feature-desc">Integrazione con Claude Vision per l'analisi semantica dello schizzo. Il modello identifica oggetti, stile, composizione e genera una descrizione strutturata per il prompt engineering.</p>
+        </div>
+        <div class="feature-card">
+          <h3 class="feature-title">Stability AI API</h3>
+          <p class="feature-desc">Generazione immagini tramite Stable Diffusion tramite Stability AI API. Supporto a tutti i parametri: CFG scale, steps, seed, dimensione, preset stilistici. Output in formato PNG HD.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="tool">
+    <div class="container">
+      <h2 class="cta-title">Trasforma i tuoi schizzi in immagini HD</h2>
+      <p class="cta-desc">Prova SketchHD ora: disegna, analizza con Claude Vision, genera con Stable Diffusion. Zero installazione.</p>
+      <a href="#tool" class="btn btn-primary" style="font-size: 18px; padding: 18px 36px;">🚀 Apri SketchHD</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="project-footer">
+    <div class="container">
+      <p>Progettato e sviluppato da <a href="index.html">Ronaldo Riska</a> — AI & Textile Innovation, Distretto Tessile di Prato</p>
+      <p style="margin-top: 8px;">Powered by Claude Vision + Stable Diffusion — Sketch to HD in seconds</p>
+    </div>
+  </footer>
+
+</body>
+</html>

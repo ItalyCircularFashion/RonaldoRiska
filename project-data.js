@@ -49,6 +49,7 @@ window.portfolioProjects = [
     status:      "Live",
     type:        "html",
     url:         "textile-platform-v5.html",
+    detailPage:  "progetto-textile-platform-v5.html",
     featured:    true,
     tags:        ["MRP", "ERP", "React", "Supply Chain", "Project Management", "AI"],
     detail: {
@@ -66,6 +67,7 @@ window.portfolioProjects = [
     status:      "Live",
     type:        "html",
     url:         "mrp-iphone-planner.html",
+    detailPage:  "progetto-mrp-iphone-planner.html",
     featured:    false,
     tags:        ["MRP", "MPS", "Mobile", "React", "Pianificazione"],
     detail: {
@@ -101,6 +103,7 @@ window.portfolioProjects = [
     status:      "Draft",
     type:        "html",
     url:         "business-plan.html",
+    detailPage:  "progetto-business-plan.html",
     featured:    false,
     tags:        ["Business Plan", "Finanza", "Startup", "Prato", "EU DPP"],
     detail: {
@@ -120,6 +123,7 @@ window.portfolioProjects = [
     status:      "Live",
     type:        "html",
     url:         "sketchhd-artifact.html",
+    detailPage:  "progetto-sketchhd.html",
     featured:    true,
     tags:        ["AI", "Fashion", "Sketch", "Claude Vision", "Stability AI", "React"],
     detail: {
@@ -137,6 +141,7 @@ window.portfolioProjects = [
     status:      "Live",
     type:        "html",
     url:         "modacad.html",
+    detailPage:  "progetto-modacad.html",
     featured:    false,
     tags:        ["CAD", "Modellistica", "Pattern Making", "React", "Canvas"],
     detail: {
@@ -154,6 +159,7 @@ window.portfolioProjects = [
     status:      "Live",
     type:        "html",
     url:         "progetto-digitalizzazione-impresa.html",
+    detailPage:  "progetto-digitalizzazione.html",
     featured:    true,
     tags:        ["Digitalizzazione", "AI", "KPI", "Dashboard", "Industria 4.0", "Data-Driven"],
     detail: {
@@ -173,6 +179,7 @@ window.portfolioProjects = [
     status:      "Live",
     type:        "html",
     url:         "weavecad.html",
+    detailPage:  "progetto-weavecad.html",
     featured:    true,
     tags:        ["Tessitura", "Armature", "Trama", "Ordito", "Simulatore", "Prato"],
     detail: {
@@ -190,6 +197,7 @@ window.portfolioProjects = [
     status:      "Live",
     type:        "html",
     url:         "gantt-tessile.html",
+    detailPage:  "progetto-gantt-tessile.html",
     featured:    false,
     tags:        ["Gantt", "Pianificazione", "Ciclo Tessile", "Lanificio", "Prato"],
     detail: {
@@ -207,6 +215,7 @@ window.portfolioProjects = [
     status:      "Live",
     type:        "html",
     url:         "note-colore.html",
+    detailPage:  "progetto-note-colore.html",
     featured:    false,
     tags:        ["Tessitura", "Note Colore", "Orditura", "Calcolo", "Qualità"],
     detail: {

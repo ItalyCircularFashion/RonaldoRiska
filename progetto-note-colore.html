@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note Colore Calculator — Ronaldo Riska</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a1628;
+            --bg-secondary: #0f1f3d;
+            --bg-card: #132244;
+            --border-primary: #ff8c00;
+            --border-secondary: #1e3a6e;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --accent: #ff8c00;
+            --accent-glow: rgba(255, 140, 0, 0.15);
+            --accent-hover: #ffa533;
+            --success: #22c55e;
+            --code-bg: #0d1b33;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover { color: var(--accent-hover); }
+
+        .project-header {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-secondary);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--border-primary), var(--accent-hover));
+        }
+
+        .project-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .project-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .project-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--success);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .status-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background: rgba(255, 140, 0, 0.1);
+            color: var(--accent);
+            padding: 0.3rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid rgba(255, 140, 0, 0.2);
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--border-primary), var(--accent-hover));
+            color: #0a1628;
+            padding: 0.85rem 1.75rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 140, 0, 0.3);
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 28px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-glow);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 140, 0, 0.2);
+        }
+
+        .feature-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .formulas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .formula-box {
+            background: var(--code-bg);
+            border: 1px solid var(--border-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .formula-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .formula-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .formula-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: #e2e8f0;
+            background: rgba(255, 140, 0, 0.05);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+            overflow-x: auto;
+            line-height: 1.5;
+        }
+
+        .formula-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.75rem;
+            line-height: 1.5;
+        }
+
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .use-case-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .use-case-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .use-case-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .use-case-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .arch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .arch-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-secondary);
+            border-radius: 10px;
+            padding: 1.25rem;
+            text-align: center;
+        }
+
+        .arch-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .arch-value {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
+            border: 1px solid var(--accent);
+            border-radius: 16px;
+            padding: 2.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--border-primary), var(--accent-hover), var(--border-primary));
+        }
+
+        .cta-section-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .cta-section-desc {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (max-width: 768px) {
+            .project-title { font-size: 1.75rem; }
+            .project-header { padding: 1.5rem; }
+            .features-grid, .formulas-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html#progetti" class="back-link">← Torna ai progetti</a>
+
+        <header class="project-header">
+            <h1 class="project-title">Note Colore Calculator</h1>
+            <p class="project-description">Tool per il calcolo delle note colore in ordito: rotture, simmetrie, nuovi avvii centrati e sequenze ripetute. Parametri di input e lista note pronta per la macchina di ordizione. Riduce gli errori nella transizione dal design alla produzione.</p>
+            <div class="project-meta">
+                <span class="status-badge">Live</span>
+                <div class="tags">
+                    <span class="tag">JavaScript</span>
+                    <span class="tag">HTML</span>
+                    <span class="tag">CSS</span>
+                    <span class="tag">Tessitura</span>
+                    <span class="tag">Ordito</span>
+                </div>
+            </div>
+            <a href="#" class="cta-button">Apri il tool →</a>
+        </header>
+
+        <section class="section">
+            <h2 class="section-title">Funzionalità Principali</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3 class="feature-title">Simmetrie Automatiche</h3>
+                    <p class="feature-desc">Calcolo automatico di simmetrie specchiate e rotazionali per qualsiasi schema di note colore. Riduce il tempo di configurazione dell'ordito.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Avvi Centrati</h3>
+                    <p class="feature-desc">Posizionamento automatico dei nuovi avvii al centro del tessuto, calcolo preciso del punto di partenza e distribuzione simmetrica.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h3 class="feature-title">Export Lista Note</h3>
+                    <p class="feature-desc">Esportazione della lista note finale pronta per il caricamento sulla macchina di ordizione. Formato compatibile con i sistemi di produzione.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✅</div>
+                    <h3 class="feature-title">Validazione Input</h3>
+                    <p class="feature-desc">Controllo automatico dei parametri di input: rilevamento errori, avvisi di incoerenza e suggerimenti correttivi prima del calcolo.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔁</div>
+                    <h3 class="feature-title">Sequenze Ripetute</h3>
+                    <p class="feature-desc">Gestione di sequenze colore ripetute con calcolo automatico del numero di ripetizioni e gestione delle transizioni.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📐</div>
+                    <h3 class="feature-title">Calcolo Rotture</h3>
+                    <p class="feature-desc">Identificazione e calcolo delle rotture nelle sequenze colore, con visualizzazione chiara dei punti di interruzione e ricomposizione.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Formule e Metodologie</h2>
+            <div class="formulas-grid">
+                <div class="formula-box">
+                    <div class="formula-label">Simmetria</div>
+                    <h3 class="formula-title">Calcolo Simmetria (Specchiata e Rotazionale)</h3>
+                    <div class="formula-code">mirror(i) = N - 1 - i<br>rotation(i, k) = (i + k) mod N</div>
+                    <p class="formula-desc">La simmetria specchiata rispecchia la sequenza rispetto al centro. Quella rotazionale sposta gli indici di k posizioni in modulo N.</p>
+                </div>
+                <div class="formula-box">
+                    <div class="formula-label">Avvio Centrato</div>
+                    <h3 class="formula-title">Posizionamento Avvio Centrato</h3>
+                    <div class="formula-code">start_pos = (total_ends - pattern_length) / 2<br>offset = floor((W - n_rip × L) / 2)</div>
+                    <p class="formula-desc">Calcolo del punto di partenza centrato dividendo lo spazio residuo tra i lati del tessuto per ottenere una disposizione simmetrica.</p>
+                </div>
+                <div class="formula-box">
+                    <div class="formula-label">Ripetizione</div>
+                    <h3 class="formula-title">Ripetizione Sequenze</h3>
+                    <div class="formula-code">repeated[i] = pattern[i mod P]<br>n_ripetizioni = ceil(total_ends / pattern_length)</div>
+                    <p class="formula-desc">La sequenza base viene ripetuta ciclicamente fino a coprire il numero totale di fili d'ordito richiesti.</p>
+                </div>
+                <div class="formula-box">
+                    <div class="formula-label">Validazione</div>
+                    <h3 class="formula-title">Validazione Parametri</h3>
+                    <div class="formula-code">valid = (N > 0) ∧ (L > 0) ∧ (L ≤ N)<br>∑(color_counts) === total_ends</div>
+                    <p class="formula-desc">Controllo di coerenza: il numero di fili deve essere positivo, il pattern non eccedere il totale e la somma dei fili colore deve corrispondere al totale.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Casi d'Uso</h2>
+            <div class="use-cases-grid">
+                <div class="use-case-card">
+                    <div class="use-case-number">01</div>
+                    <h3 class="use-case-title">Setup Reparto Ordito</h3>
+                    <p class="use-case-desc">Configurazione rapida e accurata dei parametri di ordito per nuovi lavori. Riduce il tempo di setup del reparto del 60-70% rispetto al calcolo manuale.</p>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-number">02</div>
+                    <h3 class="use-case-title">Riduzione Errori in Produzione</h3>
+                    <p class="use-case-desc">Elimina gli errori di calcolo umano nella transizione dal design al tessuto finito. La validazione automatica previene configurazioni errate.</p>
+                </div>
+                <div class="use-case-card">
+                    <div class="use-case-number">03</div>
+                    <h3 class="use-case-title">Formazione Nuovi Operatori</h3>
+                    <p class="use-case-desc">Strumento didattico per la formazione di nuovi operatori del reparto ordito. La visualizzazione chiara delle formule facilita l'apprendimento delle metodologie.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Architettura Tecnica</h2>
+            <div class="arch-grid">
+                <div class="arch-item">
+                    <div class="arch-label">Linguaggio</div>
+                    <div class="arch-value">JavaScript</div>
+                </div>
+                <div class="arch-item">
+                    <div class="arch-label">Frontend</div>
+                    <div class="arch-value">HTML5 + CSS3</div>
+                </div>
+                <div class="arch-item">
+                    <div class="arch-label">Calcoli</div>
+                    <div class="arch-value">Client-side</div>
+                </div>
+                <div class="arch-item">
+                    <div class="arch-label">Stato</div>
+                    <div class="arch-value">Live</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <h2 class="cta-section-title">Pronto per ridurre gli errori nel tuo ordito?</h2>
+            <p class="cta-section-desc">Usa Note Colore Calculator per calcolare rapidamente e con precisione le note colore per qualsiasi configurazione di ordito.</p>
+            <a href="#" class="cta-button">Apri il tool →</a>
+        </section>
+    </div>
+</body>
+</html>

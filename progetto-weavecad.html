@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeaveCAD Draft Studio — Ronaldo Riska</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a1628;
+            color: #ffffff;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #ff8c00;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            transition: opacity 0.2s;
+        }
+        .back-link:hover { opacity: 0.8; }
+        .header {
+            border: 2px solid #ff8c00;
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            background: linear-gradient(135deg, rgba(255,140,0,0.08) 0%, transparent 60%);
+        }
+        .header-top { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
+        h1 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #ffffff;
+        }
+        .status-badge {
+            background: #22c55e;
+            color: #000;
+            padding: 0.35rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .description { font-size: 1.15rem; color: #cbd5e1; margin: 1.2rem 0; max-width: 700px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1.5rem 0; }
+        .tag {
+            background: rgba(255,140,0,0.15);
+            border: 1px solid rgba(255,140,0,0.4);
+            color: #ff8c00;
+            padding: 0.3rem 0.85rem;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 500;
+        }
+        .cta-btn {
+            display: inline-block;
+            background: #ff8c00;
+            color: #0a1628;
+            padding: 0.85rem 2rem;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.2s;
+            margin-top: 0.5rem;
+        }
+        .cta-btn:hover { background: #ffa500; transform: translateY(-1px); }
+        .section { margin-bottom: 2.5rem; }
+        .section-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(255,140,0,0.3);
+        }
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem; }
+        .card {
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.02);
+            transition: border-color 0.2s;
+        }
+        .card:hover { border-color: rgba(255,140,0,0.5); }
+        .card-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+        .card-title { font-weight: 600; font-size: 1.05rem; margin-bottom: 0.5rem; color: #ffffff; }
+        .card-desc { color: #94a3b8; font-size: 0.92rem; }
+        .formula-box {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,140,0,0.25);
+            border-radius: 8px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .formula-label { color: #ff8c00; font-family: 'Inter', sans-serif; font-weight: 600; margin-bottom: 0.4rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .formula { color: #e2e8f0; font-size: 1rem; white-space: pre-wrap; }
+        .formula-note { color: #94a3b8; font-size: 0.85rem; margin-top: 0.4rem; font-family: 'Inter', sans-serif; }
+        .use-case {
+            border-left: 3px solid #ff8c00;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            background: rgba(255,140,0,0.05);
+            border-radius: 0 8px 8px 0;
+        }
+        .use-case-title { font-weight: 600; margin-bottom: 0.3rem; color: #ffffff; }
+        .use-case-desc { color: #94a3b8; font-size: 0.92rem; }
+        .arch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+        .arch-item {
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 1.2rem;
+            text-align: center;
+        }
+        .arch-label { color: #ff8c00; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem; font-weight: 600; }
+        .arch-value { color: #ffffff; font-weight: 500; font-size: 0.95rem; }
+        .cta-section {
+            border: 2px solid #ff8c00;
+            border-radius: 12px;
+            padding: 2.5rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255,140,0,0.06) 0%, transparent 60%);
+            margin-top: 2rem;
+        }
+        .cta-section h2 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.6rem; margin-bottom: 0.8rem; }
+        .cta-section p { color: #94a3b8; margin-bottom: 1.5rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+        @media (max-width: 640px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 1.7rem; }
+            .header { padding: 1.5rem; }
+            .cards-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html#progetti" class="back-link">← Torna ai Progetti</a>
+
+        <div class="header">
+            <div class="header-top">
+                <h1>WeaveCAD Draft Studio</h1>
+                <span class="status-badge">● Live</span>
+            </div>
+            <p class="description">Simulatore interattivo per tessiture tessili: plain, twill, satin, panama e derivati. Disegno ordito e trama con parametri configurabili, visualizzazione in tempo reale del tessuto, calcolo note colore e rompimenti.</p>
+            <div class="tags">
+                <span class="tag">Plain Weave</span>
+                <span class="tag">Twill</span>
+                <span class="tag">Satin</span>
+                <span class="tag">Panama</span>
+                <span class="tag">Canvas API</span>
+                <span class="tag">JavaScript</span>
+                <span class="tag">Color Notes</span>
+                <span class="tag">Coverage Calc</span>
+            </div>
+            <a href="weavecad.html" class="cta-btn">Apri WeaveCAD Draft Studio →</a>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Funzionalità Principali</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">🧵</div>
+                    <div class="card-title">7 Tessiture Base</div>
+                    <div class="card-desc">Libreria completa delle 7 tessiture fondamentali: plain (telaio), twill (satinato), satin (raso), panama e tutte le derivate. Selezione rapida con anteprima visiva istantanea.</div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">⚙️</div>
+                    <div class="card-title">Parametri Ordito/Trama Configurabili</div>
+                    <div class="card-desc">Controllo completo su densità ordito, densità trama, numero fili, titolo filo e rapporti di intreccio. Modifica in tempo reale con aggiornamento immediato della visualizzazione.</div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">👁️</div>
+                    <div class="card-title">Visualizzazione in Tempo Reale</div>
+                    <div class="card-desc">Rendering Canvas del tessuto che aggiorna istantaneamente ogni modifica dei parametri. Zoom, pan e ispezione dettaglio dell'intreccio con colori personalizzabili per ordito e trama.</div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🎨</div>
+                    <div class="card-title">Esportazione Note Colore</div>
+                    <div class="card-desc">Generazione automatica delle note colore con simmetria e sequenza. Esportazione in formati standard per la produzione tessile, inclusa la specifica dei colori ordito e trama.</div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📊</div>
+                    <div class="card-title">Calcolo Copertura</div>
+                    <div class="card-desc">Calcolo automatico della copertura del tessuto basato su densità ordito/trama e titolo fili. Metrica essenziale per la pianificazione produzione e la stima dei consumi.</div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🔢</div>
+                    <div class="card-title">Calcolo Rompimenti</div>
+                    <div class="card-desc">Calcolo automatico dei rompimenti (breaks) per la tessitura. Determinazione del repeat pattern e verifica della simmetria per garantire la corretta esecuzione sul telaio.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Formule e Metodologie</h2>
+            <div class="formula-box">
+                <div class="formula-label">Copertura Tessuto (Coverage)</div>
+                <div class="formula">Coverage (%) = (Fili_ordito + Fili_trama) / Fili_totali × 100
+
+Dove:
+  Fili_ordito = Densità_ordito (fili/cm) × Larghezza_tessuto (cm)
+  Fili_trama  = Densità_trama (fili/cm) × Lunghezza_tessuto (cm)
+  Fili_totali = Fili_ordito + Fili_trama</div>
+                <div class="formula-note">Formula per calcolare la percentuale di copertura del tessuto, indicativa della compattezza dell'intreccio.</div>
+            </div>
+            <div class="formula-box">
+                <div class="formula-label">Calcolo Repeat Pattern</div>
+                <div class="formula">Repeat = MCD(Ordito_pick, Trama_pick) × Base_tessitura
+
+Simmetria:
+  • Repeat_ordito  = Ordito_pick / MCD(Ordito_pick, Trama_pick)
+  • Repeat_trama   = Trama_pick / MCD(Ordito_pick, Trama_pick)
+  
+Rompimenti (Breaks):
+  Breaks = (Fili_totali / Repeat) − Interi_completi</div>
+                <div class="formula-note">Calcolo del repeat pattern basato sul massimo comun divisore per determinare la simmetria dell'intreccio.</div>
+            </div>
+            <div class="formula-box">
+                <div class="formula-label">Simmetria Note Colore</div>
+                <div class="formula">Sequenza_Colore = [C₁, C₂, ..., Cₙ] con simmetria S
+
+Simmetria palindromica:
+  S = vero se C[i] = C[n−i+1] per tutte le i
+
+Simmetria periodica:
+  Periodo = lunghezza minima p tale che C[i] = C[i+p]
+
+Note colore totali:
+  N_note = lunghezza sequenza × repeat</div>
+                <div class="formula-note">Analisi della simmetria nelle sequenze di colore per ottimizzare la programmazione del telaio.</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Casi d'Uso</h2>
+            <div class="use-case">
+                <div class="use-case-title">Educazione al Design Tessile</div>
+                <div class="use-case-desc">Strumento didattico per studenti e apprendisti del settore tessile. Permette di visualizzare immediatamente l'effetto delle scelte di intreccio, facilitando la comprensione delle relazioni tra parametri di tessitura e risultato finale del tessuto.</div>
+            </div>
+            <div class="use-case">
+                <div class="use-case-title">Pianificazione Produzione</div>
+                <div class="use-case-desc">Supporto alla pianificazione produttiva con calcolo automatico di copertura, consumi e rompimenti. Ottimizzazione dei parametri di tessitura prima della produzione effettiva, riducendo gli errorre e gli scarti.</div>
+            </div>
+            <div class="use-case">
+                <div class="use-case-title">Campionario Tessile</div>
+                <div class="use-case-desc">Creazione rapida di campioni virtuali per la presentazione ai clienti. Esportazione delle specifiche tecniche complete con note colore e parametri di produzione per una comunicazione efficiente tra design e produzione.</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Architettura Tecnica</h2>
+            <div class="arch-grid">
+                <div class="arch-item">
+                    <div class="arch-label">Rendering</div>
+                    <div class="arch-value">Canvas API</div>
+                </div>
+                <div class="arch-item">
+                    <div class="arch-label">Linguaggio</div>
+                    <div class="arch-value">JavaScript</div>
+                </div>
+                <div class="arch-item">
+                    <div class="arch-label">Struttura</div>
+                    <div class="arch-value">HTML5</div>
+                </div>
+                <div class="arch-item">
+                    <div class="arch-label">Styling</div>
+                    <div class="arch-value">CSS3</div>
+                </div>
+                <div class="arch-item">
+                    <div class="arch-label">Weave Engine</div>
+                    <div class="arch-value">Custom Algorithms</div>
+                </div>
+                <div class="arch-item">
+                    <div class="arch-label">Stato</div>
+                    <div class="arch-value">Live ✓</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>Pronto a simulare tessiture professionali?</h2>
+            <p>Accedi a WeaveCAD Draft Studio per progettare, visualizzare e calcolare tessiture tessili direttamente nel browser, con un simulatore interattivo basato sulle formule standard del settore.</p>
+            <a href="weavecad.html" class="cta-btn">Apri WeaveCAD Draft Studio →</a>
+        </div>
+    </div>
+</body>
+</html>

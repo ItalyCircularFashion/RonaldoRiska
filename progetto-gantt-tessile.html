@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gantt Ciclo Tessile — RonaldoRiska</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #0a1628;
+  --bg-secondary: #112240;
+  --bg-card: #1a2d50;
+  --border-accent: #ff8c00;
+  --border-subtle: #2a4a7f;
+  --text-primary: #ffffff;
+  --text-secondary: #a8b2d1;
+  --text-muted: #6b7a99;
+  --accent-blue: #4a9eff;
+  --accent-orange: #ff8c00;
+  --accent-green: #4caf50;
+  --accent-red: #f44336;
+  --accent-yellow: #ffc107;
+  --carding: #e91e63;
+  --spinning: #9c27b0;
+  --warping: #3f51b5;
+  --weaving: #2196f3;
+  --dyeing: #00bcd4;
+  --finishing: #ff9800;
+  --packaging: #4caf50;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+a { color: var(--accent-blue); text-decoration: none; }
+a:hover { color: var(--accent-orange); }
+
+/* Header */
+.header {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-secondary);
+}
+.header-inner { display: flex; align-items: center; justify-content: space-between; }
+.back-link {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 500;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--accent-orange); }
+
+/* Hero */
+.hero {
+  padding: 60px 0 40px;
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  border-bottom: 2px solid var(--border-accent);
+}
+.hero h1 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+.hero h1 span { color: var(--accent-orange); }
+.hero-desc {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  max-width: 700px;
+  margin-bottom: 24px;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(76, 175, 80, 0.15);
+  color: var(--accent-green);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+.status-badge::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag {
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  padding: 5px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid var(--border-subtle);
+}
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent-orange);
+  color: #0a1628;
+  padding: 14px 32px;
+  border-radius: 10px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.cta-btn:hover { background: #ffad33; transform: translateY(-2px); }
+
+/* Sections */
+.section { padding: 60px 0; }
+.section-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-title::before {
+  content: '';
+  width: 4px;
+  height: 32px;
+  background: var(--accent-orange);
+  border-radius: 2px;
+}
+.section-subtitle {
+  color: var(--text-secondary);
+  margin-bottom: 40px;
+  font-size: 1.05rem;
+}
+
+/* Feature Cards */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+.feature-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 28px;
+  transition: all 0.3s;
+}
+.feature-card:hover {
+  border-color: var(--accent-orange);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(255, 140, 0, 0.1);
+}
+.feature-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+}
+.feature-card h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin-bottom: 8px;
+}
+.feature-card p { color: var(--text-secondary); font-size: 0.95rem; }
+
+/* Formula Section */
+.formula-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+}
+.formula-box {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 24px;
+  border-left: 4px solid var(--accent-orange);
+}
+.formula-box h4 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--accent-orange);
+}
+.formula-box .formula {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  color: var(--accent-blue);
+  background: rgba(74, 158, 255, 0.08);
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+.formula-box p { color: var(--text-secondary); font-size: 0.9rem; }
+
+/* Gantt Canvas */
+.gantt-section {
+  background: var(--bg-secondary);
+}
+.gantt-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 24px;
+  overflow-x: auto;
+}
+.gantt-canvas {
+  width: 100%;
+  min-width: 900px;
+}
+.gantt-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.gantt-controls select, .gantt-controls input {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+}
+.gantt-controls button {
+  background: var(--accent-orange);
+  color: #0a1628;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+.gantt-controls button:hover { background: #ffad33; }
+
+/* Use Cases */
+.usecases-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+.usecase-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 24px;
+  position: relative;
+}
+.usecase-number {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: rgba(255, 140, 0, 0.2);
+  position: absolute;
+  top: 16px;
+  right: 20px;
+}
+.usecase-card h4 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+}
+.usecase-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+/* Tech Section */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+.tech-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+.tech-card .tech-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+}
+.tech-card h4 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.tech-card p { color: var(--text-secondary); font-size: 0.85rem; }
+
+/* CTA Bottom */
+.cta-section {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+  border-top: 2px solid var(--border-accent);
+  padding: 60px 0;
+  text-align: center;
+}
+.cta-section h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.cta-section p {
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+  font-size: 1.1rem;
+}
+
+/* Phases Legend */
+.phases-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.phase-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.phase-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+}
+
+/* Progress Stats */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.stat-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+.stat-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--accent-orange);
+}
+.stat-label {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+/* Footer */
+.footer {
+  padding: 30px 0;
+  border-top: 1px solid var(--border-subtle);
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+@media (max-width: 768px) {
+  .hero h1 { font-size: 2rem; }
+  .section-title { font-size: 1.5rem; }
+  .formula-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="container header-inner">
+    <a href="index.html#progetti" class="back-link">← Torna ai Progetti</a>
+    <span style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;color:var(--text-secondary);">RonaldoRiska</span>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="container">
+    <h1>Gantt <span>Ciclo Tessile</span></h1>
+    <p class="hero-desc">Piattaforma interattiva per la pianificazione dei cicli di lavorazione tessile. Gestione multi-ordine, visualizzazione WIP e analisi dei colli di bottiglia per lanifici.</p>
+    <div class="hero-meta">
+      <span class="status-badge">Live</span>
+      <div class="tags">
+        <span class="tag">React</span>
+        <span class="tag">Canvas</span>
+        <span class="tag">Hooks</span>
+        <span class="tag">Gantt</span>
+        <span class="tag">Produzione</span>
+        <span class="tag">Lanificio</span>
+      </div>
+    </div>
+    <a href="#" class="cta-btn">→ Accedi allo Strumento</a>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="section" style="padding-bottom:0;">
+  <div class="container">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-value">7</div>
+        <div class="stat-label">Fasi del Ciclo</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">∞</div>
+        <div class="stat-label">Ordini Simultanei</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">Real-time</div>
+        <div class="stat-label">WIP Tracking</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">Auto</div>
+        <div class="stat-label">Critical Path</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">Buffer</div>
+        <div class="stat-label">Dinamico</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Features -->
+<div class="section">
+  <div class="container">
+    <h2 class="section-title">Funzionalità</h2>
+    <p class="section-subtitle">Strumenti completi per la pianificazione e il monitoraggio della produzione tessile.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(233,30,99,0.15);">🧶</div>
+        <h3>7 Fasi Ciclo Lanificio</h3>
+        <p>Cardatura, Filatura, Orditoio, Tintura, Tessitura, Finitura e Imballaggio — ogni fase con parametri configurabili di durata, risorse e dipendenze.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(33,150,243,0.15);">📊</div>
+        <h3>Gestione Multi-Ordine</h3>
+        <p>Pianifica e sovrapponi più ordini contemporaneamente. Ogni ordine ha il proprio Gantt indipendente con timeline e risorse dedicate.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(255,193,7,0.15);">📦</div>
+        <h3>WIP Visualization</h3>
+        <p>Monitora il Work-in-Progress in tempo reale per ogni fase. Identifica accumuli, colli di bottiglia e rallentamenti prima che impattino le consegne.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(244,67,54,0.15);">⚠️</div>
+        <h3>Analisi Colli di Bottiglia</h3>
+        <p>Rilevamento automatico delle fasi critiche. Suggerimenti per riequilibrare carichi e allocare risorse dove servono di più.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(76,175,80,0.15);">📅</div>
+        <h3>Delivery Estimation</h3>
+        <p>Calcolo automatico della data di consegna basato su percorsi critici, buffer e vincoli di risorsa. Aggiornamento dinamico ad ogni modifica.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(0,188,212,0.15);">🔄</div>
+        <h3>Ri-pianificazione Dinamica</h3>
+        <p>Trascina e riordina fasi nel canvas. Il sistema ricalcola automaticamente dipendenze, percorsi critici e date di completamento.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Formulas -->
+<div class="section" style="padding-top:0;">
+  <div class="container">
+    <h2 class="section-title">Formule & Metodologie</h2>
+    <p class="section-subtitle">Algoritmi alla base del pianificatore tessile.</p>
+    <div class="formula-grid">
+      <div class="formula-box">
+        <h4>Calcolo Critical Path</h4>
+        <div class="formula">CP = max Σ(durata_i) per tutti i percorsi da start → end<br>Slack(j) = LS_j - ES_j; dove Slack = 0 → critico</div>
+        <p>Identifica la sequenza di fasi che determina la durata minima totale del progetto. Fasi con zero slacking non possono subire ritardi.</p>
+      </div>
+      <div class="formula-box">
+        <h4>Accumulo WIP</h4>
+        <div class="formula">WIP_fase(t) = Σ q_ordini_attivi(fase, t)<br>Work-in-Progress per fase al tempo t</div>
+        <p>Traccia il quantitativo di materiale in lavorazione per ogni singola fase produttiva nel tempo. Indica inefficienze quando supera la capacità.</p>
+      </div>
+      <div class="formula-box">
+        <h4>Stima Durata Fase</h4>
+        <div class="formula">D_fase = (q_lotto × t_unitario) / (n_macchine × efficienza)<br>+ t_setup + t_attesa</div>
+        <p>Calcola la durata attesa di ogni fase in base al volume, velocità macchina, efficienza operativa e tempi morti.</p>
+      </div>
+      <div class="formula-box">
+        <h4>Dimensionamento Buffer</h4>
+        <div class="formula">Buffer = α × √(Σ σ²_fasi_critiche)<br>α = fattore di sicurezza (1.5 – 2.5)</div>
+        <p>Calcola buffer di progetto usando la Critical Chain Project Management. Protegge la data di consegna dalla variabilità delle fasi critiche.</p>
+      </div>
+      <div class="formula-box">
+        <h4>Capacità di Carico</h4>
+        <div class="formula">Utilizzo_fase = ΣD_fase_ordini / Disponibilità_temporale<br>Se > 85% → collo di bottiglia</div>
+        <p>Confronto tra carico pianificato e capacità effettiva. Segnala quando una fase sta per saturarsi.</p>
+      </div>
+      <div class="formula-box">
+        <h4>Priorità Scheduling</h4>
+        <div class="formula">Priority = w₁·Urgenza + w₂·Margine_Tempo + w₃·Valore_Ordine<br>Normalizzato 0–100</div>
+        <p>Punteggio per determinare l'ordine di elaborazione di ordini concorrenti sulla stessa risorsa.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Gantt Demo -->
+<div class="section gantt-section" style="padding-top:0;">
+  <div class="container">
+    <h2 class="section-title">Anteprima Gantt</h2>
+    <p class="section-subtitle">Interfaccia interattiva di pianificazione — ordini multipli su timeline condivisa.</p>
+    <div class="gantt-wrapper">
+      <div class="phases-legend">
+        <div class="phase-legend-item"><div class="phase-dot" style="background:var(--carding)"></div>Cardatura</div>
+        <div class="phase-legend-item"><div class="phase-dot" style="background:var(--spinning)"></div>Filatura</div>
+        <div class="phase-legend-item"><div class="phase-dot" style="background:var(--warping)"></div>Orditoio</div>
+        <div class="phase-legend-item"><div class="phase-dot" style="background:var(--weaving)"></div>Tessitura</div>
+        <div class="phase-legend-item"><div class="phase-dot" style="background:var(--dyeing)"></div>Tintura</div>
+        <div class="phase-legend-item"><div class="phase-dot" style="background:var(--finishing)"></div>Finitura</div>
+        <div class="phase-legend-item"><div class="phase-dot" style="background:var(--packaging)"></div>Imballaggio</div>
+      </div>
+      <div class="gantt-controls">
+        <select id="orderSelect"><option>Tutti gli Ordini</option><option>Ordine #A-2026-044</option><option>Ordine #A-2026-045</option><option>Ordine #A-2026-046</option></select>
+        <input type="date" value="2026-09-01">
+        <button onclick="addOrder()">+ Nuovo Ordine</button>
+        <button onclick="calcCriticalPath()">Calcola Critical Path</button>
+      </div>
+      <canvas id="ganttCanvas" class="gantt-canvas" width="1140" height="380"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Use Cases -->
+<div class="section" style="padding-top:0;">
+  <div class="container">
+    <h2 class="section-title">Casi d'Uso</h2>
+    <div class="usecases-grid">
+      <div class="usecase-card">
+        <div class="usecase-number">01</div>
+        <h4>Pianificazione Produzione Lanificio</h4>
+        <p>Pianificazione completa del ciclo lanario dal grezzo al prodotto finito, ottimizzando sequenze e risorse tra cardatura e imballaggio.</p>
+      </div>
+      <div class="usecase-card">
+        <div class="usecase-number">02</div>
+        <h4>Identificazione Colli di Bottiglia</h4>
+        <p>Rileva automaticamente dove il WIP si accumula, permettendo interventi preventivi su macchine o turni prima del blocco della produzione.</p>
+      </div>
+      <div class="usecase-card">
+        <div class="usecase-number">03</div>
+        <h4>Stima Date di Consegna</h4>
+        <p>Comunica date realistiche ai clienti basate su carico effettivo, percorsi critici e buffer — non su stime a "regime".</p>
+      </div>
+      <div class="usecase-card">
+        <div class="usecase-number">04</div>
+        <h4>What-if Analysis</h4>
+        <p>Simula l'impatto di nuovi ordini, ritardi o guasti macchina sulla pianificazione esistente prima di prendere decisioni.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tech -->
+<div class="section" style="padding-top:0;">
+  <div class="container">
+    <h2 class="section-title">Architettura Tecnica</h2>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tech-icon">⚛️</div>
+        <h4>React</h4>
+        <p>Componenti riutilizzabili per timeline, card ordine e pannello WIP.</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">🎨</div>
+        <h4>Canvas API</h4>
+        <p>Rendering performante del Gantt con drag-and-drop nativo.</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">🪝</div>
+        <h4>React Hooks</h4>
+        <p>useState, useReducer, useMemo, useCallback per logica reattiva.</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">🧮</div>
+        <h4>Algoritmi CP</h4>
+        <p>Critical path, topological sort, resource leveling custom.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="container">
+    <h2>Pianifica il tuo ciclo tessile</h2>
+    <p>Ottimizza la produzione del tuo lanificio con Gantt interattivo e analisi WIP in tempo reale.</p>
+    <a href="#" class="cta-btn">→ Accedi allo Strumento</a>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="container">
+    © 2026 RonaldoRiska — Gantt Ciclo Tessile. Tutti i diritti riservati.
+  </div>
+</div>
+
+<script>
+// Gantt Canvas Rendering
+const canvas = document.getElementById('ganttCanvas');
+const ctx = canvas.getContext('2d');
+
+const phases = [
+  { name: 'Cardatura', color: '#e91e63', start: 0, duration: 3 },
+  { name: 'Filatura', color: '#9c27b0', start: 3, duration: 4 },
+  { name: 'Orditoio', color: '#3f51b5', start: 5, duration: 2 },
+  { name: 'Tessitura', color: '#2196f3', start: 7, duration: 5 },
+  { name: 'Tintura', color: '#00bcd4', start: 10, duration: 3 },
+  { name: 'Finitura', color: '#ff9800', start: 13, duration: 2 },
+  { name: 'Imballaggio', color: '#4caf50', start: 15, duration: 1 }
+];
+
+const orders = [
+  { id: 'A-044', label: 'Ord. #A-044 — Lana Merino 500kg', row: 0 },
+  { id: 'A-045', label: 'Ord. #A-045 — Cachemire Blend 200kg', row: 1 },
+  { id: 'A-046', label: 'Ord. #A-046 — Tweed Pesante 350kg', row: 2 }
+];
+
+function drawGantt() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  const marginLeft = 200;
+  const marginTop = 30;
+  const rowHeight = 90;
+  const barHeight = 22;
+  const dayWidth = 32;
+  const totalDays = 20;
+  
+  // Background grid
+  ctx.fillStyle = '#112240';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  // Timeline header
+  ctx.fillStyle = '#1a2d50';
+  ctx.fillRect(marginLeft, 0, canvas.width - marginLeft, marginTop + 10);
+  
+  ctx.fillStyle = '#a8b2d1';
+  ctx.font = '500 11px Inter';
+  for (let d = 0; d <= totalDays; d++) {
+    const x = marginLeft + d * dayWidth;
+    ctx.fillText('G' + (d + 1), x + 8, 22);
+    // Vertical grid lines
+    ctx.strokeStyle = '#1a2d50';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(x, marginTop + 10);
+    ctx.lineTo(x, canvas.height);
+    ctx.stroke();
+  }
+  
+  // Phase header row
+  ctx.fillStyle = '#1a2d50';
+  ctx.fillRect(0, marginTop, marginLeft, rowHeight * orders.length + 20);
+  
+  ctx.fillStyle = '#ff8c00';
+  ctx.font = '600 12px Plus Jakarta Sans';
+  ctx.fillText('FASI', 16, marginTop + 24);
+  
+  // Phase labels on left
+  phases.forEach((p, i) => {
+    ctx.fillStyle = p.color;
+    ctx.font = '500 11px Inter';
+    ctx.fillText(p.name, 16, marginTop + 50 + i * 18);
+  });
+  
+  // Order rows
+  orders.forEach((order, oi) => {
+    const yBase = marginTop + 20 + oi * rowHeight;
+    
+    // Order label
+    ctx.fillStyle = '#ff8c00';
+    ctx.font = '600 12px Inter';
+    ctx.fillText(order.id, 16, yBase + 16);
+    ctx.fillStyle = '#a8b2d1';
+    ctx.font = '400 11px Inter';
+    ctx.fillText(order.label.split('—')[1]?.trim() || '', 16, yBase + 32);
+    
+    // Draw phases for this order
+    const offsetDays = oi * 1; // stagger
+    phases.forEach((p, pi) => {
+      const px = marginLeft + (p.start + offsetDays) * dayWidth;
+      const py = yBase + 45 + pi * 14;
+      const pw = p.duration * dayWidth - 4;
+      
+      // Phase bar
+      ctx.fillStyle = p.color + '33';
+      ctx.fillRect(px, py, pw, barHeight);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(px, py, pw * (0.6 + oi * 0.15), barHeight);
+      
+      // Bar label
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '500 10px JetBrains Mono';
+      ctx.fillText(p.duration + 'g', px + 4, py + 14);
+    });
+    
+    // WIP indicator dots
+    for (let d = 0; d < totalDays; d++) {
+      const wx = marginLeft + d * dayWidth + 20;
+      const wy = yBase + 24;
+      const active = (d >= offsetDays && d < offsetDays + 16);
+      ctx.beginPath();
+      ctx.arc(wx, wy, 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = active ? '#4caf50' : '#2a4a7f';
+      ctx.fill();
+    }
+  });
+  
+  // Critical path highlight (diagonal line)
+  ctx.strokeStyle = '#ff8c00';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([6, 4]);
+  ctx.beginPath();
+  ctx.moveTo(marginLeft, marginTop + 60);
+  ctx.lineTo(marginLeft + 16 * dayWidth, marginTop + 60 + 6 * 14);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  
+  ctx.fillStyle = '#ff8c00';
+  ctx.font = '600 10px Plus Jakarta Sans';
+  ctx.fillText('CRITICAL PATH →', marginLeft + 5 * dayWidth + 10, marginTop + 52);
+}
+
+function addOrder() {
+  alert('Aggiunge un nuovo ordine al Gantt (modal creazione ordine)');
+}
+
+function calcCriticalPath() {
+  drawGantt();
+}
+
+drawGantt();
+</script>
+</body>
+</html>

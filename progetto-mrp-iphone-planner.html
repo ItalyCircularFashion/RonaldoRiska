@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MRP iPhone Planner | Ronaldo Riska</title>
+  <meta name="description" content="MRP iPhone Planner: simulatore MRP mobile-first con pianificazione produzione editabile, calcolo automatico componenti (FOQ/LFL), gestione ordini aperti, clienti e fornitori.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a1628;
+      --surface: #0f2040;
+      --surface-2: #163058;
+      --border: #ff8c00;
+      --border-2: #ffaa00;
+      --text: #ffffff;
+      --text-2: #e0e0e0;
+      --text-muted: #b0b0b0;
+      --accent: #ff8c00;
+      --accent-2: #ffaa00;
+      --blue: #1e4070;
+      --blue-2: #2a5490;
+      --radius: 12px;
+      --font: 'Inter', system-ui, sans-serif;
+      --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* Header */
+    .project-header {
+      padding: 80px 0 60px;
+      background: linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%);
+      border-bottom: 2px solid var(--border);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      margin-bottom: 32px;
+      transition: opacity 0.2s;
+    }
+    .back-link:hover { opacity: 0.8; }
+    .project-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .project-subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin-bottom: 32px;
+    }
+    .project-badges { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px; }
+    .badge {
+      padding: 6px 14px;
+      background: var(--blue);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .badge.accent { background: var(--accent); color: var(--bg); font-weight: 600; }
+    .header-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: var(--radius);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary { background: var(--accent); color: var(--bg); }
+    .btn-primary:hover { background: var(--accent-2); transform: translateY(-2px); }
+    .btn-secondary { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: var(--blue-2); }
+
+    /* Sections */
+    .section { padding: 80px 0; }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .section-desc { color: var(--text-muted); font-size: 16px; max-width: 700px; margin-bottom: 40px; }
+
+    /* Features grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: all 0.2s;
+    }
+    .feature-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .feature-icon {
+      width: 48px; height: 48px;
+      background: var(--blue);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+    .feature-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .feature-desc { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+
+    /* Formula box */
+    .formula-box {
+      background: var(--surface-2);
+      border: 2px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin: 20px 0;
+    }
+    .formula-title { font-weight: 600; color: var(--accent); margin-bottom: 8px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .formula { font-family: var(--font-mono); font-size: 15px; color: var(--text); margin-bottom: 8px; }
+    .formula-desc { color: var(--text-muted); font-size: 13px; }
+
+    /* Use cases */
+    .use-case {
+      background: var(--surface);
+      border: 1px solid var(--blue-2);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .use-case-title { font-weight: 600; color: var(--text); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+    .use-case-desc { color: var(--text-muted); font-size: 14px; }
+
+    /* CTA */
+    .cta-section {
+      text-align: center;
+      padding: 80px 0;
+      background: linear-gradient(180deg, var(--bg) 0%, var(--surface) 100%);
+      border-top: 2px solid var(--border);
+    }
+    .cta-title { font-family: var(--font-display); font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+    .cta-desc { color: var(--text-muted); margin-bottom: 32px; }
+
+    /* Footer */
+    .project-footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--blue-2);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    .project-footer a { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 768px) {
+      .section { padding: 60px 0; }
+      .project-header { padding: 60px 0 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="project-header">
+    <div class="container">
+      <a href="index.html#progetti" class="back-link">← Torna ai progetti</a>
+      <h1 class="project-title">MRP iPhone Planner</h1>
+      <p class="project-subtitle">Simulatore MRP mobile-first con piano produzione editabile, calcolo automatico componenti richiesti (FOQ/LFL), gestione ordini aperti, clienti e fornitori. Dati reali da esercitazione MPS/MRP (Pantony + Jacket-shirt, 20 settimane).</p>
+      <div class="project-badges">
+        <span class="badge accent">Live</span>
+        <span class="badge">MRP</span>
+        <span class="badge">MPS</span>
+        <span class="badge">FOQ/LFL</span>
+        <span class="badge">Mobile-First</span>
+        <span class="badge">React</span>
+      </div>
+      <div class="header-actions">
+        <a href="#tool" class="btn btn-primary">🚀 Apri il Tool</a>
+        <a href="index.html" class="btn btn-secondary">← Home</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- OVERVIEW -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Panoramica</h2>
+      <p class="section-desc">MRP iPhone Planner è uno strumento di pianificazione produzione pensato per essere utilizzato direttamente da mobile. Richiama i calcoli MRP classici su dati reali di due prodotti — Pantony e Jacket-shirt — su un orizzonte di 20 settimane, permettendo modifiche rapide, analisi what-if e confronto fornitori.</p>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <h3 class="feature-title">Mobile-Optimized UI</h3>
+          <p class="feature-desc">Interfaccia progettata per iPhone: touch-friendly, tabella scorrevole orizzontalmente, pannelli compatti, nessun hover. Tutte le funzioni essenziari a portata di pollice.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚙️</div>
+          <h3 class="feature-title">Master Config Panel</h3>
+          <p class="feature-desc">Pannello di configurazione centralizzato per lead time, scorte iniziali, lotti minimi, politiche di riordino. Modifica un parametro e l'intero MRP si ricalcola in tempo reale.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📦</div>
+          <h3 class="feature-title">FOQ / LFL Lot Sizing</h3>
+          <p class="feature-desc">Due politiche di dimensionamento lotto: Fixed Order Quantity (ordine a quantità fissa) e Lot-for-Lot (ordine = fabbisogno netto). Il sistema applica la politica per componente.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💰</div>
+          <h3 class="feature-title">Multi-Supplier Pricing</h3>
+          <p class="feature-desc">Confronto prezzi e lead time tra fornitori per ogni componente. Calcolo automatico del costo totale di approvvigionamento e suggerimento del fornitori ottimale.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3 class="feature-title">Production Planning</h3>
+          <p class="feature-desc">Piano produzione editabile settimanalmente per Pantony e Jacket-shirt. Modifica la domanda e guarda il MRP aggiornarsi in tempo reale: fabbiscoli, riordini, scorte proiettate.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📋</div>
+          <h3 class="feature-title">Open Orders Management</h3>
+          <p class="feature-desc">Gestione ordini pianificati (Planned Orders) e ordini rilasciati (Released Orders). Traccia lo stato, la settimana di consegna e il forniture per ogni ordine aperto.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULE -->
+  <section class="section" style="background: var(--surface);">
+    <div class="container">
+      <h2 class="section-title">Formule e Metodologie</h2>
+      <p class="section-desc">Il motore MRP applica le formule standard della pianificazione dei fabbisogni materiali, con le due politiche di dimensionamento lotto principali.</p>
+      
+      <div class="formula-box">
+        <div class="formula-title">Fabbisogno Netto (Net Requirements)</div>
+        <div class="formula">Net Req = Gross Requirements − On Hand − Scheduled Receipts</div>
+        <div class="formula-desc">Il fabbisogno netto rappresenta la quantità effettivamente da ordinare in ogni periodo, al netto delle scorte disponibili e dei ricevimenti già programmati. Se ≤ 0, nessun ordene è generato.</div>
+      </div>
+
+      <div class="formula-box">
+        <div class="formula-title">FOQ — Fixed Order Quantity</div>
+        <div class="formula">Order Qty = FOQ  (se Net Req &gt; 0, ordina esattamente FOQ)</div>
+        <div class="formula-desc">Politica a quantità fissa: ogni volta che il fabbisogno netto supera zero, si ordina esattamente la quantità prestabilita (es. 100, 200). Utile per vincoli logistici, scatole pallets, MOQ fornitore.</div>
+      </div>
+
+      <div class="formula-box">
+        <div class="formula-title">LFL — Lot-for-Lot</div>
+        <div class="formula">Order Qty = Net Req  (ordina esattamente ciò che serve)</div>
+        <div class="formula-desc">Politica "lotto per lotto": l'ordine coincide esattamente col fabbisogno netto del periodo. Minimizza le scorte in ma multiplica gli ordini. Ideale per componenti costosi o a domanda irregolare.</div>
+      </div>
+
+      <div class="formula-box">
+        <div class="formula-title">Projected On Hand (Scorte Proiettate)</div>
+        <div class="formula">POH(t) = POH(t−1) + SR(t) + Planned Receipts(t) − Gross Req(t)</div>
+        <div class="formula-desc">La scatta proiettata a fine periodo è calcolata ricorsivamente: scorte del periodo precedente più ricevimenti pianificati più entrata pianificata, meno fabbiscoli lordi del periodo.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DATI REALI -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Dati Reali MPS/MRP</h2>
+      <p class="section-desc">Il tool include i dati reali dell'esercitazione MPS/MRP con due prodotti finali su un orizzonte di 20 settimane.</p>
+      
+      <div class="features-grid">
+        <div class="feature-card" style="border-color: #ff8c00;">
+          <h3 class="feature-title">👖 Pantony</h3>
+          <p class="feature-desc"><strong>Prodotto finale A.</strong><br>Composizione: telaio pantalone, cintura, bottoni, cerniera, etichetta. Lead time produzione: 1 settimana. Scorta iniziale: 50 unità. Politica: LFL.<br><br>MPS settimanale su 20 settimane con domanda variabile.</p>
+        </div>
+        <div class="feature-card" style="border-color: #5a80c0;">
+          <h3 class="feature-title">🧥 Jacket-shirt</h3>
+          <p class="feature-desc"><strong>Prodotto finale B.</strong><br>Composizione: telaio giacca, fodera, bottoni, orlo, etichetta. Lead time produzione: 2 settimane. Scorta iniziale: 30 unità. Politica: FOQ 100.<br><br>MPS settimanale su 20 settimane con picchi stagionali.</p>
+        </div>
+        <div class="feature-card">
+          <h3 class="feature-title">🔗 Distinta Base (BOM)</h3>
+          <p class="feature-desc">Struttura multi-livello completa con componenti condivisi (bottoni, etichette) tra i due prodotti. Espansione della BOM per calcolo fabbiscoli lordi di tutti i livelli inferiori.</p>
+        </div>
+        <div class="feature-card">
+          <h3 class="feature-title">📅 Orizzonte 20 Settimane</h3>
+          <p class="feature-desc">Planning su 20 settimane con visualizzione completa: settimane passate (storiche), settimana corrente, e settimane future (proiettate). Possibilità di modificare qualsiasi valore futuro.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASI D'USO -->
+  <section class="section" style="background: var(--surface);">
+    <div class="container">
+      <h2 class="section-title">Casi d'Uso</h2>
+      <p class="section-desc">Applicazioni concrete per pianificatori produzione, supply chain manager, studenti e consulenti.</p>
+      
+      <div class="use-case">
+        <div class="use-case-title">📱 Scenario 1: Pianificazione produzione da iPhone</div>
+        <div class="use-case-desc">Il responsabile produzione modifica il MPS direttamente da iPhone durante una riunione o in reparto. Cambia la quantità Pantony dalla settimana 6 da 80 a 120 unità e il sistema ricalcola istantaneamente tutti i fabbiscoli componenti, generando automaticamente nuovi ordini pianificati per telaio, bottoni e cerniera.</div>
+      </div>
+
+      <div class="use-case">
+        <div class="use-case-title">🔮 Scenario 2: Analisi What-If</div>
+        <div class="use-case-desc">Il supply chain manager simula un aumento del 30% della domanda Jacket-shirt nelle settimane 10-13 (colpo stagionale). Confronta lo scenario base con quello stressato: identifica potenziali stock-out del telaio giacca nella settimana 11 e valuta l'anticipo dell'ordine al fornitore (da FOQ 100 a FOQ 150).</div>
+      </div>
+
+      <div class="use-case">
+        <div class="use-case-title">⚖️ Scenario 3: Confronto Fornitori</div>
+        <div class="use-case-desc">Due fornitori di telaio pantalone: Fornitore A a €8/unità con LT 2 settimane, Fornitore B a €6.50/unità con LT 4 settimane. Il tool calcola il costo totale (acquisto + tenuta scorta) e suggerisce il fornitore ottimale in base al pattern di domanda.</div>
+      </div>
+
+      <div class="use-case">
+        <div class="use-case-title">🎓 Scenario 4: Didattica MRP</div>
+        <div class="use-case-desc">Studenti di Ingegneria Gestionale possono modificare i parametri MRP e osservare immediatamente l'effetto su fabbiscoli, ordini e scorte. Lo strumento rende tangibile il funzionamento del MRP a Mr. Orlicky con un caso concreto già risolto come verifica.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECNOLOGIE -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Architettura Tecnica</h2>
+      <p class="section-desc">Stack tecnico e implementazione del motore MRP.</p>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3 class="feature-title">Frontend Framework</h3>
+          <p class="feature-desc">React con Hooks (useState, useEffect, useMemo). Componenti modulari: MRPTable, ItemRow, WeekCell, ConfigPanel. Stato centralizzato per tutta la simulazione.</p>
+        </div>
+        <div class="feature-card">
+          <h3 class="feature-title">MRP Engine</h3>
+          <p class="feature-desc">Motore di calcolo MRP puro in JavaScript: espansione BOM, calcolo fabbiscoli netti, applicazione politiche lotto, proiezione scotte. Aggiornamento reattivo ad ogni modifica.</p>
+        </div>
+        <div class="feature-card">
+          <h3 class="feature-title">Dati</h3>
+          <p class="feature-desc">Dati reali da esercitazione MPS/MRP: Pantony + Jacket-shirt, distinta base completa, MPS 20 settimane, politiche FOQ/LFL per componente. Import/export JSON per salvare scenari.</p>
+        </div>
+        <div class="feature-card">
+          <h3 class="feature-title">UX Mobile</h3>
+          <p class="feature-desc">Design mobile-first con touch targets ≥44px, scroll orizzontale per la tab MRP, pannelli collassabili, e nessuna dipendenza da hover. Funziona perfettamente su Safari iOS.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="tool">
+    <div class="container">
+      <h2 class="cta-title">Pronto a pianificare la produzione?</h2>
+      <p class="cta-desc">Accedi al tool MRP e modifica il piano produzione in tempo reale, direttamente da iPhone.</p>
+      <a href="#tool" class="btn btn-primary" style="font-size: 18px; padding: 18px 36px;">🚀 Apri MRP iPhone Planner</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="project-footer">
+    <div class="container">
+      <p>Progettato e sviluppato da <a href="index.html">Ronaldo Riska</a> — Supply Chain Manager, Distretto Tessile di Prato</p>
+      <p style="margin-top: 8px;">MRP Engine basato sui principi di Orlicky — Dati reali MPS/MRP (Pantony + Jacket-shirt)</p>
+    </div>
+  </footer>
+
+</body>
+</html>
