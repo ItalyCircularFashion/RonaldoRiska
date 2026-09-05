@@ -40,8 +40,8 @@
   --bg:        #0a1628;
   --surface:   #0f2040;
   --surface-2: #163058;
-  --border:    #2a5490;
-  --border-2:  #3a6898;
+  --border:    #ff8c00;
+  --border-2:  #ffaa00;
   /* Text - orange for contrast */
   --text-primary:   #ff8c00;
   --text-secondary: #ffaa00;
@@ -192,7 +192,7 @@ a { text-decoration: none; color: inherit; }
   justify-content: center;
   padding: 60px;
   background: rgba(255,255,255,0.03);
-  border-left: 1px solid rgba(255,255,255,0.06);
+  border-left: 2px solid #ff8c00;
 }
 .auth-card {
   background: var(--surface);
@@ -236,7 +236,7 @@ a { text-decoration: none; color: inherit; }
 .auth-tab.active {
   background: var(--surface);
   color: var(--text-primary);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-sm), 0 0 0 1px rgba(255,140,0,0.15);
 }
 .form-field { margin-bottom: 16px; }
 .form-label {
@@ -251,7 +251,7 @@ a { text-decoration: none; color: inherit; }
   width: 100%;
   padding: 10px 14px;
   background: var(--surface-2);
-  border: 1px solid var(--border);
+  border: 2px solid #ff8c00;
   border-radius: var(--r-sm);
   font-size: 14px;
   color: var(--text-primary);
@@ -260,7 +260,7 @@ a { text-decoration: none; color: inherit; }
 }
 .form-input:focus {
   border-color: var(--navy-400);
-  box-shadow: 0 0 0 3px rgba(100,140,180,0.12);
+  box-shadow: 0 0 0 3px rgba(255,140,0,0.3);
   background: var(--surface);
 }
 .btn-primary {
@@ -294,7 +294,7 @@ a { text-decoration: none; color: inherit; }
   width: 100%;
   padding: 11px;
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 2px solid #ff8c00;
   border-radius: var(--r-sm);
   font-size: 13px;
   font-weight: 400;
@@ -450,10 +450,10 @@ a { text-decoration: none; color: inherit; }
 ═══════════════════════════════════════════════ */
 .card {
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 2px solid #ff8c00;
   border-radius: var(--r-lg);
   padding: 24px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-sm), 0 0 0 1px rgba(255,140,0,0.15);
 }
 .card-sm { padding: 16px; }
 .card-lg { padding: 32px; }
@@ -480,10 +480,10 @@ a { text-decoration: none; color: inherit; }
 }
 .kpi-card {
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 2px solid #ff8c00;
   border-radius: var(--r-lg);
   padding: 20px 24px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-sm), 0 0 0 1px rgba(255,140,0,0.15);
   position: relative;
   overflow: hidden;
   transition: box-shadow 0.2s;
@@ -493,8 +493,8 @@ a { text-decoration: none; color: inherit; }
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 3px;
-  background: var(--kpi-color, var(--navy-300));
+  height: 4px;
+  background: var(--kpi-color, #ff8c00);
   border-radius: var(--r-lg) var(--r-lg) 0 0;
 }
 .kpi-label {
@@ -547,7 +547,7 @@ a { text-decoration: none; color: inherit; }
   width: 100%;
   padding: 9px 12px;
   background: var(--surface-2);
-  border: 1px solid var(--border);
+  border: 2px solid #ff8c00;
   border-radius: var(--r-sm);
   font-size: 13px;
   color: var(--text-primary);
@@ -609,7 +609,7 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--navy-600); }
   background: var(--navy-800);
   color: #f8faff;
 }
-.btn-navy:hover { background: var(--navy-700); box-shadow: var(--shadow-sm); }
+.btn-navy:hover { background: var(--navy-700); box-shadow: var(--shadow-sm), 0 0 0 1px rgba(255,140,0,0.15); }
 .btn-outline {
   background: transparent;
   border: 1px solid var(--border-2);
@@ -671,7 +671,8 @@ tbody tr:hover td { background: var(--surface-2); }
 ═══════════════════════════════════════════════ */
 .result-panel {
   background: var(--surface-2);
-  border: 1px solid var(--border);
+  border: 2px solid #ff8c00;
+  border-left: 4px solid #ffaa00;
   border-radius: var(--r-md);
   padding: 16px;
 }
@@ -751,7 +752,7 @@ tbody tr:hover td { background: var(--surface-2); }
    ACCORDION
 ═══════════════════════════════════════════════ */
 .accord {
-  border: 1px solid var(--border);
+  border: 2px solid #ff8c00;
   border-radius: var(--r-md);
   margin-bottom: 8px;
   overflow: hidden;
@@ -789,7 +790,7 @@ tbody tr:hover td { background: var(--surface-2); }
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 3px;
-  border: 1px solid var(--border);
+  border: 2px solid #ff8c00;
   border-radius: var(--r-md);
   overflow: hidden;
   background: var(--border);
