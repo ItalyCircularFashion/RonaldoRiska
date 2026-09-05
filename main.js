@@ -29,7 +29,7 @@ const getProjectIdFromUrl = () => {
 };
 
 // Genera URL canonico per i link interni
-const detailHref = (project) => `progetti/${encodeURIComponent(project.id)}.html`;
+const detailHref = (project) => project.url;
 
 const categoryHref = (categoryKey) => fromRoot(categories[categoryKey]?.page || "index.html");
 
@@ -493,30 +493,11 @@ const initFooter = () => {
   });
 };
 
-// Gestione navigazione interna con URL canonici (History API)
+// Gestione navigazione interna - DISABILITATA
+// I link ora portano direttamente ai file HTML dei tools
 const initInternalNavigation = () => {
-  document.body.addEventListener("click", (e) => {
-    const link = e.target.closest("a");
-    if (!link) return;
-    const href = link.getAttribute("href");
-    if (!href) return;
-    // Intercetta solo link interni che puntano a /progetti/... o alle pagine principali
-    if (href.startsWith("/progetti/") && href.endsWith(".html")) {
-      e.preventDefault();
-      const url = new URL(href, window.location.origin);
-      history.pushState({}, "", url.pathname);
-      renderProjectDetail();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else if (href === "index.html" || href === "/" || href === "./") {
-      // Gestione home per evitare ricariche complete (opzionale)
-      // Lasciamo il comportamento default per semplicità
-    }
-  });
-
-  // Gestione back/forward
-  window.addEventListener("popstate", () => {
-    renderProjectDetail();
-  });
+  // Non intercettiamo più i link - ogni tool ha il suo file HTML
+  // La navigazione è gestita normalmente dal browser
 };
 
 
@@ -525,13 +506,11 @@ document.addEventListener("DOMContentLoaded", () => {
   initNavigation();
   hydrateCategoryBlocks();
   renderProjectLists();
-  renderProjectDetail();
   initProjectFilters();
   initReveal();
   initCounters();
   initFooter();
   drawKpiCanvas();
-  initInternalNavigation();
   window.addEventListener("resize", drawKpiCanvas);
 });
 
