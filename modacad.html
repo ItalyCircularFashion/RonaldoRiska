@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ModaCAD Studio — Modellistica Digitale</title>
+<title>Weave Studio — Simulatore Armature Tessili</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -19,7 +19,8 @@
   --text-muted: #8899aa;
   --accent: #ff8c00;
   --accent-2: #ffaa00;
-  --danger: #ff4d4d;
+  --warp: #c8a46e;
+  --weft: #3a6e8c;
   --grid: rgba(255,255,255,0.04);
   --shadow: 0 4px 24px rgba(0,0,0,0.4);
 }
@@ -33,418 +34,327 @@ body {
   display:flex;
   flex-direction:column;
 }
-::-webkit-scrollbar { width:4px; height:4px; }
+::-webkit-scrollbar { width:6px; height:6px; }
 ::-webkit-scrollbar-track { background:var(--surface); }
-::-webkit-scrollbar-thumb { background:var(--border-3); border-radius:2px; }
+::-webkit-scrollbar-thumb { background:var(--border-3); border-radius:3px; }
 
-/* HEADER */
-.app-header {
+/* TOPBAR */
+.topbar {
   display:flex; align-items:center; justify-content:space-between;
-  padding:0 20px; height:48px;
+  padding:0 20px; height:52px;
   background:var(--surface); border-bottom:2px solid var(--border);
-  flex-shrink:0; z-index:100;
+  flex-shrink:0;
 }
-.app-logo { font-family:'Plus Jakarta Sans',sans-serif; font-size:20px; font-weight:700; letter-spacing:0.04em; }
-.app-logo span { color:var(--accent); font-style:italic; }
-.header-tabs { display:flex; gap:2px; }
-.header-tab {
-  padding:6px 16px; font-size:10px; letter-spacing:0.12em; text-transform:uppercase;
-  cursor:pointer; border:none; background:transparent; color:var(--text-muted);
-  border-bottom:2px solid transparent; transition:all 0.2s;
-}
-.header-tab.active { color:var(--text); border-bottom-color:var(--accent); }
-.header-actions { display:flex; gap:8px; align-items:center; }
-.btn {
-  padding:6px 14px; font-size:10px; letter-spacing:0.1em; text-transform:uppercase;
-  border:1px solid var(--border-3); background:var(--surface-2); color:var(--text);
-  cursor:pointer; border-radius:4px; transition:all 0.2s;
-}
-.btn:hover { border-color:var(--accent); background:var(--surface-3); }
-.btn-primary { background:var(--accent); border-color:var(--accent); color:var(--bg); font-weight:600; }
-.btn-primary:hover { background:var(--accent-2); }
+.logo { display:flex; align-items:center; gap:10px; }
+.logo-icon { display:grid; grid-template-columns:repeat(4,4px); gap:1px; }
+.logo-icon span { width:4px; height:4px; border-radius:1px; }
+.logo-text { font-family:'Plus Jakarta Sans',sans-serif; font-size:16px; font-weight:700; }
+.logo-sub { font-size:10px; color:var(--text-muted); margin-left:8px; }
+.cell-info { font-size:11px; color:var(--text-muted); font-family:'JetBrains Mono',monospace; }
 
-/* MAIN */
-.app-body { display:flex; flex:1; overflow:hidden; }
+/* BODY */
+.body { display:flex; flex:1; overflow:hidden; }
 
-/* SIDEBAR */
-.sidebar {
-  width:220px; background:var(--surface); border-right:1px solid var(--border-3);
-  display:flex; flex-direction:column; flex-shrink:0; overflow-y:auto;
+/* LEFT PANEL */
+.left-panel {
+  width:240px; background:var(--surface); border-right:1px solid var(--border-3);
+  overflow-y:auto; flex-shrink:0; padding:16px;
 }
-.sidebar-section { padding:12px 14px; border-bottom:1px solid var(--border-3); }
-.sidebar-title { font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; font-weight:600; }
-.tool-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:4px; }
-.tool-btn {
-  aspect-ratio:1; display:flex; flex-direction:column; align-items:center;
-  justify-content:center; gap:2px; background:var(--surface-2); border:1px solid var(--border-3);
-  cursor:pointer; font-size:8px; letter-spacing:0.08em; text-transform:uppercase;
-  color:var(--text-muted); border-radius:4px; padding:4px;
+.section-header {
+  font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent);
+  margin-bottom:12px; font-weight:600;
 }
-.tool-btn:hover { border-color:var(--accent); color:var(--accent); }
-.tool-btn.active { background:var(--accent); color:var(--bg); border-color:var(--accent); font-weight:600; }
-.tool-icon { font-size:14px; }
+.param-row {
+  display:flex; align-items:center; margin-bottom:10px; gap:10px;
+}
+.param-label { font-size:11px; color:var(--text-muted); flex:1; white-space:nowrap; }
+.num-input {
+  width:60px; padding:5px 8px; border:1px solid var(--border-3);
+  background:var(--surface-2); color:var(--text); font-size:12px;
+  font-family:'JetBrains Mono',monospace; border-radius:4px;
+}
+.num-input:focus { border-color:var(--accent); outline:none; }
+.range { width:100%; accent-color:var(--accent); }
 
-.pattern-list { display:flex; flex-direction:column; gap:4px; }
-.pattern-item {
-  display:flex; align-items:center; gap:8px; padding:8px 10px;
-  background:var(--surface-2); border:1px solid var(--border-3); cursor:pointer;
-  font-size:10px; color:var(--text-2); border-radius:4px;
+/* COLOR ROW */
+.color-row { display:flex; align-items:center; margin-bottom:10px; gap:10px; }
+.color-label { font-size:11px; color:var(--text-muted); flex:1; }
+.color-picker {
+  width:28px; height:22px; border:1px solid var(--border-3);
+  background:none; cursor:pointer; padding:1px; border-radius:4px;
 }
-.pattern-item:hover { border-color:var(--accent); background:var(--surface-3); }
-.pattern-item.active { border-color:var(--accent); background:var(--accent); color:var(--bg); font-weight:600; }
-.pattern-icon { font-size:16px; }
+.color-value { font-size:10px; color:var(--text-muted); font-family:'JetBrains Mono',monospace; }
 
-.size-list { display:flex; flex-wrap:wrap; gap:4px; }
-.size-chip {
-  padding:4px 10px; font-size:10px; border:1px solid var(--border-3);
-  cursor:pointer; background:var(--surface-2); color:var(--text-2); border-radius:2px;
+/* PRESET BTN */
+.preset-btn {
+  display:flex; align-items:center; gap:8px; width:100%;
+  padding:8px 10px; border:1px solid var(--border-3); border-radius:4px;
+  background:transparent; color:var(--text-2); font-size:11px; cursor:pointer;
+  transition:all 0.15s; text-align:left;
 }
-.size-chip:hover { border-color:var(--accent); }
-.size-chip.active { background:var(--accent); color:var(--bg); border-color:var(--accent); font-weight:600; }
+.preset-btn:hover { border-color:var(--accent); background:var(--surface-2); }
+.preset-btn.active { background:var(--surface-2); border-color:var(--accent); color:var(--text); }
+
+/* CHECK ROW */
+.check-row { display:flex; align-items:center; gap:8px; cursor:pointer; margin-bottom:8px; }
+.check-row input { accent-color:var(--accent); width:13px; height:13px; }
+.check-row span { font-size:12px; color:var(--text-2); }
 
 /* CANVAS AREA */
-.canvas-area { flex:1; display:flex; flex-direction:column; overflow:hidden; position:relative; }
-.canvas-toolbar {
-  display:flex; align-items:center; gap:8px; padding:8px 16px;
-  background:var(--surface); border-bottom:1px solid var(--border-3); flex-shrink:0;
+.canvas-area {
+  flex:1; position:relative; overflow:hidden;
+  background:var(--bg);
 }
-.canvas-toolbar select, .canvas-toolbar input[type=range] {
-  font-size:10px; padding:4px 8px;
-  border:1px solid var(--border-3); background:var(--surface-2); color:var(--text); border-radius:2px;
-}
-.canvas-toolbar label { font-size:9px; color:var(--text-muted); }
-.toolbar-sep { width:1px; height:20px; background:var(--border-3); margin:0 4px; }
-.color-swatches { display:flex; gap:4px; }
-.color-swatch {
-  width:22px; height:22px; border-radius:50%; border:2px solid var(--border-3); cursor:pointer;
-}
-.color-swatch:hover { border-color:var(--accent); transform:scale(1.1); }
-.color-swatch.active { border-color:var(--accent); box-shadow:0 0 0 2px rgba(255,140,0,0.3); }
+.canvas-area canvas { display:block; cursor:crosshair; }
+.canvas-area.panning { cursor:grabbing; }
+.canvas-area.dragging { cursor:cell; }
 
-.view-tabs { display:flex; }
-.view-tab {
-  padding:4px 14px; font-size:9px; letter-spacing:0.12em; text-transform:uppercase;
-  cursor:pointer; border:none; background:transparent; color:var(--text-muted);
-  border-bottom:2px solid transparent;
+/* ZOOM BADGE */
+.zoom-badge {
+  position:absolute; top:16px; right:16px;
+  display:flex; align-items:center; gap:8px;
+  background:var(--surface); border:1px solid var(--border-3);
+  border-radius:6px; padding:4px 8px; z-index:10;
 }
-.view-tab.active { color:var(--text); border-bottom-color:var(--accent); }
+.zoom-btn {
+  width:24px; height:24px; border:1px solid var(--border-3);
+  background:var(--surface-2); color:var(--text); border-radius:4px;
+  cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center;
+}
+.zoom-btn:hover { border-color:var(--accent); }
+.zoom-label { font-size:11px; font-family:'JetBrains Mono',monospace; min-width:42px; text-align:center; }
 
-.canvas-wrapper {
-  flex:1; overflow:auto; position:relative;
-  background:linear-gradient(var(--grid) 1px, transparent 1px),
-             linear-gradient(90deg, var(--grid) 1px, transparent 1px),
-             var(--surface-2);
-  background-size:20px 20px;
+/* HINT */
+.hint {
+  position:absolute; bottom:16px; left:50%; transform:translateX(-50%);
+  font-size:10px; color:var(--text-muted); letter-spacing:0.05em;
+  background:rgba(15,32,64,0.9); padding:6px 14px; border:1px solid var(--border-3);
+  border-radius:4px; pointer-events:none; z-index:10;
 }
-.canvas-wrapper canvas { display:block; cursor:crosshair; margin:20px auto; border:1px solid var(--border-3); }
-.canvas-info {
-  position:absolute; bottom:12px; left:50%; transform:translateX(-50%);
-  font-size:9px; color:var(--text-muted); letter-spacing:0.1em;
-  background:rgba(15,32,64,0.9); padding:4px 12px; border:1px solid var(--border-3); border-radius:4px;
-}
-
-/* 3D Preview */
-.view-3d { display:none; flex:1; align-items:center; justify-content:center; flex-direction:column; gap:16px; background:var(--surface-2); }
-.view-3d.active { display:flex; }
-.view-3d canvas { border:1px solid var(--border-3); border-radius:4px; }
 
 /* RIGHT PANEL */
 .right-panel {
-  width:240px; background:var(--surface); border-left:1px solid var(--border-3);
-  display:flex; flex-direction:column; flex-shrink:0; overflow-y:auto;
+  width:260px; background:var(--surface); border-left:1px solid var(--border-3);
+  overflow-y:auto; flex-shrink:0; padding:16px;
 }
-.rp-section { padding:12px 14px; border-bottom:1px solid var(--border-3); }
-.rp-title { font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent); margin-bottom:10px; font-weight:600; }
-.prop-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; font-size:10px; }
-.prop-label { color:var(--text-muted); }
-.prop-input { font-size:10px; padding:3px 8px; border:1px solid var(--border-3); background:var(--surface-2); color:var(--text); width:90px; font-family:'JetBrains Mono',monospace; border-radius:2px; }
 
-.grading-table { width:100%; border-collapse:collapse; font-size:10px; }
-.grading-table th { background:var(--surface-2); color:var(--text-muted); padding:5px 8px; text-align:left; font-weight:500; letter-spacing:0.08em; font-size:9px; border-bottom:1px solid var(--border-3); }
-.grading-table td { padding:5px 8px; border-bottom:1px solid var(--border-3); color:var(--text-2); }
-.grading-table input { width:50px; padding:2px 4px; border:1px solid var(--border-3); font-family:'JetBrains Mono',monospace; font-size:10px; background:transparent; color:var(--text); }
-.grading-table input:focus { border-color:var(--accent); outline:none; }
+/* MATRIX */
+.matrix-container {
+  display:grid; gap:1px; background:var(--surface-2);
+  border:1px solid var(--border-3); padding:1px; width:fit-content;
+  max-height:260px; overflow:auto;
+}
+.matrix-cell {
+  width:18px; height:18px; cursor:pointer; transition:filter 0.1s;
+}
+.matrix-cell:hover { filter:brightness(1.3); }
 
-.efficiency-bar-outer { height:8px; background:var(--surface-2); border-radius:4px; overflow:hidden; margin:6px 0; }
-.efficiency-bar-inner { height:100%; background:var(--accent); border-radius:4px; transition:width 0.6s ease; }
-.eff-number { font-size:22px; font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; color:var(--accent); }
+/* LEGEND */
+.legend-row { display:flex; align-items:center; gap:7px; margin-bottom:5px; }
+.legend-color {
+  width:16px; height:10px; border-radius:2px; flex-shrink:0;
+}
+.legend-color.dashed { background:transparent; border:1.5px dashed; }
+.legend-label { font-size:11px; color:var(--text-muted); }
 
-/* LAYERS */
-.layers-list { display:flex; flex-direction:column; gap:4px; }
-.layer-item { display:flex; align-items:center; gap:8px; padding:6px 10px; background:var(--surface-2); border:1px solid var(--border-3); cursor:pointer; font-size:10px; color:var(--text-2); border-radius:4px; }
-.layer-item:hover { border-color:var(--accent); }
-.layer-item.active { border-color:var(--accent); background:var(--surface-3); }
-.layer-visibility { margin-left:auto; cursor:pointer; opacity:0.6; }
+/* STATS */
+.stat-row { display:flex; justify-content:space-between; margin-bottom:4px; }
+.stat-label { font-size:11px; color:var(--text-muted); }
+.stat-value { font-size:12px; color:var(--accent); font-family:'JetBrains Mono',monospace; }
 
-/* NESTING */
-.nesting-overlay { display:none; position:absolute; inset:0; background:var(--surface-2); z-index:50; flex-direction:column; }
-.nesting-overlay.active { display:flex; }
-.nesting-header { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; background:var(--surface); border-bottom:1px solid var(--border-3); }
-.nesting-title { font-family:'Plus Jakarta Sans',sans-serif; font-size:18px; font-weight:600; }
-.nesting-body { flex:1; overflow:auto; padding:20px; display:flex; justify-content:center; }
-
-/* MODAL */
-.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:200; align-items:center; justify-content:center; }
-.modal-overlay.active { display:flex; }
-.modal { background:var(--surface); border:1px solid var(--border-3); width:460px; box-shadow:var(--shadow); border-radius:8px; }
-.modal-header { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; border-bottom:1px solid var(--border-3); }
-.modal-title { font-family:'Plus Jakarta Sans',sans-serif; font-size:16px; font-weight:600; }
-.modal-body { padding:18px; }
-.modal-row { display:flex; gap:12px; margin-bottom:12px; }
-.modal-field { flex:1; }
-.modal-field label { display:block; font-size:9px; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:4px; }
-.modal-field input, .modal-field select { width:100%; padding:8px 10px; border:1px solid var(--border-3); background:var(--surface-2); font-family:'Inter',sans-serif; font-size:11px; color:var(--text); border-radius:4px; }
-.modal-footer { display:flex; gap:8px; justify-content:flex-end; padding:14px 18px; border-top:1px solid var(--border-3); }
+/* MINI BTN */
+.mini-btn {
+  padding:5px 10px; border:1px solid var(--border-3); border-radius:4px;
+  background:var(--surface-2); color:var(--text-2); font-size:10px; cursor:pointer;
+  transition:all 0.15s;
+}
+.mini-btn:hover { border-color:var(--accent); color:var(--accent); }
 
 /* TOAST */
-.toast { position:fixed; bottom:24px; right:24px; background:var(--surface); color:var(--text); padding:10px 20px; font-size:11px; letter-spacing:0.06em; opacity:0; transition:opacity 0.3s; z-index:9999; border-left:3px solid var(--accent); border-radius:4px; box-shadow:var(--shadow); }
-.toast.active { opacity:1; }
+.toast {
+  position:fixed; bottom:24px; right:24px; background:var(--surface);
+  color:var(--text); padding:12px 20px; font-size:12px; letter-spacing:0.06em;
+  border-left:3px solid var(--accent); border-radius:4px; box-shadow:var(--shadow);
+  z-index:9999; animation:slideIn 0.3s ease;
+}
+@keyframes slideIn { from { opacity:0; transform:translateY(10px);} to { opacity:1; transform:none;} }
+
+/* DIVIDER */
+.divider { border-top:1px solid var(--border-3); margin:14px 0; }
 </style>
 </head>
 <body>
 
-<header class="app-header">
-  <div class="app-logo">Moda<span>CAD</span> Studio</div>
-  <nav class="header-tabs">
-    <button class="header-tab active" data-view="modellistica">Modellistica</button>
-    <button class="header-tab" data-view="taglie">Sviluppo Taglie</button>
-    <button class="header-tab" data-view="piazzamento">Piazzamento</button>
-    <button class="header-tab" data-view="libreria">Libreria</button>
-  </nav>
-  <div class="header-actions">
-    <button class="btn" id="btn-export-svg">Esporta SVG</button>
-    <button class="btn" id="btn-clear">Pulisci</button>
-    <button class="btn btn-primary" id="btn-new-project">+ Nuovo</button>
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="logo">
+    <div class="logo-icon">
+      <span style="background:var(--warp)"></span><span style="background:var(--weft)"></span>
+      <span style="background:var(--warp)"></span><span style="background:var(--weft)"></span>
+    </div>
+    <span class="logo-text">WEAVE STUDIO</span>
+    <span class="logo-sub">simulatore armature tessili</span>
+  </div>
+  <div style="display:flex;gap:12px;align-items:center;">
+    <span class="cell-info" id="cell-info"></span>
+    <button class="preset-btn" id="btn-export-png" style="width:auto;">⬇ PNG</button>
+    <button class="preset-btn" id="btn-export-json" style="width:auto;">⬇ JSON</button>
   </div>
 </header>
 
-<div class="app-body">
+<!-- BODY -->
+<div class="body">
 
-  <aside class="sidebar">
-    <div class="sidebar-section">
-      <div class="sidebar-title">Strumenti</div>
-      <div class="tool-grid">
-        <button class="tool-btn active" data-tool="select"><span class="tool-icon">↖</span>Seleziona</button>
-        <button class="tool-btn" data-tool="pen"><span class="tool-icon">✒</span>Penna</button>
-        <button class="tool-btn" data-tool="line"><span class="tool-icon">╱</span>Linea</button>
-        <button class="tool-btn" data-tool="rect"><span class="tool-icon">▭</span>Rettangolo</button>
-        <button class="tool-btn" data-tool="curve"><span class="tool-icon">∫</span>Curva</button>
-        <button class="tool-btn" data-tool="measure"><span class="tool-icon">⟷</span>Misura</button>
-        <button class="tool-btn" data-tool="seam"><span class="tool-icon">⋯</span>Cucitura</button>
-        <button class="tool-btn" data-tool="notch"><span class="tool-icon">▲</span>Tacca</button>
-        <button class="tool-btn" data-tool="dart"><span class="tool-icon">◁</span>Pince</button>
-      </div>
+  <!-- LEFT PANEL -->
+  <aside class="left-panel">
+    <div class="section-header">GRIGLIA</div>
+    <div class="param-row">
+      <span class="param-label">Fili ordito</span>
+      <input class="num-input" id="warp-count" type="number" value="32" min="4" max="200">
+    </div>
+    <div class="param-row">
+      <span class="param-label">Colpi trama</span>
+      <input class="num-input" id="weft-count" type="number" value="32" min="4" max="200">
+    </div>
+    <div class="param-row">
+      <span class="param-label">Cella <span id="cell-size-label">18</span>px</span>
+      <input class="range" id="cell-size" type="range" min="6" max="48" value="18">
     </div>
 
-    <div class="sidebar-section">
-      <div class="sidebar-title">Basi Predefinite</div>
-      <div class="pattern-list">
-        <div class="pattern-item active" data-base="bodice"><span class="pattern-icon">👘</span>Corpino</div>
-        <div class="pattern-item" data-base="skirt"><span class="pattern-icon">🩱</span>Gonna</div>
-        <div class="pattern-item" data-base="sleeve"><span class="pattern-icon">🧥</span>Manica</div>
-        <div class="pattern-item" data-base="trouser"><span class="pattern-icon">👖</span>Pantalone</div>
-        <div class="pattern-item" data-base="collar"><span class="pattern-icon">👔</span>Colletto</div>
-      </div>
+    <div class="divider"></div>
+    <div class="section-header">COLORI FILO</div>
+    <div class="color-row">
+      <span class="color-label">Ordito</span>
+      <input class="color-picker" id="warp-color" type="color" value="#c8a46e">
+      <span class="color-value" id="warp-color-value">#c8a46e</span>
+    </div>
+    <div class="color-row">
+      <span class="color-label">Trama</span>
+      <input class="color-picker" id="weft-color" type="color" value="#3a6e8c">
+      <span class="color-value" id="weft-color-value">#3a6e8c</span>
     </div>
 
-    <div class="sidebar-section">
-      <div class="sidebar-title">Taglie attive</div>
-      <div class="size-list">
-        <button class="size-chip" data-size="36">36</button>
-        <button class="size-chip active" data-size="38">38</button>
-        <button class="size-chip active" data-size="40">40</button>
-        <button class="size-chip active" data-size="42">42</button>
-        <button class="size-chip" data-size="44">44</button>
-        <button class="size-chip" data-size="46">46</button>
-        <button class="size-chip" data-size="48">48</button>
-      </div>
-    </div>
+    <div class="divider"></div>
+    <div class="section-header">LIBRERIA ARMATURE</div>
+    <div id="presets-list"></div>
 
-    <div class="sidebar-section" style="flex:1; overflow-y:auto;">
-      <div class="sidebar-title">Layer</div>
-      <div class="layers-list" id="layers-list"></div>
-      <button class="btn" id="btn-add-layer" style="width:100%;margin-top:8px;">+ Aggiungi layer</button>
-    </div>
+    <div class="divider"></div>
+    <div class="section-header">VISUALIZZAZIONE</div>
+    <label class="check-row">
+      <input type="checkbox" id="show-grid" checked>
+      <span>Griglia</span>
+    </label>
+    <label class="check-row">
+      <input type="checkbox" id="show-repeat" checked>
+      <span>Bordo repeat</span>
+    </label>
+    <label class="check-row">
+      <input type="checkbox" id="show-tension" checked>
+      <span>Tensione filo</span>
+    </label>
+    <button class="preset-btn" id="btn-reset-view" style="margin-top:8px;justify-content:center;">⟲ reset vista</button>
   </aside>
 
-  <main class="canvas-area">
-    <div class="canvas-toolbar">
-      <div class="view-tabs">
-        <button class="view-tab active" data-view="2d">Vista 2D</button>
-        <button class="view-tab" data-view="3d">Anteprima 3D</button>
-      </div>
-      <div class="toolbar-sep"></div>
-      <label>Zoom</label>
-      <input type="range" id="zoom-slider" min="30" max="200" value="100" style="width:80px">
-      <span id="zoom-label" style="font-size:9px;color:var(--text-muted);min-width:32px;">100%</span>
-      <div class="toolbar-sep"></div>
-      <label>Griglia</label>
-      <select id="grid-select">
-        <option value="10">1 cm</option>
-        <option value="20" selected>2 cm</option>
-        <option value="50">5 cm</option>
-        <option value="100">10 cm</option>
-      </select>
-      <div class="toolbar-sep"></div>
-      <label>Spessore</label>
-      <input type="range" id="stroke-size" min="1" max="6" value="2" style="width:60px">
-      <div class="toolbar-sep"></div>
-      <div class="color-swatches">
-        <button class="color-swatch active" data-color="#ff8c00" style="background:#ff8c00"></button>
-        <button class="color-swatch" data-color="#ffaa00" style="background:#ffaa00"></button>
-        <button class="color-swatch" data-color="#ffffff" style="background:#ffffff"></button>
-        <button class="color-swatch" data-color="#00f6ff" style="background:#00f6ff"></button>
-      </div>
+  <!-- CANVAS -->
+  <main class="canvas-area" id="canvas-area">
+    <canvas id="main-canvas"></canvas>
+    <div class="zoom-badge">
+      <button class="zoom-btn" id="zoom-out">−</button>
+      <span class="zoom-label" id="zoom-label">100%</span>
+      <button class="zoom-btn" id="zoom-in">+</button>
     </div>
-
-    <div class="canvas-wrapper" id="canvas-wrapper">
-      <canvas id="main-canvas" width="900" height="650"></canvas>
-      <div class="canvas-info" id="canvas-info">X: 0 cm — Y: 0 cm | Base: Corpino | Taglia: 40</div>
-    </div>
-
-    <div class="view-3d" id="view-3d">
-      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;color:var(--text-muted);">Anteprima 3D</div>
-      <canvas id="canvas3d" width="600" height="420"></canvas>
-      <div style="font-size:10px;color:var(--text-muted);">Visualizzazione simulata del cartamodello</div>
-    </div>
+    <div class="hint">scroll → zoom · alt+drag → pan · click/drag → modifica cella</div>
   </main>
 
+  <!-- RIGHT PANEL -->
   <aside class="right-panel">
-    <div class="rp-section">
-      <div class="rp-title">Proprietà Pezzo</div>
-      <div class="prop-row"><span class="prop-label">Nome</span><input class="prop-input" id="prop-name" value="CF Corpino"></div>
-      <div class="prop-row"><span class="prop-label">Larghezza</span><input class="prop-input" id="prop-width" value="42.0 cm"></div>
-      <div class="prop-row"><span class="prop-label">Lunghezza</span><input class="prop-input" id="prop-height" value="58.5 cm"></div>
-      <div class="prop-row"><span class="prop-label">C. cucitura</span><input class="prop-input" id="prop-seam" value="1.5 cm"></div>
-      <div class="prop-row"><span class="prop-label">Verso filo</span><input class="prop-input" id="prop-grain" value="verticale"></div>
+    <div class="section-header">MATRICE RAPPORTO</div>
+    <div style="color:var(--text-muted);font-size:11px;margin-bottom:10px;">
+      <span id="matrix-dims">2×2</span> · click per modificare
+    </div>
+    <div class="matrix-container" id="matrix-container"></div>
+    <div class="param-row" style="margin-top:12px;">
+      <span class="param-label">Dim. matrice</span>
+      <input class="num-input" id="matrix-size" type="number" value="2" min="2" max="16">
     </div>
 
-    <div class="rp-section">
-      <div class="rp-title">Sviluppo Taglie — Δ</div>
-      <table class="grading-table">
-        <thead><tr><th>Taglia</th><th>ΔL (cm)</th><th>ΔP (cm)</th></tr></thead>
-        <tbody id="grading-body"></tbody>
-      </table>
-      <button class="btn" id="btn-apply-grading" style="margin-top:8px;width:100%;padding:8px;">Applica Sviluppo Taglie</button>
+    <div class="divider"></div>
+    <div class="section-header">LEGENDA</div>
+    <div class="legend-row">
+      <div class="legend-color" id="legend-warp" style="background:var(--warp)"></div>
+      <span class="legend-label">ordito sopra (1)</span>
+    </div>
+    <div class="legend-row">
+      <div class="legend-color" id="legend-weft" style="background:var(--weft)"></div>
+      <span class="legend-label">trama sopra (0)</span>
+    </div>
+    <div class="legend-row">
+      <div class="legend-color dashed" style="border-color:#ff9a30;"></div>
+      <span class="legend-label">bordo rapporto</span>
     </div>
 
-    <div class="rp-section">
-      <div class="rp-title">Efficienza Piazzamento</div>
-      <div class="eff-number" id="eff-number">—</div>
-      <div class="efficiency-bar-outer"><div class="efficiency-bar-inner" id="eff-bar" style="width:0%"></div></div>
-      <div style="font-size:9px;color:var(--text-muted);margin-top:4px;">Tessuto: <span id="fabric-info">150cm × 6.5m</span></div>
-      <div style="font-size:9px;color:var(--text-muted);">Sprechi: <span id="waste-info">—</span></div>
-      <button class="btn" id="btn-run-nesting" style="margin-top:8px;width:100%;padding:8px;">▶ Auto-Piazzamento</button>
-    </div>
-
-    <div class="rp-section">
-      <div class="rp-title">Scheda Tecnica</div>
-      <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">
-        Tessuto: <b style="color:var(--text);">Cotone/Lino</b><br>
-        Peso: <b style="color:var(--text);">180 g/m²</b><br>
-        Pezzi totali: <b style="color:var(--text);" id="piece-count">6</b><br>
-        Perim. totale: <b style="color:var(--text);">18.4 m</b>
+    <div class="divider"></div>
+    <div class="section-header">STATISTICHE</div>
+    <div class="stat-row"><span class="stat-label">Copertura ordito</span><span class="stat-value" id="stat-coverage">50%</span></div>
+    <div class="stat-row"><span class="stat-label">Copertura trama</span><span class="stat-value" id="stat-coverage-weft">50%</span></div>
+    <div class="stat-row"><span class="stat-label">Rapporto</span><span class="stat-value" id="stat-ratio">2×2</span></div>
+    <div class="stat-row"><span class="stat-label">Fili totali</span><span class="stat-value" id="stat-total">1024</span></div>
+    <div style="margin-top:8px;">
+      <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px;">bilancio ordito/trama</div>
+      <div style="height:8px;background:var(--surface-2);border-radius:2px;overflow:hidden;">
+        <div style="height:100%;width:50%;background:linear-gradient(90deg,var(--warp),var(--warp)cc);transition:width 0.3s;" id="balance-bar"></div>
       </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-header">RIEMPI MATRICE</div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
+      <button class="mini-btn" id="fill-all-warp">tutto ordito</button>
+      <button class="mini-btn" id="fill-all-weft">tutto trama</button>
+      <button class="mini-btn" id="fill-invert">inverti</button>
+      <button class="mini-btn" id="fill-diag">diag ↗</button>
     </div>
   </aside>
 </div>
 
-<div class="nesting-overlay" id="nesting-view">
-  <div class="nesting-header">
-    <div>
-      <div class="nesting-title">Piazzamento Automatico</div>
-      <div style="font-size:10px;color:var(--text-muted);" id="nesting-info">Calcolo in corso...</div>
-    </div>
-    <div style="display:flex;gap:8px;">
-      <button class="btn" id="btn-export-dxf">Esporta DXF</button>
-      <button class="btn btn-primary" id="btn-close-nesting">✕ Chiudi</button>
-    </div>
-  </div>
-  <div class="nesting-body">
-    <canvas id="nesting-canvas" width="900" height="500"></canvas>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modal">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Nuovo Progetto</div>
-      <button class="btn" id="btn-close-modal">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="modal-row">
-        <div class="modal-field"><label>Nome Progetto</label><input type="text" value="Collezione Primavera 2025" id="proj-name"></div>
-      </div>
-      <div class="modal-row">
-        <div class="modal-field"><label>Tipo Capo</label><select id="proj-type"><option>Gonna</option><option>Pantalone</option><option>Giacca</option><option>Camicia/Blusa</option><option>Abito</option><option>Cappotto</option></select></div>
-        <div class="modal-field"><label>Taglia Base</label><select id="proj-size"><option>38</option><option selected>40</option><option>42</option></select></div>
-      </div>
-      <div class="modal-row">
-        <div class="modal-field"><label>Tessuto</label><input type="text" value="Cotone 100%" id="proj-fabric"></div>
-        <div class="modal-field"><label>Larghezza Tessuto</label><select id="proj-width"><option>110 cm</option><option selected>150 cm</option><option>180 cm</option></select></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn" id="btn-cancel-project">Annulla</button>
-      <button class="btn btn-primary" id="btn-create-project">Crea Progetto</button>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" style="display:none;"></div>
 
 <script>
 // ═══════════════════════════════════════════════════════════════
 // CONFIG
 // ═══════════════════════════════════════════════════════════════
-const CONFIG = {
-  canvas: { width: 900, height: 650 },
-  colors: { outline: '#ff8c00', seam: '#ffaa00', fill: 'rgba(30,64,112,0.5)', seamAllowance: 'rgba(255,140,0,0.4)' },
-  grading: { step: 0.5 }
+const PRESETS = {
+  tela: { name: "Tela 1/1", desc: "plain weave", matrix: [[1,0],[0,1]] },
+  saia22: { name: "Saia 2/2", desc: "twill 2/2", matrix: [[1,1,0,0],[0,1,1,0],[0,0,1,1],[1,0,0,1]] },
+  saia31: { name: "Saia 3/1", desc: "twill 3/1", matrix: [[1,1,1,0],[1,1,0,1],[1,0,1,1],[0,1,1,1]] },
+  saia13: { name: "Saia 1/3", desc: "twill 1/3", matrix: [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]] },
+  raso5: { name: "Raso 5", desc: "satin 5 licci", matrix: [[1,0,0,0,0],[0,0,1,0,0],[0,0,0,0,1],[0,1,0,0,0],[0,0,0,1,0]] },
+  raso8: { name: "Raso 8", desc: "satin 8 licci", matrix: [[1,0,0,0,0,0,0,0],[0,0,0,1,0,0,0,0],[0,0,0,0,0,0,1,0],[0,0,1,0,0,0,0,0],[0,0,0,0,0,1,0,0],[0,1,0,0,0,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,0,0,0,1]] },
+  panama: { name: "Panama 2/2", desc: "basket weave", matrix: [[1,1,0,0],[1,1,0,0],[0,0,1,1],[0,0,1,1]] },
+  chevron: { name: "Chevron", desc: "punto a spina", matrix: [[1,1,0,0,0,1,1,1],[0,1,1,0,0,0,1,1],[0,0,1,1,0,0,0,1],[0,0,0,1,1,0,0,0],[0,0,0,0,1,1,0,0],[1,0,0,0,0,1,1,0],[1,1,0,0,0,0,1,1],[1,1,1,0,0,0,0,1]] }
 };
 
 // ═══════════════════════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════════════════════
 const state = {
-  tool: 'select',
-  color: CONFIG.colors.outline,
-  strokeWidth: 2,
+  warpCount: 32,
+  weftCount: 32,
+  cellSize: 18,
+  pattern: PRESETS.tela.matrix.map(r => [...r]),
+  selectedPreset: 'tela',
+  warpColor: '#c8a46e',
+  weftColor: '#3a6e8c',
   zoom: 1,
-  gridSize: 20,
-  currentBase: 'bodice',
-  view: '2d',
-  paths: [],
-  currentPath: [],
-  isDrawing: false,
-  startPoint: null,
-  undoStack: [],
-  layers: ['Base', 'Costruzione', 'Taglie', 'Cuciture'],
-  activeLayer: 0,
-  project: { name: 'Nuovo Progetto', baseSize: 40, fabricWidth: 150 }
-};
-
-// ═══════════════════════════════════════════════════════════════
-// PATTERNS
-// ═══════════════════════════════════════════════════════════════
-const BASE_PATTERNS = {
-  bodice: { name: 'Corpino Anteriore', pieces: [
-    { label: 'CF Corpino', color: CONFIG.colors.outline, pts: [[100,80],[320,80],[330,200],[310,380],[290,440],[200,460],[140,450],[100,380],[90,200]], darts: [[200,80,210,160],[220,80,215,165]] }
-  ]},
-  skirt: { name: 'Gonna Dritta', pieces: [
-    { label: 'CF Gonna', color: CONFIG.colors.outline, pts: [[120,60],[310,60],[330,400],[280,420],[140,415],[100,400]] },
-    { label: 'CB Gonna', color: CONFIG.colors.seam, pts: [[380,60],[560,60],[580,400],[530,415],[400,415],[360,400]] }
-  ]},
-  sleeve: { name: 'Manica Dritta', pieces: [
-    { label: 'Manica', color: CONFIG.colors.outline, pts: [[200,60],[280,60],[310,120],[330,300],[320,380],[250,410],[200,410],[150,380],[140,300],[160,120]] }
-  ]},
-  trouser: { name: 'Pantalone', pieces: [
-    { label: 'Gamba Ant.', color: CONFIG.colors.outline, pts: [[100,60],[240,60],[260,200],[280,520],[240,540],[180,540],[130,520],[110,200]] },
-    { label: 'Gamba Post.', color: CONFIG.colors.seam, pts: [[320,60],[480,60],[510,200],[530,520],[490,540],[420,540],[370,520],[330,200]] }
-  ]},
-  collar: { name: 'Colletto Camicia', pieces: [
-    { label: 'Colletto', color: CONFIG.colors.outline, pts: [[80,160],[500,160],[520,200],[500,240],[80,240],[60,200]] }
-  ]}
+  pan: { x: 20, y: 20 },
+  showGrid: true,
+  showRepeat: true,
+  showTension: true,
+  isPanning: false,
+  isDragging: false,
+  dragValue: null,
+  lastMouse: { x: 0, y: 0 },
+  hoveredCell: null
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -452,538 +362,544 @@ const BASE_PATTERNS = {
 // ═══════════════════════════════════════════════════════════════
 const canvas = document.getElementById('main-canvas');
 const ctx = canvas.getContext('2d');
-const canvasWrapper = document.getElementById('canvas-wrapper');
-const view3dEl = document.getElementById('view-3d');
-const canvas3d = document.getElementById('canvas3d');
-const nestingView = document.getElementById('nesting-view');
-const nestingCanvas = document.getElementById('nesting-canvas');
-const modal = document.getElementById('modal');
+const canvasArea = document.getElementById('canvas-area');
+const matrixContainer = document.getElementById('matrix-container');
 const toastEl = document.getElementById('toast');
-const gradingBody = document.getElementById('grading-body');
-const layersList = document.getElementById('layers-list');
 
 // ═══════════════════════════════════════════════════════════════
-// RENDERING
+// UTILITY
 // ═══════════════════════════════════════════════════════════════
-function render() {
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3), 16);
+  const g = parseInt(hex.slice(3,5), 16);
+  const b = parseInt(hex.slice(5,7), 16);
+  return [r, g, b];
+}
+
+function getCoverage(matrix) {
+  if (!matrix.length) return 0;
+  const total = matrix.length * matrix[0].length;
+  const on = matrix.flat().filter(Boolean).length;
+  return Math.round((on / total) * 100);
+}
+
+function showToast(msg) {
+  toastEl.textContent = msg;
+  toastEl.style.display = 'block';
+  setTimeout(() => toastEl.style.display = 'none', 2000);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CANVAS RENDERING
+// ═══════════════════════════════════════════════════════════════
+function resizeCanvas() {
+  const rect = canvasArea.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  canvas.style.width = rect.width + 'px';
+  canvas.style.height = rect.height + 'px';
+  draw();
+}
+
+function draw() {
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.width / dpr;
+  const H = canvas.height / dpr;
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#0a1628';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
   ctx.save();
+  ctx.scale(dpr, dpr);
+  ctx.translate(state.pan.x, state.pan.y);
   ctx.scale(state.zoom, state.zoom);
-  drawGrid();
-  drawBasePieces();
-  drawUserPaths();
-  drawCurrentPath();
+
+  const warpRgb = hexToRgb(state.warpColor);
+  const weftRgb = hexToRgb(state.weftColor);
+  const cs = state.cellSize;
+  const pr = state.pattern.length;
+  const pc = state.pattern[0]?.length || 1;
+
+  const visX0 = Math.max(0, Math.floor(-state.pan.x / state.zoom / cs));
+  const visY0 = Math.max(0, Math.floor(-state.pan.y / state.zoom / cs));
+  const visX1 = Math.min(state.warpCount, Math.ceil((W - state.pan.x) / state.zoom / cs) + 1);
+  const visY1 = Math.min(state.weftCount, Math.ceil((H - state.pan.y) / state.zoom / cs) + 1);
+
+  for (let row = visY0; row < visY1; row++) {
+    for (let col = visX0; col < visX1; col++) {
+      const val = state.pattern[row % pr][col % pc];
+      const [r, g, b] = val === 1 ? warpRgb : weftRgb;
+
+      ctx.fillStyle = `rgb(${r},${g},${b})`;
+      ctx.fillRect(col * cs, row * cs, cs, cs);
+
+      // Tension simulation
+      if (state.showTension && state.zoom > 0.3) {
+        if (val === 1) {
+          const grad = ctx.createLinearGradient(col * cs, 0, col * cs + cs, 0);
+          grad.addColorStop(0, 'rgba(255,255,255,0.18)');
+          grad.addColorStop(0.4, 'rgba(255,255,255,0.06)');
+          grad.addColorStop(1, 'rgba(0,0,0,0.12)');
+          ctx.fillStyle = grad;
+          ctx.fillRect(col * cs, row * cs, cs, cs);
+        } else {
+          const grad = ctx.createLinearGradient(0, row * cs, 0, row * cs + cs);
+          grad.addColorStop(0, 'rgba(255,255,255,0.14)');
+          grad.addColorStop(0.5, 'rgba(255,255,255,0.04)');
+          grad.addColorStop(1, 'rgba(0,0,0,0.14)');
+          ctx.fillStyle = grad;
+          ctx.fillRect(col * cs, row * cs, cs, cs);
+        }
+
+        // Crimp shadow
+        const left = col > 0 ? state.pattern[row % pr][(col - 1) % pc] : val;
+        const right = col < state.warpCount - 1 ? state.pattern[row % pr][(col + 1) % pc] : val;
+        if (val !== left) {
+          ctx.fillStyle = val === 1 ? 'rgba(0,0,0,0.22)' : 'rgba(0,0,0,0.15)';
+          ctx.fillRect(col * cs, row * cs, cs * 0.18, cs);
+        }
+        if (val !== right) {
+          ctx.fillStyle = val === 1 ? 'rgba(0,0,0,0.22)' : 'rgba(0,0,0,0.15)';
+          ctx.fillRect(col * cs + cs * 0.82, row * cs, cs * 0.18, cs);
+        }
+      }
+    }
+  }
+
+  // Grid
+  if (state.showGrid && state.zoom > 0.35) {
+    ctx.strokeStyle = 'rgba(0,0,0,0.35)';
+    ctx.lineWidth = 0.5 / state.zoom;
+    for (let col = visX0; col <= visX1; col++) {
+      ctx.beginPath(); ctx.moveTo(col * cs, visY0 * cs); ctx.lineTo(col * cs, visY1 * cs); ctx.stroke();
+    }
+    for (let row = visY0; row <= visY1; row++) {
+      ctx.beginPath(); ctx.moveTo(visX0 * cs, row * cs); ctx.lineTo(visX1 * cs, row * cs); ctx.stroke();
+    }
+  }
+
+  // Repeat border
+  if (state.showRepeat && state.zoom > 0.25) {
+    ctx.strokeStyle = 'rgba(255,160,50,0.55)';
+    ctx.lineWidth = 1.5 / state.zoom;
+    ctx.setLineDash([3 / state.zoom, 2 / state.zoom]);
+    for (let col = 0; col <= state.warpCount; col += pc) {
+      ctx.beginPath(); ctx.moveTo(col * cs, 0); ctx.lineTo(col * cs, state.weftCount * cs); ctx.stroke();
+    }
+    for (let row = 0; row <= state.weftCount; row += pr) {
+      ctx.beginPath(); ctx.moveTo(0, row * cs); ctx.lineTo(state.warpCount * cs, row * cs); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+  }
+
   ctx.restore();
-}
 
-function drawGrid() {
-  const w = canvas.width / state.zoom, h = canvas.height / state.zoom;
-  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
-  ctx.lineWidth = 0.5 / state.zoom;
-  for (let x = 0; x < w; x += state.gridSize) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
-  for (let y = 0; y < h; y += state.gridSize) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
-  ctx.strokeStyle = 'rgba(255,140,0,0.15)'; ctx.lineWidth = 1 / state.zoom;
-  ctx.beginPath(); ctx.moveTo(0, h/2); ctx.lineTo(w, h/2); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(w/2, 0); ctx.lineTo(w/2, h); ctx.stroke();
-}
-
-function drawBasePieces() {
-  const base = BASE_PATTERNS[state.currentBase];
-  if (base && base.pieces) base.pieces.forEach(p => drawPiece(p));
-}
-
-function drawPiece(piece) {
-  const pts = piece.pts;
-  if (!pts || pts.length < 2) return;
-  // Fill
-  ctx.beginPath();
-  pts.forEach((p, i) => i === 0 ? ctx.moveTo(p[0], p[1]) : ctx.lineTo(p[0], p[1]));
-  ctx.closePath();
-  ctx.fillStyle = CONFIG.colors.fill;
-  ctx.fill();
-  // Stroke
-  ctx.strokeStyle = piece.color || CONFIG.colors.outline;
-  ctx.lineWidth = 2 / state.zoom;
-  ctx.stroke();
-  // Seam allowance
-  ctx.setLineDash([4/state.zoom, 3/state.zoom]);
-  ctx.strokeStyle = CONFIG.colors.seamAllowance;
-  ctx.lineWidth = 1 / state.zoom;
-  ctx.beginPath();
-  pts.forEach((p, i) => {
-    const nx = pts[(i+1)%pts.length][0], ny = pts[(i+1)%pts.length][1];
-    const dx = nx-p[0], dy = ny-p[1];
-    const len = Math.sqrt(dx*dx+dy*dy);
-    const off = 8/len;
-    i === 0 ? ctx.moveTo(p[0]-dy*off, p[1]+dx*off) : ctx.lineTo(p[0]-dy*off, p[1]+dx*off);
-  });
-  ctx.closePath(); ctx.stroke();
-  ctx.setLineDash([]);
-  // Grain line
-  const cx = pts.reduce((s,p)=>s+p[0],0)/pts.length;
-  const cy = pts.reduce((s,p)=>s+p[1],0)/pts.length;
-  ctx.strokeStyle = 'rgba(255,255,255,0.4)'; ctx.lineWidth = 1.5/state.zoom;
-  ctx.beginPath(); ctx.moveTo(cx, cy-25); ctx.lineTo(cx, cy+25); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(cx-5, cy-20); ctx.lineTo(cx, cy-25); ctx.lineTo(cx+5, cy-20); ctx.stroke();
-  // Label
-  ctx.font = `${11/state.zoom}px Inter, sans-serif`;
-  ctx.fillStyle = '#fff'; ctx.textAlign = 'center';
-  ctx.fillText(piece.label, cx, cy - 35);
-  // Darts
-  if (piece.darts) {
-    piece.darts.forEach(d => {
-      ctx.strokeStyle = CONFIG.colors.outline; ctx.lineWidth = 1.5/state.zoom;
-      ctx.beginPath(); ctx.moveTo(d[0], d[1]); ctx.lineTo(d[2], d[3]); ctx.stroke();
-    });
+  // Hover highlight
+  if (state.hoveredCell) {
+    ctx.save();
+    ctx.scale(dpr, dpr);
+    ctx.translate(state.pan.x, state.pan.y);
+    ctx.scale(state.zoom, state.zoom);
+    ctx.strokeStyle = 'rgba(255,220,80,0.9)';
+    ctx.lineWidth = 2 / state.zoom;
+    ctx.strokeRect(
+      state.hoveredCell.col * cs + 1 / state.zoom,
+      state.hoveredCell.row * cs + 1 / state.zoom,
+      cs - 2 / state.zoom,
+      cs - 2 / state.zoom
+    );
+    ctx.restore();
   }
 }
 
-function drawUserPaths() {
-  state.paths.forEach(p => {
-    ctx.beginPath();
-    ctx.strokeStyle = p.color; ctx.lineWidth = p.size / state.zoom;
-    p.points.forEach((pt, i) => i === 0 ? ctx.moveTo(pt[0], pt[1]) : ctx.lineTo(pt[0], pt[1]));
-    ctx.stroke();
+// ═══════════════════════════════════════════════════════════════
+// MATRIX RENDERING
+// ═══════════════════════════════════════════════════════════════
+function renderMatrix() {
+  const pr = state.pattern.length;
+  const pc = state.pattern[0]?.length || 1;
+
+  matrixContainer.style.gridTemplateColumns = `repeat(${pc}, 18px)`;
+  matrixContainer.innerHTML = '';
+
+  for (let ri = 0; ri < pr; ri++) {
+    for (let ci = 0; ci < pc; ci++) {
+      const cell = document.createElement('div');
+      cell.className = 'matrix-cell';
+      cell.style.background = state.pattern[ri][ci] ? state.warpColor : state.weftColor;
+      cell.dataset.row = ri;
+      cell.dataset.col = ci;
+      cell.addEventListener('click', () => toggleMatrixCell(ri, ci));
+      cell.addEventListener('mouseenter', () => cell.style.filter = 'brightness(1.3)');
+      cell.addEventListener('mouseleave', () => cell.style.filter = '');
+      matrixContainer.appendChild(cell);
+    }
+  }
+
+  document.getElementById('matrix-dims').textContent = `${pr}×${pc}`;
+  document.getElementById('matrix-size').value = pr;
+  document.getElementById('stat-ratio').textContent = `${pr}×${pc}`;
+}
+
+function toggleMatrixCell(row, col) {
+  state.pattern[row][col] = state.pattern[row][col] ? 0 : 1;
+  state.selectedPreset = 'custom';
+  renderMatrix();
+  draw();
+  updateStats();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// STATS
+// ═══════════════════════════════════════════════════════════════
+function updateStats() {
+  const coverage = getCoverage(state.pattern);
+  document.getElementById('stat-coverage').textContent = coverage + '%';
+  document.getElementById('stat-coverage-weft').textContent = (100 - coverage) + '%';
+  document.getElementById('stat-total').textContent = (state.warpCount * state.weftCount).toLocaleString();
+  document.getElementById('balance-bar').style.width = coverage + '%';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PRESETS
+// ═══════════════════════════════════════════════════════════════
+function renderPresets() {
+  const container = document.getElementById('presets-list');
+  container.innerHTML = '';
+
+  Object.entries(PRESETS).forEach(([key, preset]) => {
+    const btn = document.createElement('button');
+    btn.className = 'preset-btn' + (state.selectedPreset === key ? ' active' : '');
+    btn.innerHTML = `
+      <span style="color:${state.selectedPreset === key ? 'var(--accent)' : 'var(--text-muted)'};margin-right:6px;">
+        ${state.selectedPreset === key ? '▸' : '◦'}
+      </span>
+      <span>${preset.name}</span>
+      <span style="margin-left:auto;color:var(--text-muted);font-size:10px;">${preset.desc}</span>
+    `;
+    btn.addEventListener('click', () => applyPreset(key));
+    container.appendChild(btn);
   });
+
+  // Custom button
+  const customBtn = document.createElement('button');
+  customBtn.className = 'preset-btn' + (state.selectedPreset === 'custom' ? ' active' : '');
+  customBtn.innerHTML = `
+    <span style="color:${state.selectedPreset === 'custom' ? 'var(--accent)' : 'var(--text-muted)'};margin-right:6px;">
+      ${state.selectedPreset === 'custom' ? '▸' : '◦'}
+    </span>
+    <span>Custom</span>
+    <span style="margin-left:auto;color:var(--text-muted);font-size:10px;">matrice libera</span>
+  `;
+  customBtn.addEventListener('click', () => {
+    state.selectedPreset = 'custom';
+    renderPresets();
+  });
+  container.appendChild(customBtn);
 }
 
-function drawCurrentPath() {
-  if (state.currentPath.length < 2) return;
-  ctx.beginPath();
-  ctx.strokeStyle = state.color; ctx.lineWidth = state.strokeWidth / state.zoom;
-  state.currentPath.forEach((pt, i) => i === 0 ? ctx.moveTo(pt[0], pt[1]) : ctx.lineTo(pt[0], pt[1]));
-  ctx.stroke();
+function applyPreset(key) {
+  state.pattern = PRESETS[key].matrix.map(r => [...r]);
+  state.selectedPreset = key;
+  renderPresets();
+  renderMatrix();
+  draw();
+  updateStats();
+  showToast('Preset: ' + PRESETS[key].name);
 }
 
 // ═══════════════════════════════════════════════════════════════
-// CANVAS EVENTS
+// CANVAS INTERACTION
 // ═══════════════════════════════════════════════════════════════
-function getCoords(e) {
+function screenToCell(sx, sy) {
   const rect = canvas.getBoundingClientRect();
-  return { x: (e.clientX - rect.left) / state.zoom, y: (e.clientY - rect.top) / state.zoom };
+  const x = (sx - rect.left - state.pan.x) / state.zoom;
+  const y = (sy - rect.top - state.pan.y) / state.zoom;
+  const col = Math.floor(x / state.cellSize);
+  const row = Math.floor(y / state.cellSize);
+  if (col < 0 || col >= state.warpCount || row < 0 || row >= state.weftCount) return null;
+  return { col, row };
 }
 
 canvas.addEventListener('mousedown', e => {
-  state.startPoint = getCoords(e);
-  state.isDrawing = true;
-  saveState();
-  if (state.tool === 'pen') state.currentPath = [[state.startPoint.x, state.startPoint.y]];
+  if (e.button === 1 || e.altKey) {
+    state.isPanning = true;
+    state.lastMouse = { x: e.clientX, y: e.clientY };
+    canvasArea.classList.add('panning');
+    e.preventDefault();
+    return;
+  }
+  if (e.button === 0) {
+    const cell = screenToCell(e.clientX, e.clientY);
+    if (cell) {
+      const pr = state.pattern.length;
+      const pc = state.pattern[0]?.length || 1;
+      const cur = state.pattern[cell.row % pr][cell.col % pc];
+      const newVal = cur === 1 ? 0 : 1;
+      state.dragValue = newVal;
+      state.isDragging = true;
+      canvasArea.classList.add('dragging');
+      toggleCell(cell.col, cell.row, newVal);
+    }
+  }
 });
 
 canvas.addEventListener('mousemove', e => {
-  const coords = getCoords(e);
-  document.getElementById('canvas-info').textContent = `X: ${(coords.x/state.gridSize*2).toFixed(1)} cm — Y: ${(coords.y/state.gridSize*2).toFixed(1)} cm | Base: ${BASE_PATTERNS[state.currentBase].name} | Taglia: ${state.project.baseSize}`;
-  if (state.isDrawing && state.tool === 'pen') {
-    state.currentPath.push([coords.x, coords.y]);
-    render();
+  if (state.isPanning) {
+    state.pan.x += e.clientX - state.lastMouse.x;
+    state.pan.y += e.clientY - state.lastMouse.y;
+    state.lastMouse = { x: e.clientX, y: e.clientY };
+    draw();
+    return;
+  }
+  const cell = screenToCell(e.clientX, e.clientY);
+  state.hoveredCell = cell;
+  if (state.isDragging && cell) {
+    toggleCell(cell.col, cell.row, state.dragValue);
+  }
+  draw();
+
+  // Update cell info
+  if (cell) {
+    const pr = state.pattern.length;
+    const pc = state.pattern[0]?.length || 1;
+    const val = state.pattern[cell.row % pr][cell.col % pc];
+    document.getElementById('cell-info').textContent =
+      `ordito ${cell.col + 1} · trama ${cell.row + 1} · ${val ? '↑ ordito sopra' : '↓ trama sopra'}`;
   }
 });
 
-canvas.addEventListener('mouseup', e => {
-  if (!state.isDrawing) return;
-  const coords = getCoords(e);
-  if (state.tool === 'pen' && state.currentPath.length > 1) {
-    state.paths.push({ points: [...state.currentPath], color: state.color, size: state.strokeWidth });
-    state.currentPath = [];
-  }
-  if (state.tool === 'line' && state.startPoint) {
-    state.paths.push({ points: [[state.startPoint.x, state.startPoint.y], [coords.x, coords.y]], color: state.color, size: state.strokeWidth });
-  }
-  if (state.tool === 'rect' && state.startPoint) {
-    const pts = [[state.startPoint.x, state.startPoint.y], [coords.x, state.startPoint.y], [coords.x, coords.y], [state.startPoint.x, coords.y], [state.startPoint.x, state.startPoint.y]];
-    state.paths.push({ points: pts, color: state.color, size: state.strokeWidth });
-  }
-  state.isDrawing = false;
-  state.startPoint = null;
-  render();
+canvas.addEventListener('mouseup', () => {
+  state.isPanning = false;
+  state.isDragging = false;
+  state.dragValue = null;
+  canvasArea.classList.remove('panning', 'dragging');
 });
 
-// ═══════════════════════════════════════════════════════════════
-// TOOL SELECTION
-// ═══════════════════════════════════════════════════════════════
-document.querySelectorAll('.tool-btn').forEach(btn => {
-  btn.addEventListener('click', function() {
-    state.tool = this.dataset.tool;
-    document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-    this.classList.add('active');
-    showToast('Strumento: ' + state.tool);
-  });
+canvas.addEventListener('mouseleave', () => {
+  state.hoveredCell = null;
+  state.isDragging = false;
+  state.isPanning = false;
+  canvasArea.classList.remove('panning', 'dragging');
+  draw();
 });
 
-// ═══════════════════════════════════════════════════════════════
-// COLOR SELECTION
-// ═══════════════════════════════════════════════════════════════
-document.querySelectorAll('.color-swatch').forEach(swatch => {
-  swatch.addEventListener('click', function() {
-    state.color = this.dataset.color;
-    document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
-    this.classList.add('active');
-  });
-});
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  const factor = e.deltaY < 0 ? 1.12 : 0.89;
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  const nz = Math.min(Math.max(state.zoom * factor, 0.15), 8);
+  state.pan.x = mx - (mx - state.pan.x) * (nz / state.zoom);
+  state.pan.y = my - (my - state.pan.y) * (nz / state.zoom);
+  state.zoom = nz;
+  document.getElementById('zoom-label').textContent = Math.round(nz * 100) + '%';
+  draw();
+}, { passive: false });
 
-// ═══════════════════════════════════════════════════════════════
-// PATTERN SELECTION
-// ═══════════════════════════════════════════════════════════════
-document.querySelectorAll('.pattern-item').forEach(item => {
-  item.addEventListener('click', function() {
-    state.currentBase = this.dataset.base;
-    document.querySelectorAll('.pattern-item').forEach(i => i.classList.remove('active'));
-    this.classList.add('active');
-    document.getElementById('prop-name').value = BASE_PATTERNS[state.currentBase].pieces[0].label;
-    render();
-    showToast('Base: ' + BASE_PATTERNS[state.currentBase].name);
-  });
-});
-
-// ═══════════════════════════════════════════════════════════════
-// SIZE SELECTION
-// ═══════════════════════════════════════════════════════════════
-document.querySelectorAll('.size-chip').forEach(chip => {
-  chip.addEventListener('click', function() {
-    this.classList.toggle('active');
-    render();
-  });
-});
-
-// ═══════════════════════════════════════════════════════════════
-// ZOOM & GRID
-// ═══════════════════════════════════════════════════════════════
-document.getElementById('zoom-slider').addEventListener('input', function() {
-  state.zoom = parseInt(this.value) / 100;
-  document.getElementById('zoom-label').textContent = this.value + '%';
-  render();
-});
-
-document.getElementById('grid-select').addEventListener('change', function() {
-  state.gridSize = parseInt(this.value);
-  render();
-});
-
-document.getElementById('stroke-size').addEventListener('input', function() {
-  state.strokeWidth = parseInt(this.value);
-});
-
-// ═══════════════════════════════════════════════════════════════
-// VIEW TABS
-// ═══════════════════════════════════════════════════════════════
-document.querySelectorAll('.view-tab').forEach(tab => {
-  tab.addEventListener('click', function() {
-    const viewName = this.dataset.view;
-    state.view = viewName;
-    document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
-    this.classList.add('active');
-    if (viewName === '3d') {
-      canvasWrapper.style.display = 'none';
-      view3dEl.classList.add('active');
-      draw3D();
-    } else {
-      canvasWrapper.style.display = '';
-      view3dEl.classList.remove('active');
-    }
-  });
-});
-
-// ═══════════════════════════════════════════════════════════════
-// HEADER TABS
-// ═══════════════════════════════════════════════════════════════
-document.querySelectorAll('.header-tab').forEach(tab => {
-  tab.addEventListener('click', function() {
-    document.querySelectorAll('.header-tab').forEach(t => t.classList.remove('active'));
-    this.classList.add('active');
-    const view = this.dataset.view;
-    if (view === 'piazzamento') runNesting();
-    else if (view === 'taglie') showToast('Seleziona taglie a sinistra');
-    else if (view === 'libreria') showToast('Libreria basi predefinite');
-    else showToast('Modellistica 2D');
-  });
-});
-
-// ═══════════════════════════════════════════════════════════════
-// GRADING TABLE
-// ═══════════════════════════════════════════════════════════════
-function renderGradingTable() {
-  const sizes = [36, 38, 40, 42, 44, 46, 48];
-  gradingBody.innerHTML = sizes.map(sz => {
-    const diff = (sz - state.project.baseSize) * CONFIG.grading.step;
-    return `<tr style="${sz === state.project.baseSize ? 'background:rgba(255,140,0,0.1)' : ''}"><td>${sz}${sz === state.project.baseSize ? ' ●' : ''}</td><td><input type="number" value="${diff.toFixed(1)}" step="0.1" style="width:50px;padding:2px;border:1px solid #2a5490;background:transparent;color:#fff;font-family:monospace;font-size:10px;"></td><td><input type="number" value="${(diff*0.75).toFixed(2)}" step="0.01" style="width:50px;padding:2px;border:1px solid #2a5490;background:transparent;color:#fff;font-family:monospace;font-size:10px;"></td></tr>`;
-  }).join('');
-}
-
-document.getElementById('btn-apply-grading').addEventListener('click', () => {
-  render();
-  showToast('Sviluppo taglie applicato!');
-});
-
-// ═══════════════════════════════════════════════════════════════
-// LAYERS
-// ═══════════════════════════════════════════════════════════════
-function renderLayers() {
-  layersList.innerHTML = state.layers.map((layer, i) => `
-    <div class="layer-item ${i === state.activeLayer ? 'active' : ''}" data-index="${i}">
-      <span style="color:var(--accent)">⬜</span>
-      <span>${layer}</span>
-      <span class="layer-visibility">👁️</span>
-    </div>
-  `).join('');
-  layersList.querySelectorAll('.layer-item').forEach(item => {
-    item.addEventListener('click', function() {
-      state.activeLayer = parseInt(this.dataset.index);
-      renderLayers();
-    });
-  });
-}
-
-document.getElementById('btn-add-layer').addEventListener('click', () => {
-  state.layers.push('Layer ' + (state.layers.length + 1));
-  renderLayers();
-});
-
-// ═══════════════════════════════════════════════════════════════
-// NESTING
-// ═══════════════════════════════════════════════════════════════
-document.getElementById('btn-run-nesting').addEventListener('click', runNesting);
-document.getElementById('btn-close-nesting').addEventListener('click', () => nestingView.classList.remove('active'));
-document.getElementById('btn-export-dxf').addEventListener('click', exportDXF);
-
-function runNesting() {
-  nestingView.classList.add('active');
-  drawNesting();
-  showToast('Piazzamento calcolato');
-}
-
-function drawNesting() {
-  const nc = nestingCanvas;
-  const nctx = nc.getContext('2d');
-  nctx.clearRect(0, 0, nc.width, nc.height);
-  nctx.fillStyle = '#0f2040';
-  nctx.fillRect(0, 0, nc.width, nc.height);
-  nctx.strokeStyle = '#2a5490';
-  nctx.lineWidth = 2;
-  nctx.strokeRect(10, 10, 880, 480);
-  nctx.font = '10px Inter, sans-serif';
-  nctx.fillStyle = '#8899aa';
-  nctx.fillText(`TESSUTO ${state.project.fabricWidth}cm × 6.5m`, 18, 26);
-
-  const base = BASE_PATTERNS[state.currentBase];
-  if (!base || !base.pieces) return;
-
-  let x = 30, y = 40, rowHeight = 0;
-  const colors = ['rgba(255,140,0,0.4)', 'rgba(0,246,255,0.4)', 'rgba(255,77,77,0.4)', 'rgba(0,255,157,0.4)'];
-
-  base.pieces.forEach((piece, idx) => {
-    const xs = piece.pts.map(p => p[0]);
-    const ys = piece.pts.map(p => p[1]);
-    const w = Math.max(...xs) - Math.min(...xs) + 20;
-    const h = Math.max(...ys) - Math.min(...ys) + 20;
-
-    if (x + w > 640) { x = 30; y += rowHeight + 10; rowHeight = 0; }
-
-    nctx.fillStyle = colors[idx % colors.length];
-    nctx.strokeStyle = colors[idx % colors.length].replace('0.4', '0.8');
-    nctx.lineWidth = 1.5;
-    nctx.fillRect(x, y, w, h);
-    nctx.strokeRect(x, y, w, h);
-    nctx.font = '8px Inter, sans-serif';
-    nctx.fillStyle = '#fff';
-    nctx.textAlign = 'center';
-    nctx.fillText(piece.label, x + w/2, y + h/2);
-
-    x += w + 10;
-    rowHeight = Math.max(rowHeight, h);
-  });
-
-  // Waste
-  nctx.fillStyle = 'rgba(255,77,77,0.06)';
-  nctx.fillRect(655, 40, 230, 430);
-  nctx.font = '9px Inter, sans-serif';
-  nctx.fillStyle = 'rgba(255,77,77,0.6)';
-  nctx.textAlign = 'center';
-  nctx.fillText('SCARTO', 770, 250);
-
-  // Efficiency
-  const totalArea = 880 * 480;
-  const usedArea = base.pieces.reduce((sum, p) => {
-    const xs = p.pts.map(pt => pt[0]);
-    const ys = p.pts.map(pt => pt[1]);
-    return sum + (Math.max(...xs) - Math.min(...xs) + 20) * (Math.max(...ys) - Math.min(...ys) + 20);
-  }, 0);
-  const efficiency = (usedArea / totalArea) * 100;
-  const waste = (totalArea - usedArea) / 10000;
-
-  document.getElementById('eff-number').textContent = efficiency.toFixed(1) + '%';
-  document.getElementById('eff-bar').style.width = efficiency + '%';
-  document.getElementById('nesting-info').textContent = `${state.project.fabricWidth}cm × 6.5m — Efficienza ${efficiency.toFixed(1)}%`;
-  document.getElementById('waste-info').textContent = `${waste.toFixed(2)} m²`;
-
-  nctx.font = '11px JetBrains Mono, monospace';
-  nctx.fillStyle = '#fff';
-  nctx.textAlign = 'right';
-  nctx.fillText(`Efficienza: ${efficiency.toFixed(1)}%`, 885, 490);
+function toggleCell(col, row, forceValue = null) {
+  const pr = state.pattern.length;
+  const pc = state.pattern[0]?.length || 1;
+  const pi = col % pc;
+  const pj = row % pr;
+  state.pattern = state.pattern.map((r, ri) =>
+    r.map((c, ci) => {
+      if (ri === pj && ci === pi) return forceValue !== null ? forceValue : c === 1 ? 0 : 1;
+      return c;
+    })
+  );
+  state.selectedPreset = 'custom';
+  renderPresets();
+  renderMatrix();
+  updateStats();
 }
 
 // ═══════════════════════════════════════════════════════════════
-// EXPORT DXF
+// CONTROLS
 // ═══════════════════════════════════════════════════════════════
-function exportDXF() {
-  showToast('Generazione DXF...');
-  setTimeout(() => {
-    const base = BASE_PATTERNS[state.currentBase];
-    if (!base || !base.pieces) { showToast('Errore: nessun pezzo'); return; }
-
-    let dxf = '0\nSECTION\n2\nENTITIES\n';
-    base.pieces.forEach(piece => {
-      dxf += '0\nLWPOLYLINE\n8\npattern\n90\n' + piece.pts.length + '\n70\n1\n';
-      piece.pts.forEach(pt => { dxf += '10\n' + pt[0] + '\n20\n' + pt[1] + '\n'; });
-      dxf += '10\n' + piece.pts[0][0] + '\n20\n' + piece.pts[0][1] + '\n';
-      const cx = piece.pts.reduce((s,pt)=>s+pt[0],0)/piece.pts.length;
-      const cy = piece.pts.reduce((s,pt)=>s+pt[1],0)/piece.pts.length;
-      dxf += '0\nTEXT\n8\nlabels\n10\n' + cx + '\n20\n' + (cy-35) + '\n40\n10\n1\n' + piece.label + '\n';
-    });
-    dxf += '0\nENDSEC\n0\nEOF\n';
-
-    const blob = new Blob([dxf], { type: 'application/dxf' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `modacad-${state.currentBase}-${Date.now()}.dxf`;
-    a.click();
-    URL.revokeObjectURL(url);
-    showToast('DXF esportato!');
-  }, 500);
-}
-
-// ═══════════════════════════════════════════════════════════════
-// EXPORT SVG
-// ═══════════════════════════════════════════════════════════════
-document.getElementById('btn-export-svg').addEventListener('click', () => {
-  showToast('Esportazione SVG...');
-  setTimeout(() => {
-    const base = BASE_PATTERNS[state.currentBase];
-    let svg = `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="900" height="650">\n<rect width="900" height="650" fill="#0a1628"/>`;
-    if (base && base.pieces) {
-      base.pieces.forEach(p => {
-        const d = 'M ' + p.pts.map(pt => pt.join(' ')).join(' L ') + ' Z';
-        svg += `\n<path d="${d}" fill="rgba(30,64,112,0.5)" stroke="${p.color}" stroke-width="2"/>`;
-        svg += `\n<text x="${p.pts.reduce((s,pt)=>s+pt[0],0)/p.pts.length}" y="${p.pts.reduce((s,pt)=>s+pt[1],0)/p.pts.length-35}" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#ffffff">${p.label}</text>`;
-      });
-    }
-    svg += '\n</svg>';
-    const blob = new Blob([svg], { type: 'image/svg+xml' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `modacad-${state.currentBase}-${Date.now()}.svg`;
-    a.click();
-    URL.revokeObjectURL(url);
-    showToast('SVG esportato!');
-  }, 600);
+document.getElementById('warp-count').addEventListener('change', e => {
+  state.warpCount = Math.max(4, Math.min(200, parseInt(e.target.value) || 32));
+  draw();
+  updateStats();
 });
 
-// ═══════════════════════════════════════════════════════════════
-// 3D PREVIEW
-// ═══════════════════════════════════════════════════════════════
-function draw3D() {
-  const c = canvas3d;
-  const x = c.getContext('2d');
-  x.clearRect(0, 0, c.width, c.height);
-  x.fillStyle = '#0f2040';
-  x.fillRect(0, 0, c.width, c.height);
-  x.strokeStyle = '#ff8c00';
-  x.lineWidth = 2;
-  // Head
-  x.beginPath(); x.ellipse(300, 120, 40, 55, 0, 0, Math.PI*2); x.stroke();
-  // Body
-  x.beginPath();
-  x.moveTo(270, 170); x.bezierCurveTo(210, 220, 190, 300, 200, 380);
-  x.bezierCurveTo(210, 420, 390, 420, 400, 380);
-  x.bezierCurveTo(410, 300, 390, 220, 330, 170); x.stroke();
-  // Fabric
-  x.fillStyle = 'rgba(255,140,0,0.15)';
-  x.beginPath();
-  x.moveTo(275, 175); x.bezierCurveTo(215, 225, 195, 305, 205, 385);
-  x.bezierCurveTo(215, 418, 385, 418, 395, 385);
-  x.bezierCurveTo(405, 305, 385, 225, 325, 175);
-  x.fill(); x.stroke();
-  // Seams
-  x.strokeStyle = 'rgba(255,140,0,0.5)'; x.lineWidth = 1; x.setLineDash([4, 3]);
-  x.beginPath(); x.moveTo(300, 175); x.lineTo(300, 385); x.stroke();
-  x.setLineDash([]);
-  // Labels
-  x.font = "13px 'Plus Jakarta Sans', sans-serif";
-  x.fillStyle = '#8899aa'; x.textAlign = 'center';
-  x.fillText(`Anteprima 3D — ${BASE_PATTERNS[state.currentBase].name} Taglia ${state.project.baseSize}`, 300, 450);
-}
-
-// ═══════════════════════════════════════════════════════════════
-// MODAL
-// ═══════════════════════════════════════════════════════════════
-document.getElementById('btn-new-project').addEventListener('click', () => modal.classList.add('active'));
-document.getElementById('btn-close-modal').addEventListener('click', () => modal.classList.remove('active'));
-document.getElementById('btn-cancel-project').addEventListener('click', () => modal.classList.remove('active'));
-document.getElementById('btn-create-project').addEventListener('click', () => {
-  state.project.name = document.getElementById('proj-name').value;
-  state.project.baseSize = parseInt(document.getElementById('proj-size').value);
-  state.project.fabric = document.getElementById('proj-fabric').value;
-  state.project.fabricWidth = parseInt(document.getElementById('proj-width').value);
-  modal.classList.remove('active');
-  clearCanvas();
-  renderGradingTable();
-  showToast('Progetto: ' + state.project.name);
+document.getElementById('weft-count').addEventListener('change', e => {
+  state.weftCount = Math.max(4, Math.min(200, parseInt(e.target.value) || 32));
+  draw();
+  updateStats();
 });
 
-// ═══════════════════════════════════════════════════════════════
-// CLEAR
-// ═══════════════════════════════════════════════════════════════
-document.getElementById('btn-clear').addEventListener('click', clearCanvas);
+document.getElementById('cell-size').addEventListener('input', e => {
+  state.cellSize = parseInt(e.target.value);
+  document.getElementById('cell-size-label').textContent = state.cellSize;
+  draw();
+});
 
-function clearCanvas() {
-  saveState();
-  state.paths = [];
-  state.currentPath = [];
-  render();
-  showToast('Canvas pulito');
-}
+document.getElementById('warp-color').addEventListener('input', e => {
+  state.warpColor = e.target.value;
+  document.getElementById('warp-color-value').textContent = e.target.value;
+  document.getElementById('legend-warp').style.background = e.target.value;
+  draw();
+});
 
-// ═══════════════════════════════════════════════════════════════
-// UNDO
-// ═══════════════════════════════════════════════════════════════
-function saveState() {
-  if (state.undoStack.length > 30) state.undoStack.shift();
-  state.undoStack.push(canvas.toDataURL());
-}
+document.getElementById('weft-color').addEventListener('input', e => {
+  state.weftColor = e.target.value;
+  document.getElementById('weft-color-value').textContent = e.target.value;
+  document.getElementById('legend-weft').style.background = e.target.value;
+  draw();
+});
 
-document.addEventListener('keydown', e => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
-    e.preventDefault();
-    if (state.undoStack.length > 0) {
-      const img = new Image();
-      img.onload = () => {
-        const dpr = window.devicePixelRatio || 1;
-        ctx.clearRect(0, 0, canvas.width/dpr, canvas.height/dpr);
-        ctx.drawImage(img, 0, 0, canvas.width/dpr, canvas.height/dpr);
-      };
-      img.src = state.undoStack.pop();
+document.getElementById('show-grid').addEventListener('change', e => {
+  state.showGrid = e.target.checked;
+  draw();
+});
+
+document.getElementById('show-repeat').addEventListener('change', e => {
+  state.showRepeat = e.target.checked;
+  draw();
+});
+
+document.getElementById('show-tension').addEventListener('change', e => {
+  state.showTension = e.target.checked;
+  draw();
+});
+
+document.getElementById('btn-reset-view').addEventListener('click', () => {
+  state.zoom = 1;
+  state.pan = { x: 20, y: 20 };
+  document.getElementById('zoom-label').textContent = '100%';
+  draw();
+  showToast('Vista resettata');
+});
+
+document.getElementById('zoom-in').addEventListener('click', () => {
+  state.zoom = Math.min(state.zoom * 1.2, 8);
+  document.getElementById('zoom-label').textContent = Math.round(state.zoom * 100) + '%';
+  draw();
+});
+
+document.getElementById('zoom-out').addEventListener('click', () => {
+  state.zoom = Math.max(state.zoom * 0.83, 0.15);
+  document.getElementById('zoom-label').textContent = Math.round(state.zoom * 100) + '%';
+  draw();
+});
+
+document.getElementById('matrix-size').addEventListener('change', e => {
+  const s = Math.max(2, Math.min(16, parseInt(e.target.value) || 2));
+  const old = state.pattern;
+  const np = Array.from({ length: s }, () => Array(s).fill(0));
+  for (let r = 0; r < s; r++) {
+    for (let c = 0; c < s; c++) {
+      if (r < old.length && c < old[0].length) np[r][c] = old[r][c];
     }
   }
+  state.pattern = np;
+  state.selectedPreset = 'custom';
+  renderPresets();
+  renderMatrix();
+  draw();
+  updateStats();
 });
 
 // ═══════════════════════════════════════════════════════════════
-// TOAST
+// FILL MATRIX
 // ═══════════════════════════════════════════════════════════════
-let toastTimeout;
-function showToast(msg) {
-  clearTimeout(toastTimeout);
-  toastEl.textContent = msg;
-  toastEl.classList.add('active');
-  toastTimeout = setTimeout(() => toastEl.classList.remove('active'), 2400);
-}
+document.getElementById('fill-all-warp').addEventListener('click', () => {
+  state.pattern = state.pattern.map(r => r.map(() => 1));
+  state.selectedPreset = 'custom';
+  renderPresets();
+  renderMatrix();
+  draw();
+  updateStats();
+});
+
+document.getElementById('fill-all-weft').addEventListener('click', () => {
+  state.pattern = state.pattern.map(r => r.map(() => 0));
+  state.selectedPreset = 'custom';
+  renderPresets();
+  renderMatrix();
+  draw();
+  updateStats();
+});
+
+document.getElementById('fill-invert').addEventListener('click', () => {
+  state.pattern = state.pattern.map(r => r.map(c => c ? 0 : 1));
+  state.selectedPreset = 'custom';
+  renderPresets();
+  renderMatrix();
+  draw();
+  updateStats();
+});
+
+document.getElementById('fill-diag').addEventListener('click', () => {
+  const s = Math.max(state.pattern.length, state.pattern[0]?.length || 1);
+  state.pattern = state.pattern.map((r, ri) => r.map((_, ci) => (ri + ci) % 2 === 0 ? 1 : 0));
+  state.selectedPreset = 'custom';
+  renderPresets();
+  renderMatrix();
+  draw();
+  updateStats();
+});
+
+// ═══════════════════════════════════════════════════════════════
+// EXPORT
+// ═══════════════════════════════════════════════════════════════
+document.getElementById('btn-export-png').addEventListener('click', () => {
+  const cs = state.cellSize * 2;
+  const off = document.createElement('canvas');
+  off.width = state.warpCount * cs;
+  off.height = state.weftCount * cs;
+  const octx = off.getContext('2d');
+  const wRgb = hexToRgb(state.warpColor);
+  const fRgb = hexToRgb(state.weftColor);
+  const pr = state.pattern.length;
+  const pc = state.pattern[0]?.length || 1;
+
+  for (let row = 0; row < state.weftCount; row++) {
+    for (let col = 0; col < state.warpCount; col++) {
+      const val = state.pattern[row % pr][col % pc];
+      const [r, g, b] = val === 1 ? wRgb : fRgb;
+      octx.fillStyle = `rgb(${r},${g},${b})`;
+      octx.fillRect(col * cs, row * cs, cs, cs);
+      octx.strokeStyle = 'rgba(0,0,0,0.2)';
+      octx.lineWidth = 0.5;
+      octx.strokeRect(col * cs, row * cs, cs, cs);
+    }
+  }
+
+  const link = document.createElement('a');
+  link.download = `weave_${state.selectedPreset}_${state.warpCount}x${state.weftCount}.png`;
+  link.href = off.toDataURL('image/png');
+  link.click();
+  showToast('PNG esportato ✓');
+});
+
+document.getElementById('btn-export-json').addEventListener('click', () => {
+  const data = {
+    meta: { tool: 'WeaveStudio', version: '1.0', date: new Date().toISOString() },
+    grid: { warpCount: state.warpCount, weftCount: state.weftCount },
+    colors: { warp: state.warpColor, weft: state.weftColor },
+    pattern: { preset: state.selectedPreset, matrix: state.pattern, rows: state.pattern.length, cols: state.pattern[0]?.length }
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const link = document.createElement('a');
+  link.download = `weave_${state.selectedPreset}.json`;
+  link.href = URL.createObjectURL(blob);
+  link.click();
+  showToast('JSON esportato ✓');
+});
 
 // ═══════════════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════════════
-renderGradingTable();
-renderLayers();
-render();
+window.addEventListener('resize', resizeCanvas);
+setTimeout(resizeCanvas, 100);
+renderPresets();
+renderMatrix();
+updateStats();
 </script>
 
 </body>
