@@ -1,0 +1,13 @@
+{
+  "name": "ronaldo-riska",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "babel temp_app.jsx --out-file app_compiled.js"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.24.0",
+    "@babel/core": "^7.24.0",
+    "@babel/preset-react": "^7.24.0"
+  }
+}

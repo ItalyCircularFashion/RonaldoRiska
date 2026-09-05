@@ -26,57 +26,47 @@
   --navy-200: #a8c4e8;
   --navy-100: #daeaf8;
   --navy-50:  #f0f6fc;
-
   --cream-100: #fdfaf5;
   --cream-200: #f7f2e8;
   --cream-300: #ede4d0;
-
   --amber-600: #b86800;
   --amber-500: #d4840a;
   --amber-400: #e8a030;
   --amber-200: #fae0b0;
   --amber-100: #fdf3dc;
-
   --emerald: #1a7a5a;
   --rose:    #b83050;
-
   /* Surfaces */
   --bg:        var(--cream-100);
   --surface:   #ffffff;
   --surface-2: var(--cream-200);
   --border:    #dde6f0;
   --border-2:  #c8d8ec;
-
   /* Text */
   --text-primary:   var(--navy-900);
   --text-secondary: var(--navy-600);
   --text-muted:     var(--navy-400);
   --text-faint:     var(--navy-300);
-
   /* Brand */
   --brand:       var(--navy-700);
   --brand-light: var(--navy-100);
   --accent:      var(--amber-500);
   --accent-bg:   var(--amber-100);
-
   /* Typography */
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body:    'DM Sans', system-ui, sans-serif;
   --font-mono:    'DM Mono', 'Courier New', monospace;
-
   /* Spacing scale */
   --r-sm: 6px;
   --r-md: 10px;
   --r-lg: 16px;
   --r-xl: 24px;
-
   /* Shadows */
   --shadow-sm: 0 1px 3px rgba(10,22,40,0.08), 0 1px 2px rgba(10,22,40,0.05);
   --shadow-md: 0 4px 12px rgba(10,22,40,0.10), 0 2px 4px rgba(10,22,40,0.06);
   --shadow-lg: 0 12px 36px rgba(10,22,40,0.14), 0 4px 12px rgba(10,22,40,0.08);
   --shadow-xl: 0 24px 64px rgba(10,22,40,0.18), 0 8px 24px rgba(10,22,40,0.10);
 }
-
 /* ═══════════════════════════════════════════════
    RESET
 ═══════════════════════════════════════════════ */
@@ -93,12 +83,10 @@ body {
 button { font-family: inherit; cursor: pointer; }
 input, select, textarea { font-family: inherit; }
 a { text-decoration: none; color: inherit; }
-
 /* ═══════════════════════════════════════════════
    APP SHELL
 ═══════════════════════════════════════════════ */
 #app { min-height: 100vh; }
-
 /* ═══════════════════════════════════════════════
    AUTH SCREEN
 ═══════════════════════════════════════════════ */
@@ -109,7 +97,6 @@ a { text-decoration: none; color: inherit; }
   position: relative;
   overflow: hidden;
 }
-
 #auth-screen::before {
   content: '';
   position: absolute;
@@ -119,7 +106,6 @@ a { text-decoration: none; color: inherit; }
     radial-gradient(ellipse 40% 60% at 80% 20%, rgba(212,132,10,0.15) 0%, transparent 50%);
   pointer-events: none;
 }
-
 /* Grid texture */
 #auth-screen::after {
   content: '';
@@ -130,7 +116,6 @@ a { text-decoration: none; color: inherit; }
   background-size: 40px 40px;
   pointer-events: none;
 }
-
 .auth-inner {
   position: relative;
   z-index: 1;
@@ -138,14 +123,12 @@ a { text-decoration: none; color: inherit; }
   grid-template-columns: 1fr 1fr;
   min-height: 100vh;
 }
-
 .auth-left {
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 60px;
 }
-
 .auth-wordmark {
   font-family: var(--font-display);
   font-size: 26px;
@@ -157,14 +140,12 @@ a { text-decoration: none; color: inherit; }
   align-items: center;
   gap: 10px;
 }
-
 .auth-wordmark .wm-dot {
   width: 8px; height: 8px;
   border-radius: 50%;
   background: var(--amber-400);
   flex-shrink: 0;
 }
-
 .auth-hero h1 {
   font-family: var(--font-display);
   font-size: 52px;
@@ -173,12 +154,10 @@ a { text-decoration: none; color: inherit; }
   color: #ffffff;
   margin-bottom: 20px;
 }
-
 .auth-hero h1 em {
   font-style: italic;
   color: var(--amber-400);
 }
-
 .auth-hero p {
   font-size: 16px;
   color: rgba(255,255,255,0.55);
@@ -186,14 +165,12 @@ a { text-decoration: none; color: inherit; }
   line-height: 1.7;
   font-weight: 300;
 }
-
 .auth-features {
   margin-top: 48px;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
-
 .auth-feat {
   display: flex;
   align-items: center;
@@ -201,7 +178,6 @@ a { text-decoration: none; color: inherit; }
   font-size: 13px;
   color: rgba(255,255,255,0.6);
 }
-
 .auth-feat .feat-icon {
   width: 32px; height: 32px;
   border-radius: 8px;
@@ -210,7 +186,6 @@ a { text-decoration: none; color: inherit; }
   font-size: 15px;
   flex-shrink: 0;
 }
-
 .auth-right {
   display: flex;
   align-items: center;
@@ -219,7 +194,6 @@ a { text-decoration: none; color: inherit; }
   background: rgba(255,255,255,0.03);
   border-left: 1px solid rgba(255,255,255,0.06);
 }
-
 .auth-card {
   background: var(--surface);
   border-radius: 20px;
@@ -228,7 +202,6 @@ a { text-decoration: none; color: inherit; }
   max-width: 400px;
   box-shadow: var(--shadow-xl);
 }
-
 .auth-card h2 {
   font-family: var(--font-display);
   font-size: 26px;
@@ -236,13 +209,11 @@ a { text-decoration: none; color: inherit; }
   color: var(--text-primary);
   margin-bottom: 6px;
 }
-
 .auth-card .auth-sub {
   font-size: 13px;
   color: var(--text-muted);
   margin-bottom: 32px;
 }
-
 .auth-tabs {
   display: flex;
   gap: 0;
@@ -251,7 +222,6 @@ a { text-decoration: none; color: inherit; }
   padding: 4px;
   margin-bottom: 28px;
 }
-
 .auth-tab {
   flex: 1;
   padding: 8px;
@@ -263,15 +233,12 @@ a { text-decoration: none; color: inherit; }
   color: var(--text-muted);
   transition: all 0.18s;
 }
-
 .auth-tab.active {
   background: var(--surface);
   color: var(--text-primary);
   box-shadow: var(--shadow-sm);
 }
-
 .form-field { margin-bottom: 16px; }
-
 .form-label {
   display: block;
   font-size: 12px;
@@ -280,7 +247,6 @@ a { text-decoration: none; color: inherit; }
   margin-bottom: 6px;
   letter-spacing: 0.3px;
 }
-
 .form-input {
   width: 100%;
   padding: 10px 14px;
@@ -292,13 +258,11 @@ a { text-decoration: none; color: inherit; }
   transition: border-color 0.15s, box-shadow 0.15s;
   outline: none;
 }
-
 .form-input:focus {
   border-color: var(--navy-400);
   box-shadow: 0 0 0 3px rgba(42,84,144,0.12);
   background: var(--surface);
 }
-
 .btn-primary {
   width: 100%;
   padding: 12px;
@@ -313,10 +277,8 @@ a { text-decoration: none; color: inherit; }
   letter-spacing: 0.2px;
   margin-top: 8px;
 }
-
 .btn-primary:hover { background: var(--navy-700); transform: translateY(-1px); box-shadow: var(--shadow-md); }
 .btn-primary:active { transform: translateY(0); }
-
 .auth-divider {
   display: flex;
   align-items: center;
@@ -325,11 +287,9 @@ a { text-decoration: none; color: inherit; }
   font-size: 12px;
   color: var(--text-faint);
 }
-
 .auth-divider::before, .auth-divider::after {
   content: ''; flex: 1; height: 1px; background: var(--border);
 }
-
 .btn-ghost {
   width: 100%;
   padding: 11px;
@@ -346,16 +306,13 @@ a { text-decoration: none; color: inherit; }
   justify-content: center;
   gap: 8px;
 }
-
 .btn-ghost:hover { background: var(--surface-2); border-color: var(--border-2); }
-
 .auth-note {
   margin-top: 20px;
   text-align: center;
   font-size: 12px;
   color: var(--text-faint);
 }
-
 /* ═══════════════════════════════════════════════
    MAIN APP LAYOUT
 ═══════════════════════════════════════════════ */
@@ -363,7 +320,6 @@ a { text-decoration: none; color: inherit; }
   display: none;
   min-height: 100vh;
 }
-
 /* TOPBAR */
 .topbar {
   height: 56px;
@@ -377,7 +333,6 @@ a { text-decoration: none; color: inherit; }
   z-index: 100;
   gap: 0;
 }
-
 .topbar-brand {
   font-family: var(--font-display);
   font-size: 20px;
@@ -390,19 +345,16 @@ a { text-decoration: none; color: inherit; }
   margin-right: 32px;
   flex-shrink: 0;
 }
-
 .topbar-brand .brand-dot {
   width: 7px; height: 7px;
   border-radius: 50%;
   background: var(--accent);
 }
-
 .topbar-nav {
   display: flex;
   gap: 2px;
   flex: 1;
 }
-
 .topbar-nav-btn {
   padding: 6px 14px;
   border: none;
@@ -415,17 +367,14 @@ a { text-decoration: none; color: inherit; }
   transition: all 0.14s;
   white-space: nowrap;
 }
-
 .topbar-nav-btn:hover { background: var(--surface-2); color: var(--text-secondary); }
 .topbar-nav-btn.active { background: var(--brand-light); color: var(--brand); font-weight: 500; }
-
 .topbar-right {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-left: auto;
 }
-
 .topbar-plan {
   font-size: 11px;
   font-weight: 500;
@@ -437,7 +386,6 @@ a { text-decoration: none; color: inherit; }
   letter-spacing: 0.3px;
   text-transform: uppercase;
 }
-
 .avatar {
   width: 32px; height: 32px;
   border-radius: 50%;
@@ -449,25 +397,21 @@ a { text-decoration: none; color: inherit; }
   cursor: pointer;
   position: relative;
 }
-
 /* MAIN CONTENT */
 .app-content {
   max-width: 1280px;
   margin: 0 auto;
   padding: 32px 24px;
 }
-
 /* ═══════════════════════════════════════════════
    VIEW SYSTEM
 ═══════════════════════════════════════════════ */
 .view { display: none; animation: viewIn 0.22s ease; }
 .view.active { display: block; }
-
 @keyframes viewIn {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
 /* ═══════════════════════════════════════════════
    TYPOGRAPHY COMPONENTS
 ═══════════════════════════════════════════════ */
@@ -479,9 +423,7 @@ a { text-decoration: none; color: inherit; }
   gap: 16px;
   flex-wrap: wrap;
 }
-
 .view-header-left {}
-
 .view-kicker {
   font-size: 11px;
   font-weight: 500;
@@ -490,7 +432,6 @@ a { text-decoration: none; color: inherit; }
   color: var(--text-faint);
   margin-bottom: 4px;
 }
-
 .view-title {
   font-family: var(--font-display);
   font-size: 32px;
@@ -498,14 +439,12 @@ a { text-decoration: none; color: inherit; }
   color: var(--text-primary);
   line-height: 1.2;
 }
-
 .view-desc {
   font-size: 14px;
   color: var(--text-muted);
   margin-top: 6px;
   font-weight: 300;
 }
-
 /* ═══════════════════════════════════════════════
    CARDS
 ═══════════════════════════════════════════════ */
@@ -516,10 +455,8 @@ a { text-decoration: none; color: inherit; }
   padding: 24px;
   box-shadow: var(--shadow-sm);
 }
-
 .card-sm { padding: 16px; }
 .card-lg { padding: 32px; }
-
 .card-title {
   font-family: var(--font-display);
   font-size: 18px;
@@ -527,13 +464,11 @@ a { text-decoration: none; color: inherit; }
   color: var(--text-primary);
   margin-bottom: 4px;
 }
-
 .card-sub {
   font-size: 12px;
   color: var(--text-faint);
   margin-bottom: 16px;
 }
-
 /* ═══════════════════════════════════════════════
    KPI CARDS
 ═══════════════════════════════════════════════ */
@@ -543,7 +478,6 @@ a { text-decoration: none; color: inherit; }
   gap: 16px;
   margin-bottom: 28px;
 }
-
 .kpi-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -554,9 +488,7 @@ a { text-decoration: none; color: inherit; }
   overflow: hidden;
   transition: box-shadow 0.2s;
 }
-
 .kpi-card:hover { box-shadow: var(--shadow-md); }
-
 .kpi-card::after {
   content: '';
   position: absolute;
@@ -565,7 +497,6 @@ a { text-decoration: none; color: inherit; }
   background: var(--kpi-color, var(--navy-300));
   border-radius: var(--r-lg) var(--r-lg) 0 0;
 }
-
 .kpi-label {
   font-size: 11px;
   text-transform: uppercase;
@@ -574,7 +505,6 @@ a { text-decoration: none; color: inherit; }
   margin-bottom: 8px;
   font-weight: 500;
 }
-
 .kpi-value {
   font-family: var(--font-display);
   font-size: 36px;
@@ -583,7 +513,6 @@ a { text-decoration: none; color: inherit; }
   line-height: 1;
   margin-bottom: 6px;
 }
-
 .kpi-delta {
   font-size: 12px;
   font-weight: 500;
@@ -591,11 +520,9 @@ a { text-decoration: none; color: inherit; }
   align-items: center;
   gap: 3px;
 }
-
 .kpi-delta.up   { color: var(--emerald); }
 .kpi-delta.down { color: var(--rose); }
 .kpi-delta.flat { color: var(--text-faint); }
-
 /* ═══════════════════════════════════════════════
    GRID SYSTEM
 ═══════════════════════════════════════════════ */
@@ -605,7 +532,6 @@ a { text-decoration: none; color: inherit; }
 .g3-2 { display: grid; grid-template-columns: 3fr 2fr; gap: 20px; }
 .stack { display: flex; flex-direction: column; gap: 16px; }
 .row { display: flex; align-items: center; gap: 12px; }
-
 /* ═══════════════════════════════════════════════
    FORM COMPONENTS (app)
 ═══════════════════════════════════════════════ */
@@ -617,7 +543,6 @@ a { text-decoration: none; color: inherit; }
   color: var(--text-secondary);
   margin-bottom: 5px;
 }
-
 .input {
   width: 100%;
   padding: 9px 12px;
@@ -629,9 +554,7 @@ a { text-decoration: none; color: inherit; }
   outline: none;
   transition: border-color 0.14s;
 }
-
 .input:focus { border-color: var(--navy-400); background: var(--surface); }
-
 input[type=range] {
   -webkit-appearance: none;
   width: 100%;
@@ -641,7 +564,6 @@ input[type=range] {
   outline: none;
   cursor: pointer;
 }
-
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 16px; height: 16px;
@@ -651,9 +573,7 @@ input[type=range]::-webkit-slider-thumb {
   cursor: pointer;
   transition: background 0.14s;
 }
-
 input[type=range]::-webkit-slider-thumb:hover { background: var(--navy-600); }
-
 .slider-row {
   display: flex;
   align-items: center;
@@ -662,7 +582,6 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--navy-600); }
   color: var(--text-secondary);
   margin-bottom: 6px;
 }
-
 .slider-row .slider-val {
   font-family: var(--font-mono);
   font-weight: 500;
@@ -670,7 +589,6 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--navy-600); }
   min-width: 24px;
   text-align: right;
 }
-
 /* ═══════════════════════════════════════════════
    BUTTONS (app)
 ═══════════════════════════════════════════════ */
@@ -687,29 +605,24 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--navy-600); }
   transition: all 0.15s;
   white-space: nowrap;
 }
-
 .btn-navy {
   background: var(--navy-800);
   color: #fff;
 }
 .btn-navy:hover { background: var(--navy-700); box-shadow: var(--shadow-sm); }
-
 .btn-outline {
   background: transparent;
   border: 1px solid var(--border-2);
   color: var(--text-secondary);
 }
 .btn-outline:hover { background: var(--surface-2); border-color: var(--navy-300); }
-
 .btn-amber {
   background: var(--amber-500);
   color: #fff;
 }
 .btn-amber:hover { background: var(--amber-600); }
-
 .btn-sm { padding: 6px 12px; font-size: 12px; }
 .btn-xs { padding: 4px 10px; font-size: 11px; }
-
 /* ═══════════════════════════════════════════════
    BADGES / CHIPS
 ═══════════════════════════════════════════════ */
@@ -722,22 +635,17 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--navy-600); }
   font-weight: 500;
   letter-spacing: 0.2px;
 }
-
 .badge-navy   { background: var(--navy-100);  color: var(--navy-800); }
 .badge-amber  { background: var(--amber-100); color: var(--amber-600); }
 .badge-green  { background: #e4f4ec; color: var(--emerald); }
 .badge-rose   { background: #fce8ec; color: var(--rose); }
 .badge-muted  { background: var(--surface-2); color: var(--text-muted); }
-
 /* ═══════════════════════════════════════════════
    TABLE
 ═══════════════════════════════════════════════ */
 .table-wrap { overflow-x: auto; }
-
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
-
 thead tr { border-bottom: 2px solid var(--border); }
-
 th {
   padding: 10px 14px;
   text-align: left;
@@ -748,20 +656,16 @@ th {
   font-weight: 500;
   white-space: nowrap;
 }
-
 td {
   padding: 12px 14px;
   border-bottom: 1px solid var(--border);
   color: var(--text-secondary);
   vertical-align: middle;
 }
-
 tr:last-child td { border-bottom: none; }
 tbody tr:hover td { background: var(--surface-2); }
-
 .td-primary { color: var(--text-primary); font-weight: 500; }
 .td-mono { font-family: var(--font-mono); font-size: 12px; }
-
 /* ═══════════════════════════════════════════════
    RESULT BOXES
 ═══════════════════════════════════════════════ */
@@ -771,7 +675,6 @@ tbody tr:hover td { background: var(--surface-2); }
   border-radius: var(--r-md);
   padding: 16px;
 }
-
 .result-row {
   display: flex;
   justify-content: space-between;
@@ -779,16 +682,13 @@ tbody tr:hover td { background: var(--surface-2); }
   padding: 5px 0;
   font-size: 13px;
 }
-
 .result-row + .result-row { border-top: 1px solid var(--border); }
-
 .result-label { color: var(--text-muted); }
 .result-value { font-family: var(--font-mono); font-weight: 500; color: var(--text-primary); }
 .result-value.pos { color: var(--emerald); }
 .result-value.neg { color: var(--rose); }
 .result-value.warn { color: var(--amber-600); }
 .result-value.feature { color: var(--navy-700); font-size: 15px; }
-
 /* ═══════════════════════════════════════════════
    HIGHLIGHT BOXES
 ═══════════════════════════════════════════════ */
@@ -799,19 +699,14 @@ tbody tr:hover td { background: var(--surface-2); }
   border-radius: 0 var(--r-sm) var(--r-sm) 0;
   margin: 12px 0;
 }
-
 .highlight h4 { font-size: 13px; color: var(--navy-700); margin-bottom: 3px; font-weight: 600; }
 .highlight p  { font-size: 12.5px; color: var(--text-secondary); }
-
 .highlight.amber { border-left-color: var(--amber-500); background: var(--amber-100); }
 .highlight.amber h4 { color: var(--amber-600); }
-
 .highlight.green { border-left-color: var(--emerald); background: #e4f4ec; }
 .highlight.green h4 { color: var(--emerald); }
-
 .highlight.rose { border-left-color: var(--rose); background: #fce8ec; }
 .highlight.rose h4 { color: var(--rose); }
-
 /* ═══════════════════════════════════════════════
    TABS (sub)
 ═══════════════════════════════════════════════ */
@@ -821,7 +716,6 @@ tbody tr:hover td { background: var(--surface-2); }
   border-bottom: 1px solid var(--border);
   margin-bottom: 24px;
 }
-
 .sub-tab {
   padding: 8px 18px;
   border: none;
@@ -834,13 +728,10 @@ tbody tr:hover td { background: var(--surface-2); }
   transition: all 0.14s;
   font-weight: 400;
 }
-
 .sub-tab:hover { color: var(--text-secondary); }
 .sub-tab.active { color: var(--navy-800); font-weight: 500; border-bottom-color: var(--navy-800); }
-
 .sub-panel { display: none; }
 .sub-panel.active { display: block; }
-
 /* ═══════════════════════════════════════════════
    PROGRESS / METER
 ═══════════════════════════════════════════════ */
@@ -851,13 +742,11 @@ tbody tr:hover td { background: var(--surface-2); }
   overflow: hidden;
   margin-top: 6px;
 }
-
 .meter-fill {
   height: 100%;
   border-radius: 3px;
   transition: width 0.35s ease;
 }
-
 /* ═══════════════════════════════════════════════
    ACCORDION
 ═══════════════════════════════════════════════ */
@@ -867,7 +756,6 @@ tbody tr:hover td { background: var(--surface-2); }
   margin-bottom: 8px;
   overflow: hidden;
 }
-
 .accord-head {
   display: flex;
   align-items: center;
@@ -881,11 +769,9 @@ tbody tr:hover td { background: var(--surface-2); }
   transition: background 0.14s;
   user-select: none;
 }
-
 .accord-head:hover { background: var(--surface-2); }
 .accord-arrow { color: var(--text-faint); font-size: 11px; transition: transform 0.2s; }
 .accord.open .accord-arrow { transform: rotate(90deg); }
-
 .accord-body {
   display: none;
   padding: 14px 16px;
@@ -894,9 +780,7 @@ tbody tr:hover td { background: var(--surface-2); }
   font-size: 13px;
   color: var(--text-secondary);
 }
-
 .accord.open .accord-body { display: block; }
-
 /* ═══════════════════════════════════════════════
    MATRIX 2×2
 ═══════════════════════════════════════════════ */
@@ -911,17 +795,14 @@ tbody tr:hover td { background: var(--surface-2); }
   background: var(--border);
   height: 280px;
 }
-
 .mq-cell {
   background: var(--surface);
   padding: 16px;
   cursor: pointer;
   transition: background 0.14s;
 }
-
 .mq-cell:hover { background: var(--surface-2); }
 .mq-cell.sel   { background: var(--navy-50); border: 2px solid var(--navy-400); }
-
 .mq-label {
   font-size: 9px;
   text-transform: uppercase;
@@ -932,15 +813,12 @@ tbody tr:hover td { background: var(--surface-2); }
   padding: 2px 8px;
   border-radius: 10px;
 }
-
 .mq-cell h5 { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
 .mq-cell p  { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
-
 /* ═══════════════════════════════════════════════
    CANVAS
 ═══════════════════════════════════════════════ */
 canvas { display: block; }
-
 /* ═══════════════════════════════════════════════
    NOTIFICATION / TOAST
 ═══════════════════════════════════════════════ */
@@ -953,7 +831,6 @@ canvas { display: block; }
   flex-direction: column;
   gap: 8px;
 }
-
 .toast {
   background: var(--navy-900);
   color: #fff;
@@ -967,12 +844,10 @@ canvas { display: block; }
   gap: 10px;
   max-width: 320px;
 }
-
 @keyframes toastIn {
   from { opacity: 0; transform: translateX(20px); }
   to   { opacity: 1; transform: translateX(0); }
 }
-
 /* ═══════════════════════════════════════════════
    SETTINGS / PRICING
 ═══════════════════════════════════════════════ */
@@ -983,19 +858,16 @@ canvas { display: block; }
   padding: 28px;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
-
 .plan-card.featured {
   border-color: var(--navy-700);
   box-shadow: var(--shadow-md);
 }
-
 .plan-name {
   font-family: var(--font-display);
   font-size: 22px;
   font-weight: 400;
   margin-bottom: 4px;
 }
-
 .plan-price {
   font-family: var(--font-display);
   font-size: 42px;
@@ -1004,10 +876,8 @@ canvas { display: block; }
   line-height: 1;
   margin: 12px 0 4px;
 }
-
 .plan-price sup { font-size: 18px; vertical-align: top; margin-top: 8px; font-family: var(--font-body); font-weight: 400; }
 .plan-price sub { font-size: 14px; font-family: var(--font-body); font-weight: 400; color: var(--text-muted); }
-
 .plan-features { list-style: none; margin: 20px 0; }
 .plan-features li {
   padding: 7px 0;
@@ -1022,7 +892,6 @@ canvas { display: block; }
 .plan-features li .fi { color: var(--emerald); font-size: 14px; }
 .plan-features li.unavail { color: var(--text-faint); }
 .plan-features li.unavail .fi { color: var(--text-faint); }
-
 /* ═══════════════════════════════════════════════
    FLOW CHART
 ═══════════════════════════════════════════════ */
@@ -1033,7 +902,6 @@ canvas { display: block; }
   flex-wrap: wrap;
   margin: 12px 0;
 }
-
 .flow-node {
   padding: 7px 14px;
   background: var(--surface-2);
@@ -1044,22 +912,18 @@ canvas { display: block; }
   font-weight: 500;
   white-space: nowrap;
 }
-
 .flow-node.active {
   background: var(--brand-light);
   border-color: var(--navy-300);
   color: var(--navy-800);
 }
-
 .flow-arrow { color: var(--text-faint); font-size: 14px; }
-
 /* ═══════════════════════════════════════════════
    LANDING PAGE
 ═══════════════════════════════════════════════ */
 #landing {
   display: none;
 }
-
 /* ═══════════════════════════════════════════════
    RESPONSIVE
 ═══════════════════════════════════════════════ */
@@ -1072,7 +936,6 @@ canvas { display: block; }
   .g3-2 { grid-template-columns: 1fr; }
   .kpi-grid { grid-template-columns: repeat(2, 1fr); }
 }
-
 /* ═══════════════════════════════════════════════
    SCROLLBAR
 ═══════════════════════════════════════════════ */
@@ -1080,12 +943,10 @@ canvas { display: block; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--navy-300); }
-
 /* ═══════════════════════════════════════════════
    DIVIDER
 ═══════════════════════════════════════════════ */
 .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
-
 /* Utility */
 .mt-0 { margin-top: 0; }
 .mt-8 { margin-top: 8px; }
@@ -1098,7 +959,6 @@ canvas { display: block; }
 .text-sm { font-size: 12px; }
 </style>
     <link rel="canonical" href="https://italycircularfashion.github.io/RonaldoRiska/filieraos.html">
-    
     <!-- ── STRUCTURED DATA ── -->
     <script type="application/ld+json">
     {
@@ -1130,11 +990,8 @@ canvas { display: block; }
     <a href="./" class="logo-animated-container" aria-label="Torna alla home">
       <canvas id="animatedLogoCanvas"></canvas>
     </a>
-<body>
-
 <!-- ═══ TOAST CONTAINER ═══ -->
 <div id="toast-container"></div>
-
 <!-- ═══════════════════════════════════════════
    AUTH SCREEN
 ═══════════════════════════════════════════ -->
@@ -1172,12 +1029,10 @@ canvas { display: block; }
       <div class="auth-card">
         <h2>Welcome back</h2>
         <p class="auth-sub">Sign in to your workspace</p>
-
         <div class="auth-tabs">
           <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Sign in</button>
           <button class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Create account</button>
         </div>
-
         <div id="auth-login">
           <div class="form-field">
             <label class="form-label">Work email</label>
@@ -1192,7 +1047,6 @@ canvas { display: block; }
             <span style="font-size:12px;color:var(--navy-400);cursor:pointer;">Forgot password?</span>
           </div>
         </div>
-
         <div id="auth-signup" style="display:none;">
           <div class="form-field">
             <label class="form-label">Full name</label>
@@ -1212,19 +1066,16 @@ canvas { display: block; }
           </div>
           <button class="btn-primary" onclick="doLogin()">Create account →</button>
         </div>
-
         <div class="auth-divider">or continue with</div>
         <button class="btn-ghost">
           <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.36-8.16 2.36-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
           Google
         </button>
-
         <p class="auth-note">By signing in you agree to our Terms of Service</p>
       </div>
     </div>
   </div>
 </div>
-
 <!-- ═══════════════════════════════════════════
    MAIN APP
 ═══════════════════════════════════════════ -->
@@ -1249,10 +1100,8 @@ canvas { display: block; }
       <div class="avatar" onclick="navigate('settings')" id="user-avatar">MR</div>
     </div>
   </header>
-
   <!-- VIEWS -->
   <div class="app-content">
-
     <!-- ── DASHBOARD ── -->
     <div id="view-dashboard" class="view active">
       <div class="view-header">
@@ -1266,7 +1115,6 @@ canvas { display: block; }
           <button class="btn btn-navy btn-sm">Export Report</button>
         </div>
       </div>
-
       <!-- KPIs -->
       <div class="kpi-grid">
         <div class="kpi-card" style="--kpi-color: var(--navy-400);">
@@ -1300,7 +1148,6 @@ canvas { display: block; }
           <div class="kpi-delta flat">→ zona collaborativa</div>
         </div>
       </div>
-
       <!-- Quick access + Recent -->
       <div class="g2-3">
         <div class="card">
@@ -1324,7 +1171,6 @@ canvas { display: block; }
             </button>
           </div>
         </div>
-
         <div class="card">
           <div class="card-title">Recent Analyses</div>
           <div class="card-sub">Last 5 saved runs</div>
@@ -1368,7 +1214,6 @@ canvas { display: block; }
           </div>
         </div>
       </div>
-
       <!-- Architecture note -->
       <div class="card mt-16" style="background:var(--navy-900);border-color:var(--navy-700);">
         <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
@@ -1390,7 +1235,6 @@ canvas { display: block; }
         </div>
       </div>
     </div>
-
     <!-- ── MAKE OR BUY ── -->
     <div id="view-make-or-buy" class="view">
       <div class="view-header">
@@ -1400,21 +1244,18 @@ canvas { display: block; }
           <p class="view-desc">Transaction Cost Economics scoring — integrazione verticale, mercato collaborativo o competitivo</p>
         </div>
       </div>
-
       <div class="sub-tabs">
         <button class="sub-tab active" onclick="subTab('mob','tce')">TCE Scorer</button>
         <button class="sub-tab" onclick="subTab('mob','strategic')">Strategic Drivers</button>
         <button class="sub-tab" onclick="subTab('mob','leva')">Leverage Effect</button>
         <button class="sub-tab" onclick="subTab('mob','cases')">Case Library</button>
       </div>
-
       <!-- TCE SCORER -->
       <div id="mob-tce" class="sub-panel active">
         <div class="g2">
           <div class="card">
             <div class="card-title">Transaction Cost Parameters</div>
             <div class="card-sub">Score each dimension 1–10</div>
-
             <div class="field">
               <div class="slider-row">
                 <span>Complessità Descrittiva</span>
@@ -1425,7 +1266,6 @@ canvas { display: block; }
                 <span>Standard</span><span>Molto complesso</span>
               </div>
             </div>
-
             <div class="field">
               <div class="slider-row">
                 <span>Specificità</span>
@@ -1436,7 +1276,6 @@ canvas { display: block; }
                 <span>Generica</span><span>Altamente specifica</span>
               </div>
             </div>
-
             <div class="field">
               <div class="slider-row">
                 <span>Incertezza</span>
@@ -1447,9 +1286,7 @@ canvas { display: block; }
                 <span>Prevedibile</span><span>Molto volatile</span>
               </div>
             </div>
-
             <hr class="divider">
-
             <div class="field">
               <div class="slider-row">
                 <span>Driver: Competenze chiave</span>
@@ -1457,7 +1294,6 @@ canvas { display: block; }
               </div>
               <input type="range" min="1" max="10" value="5" id="tce-comp2" oninput="calcTCE()">
             </div>
-
             <div class="field">
               <div class="slider-row">
                 <span>Driver: Riduzione costi</span>
@@ -1465,7 +1301,6 @@ canvas { display: block; }
               </div>
               <input type="range" min="1" max="10" value="5" id="tce-cost" oninput="calcTCE()">
             </div>
-
             <div class="field">
               <div class="slider-row">
                 <span>Driver: Gestione capitale</span>
@@ -1474,18 +1309,15 @@ canvas { display: block; }
               <input type="range" min="1" max="10" value="5" id="tce-cap" oninput="calcTCE()">
             </div>
           </div>
-
           <div class="stack">
             <div class="card" id="tce-result-card">
               <div class="card-title">Recommendation</div>
               <div id="tce-reco" style="margin-top:12px;"></div>
             </div>
-
             <div class="card">
               <div class="card-title">Score Breakdown</div>
               <div id="tce-breakdown" style="margin-top:8px;"></div>
             </div>
-
             <div class="card">
               <div class="card-title">Market Type Matrix</div>
               <canvas id="tce-canvas" width="340" height="160" style="margin-top:8px;width:100%;"></canvas>
@@ -1493,7 +1325,6 @@ canvas { display: block; }
           </div>
         </div>
       </div>
-
       <!-- STRATEGIC DRIVERS -->
       <div id="mob-strategic" class="sub-panel">
         <div class="g2">
@@ -1501,7 +1332,6 @@ canvas { display: block; }
             <div class="card">
               <div class="card-title">The Three Strategic Drivers</div>
               <div class="card-sub">Why companies outsource (or don't)</div>
-
               <div class="accord" onclick="this.classList.toggle('open')">
                 <div class="accord-head">🧠 Gestione delle Competenze <span class="accord-arrow">▶</span></div>
                 <div class="accord-body">
@@ -1510,7 +1340,6 @@ canvas { display: block; }
                   <p style="margin-top:6px;"><strong>Regola:</strong> tenere tutto ciò che non si può comprare meglio fuori. Cedere tutto il resto.</p>
                 </div>
               </div>
-
               <div class="accord" onclick="this.classList.toggle('open')">
                 <div class="accord-head">💰 Gestione dei Costi <span class="accord-arrow">▶</span></div>
                 <div class="accord-body">
@@ -1519,7 +1348,6 @@ canvas { display: block; }
                   <p style="margin-top:6px;"><em>Key insight:</em> nel tessile Prato, il terzista porta variabilizzazione dei costi stagionali.</p>
                 </div>
               </div>
-
               <div class="accord" onclick="this.classList.toggle('open')">
                 <div class="accord-head">🏦 Gestione del Capitale <span class="accord-arrow">▶</span></div>
                 <div class="accord-body">
@@ -1529,7 +1357,6 @@ canvas { display: block; }
               </div>
             </div>
           </div>
-
           <div class="stack">
             <div class="card">
               <div class="card-title">Decision Schema</div>
@@ -1573,7 +1400,6 @@ canvas { display: block; }
           </div>
         </div>
       </div>
-
       <!-- LEVERAGE EFFECT -->
       <div id="mob-leva" class="sub-panel">
         <div class="g2">
@@ -1616,7 +1442,6 @@ canvas { display: block; }
           </div>
         </div>
       </div>
-
       <!-- CASES -->
       <div id="mob-cases" class="sub-panel">
         <div class="g2">
@@ -1630,7 +1455,6 @@ canvas { display: block; }
               <p>L'integrazione totale funziona solo con domanda stabile, settore stabile, economie di scala. Non è il modello del XXI sec.</p>
             </div>
           </div>
-
           <div class="card">
             <div class="card-title" style="margin-bottom:16px;">Case: P&G / 3M</div>
             <span class="badge badge-green" style="margin-bottom:12px;display:inline-block;">Collaborative Market → Standard</span>
@@ -1641,7 +1465,6 @@ canvas { display: block; }
               <p>A volte il mercato non esiste ancora — vale la pena crearlo insieme al fornitore.</p>
             </div>
           </div>
-
           <div class="card">
             <div class="card-title" style="margin-bottom:16px;">Case: 7-Eleven (Keiretsu)</div>
             <span class="badge badge-navy" style="margin-bottom:12px;display:inline-block;">Capital Management</span>
@@ -1652,7 +1475,6 @@ canvas { display: block; }
               <p>Il modello keiretsu libera capitale e aumenta tutte le metriche di efficienza.</p>
             </div>
           </div>
-
           <div class="card">
             <div class="card-title" style="margin-bottom:16px;">Case: Smart / Hambach</div>
             <span class="badge badge-amber" style="margin-bottom:12px;display:inline-block;">Full Partnership</span>
@@ -1666,7 +1488,6 @@ canvas { display: block; }
         </div>
       </div>
     </div>
-
     <!-- ── COST ANALYZER ── -->
     <div id="view-costs" class="view">
       <div class="view-header">
@@ -1676,13 +1497,11 @@ canvas { display: block; }
           <p class="view-desc">Break-Even, margine di contribuzione, leva operativa, analisi di sensibilità</p>
         </div>
       </div>
-
       <div class="sub-tabs">
         <button class="sub-tab active" onclick="subTab('ca','bep')">Break-Even</button>
         <button class="sub-tab" onclick="subTab('ca','leva')">Leva Operativa</button>
         <button class="sub-tab" onclick="subTab('ca','types')">Cost Types</button>
       </div>
-
       <!-- BEP -->
       <div id="ca-bep" class="sub-panel active">
         <div class="g2">
@@ -1718,7 +1537,6 @@ canvas { display: block; }
           </div>
         </div>
       </div>
-
       <!-- LEVA OP -->
       <div id="ca-leva" class="sub-panel">
         <div class="g2">
@@ -1749,7 +1567,6 @@ canvas { display: block; }
           </div>
         </div>
       </div>
-
       <!-- COST TYPES -->
       <div id="ca-types" class="sub-panel">
         <div class="g2">
@@ -1790,7 +1607,6 @@ canvas { display: block; }
         </div>
       </div>
     </div>
-
     <!-- ── PROCUREMENT ── -->
     <div id="view-procurement" class="view">
       <div class="view-header">
@@ -1800,13 +1616,11 @@ canvas { display: block; }
           <p class="view-desc">Kraljic Matrix, strategie di sourcing, vendor rating, negoziazione</p>
         </div>
       </div>
-
       <div class="sub-tabs">
         <button class="sub-tab active" onclick="subTab('pr','kraljic')">Kraljic Matrix</button>
         <button class="sub-tab" onclick="subTab('pr','sourcing')">Sourcing Strategy</button>
         <button class="sub-tab" onclick="subTab('pr','vendor')">Vendor Rating</button>
       </div>
-
       <!-- KRALJIC -->
       <div id="pr-kraljic" class="sub-panel active">
         <div class="g2">
@@ -1826,7 +1640,6 @@ canvas { display: block; }
               </div>
               <div class="result-panel mt-8" id="kq-class"></div>
             </div>
-
             <div class="card">
               <div class="card-title">Textile Examples</div>
               <table>
@@ -1842,7 +1655,6 @@ canvas { display: block; }
               </table>
             </div>
           </div>
-
           <div class="card">
             <div class="card-title">Kraljic Matrix — 1983</div>
             <div class="matrix-2x2 mt-8" id="kq-matrix">
@@ -1874,7 +1686,6 @@ canvas { display: block; }
           </div>
         </div>
       </div>
-
       <!-- SOURCING -->
       <div id="pr-sourcing" class="sub-panel">
         <div class="g2">
@@ -1964,7 +1775,6 @@ canvas { display: block; }
           </div>
         </div>
       </div>
-
       <!-- VENDOR RATING -->
       <div id="pr-vendor" class="sub-panel">
         <div class="g2">
@@ -2007,7 +1817,6 @@ canvas { display: block; }
         </div>
       </div>
     </div>
-
     <!-- ── SUPPLY CHAIN ── -->
     <div id="view-supply-chain" class="view">
       <div class="view-header">
@@ -2017,13 +1826,11 @@ canvas { display: block; }
           <p class="view-desc">Lean, Responsive, Risk Hedging, Agile — bullwhip, postponement, Push/Pull</p>
         </div>
       </div>
-
       <div class="sub-tabs">
         <button class="sub-tab active" onclick="subTab('sc','matrix')">Strategy Matrix</button>
         <button class="sub-tab" onclick="subTab('sc','bullwhip')">Bullwhip Effect</button>
         <button class="sub-tab" onclick="subTab('sc','postpone')">Postponement</button>
       </div>
-
       <!-- STRATEGY MATRIX -->
       <div id="sc-matrix" class="sub-panel active">
         <div class="g2">
@@ -2068,7 +1875,6 @@ canvas { display: block; }
           </div>
         </div>
       </div>
-
       <!-- BULLWHIP -->
       <div id="sc-bullwhip" class="sub-panel">
         <div class="g2">
@@ -2107,7 +1913,6 @@ canvas { display: block; }
           </div>
         </div>
       </div>
-
       <!-- POSTPONEMENT -->
       <div id="sc-postpone" class="sub-panel">
         <div class="g2">
@@ -2159,7 +1964,6 @@ canvas { display: block; }
         </div>
       </div>
     </div>
-
     <!-- ── SETTINGS / PRICING ── -->
     <div id="view-settings" class="view">
       <div class="view-header">
@@ -2168,7 +1972,6 @@ canvas { display: block; }
           <h2 class="view-title">Settings & Plans</h2>
         </div>
       </div>
-
       <div class="g2" style="margin-bottom:24px;">
         <div class="card">
           <div class="card-title">Workspace</div>
@@ -2197,7 +2000,6 @@ canvas { display: block; }
           </div>
           <button class="btn btn-navy btn-sm" onclick="toast('✓ Settings saved')">Save Changes</button>
         </div>
-
         <div class="card">
           <div class="card-title">Current Plan</div>
           <div class="card-sub">You are on <strong id="current-plan-name">Starter</strong></div>
@@ -2216,12 +2018,10 @@ canvas { display: block; }
           <button class="btn btn-amber" onclick="subTab('set','pricing')">Upgrade to Pro →</button>
         </div>
       </div>
-
       <div class="sub-tabs">
         <button class="sub-tab active" onclick="subTab('set','pricing')">Pricing</button>
         <button class="sub-tab" onclick="subTab('set','architecture')">Architecture</button>
       </div>
-
       <!-- PRICING -->
       <div id="set-pricing" class="sub-panel active">
         <div class="g3">
@@ -2241,7 +2041,6 @@ canvas { display: block; }
             </ul>
             <button class="btn btn-outline" style="width:100%;" disabled>Current plan</button>
           </div>
-
           <div class="plan-card featured">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
               <div class="plan-name">Pro</div>
@@ -2261,7 +2060,6 @@ canvas { display: block; }
             </ul>
             <button class="btn btn-amber" style="width:100%;" onclick="toast('🚀 Upgrading... (demo)')">Upgrade to Pro →</button>
           </div>
-
           <div class="plan-card">
             <div class="plan-name">Enterprise</div>
             <div class="plan-price" style="font-size:32px;">Custom</div>
@@ -2280,7 +2078,6 @@ canvas { display: block; }
           </div>
         </div>
       </div>
-
       <!-- ARCHITECTURE -->
       <div id="set-architecture" class="sub-panel">
         <div class="g2">
@@ -2323,12 +2120,9 @@ canvas { display: block; }
         </div>
       </div>
     </div>
-
   </div><!-- /app-content -->
-
 <!-- ── LEAN & SMART FACTORY ── full-width outside app-content max-width ── -->
 <div id="view-lean" class="view" style="animation: viewIn 0.22s ease;">
-
   <!-- HERO BANNER -->
   <div style="background:linear-gradient(135deg,#050d1a 0%,#0f2040 55%,#1e4070 100%);padding:36px 32px 28px;position:relative;overflow:hidden;">
     <div style="position:absolute;right:-60px;top:-60px;width:300px;height:300px;border-radius:50%;background:rgba(212,132,10,0.08);pointer-events:none;"></div>
@@ -2345,9 +2139,7 @@ canvas { display: block; }
       </div>
     </div>
   </div>
-
   <div style="max-width:1280px;margin:0 auto;padding:28px 32px;">
-
     <div class="sub-tabs">
       <button class="sub-tab active" onclick="subTab('lean','oee')">📊 OEE Calculator</button>
       <button class="sub-tab" onclick="subTab('lean','flow')">🔄 Flusso Produttivo</button>
@@ -2355,7 +2147,6 @@ canvas { display: block; }
       <button class="sub-tab" onclick="subTab('lean','smart')">🤖 Smart Factory</button>
       <button class="sub-tab" onclick="subTab('lean','sprechi')">♻️ 6 Sprechi</button>
     </div>
-
     <!-- ══ OEE CALCULATOR ══ -->
     <div id="lean-oee" class="sub-panel active">
       <div class="g2">
@@ -2363,7 +2154,6 @@ canvas { display: block; }
           <div class="card">
             <div class="card-title">OEE — Overall Equipment Effectiveness</div>
             <div class="card-sub">Nakajima, 1988 · OEE = Disponibilità × Performance × Qualità</div>
-
             <div style="background:var(--navy-900);border-radius:var(--r-md);padding:16px;margin:12px 0;">
               <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center;">
                 <div>
@@ -2389,7 +2179,6 @@ canvas { display: block; }
                 </div>
               </div>
             </div>
-
             <div class="field">
               <div class="slider-row">
                 <span>⏱ Tempo pianificato (h/turno)</span><span class="slider-val" id="oee-tp-v">8</span>
@@ -2415,10 +2204,8 @@ canvas { display: block; }
               <input type="range" min="50" max="100" value="97" id="oee-q" oninput="calcOEE()">
             </div>
           </div>
-
           <div class="result-panel" id="oee-breakdown"></div>
         </div>
-
         <div class="card">
           <div class="card-title">OEE Waterfall — Perdite di Produttività</div>
           <div class="card-sub">Produttività Ideale → Attuale (De Carlo / Nakajima)</div>
@@ -2430,7 +2217,6 @@ canvas { display: block; }
         </div>
       </div>
     </div>
-
     <!-- ══ FLUSSO PRODUTTIVO ══ -->
     <div id="lean-flow" class="sub-panel">
       <div class="g2">
@@ -2463,7 +2249,6 @@ canvas { display: block; }
             </table>
           </div>
         </div>
-
         <div class="card">
           <div class="card-title">Diagramma Tecnologico — Simbologia ASME</div>
           <canvas id="flow-canvas" width="460" height="340" style="width:100%;margin-top:8px;"></canvas>
@@ -2478,14 +2263,12 @@ canvas { display: block; }
         </div>
       </div>
     </div>
-
     <!-- ══ CODP / WORTMANN ══ -->
     <div id="lean-codp" class="sub-panel">
       <div class="g2">
         <div class="card">
           <div class="card-title">Customer Order Decoupling Point</div>
           <div class="card-sub">Wortmann 1983 · Dove si posiziona il tuo punto di disaccoppiamento?</div>
-
           <div style="margin:16px 0;">
             <div style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;font-weight:500;">Seleziona la tua fattispecie produttiva:</div>
             <div style="display:flex;flex-direction:column;gap:8px;" id="codp-btns">
@@ -2506,7 +2289,6 @@ canvas { display: block; }
               </button>
             </div>
           </div>
-
           <div class="result-panel" id="codp-result">
             <div class="result-row"><span class="result-label">Fattispecie</span><span class="result-value">Make to Stock</span></div>
             <div class="result-row"><span class="result-label">Delivery Lead Time</span><span class="result-value pos">Minimo (da stock)</span></div>
@@ -2515,7 +2297,6 @@ canvas { display: block; }
             <div style="font-size:12px;color:var(--text-secondary);margin-top:8px;">Esempi tessile: abbigliamento base, t-shirt standard, commodity.</div>
           </div>
         </div>
-
         <div class="card">
           <div class="card-title">Matrice CODP — Wortmann 1983</div>
           <canvas id="codp-canvas" width="460" height="360" style="width:100%;margin-top:8px;"></canvas>
@@ -2526,7 +2307,6 @@ canvas { display: block; }
         </div>
       </div>
     </div>
-
     <!-- ══ SMART FACTORY ══ -->
     <div id="lean-smart" class="sub-panel">
       <!-- Maturity banner -->
@@ -2541,7 +2321,6 @@ canvas { display: block; }
           <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#e8a030;">/100 · Parzialmente Connessa</div>
         </div>
       </div>
-
       <div class="g2">
         <div class="card">
           <div class="card-title">Valutazione per Tecnologia</div>
@@ -2571,7 +2350,6 @@ canvas { display: block; }
           <hr class="divider">
           <div class="result-panel" id="sf-result"></div>
         </div>
-
         <div class="card">
           <div class="card-title">Radar Maturity Chart</div>
           <canvas id="sf-canvas" width="460" height="320" style="width:100%;margin-top:8px;"></canvas>
@@ -2589,7 +2367,6 @@ canvas { display: block; }
           </div>
         </div>
       </div>
-
       <!-- Synergy Section -->
       <div style="margin-top:20px;">
         <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-faint);margin-bottom:14px;">La Sinergia — Lean × Smart Factory</div>
@@ -2617,7 +2394,6 @@ canvas { display: block; }
         </div>
       </div>
     </div>
-
     <!-- ══ 6 SPRECHI ══ -->
     <div id="lean-sprechi" class="sub-panel">
       <div class="g2">
@@ -2639,7 +2415,6 @@ canvas { display: block; }
                 <input type="range" min="0" max="4" step="0.1" value="0.5" id="w-setup" oninput="calcWastes()">
               </div>
             </div>
-
             <div style="padding:12px;border-radius:var(--r-md);border:1px solid var(--border);background:var(--surface-2);">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
                 <span style="font-size:12.5px;font-weight:600;color:var(--amber-600);">🟡 Riduzioni di Velocità</span>
@@ -2654,7 +2429,6 @@ canvas { display: block; }
                 <input type="range" min="0" max="4" step="0.1" value="0.8" id="w-slow" oninput="calcWastes()">
               </div>
             </div>
-
             <div style="padding:12px;border-radius:var(--r-md);border:1px solid var(--border);background:var(--surface-2);">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
                 <span style="font-size:12.5px;font-weight:600;color:var(--emerald);">🟢 Perdite di Qualità</span>
@@ -2671,7 +2445,6 @@ canvas { display: block; }
             </div>
           </div>
         </div>
-
         <div class="stack">
           <div class="card">
             <div class="card-title">Distribuzione Sprechi</div>
@@ -2685,18 +2458,13 @@ canvas { display: block; }
         </div>
       </div>
     </div>
-
   </div><!-- /inner padding -->
 </div><!-- /view-lean -->
-
-
-
 <!-- ═══════════════════════════════════════════════
    JAVASCRIPT — SCALABLE ARCHITECTURE
 ═══════════════════════════════════════════════ -->
 <script>
 'use strict';
-
 /* ═══════════════════════════════════
    STORE — Reactive state layer
    In production: replace with Zustand / Pinia
@@ -2709,35 +2477,27 @@ const Store = (() => {
     route: 'dashboard',
     analyses: [],
   };
-
   // Hydrate from localStorage
   try {
     const saved = JSON.parse(localStorage.getItem('filieraos_state') || '{}');
     Object.assign(_state, saved);
   } catch(e) {}
-
   const _listeners = {};
-
   function set(key, value) {
     _state[key] = value;
     persist();
     (_listeners[key] || []).forEach(fn => fn(value));
   }
-
   function get(key) { return _state[key]; }
-
   function subscribe(key, fn) {
     if (!_listeners[key]) _listeners[key] = [];
     _listeners[key].push(fn);
   }
-
   function persist() {
     try { localStorage.setItem('filieraos_state', JSON.stringify(_state)); } catch(e) {}
   }
-
   return { set, get, subscribe };
 })();
-
 /* ═══════════════════════════════════
    API — Stub layer
    In production: replace with tRPC client or fetch wrapper
@@ -2750,14 +2510,12 @@ const API = (() => {
     'Authorization': `Bearer ${Store.get('token') || 'demo'}`,
     'X-Org-ID': Store.get('org') || 'demo',
   });
-
   async function _req(method, path, body) {
     // STUB — replace with real fetch in production:
     // const r = await fetch(BASE + path, { method, headers: _headers(), body: body ? JSON.stringify(body) : undefined });
     // return r.json();
     return new Promise(res => setTimeout(() => res({ ok: true, data: body || {} }), 80));
   }
-
   return {
     analyses: {
       list:   ()     => _req('GET',  '/analyses'),
@@ -2769,7 +2527,6 @@ const API = (() => {
     },
   };
 })();
-
 /* ═══════════════════════════════════
    FEATURE FLAGS — Plan gating
    In production: replace with Flagsmith / LaunchDarkly
@@ -2780,55 +2537,44 @@ const Features = (() => {
     pro:        ['dashboard','make-or-buy','costs','procurement','supply-chain','export','team','saved-scenarios'],
     enterprise: ['*'],  // all
   };
-
   function can(feature) {
     const plan = Store.get('plan');
     const allowed = _flags[plan] || _flags.starter;
     return allowed.includes('*') || allowed.includes(feature);
   }
-
   function guard(feature, fn) {
     if (can(feature)) return fn();
     toast(`⚡ ${feature} requires Pro. Upgrade to unlock.`);
     navigate('settings');
   }
-
   return { can, guard };
 })();
-
 /* ═══════════════════════════════════
    ROUTER — Client-side routing
    In production: replace with React Router or Next.js App Router
 ═══════════════════════════════════ */
 const Router = (() => {
   const _views = {};
-
   function register(id, el) { _views[id] = el; }
-
   function go(route) {
     Store.set('route', route);
     Object.values(_views).forEach(el => el.classList.remove('active'));
     const target = _views[route];
     if (target) target.classList.add('active');
-
     // Update topbar
     document.querySelectorAll('.topbar-nav-btn').forEach(b => {
       b.classList.toggle('active', b.getAttribute('onclick').includes(`'${route}'`));
     });
-
     // Trigger view-specific init
     View.init(route);
   }
-
   return { register, go };
 })();
-
 /* ═══════════════════════════════════
    VIEW INIT — Lazy chart init per view
 ═══════════════════════════════════ */
 const View = (() => {
   const _inited = new Set();
-
   function init(route) {
     setTimeout(() => {
       if (route === 'costs')          { calcBEP(); calcLO(); drawCT(); }
@@ -2838,10 +2584,8 @@ const View = (() => {
       if (route === 'lean')           { calcOEE(); showFlow('lineare',document.querySelector('#flow-btns button')); setCODP('mts',document.querySelector('#codp-btns button')); calcSF(); calcWastes(); }
     }, 40);
   }
-
   return { init };
 })();
-
 /* ═══════════════════════════════════
    AUTH
 ═══════════════════════════════════ */
@@ -2851,7 +2595,6 @@ function switchAuthTab(tab) {
   document.getElementById('tab-login').classList.toggle('active',  tab === 'login');
   document.getElementById('tab-signup').classList.toggle('active', tab === 'signup');
 }
-
 function doLogin() {
   const email = document.getElementById('auth-email')?.value || 'demo@filieraos.it';
   Store.set('user', { name: 'Mario Rossi', email, initials: email.slice(0,2).toUpperCase() });
@@ -2863,7 +2606,6 @@ function doLogin() {
   navigate('dashboard');
   toast('👋 Welcome to FilieraOS');
 }
-
 /* ═══════════════════════════════════
    NAVIGATION
 ═══════════════════════════════════ */
@@ -2875,7 +2617,6 @@ function navigate(route) {
   });
   Router.go(route);
 }
-
 function subTab(group, id) {
   // Deactivate all panels in group
   document.querySelectorAll(`[id^="${group}-"]`).forEach(el => {
@@ -2889,7 +2630,6 @@ function subTab(group, id) {
   event.target.classList.add('active');
   setTimeout(() => View.init(document.querySelector('.view.active')?.id.replace('view-','')), 30);
 }
-
 /* ═══════════════════════════════════
    TOAST
 ═══════════════════════════════════ */
@@ -2901,7 +2641,6 @@ function toast(msg, duration = 3000) {
   setTimeout(() => el.style.opacity = '0', duration - 300);
   setTimeout(() => el.remove(), duration);
 }
-
 /* ═══════════════════════════════════
    TCE SCORER
 ═══════════════════════════════════ */
@@ -2912,15 +2651,12 @@ function calcTCE() {
   const comp2 = +document.getElementById('tce-comp2').value;
   const cost  = +document.getElementById('tce-cost').value;
   const cap   = +document.getElementById('tce-cap').value;
-
   ['tce-comp','tce-spec','tce-unc','tce-comp2','tce-cost','tce-cap'].forEach(id => {
     document.getElementById(id + '-v').textContent = document.getElementById(id).value;
   });
-
   const tce = (comp + spec + unc) / 3;
   const buy = (cost + cap) / 2;
   const make = comp2;
-
   let reco, color, cls;
   if (tce <= 3.5) {
     reco = { title: '✅ Mercato Competitivo', desc: 'Bassa complessità di transazione. Multiple sourcing con fornitori in competizione. Nel distretto Prato: terzisti specializzati su lavorazioni standard.', badge: 'badge-green', label: 'BUY — Market' };
@@ -2932,7 +2668,6 @@ function calcTCE() {
     reco = { title: '⚠️ Integrazione Verticale', desc: 'Alti costi di transazione. Valutare insourcing o creare il mercato (come P&G/3M). Il controllo diretto diventa necessario.', badge: 'badge-rose', label: 'MAKE' };
     color = '#b83050'; cls = 'rose';
   }
-
   document.getElementById('tce-reco').innerHTML = `
     <div class="highlight ${cls}">
       <h4>${reco.title}</h4>
@@ -2942,7 +2677,6 @@ function calcTCE() {
       <span class="badge ${reco.badge}">${reco.label}</span>
       <span class="badge badge-muted">TCE Score: ${tce.toFixed(1)}/10</span>
     </div>`;
-
   document.getElementById('tce-breakdown').innerHTML = `
     <div class="result-row"><span class="result-label">Complessità Descrittiva</span><span class="result-value">${comp}/10</span></div>
     <div class="result-row"><span class="result-label">Specificità</span><span class="result-value">${spec}/10</span></div>
@@ -2950,23 +2684,19 @@ function calcTCE() {
     <div class="result-row"><span class="result-label">TCE Score (media)</span><span class="result-value ${cls==='green'?'pos':cls==='rose'?'neg':'warn'}">${tce.toFixed(1)}</span></div>
     <div class="result-row"><span class="result-label">Driver: Costi</span><span class="result-value">${cost}/10</span></div>
     <div class="result-row"><span class="result-label">Driver: Competenze</span><span class="result-value">${comp2}/10</span></div>`;
-
   drawTCECanvas(tce);
 }
-
 function drawTCECanvas(tce) {
   const c = document.getElementById('tce-canvas');
   if (!c) return;
   const ctx = c.getContext('2d');
   const W = c.width, H = c.height;
   ctx.clearRect(0, 0, W, H);
-
   const zones = [
     { label: 'Competitivo', color: '#e4f4ec', stroke: '#1a7a5a', x: 0 },
     { label: 'Collaborativo', color: '#fdf3dc', stroke: '#b86800', x: W/3 },
     { label: 'Integrazione', color: '#fce8ec', stroke: '#b83050', x: W*2/3 },
   ];
-
   zones.forEach((z, i) => {
     const w = W / 3 - 2;
     ctx.fillStyle = z.color;
@@ -2980,7 +2710,6 @@ function drawTCECanvas(tce) {
     ctx.textAlign = 'center';
     ctx.fillText(z.label, z.x + w/2 + 2, H - 8);
   });
-
   // Indicator
   const x = 2 + (tce / 10) * (W - 8);
   ctx.fillStyle = '#0a1628';
@@ -2992,7 +2721,6 @@ function drawTCECanvas(tce) {
   ctx.textAlign = 'center';
   ctx.fillText(tce.toFixed(0), x, H / 2 - 8);
 }
-
 /* ═══════════════════════════════════
    LEVERAGE EFFECT
 ═══════════════════════════════════ */
@@ -3003,25 +2731,20 @@ function calcLev() {
   const ci  = +document.getElementById('lv-ci').value  || 4000;
   const rid = +document.getElementById('lv-rid').value || 5;
   const aum = +document.getElementById('lv-aum').value || 15;
-
   document.getElementById('lv-rid-v').textContent = rid + '%';
   document.getElementById('lv-aum-v').textContent = aum + '%';
-
   const base  = { fat, acq, alt };
   const rAcq  = { fat, acq: acq * (1 - rid/100), alt };
   const rFat  = { fat: fat * (1 + aum/100), acq: acq * (1 + aum/100), alt: alt * (1 + aum/100 * 0.7) };
-
   function roi(s) {
     const ebit = s.fat - s.acq - s.alt;
     const ros  = ebit / s.fat;
     const trc  = s.fat / ci;
     return { ebit, ros: ros*100, roi: ros*trc*100 };
   }
-
   const b = roi(base), r = roi(rAcq), f = roi(rFat);
   const fmt = (v, d=0) => '€ ' + v.toFixed(d).replace(/\B(?=(\d{3})+(?!\d))/g,'.');
   const pct = v => v.toFixed(1) + '%';
-
   document.getElementById('lev-results').innerHTML = `
     <div class="result-row"><span class="result-label">Scenario</span><span style="display:flex;gap:6px;"><span style="font-size:11px;color:var(--text-faint)">Base</span><span style="font-size:11px;color:var(--amber-600)">−${rid}% Acq.</span><span style="font-size:11px;color:var(--navy-700)">+${aum}% Fat.</span></span></div>
     <div class="result-row"><span class="result-label">EBIT</span><span style="display:flex;gap:12px;"><span class="result-value">${fmt(b.ebit)}</span><span class="result-value pos">${fmt(r.ebit)}</span><span class="result-value">${fmt(f.ebit)}</span></span></div>
@@ -3029,7 +2752,6 @@ function calcLev() {
     <div class="result-row"><span class="result-label"><strong>ROI</strong></span><span style="display:flex;gap:12px;"><span class="result-value feature">${pct(b.roi)}</span><span class="result-value pos" style="font-size:15px;">${pct(r.roi)}</span><span class="result-value" style="font-size:15px;">${pct(f.roi)}</span></span></div>
     <div style="margin-top:8px;font-size:11.5px;color:var(--text-muted);">${r.roi > f.roi ? '💡 Razionalizzare gli acquisti è più efficace in questo scenario.' : '💡 Crescere in fatturato è più efficace in questo scenario.'}</div>`;
 }
-
 /* ═══════════════════════════════════
    BREAK-EVEN
 ═══════════════════════════════════ */
@@ -3038,12 +2760,10 @@ function calcBEP() {
   const cvu = +document.getElementById('bep-cvu').value || 120;
   const cft = +document.getElementById('bep-cft').value || 2000;
   const x   = +document.getElementById('bep-x').value   || 30;
-
   document.getElementById('bep-p-v').textContent   = p;
   document.getElementById('bep-cvu-v').textContent = cvu;
   document.getElementById('bep-cft-v').textContent = cft;
   document.getElementById('bep-x-v').textContent   = x;
-
   const mdcu = p - cvu;
   if (mdcu <= 0) {
     document.getElementById('bep-results').innerHTML = `<div class="result-row"><span class="result-label">MDC Unitario</span><span class="result-value neg">€ ${mdcu} — impossibile!</span></div>`;
@@ -3054,7 +2774,6 @@ function calcBEP() {
   const pr   = mdcu * x - cft;
   const ms   = x > xp ? (x - xp) / x * 100 : null;
   const L    = pr > 0 ? (mdcu * x / pr) : null;
-
   document.getElementById('bep-results').innerHTML = `
     <div class="result-row"><span class="result-label">MDC Unitario</span><span class="result-value ${mdcu>0?'pos':'neg'}">€ ${mdcu.toFixed(2)}</span></div>
     <div class="result-row"><span class="result-label">MDC%</span><span class="result-value">${(mdcu/p*100).toFixed(1)}%</span></div>
@@ -3063,10 +2782,8 @@ function calcBEP() {
     <div class="result-row"><span class="result-label">Profitto @ X=${x}</span><span class="result-value ${pr>=0?'pos':'neg'}">€ ${pr.toLocaleString('it-IT',{maximumFractionDigits:0})}</span></div>
     <div class="result-row"><span class="result-label">Margine Sicurezza</span><span class="result-value ${ms&&ms>0?'pos':'neg'}">${ms?ms.toFixed(1)+'%':'in perdita'}</span></div>
     <div class="result-row"><span class="result-label">Leva Operativa L(X)</span><span class="result-value">${L?L.toFixed(2)+'×':'N/D'}</span></div>`;
-
   drawBEPChart(p, cvu, cft, x, xp, mdcu);
 }
-
 function drawBEPChart(p, cvu, cft, x, xp, mdcu) {
   const c = document.getElementById('bep-canvas');
   if (!c) return;
@@ -3077,10 +2794,8 @@ function drawBEPChart(p, cvu, cft, x, xp, mdcu) {
   const gW = W - pad.l - pad.r, gH = H - pad.t - pad.b;
   const xMax = Math.max(xp * 2.4, x * 1.5, 20);
   const maxV = Math.max(p * xMax, cft + cvu * xMax) * 1.04;
-
   const sx = v => pad.l + v / xMax * gW;
   const sy = v => pad.t + (1 - v / maxV) * gH;
-
   // Grid
   ctx.strokeStyle = '#dde6f0'; ctx.lineWidth = 1;
   [0,.25,.5,.75,1].forEach(f => {
@@ -3089,55 +2804,45 @@ function drawBEPChart(p, cvu, cft, x, xp, mdcu) {
     ctx.textAlign = 'right';
     ctx.fillText((maxV*(1-f)/1000).toFixed(1)+'k', pad.l-4, pad.t + f*gH + 3);
   });
-
   // Axes
   ctx.strokeStyle = '#c8d8ec'; ctx.lineWidth = 1.5;
   ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,pad.t+gH); ctx.lineTo(pad.l+gW,pad.t+gH); ctx.stroke();
-
   // Profit/loss zones
   const yZ = sy(0);
   ctx.fillStyle = 'rgba(26,122,74,0.05)'; ctx.fillRect(pad.l, pad.t, gW, yZ-pad.t);
   ctx.fillStyle = 'rgba(184,48,80,0.05)'; ctx.fillRect(pad.l, yZ, gW, pad.t+gH-yZ);
-
   // CFT line
   ctx.strokeStyle = '#c8d8ec'; ctx.setLineDash([4,3]); ctx.lineWidth=1;
   ctx.beginPath(); ctx.moveTo(sx(0),sy(cft)); ctx.lineTo(sx(xMax),sy(cft)); ctx.stroke();
   ctx.setLineDash([]);
-
   // CT
   ctx.strokeStyle = '#b83050'; ctx.lineWidth=2;
   ctx.beginPath(); ctx.moveTo(sx(0),sy(cft)); ctx.lineTo(sx(xMax),sy(cft+cvu*xMax)); ctx.stroke();
-
   // RT
   ctx.strokeStyle = '#163058'; ctx.lineWidth=2.5;
   ctx.beginPath(); ctx.moveTo(sx(0),sy(0)); ctx.lineTo(sx(xMax),sy(p*xMax)); ctx.stroke();
-
   // BEP line
   ctx.strokeStyle = '#b86800'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
   ctx.beginPath(); ctx.moveTo(sx(xp),pad.t); ctx.lineTo(sx(xp),pad.t+gH); ctx.stroke();
   ctx.setLineDash([]);
   ctx.fillStyle = '#b86800';
   ctx.beginPath(); ctx.arc(sx(xp),sy(p*xp),5,0,Math.PI*2); ctx.fill();
-
   // X marker
   const prEff = mdcu*x - cft;
   ctx.fillStyle = prEff>=0 ? '#1a7a5a' : '#b83050';
   ctx.beginPath(); ctx.arc(sx(x),sy(p*x),6,0,Math.PI*2); ctx.fill();
   ctx.fillStyle = '#fff'; ctx.font='bold 9px DM Mono'; ctx.textAlign='center';
   ctx.fillText('X', sx(x), sy(p*x)+3);
-
   // Labels
   ctx.fillStyle = '#163058'; ctx.font='bold 10px DM Sans'; ctx.textAlign='left';
   ctx.fillText('RT', sx(xMax*.8), sy(p*xMax*.8)-5);
   ctx.fillStyle = '#b83050';
   ctx.fillText('CT', sx(xMax*.8), sy(cft+cvu*xMax*.8)+12);
-
   ctx.fillStyle = '#a8bdd0'; ctx.font='9px DM Mono'; ctx.textAlign='center';
   [0, Math.round(xMax/4), Math.round(xMax/2), Math.round(xMax*3/4), Math.round(xMax)].forEach(v => {
     ctx.fillText(v, sx(v), pad.t+gH+14);
   });
 }
-
 /* ═══════════════════════════════════
    LEVA OPERATIVA
 ═══════════════════════════════════ */
@@ -3145,25 +2850,20 @@ function calcLO() {
   const pf = +document.getElementById('lo-pf').value || 50;
   const xv = +document.getElementById('lo-x').value  || 100;
   const dr = +document.getElementById('lo-dr').value || 10;
-
   document.getElementById('lo-pf-v').textContent = pf + '%';
   document.getElementById('lo-x-v').textContent  = xv;
   document.getElementById('lo-dr-v').textContent = (dr>=0?'+':'')+dr+'%';
-
   const p=100, cft=xv*p*(pf/100), cvu=p*(1-pf/100)*0.6;
   const mdcu=p-cvu, mdc=mdcu*xv, pr=mdc-cft;
   if (pr<=0) { document.getElementById('lo-results').innerHTML='<div class="result-row"><span class="result-label">Situazione in perdita</span><span class="result-value neg">PR ≤ 0</span></div>'; return; }
   const L=mdc/pr, ms=100/L, xp=cft/mdcu, dpr=L*dr;
-
   document.getElementById('lo-results').innerHTML=`
     <div class="result-row"><span class="result-label">Leva Operativa L(X)</span><span class="result-value feature">${L.toFixed(2)}×</span></div>
     <div class="result-row"><span class="result-label">Margine di Sicurezza</span><span class="result-value ${ms>20?'pos':ms>10?'warn':'neg'}">${ms.toFixed(1)}%</span></div>
     <div class="result-row"><span class="result-label">Volume di Pareggio Xp</span><span class="result-value">${xp.toFixed(0)} unità</span></div>
     <div class="result-row"><span class="result-label">Variazione profitto (${(dr>=0?'+':'')+dr}% ricavi)</span><span class="result-value ${dpr>=0?'pos':'neg'}">${(dpr>=0?'+':'')+dpr.toFixed(1)}%</span></div>`;
-
   drawLOChart(p,cvu,cft,xv,xp,L);
 }
-
 function drawLOChart(p,cvu,cft,x,xp,L) {
   const c = document.getElementById('lo-canvas');
   if (!c) return;
@@ -3175,34 +2875,26 @@ function drawLOChart(p,cvu,cft,x,xp,L) {
   const prMin=mdcu*0-cft, prMax=mdcu*xMax-cft, vR=prMax-prMin;
   const sx=v=>pad.l+(v/xMax)*gW;
   const sy=v=>pad.t+(1-(v-prMin)/vR)*gH;
-
   // Zero line
   ctx.strokeStyle='#b86800'; ctx.lineWidth=1.5;
   ctx.beginPath(); ctx.moveTo(pad.l,sy(0)); ctx.lineTo(pad.l+gW,sy(0)); ctx.stroke();
-
   ctx.strokeStyle='#c8d8ec'; ctx.lineWidth=1.5;
   ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,pad.t+gH); ctx.lineTo(pad.l+gW,pad.t+gH); ctx.stroke();
-
   const yZ=sy(0);
   ctx.fillStyle='rgba(26,122,74,0.06)'; ctx.fillRect(pad.l,pad.t,gW,yZ-pad.t);
   ctx.fillStyle='rgba(184,48,80,0.06)'; ctx.fillRect(pad.l,yZ,gW,pad.t+gH-yZ);
-
   ctx.strokeStyle='#163058'; ctx.lineWidth=2.5;
   ctx.beginPath(); ctx.moveTo(sx(0),sy(-cft)); ctx.lineTo(sx(xMax),sy(mdcu*xMax-cft)); ctx.stroke();
-
   ctx.strokeStyle='#b86800'; ctx.lineWidth=1; ctx.setLineDash([4,3]);
   ctx.beginPath(); ctx.moveTo(sx(xp),pad.t); ctx.lineTo(sx(xp),pad.t+gH); ctx.stroke();
   ctx.setLineDash([]);
-
   const pr=mdcu*x-cft;
   ctx.fillStyle=pr>=0?'#1a7a5a':'#b83050';
   ctx.beginPath(); ctx.arc(sx(x),sy(pr),6,0,Math.PI*2); ctx.fill();
-
   ctx.fillStyle='#b83050'; ctx.font='9px DM Mono'; ctx.textAlign='right';
   ctx.fillText('-CFT', pad.l-3, sy(-cft)+3);
   ctx.fillStyle='#b86800'; ctx.textAlign='center';
   ctx.fillText('Xp', sx(xp), pad.t+11);
-
   ctx.fillStyle='#a8bdd0'; ctx.font='9px DM Mono'; ctx.textAlign='center';
   [0,Math.round(xMax/4),Math.round(xMax/2),Math.round(xMax*3/4),Math.round(xMax)].forEach(v => {
     ctx.fillText(v, sx(v), pad.t+gH+14);
@@ -3210,7 +2902,6 @@ function drawLOChart(p,cvu,cft,x,xp,L) {
   ctx.fillStyle='#163058'; ctx.font='bold 11px DM Sans'; ctx.textAlign='left';
   ctx.fillText('Profitto vs Volume', pad.l+4, pad.t+14);
 }
-
 /* ═══════════════════════════════════
    COST TYPES CHART
 ═══════════════════════════════════ */
@@ -3225,7 +2916,6 @@ function drawCT() {
   const maxV=(cft+cvu*xMax)*1.08;
   const sx=v=>pad.l+(v/xMax)*gW;
   const sy=v=>pad.t+(1-v/maxV)*gH;
-
   ctx.strokeStyle='#dde6f0'; ctx.lineWidth=1;
   [0,.25,.5,.75,1].forEach(f => {
     ctx.beginPath(); ctx.moveTo(pad.l,pad.t+f*gH); ctx.lineTo(pad.l+gW,pad.t+f*gH); ctx.stroke();
@@ -3234,7 +2924,6 @@ function drawCT() {
   });
   ctx.strokeStyle='#c8d8ec'; ctx.lineWidth=1.5;
   ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,pad.t+gH); ctx.lineTo(pad.l+gW,pad.t+gH); ctx.stroke();
-
   // Relevance range shading
   const rl=sx(50), rr=sx(200);
   ctx.fillStyle='rgba(22,48,88,0.04)'; ctx.fillRect(rl,pad.t,rr-rl,gH);
@@ -3243,7 +2932,6 @@ function drawCT() {
   ctx.beginPath(); ctx.moveTo(rr,pad.t); ctx.lineTo(rr,pad.t+gH); ctx.stroke();
   ctx.setLineDash([]); ctx.fillStyle='#b86800'; ctx.font='9px DM Sans'; ctx.textAlign='center';
   ctx.fillText('Intervallo di rilevanza', (rl+rr)/2, pad.t+10);
-
   // Fixed
   ctx.strokeStyle='#b86800'; ctx.lineWidth=2; ctx.setLineDash([5,3]);
   ctx.beginPath(); ctx.moveTo(sx(0),sy(cft)); ctx.lineTo(sx(xMax),sy(cft)); ctx.stroke(); ctx.setLineDash([]);
@@ -3255,7 +2943,6 @@ function drawCT() {
   ctx.beginPath(); ctx.moveTo(sx(0),sy(cft));
   for(let x=0;x<=xMax;x+=xMax/100) ctx.lineTo(sx(x),sy(cft+cvu*x));
   ctx.stroke();
-
   ctx.fillStyle='#b86800'; ctx.font='bold 9px DM Sans'; ctx.textAlign='left';
   ctx.fillText('CFT', sx(xMax*.7)+4, sy(cft)-4);
   ctx.fillStyle='#1a6fa8'; ctx.fillText('CVT', sx(xMax*.7)+4, sy(cvu*xMax*.7)+12);
@@ -3263,7 +2950,6 @@ function drawCT() {
   ctx.fillStyle='#a8bdd0'; ctx.font='9px DM Mono'; ctx.textAlign='center';
   [0,50,100,150,200,250].forEach(v => ctx.fillText(v, sx(v), pad.t+gH+14));
 }
-
 /* ═══════════════════════════════════
    KRALJIC CLASSIFIER
 ═══════════════════════════════════ */
@@ -3272,25 +2958,21 @@ function classifyKQ() {
   const diff = +document.getElementById('kq-diff').value || 5;
   document.getElementById('kq-imp-v').textContent  = imp;
   document.getElementById('kq-diff-v').textContent = diff;
-
   let q, color, strategy;
   if (imp>=5 && diff>=5) { q='STRATEGICO'; color='var(--rose)'; strategy='Partnership, single sourcing, co-design, contratti LT, ESI.'; }
   else if (imp<5 && diff>=5) { q='COLLO DI BOTTIGLIA'; color='var(--amber-600)'; strategy='Scorte di sicurezza, dual sourcing, contratti con garanzie volume.'; }
   else if (imp>=5 && diff<5) { q='LEVA'; color='var(--emerald)'; strategy='Multiple sourcing, aste inverse, pressione prezzi, benchmarking.'; }
   else { q='NON CRITICO'; color='var(--text-muted)'; strategy='E-procurement, catalogi online, aggregazione fabbisogni, standardizza.'; }
-
   document.getElementById('kq-class').innerHTML=`
     <div class="result-row"><span class="result-label">Quadrante</span><span class="result-value" style="color:${color}">${q}</span></div>
     <div style="font-size:12px;color:var(--text-secondary);margin-top:6px;">${strategy}</div>`;
 }
-
 const kqData = {
   strat: { title:'🔑 Strategici', color:'var(--rose)', strategy:'Partnership stretta, single/dual sourcing, co-design, Early Supplier Involvement, contratti di lungo termine con garanzie reciproche.', examples:'Filato jacquard esclusivo, stampi proprietari, tecnologie di finishing distinctive.' },
   collo: { title:'⚠️ Collo di Bottiglia', color:'var(--amber-600)', strategy:'Scorte di sicurezza elevate, dual sourcing (se possibile), contratti quadro con garanzie di fornitura, sviluppo fornitori alternativi.', examples:'Cashmere premium (monopolio geografico), coloranti speciali, zip particolari.' },
   leva:  { title:'💪 Leva', color:'var(--emerald)', strategy:'Multiple sourcing, aste inverse elettroniche, massimizzare potere contrattuale, contratti a breve, benchmark continuo tra fornitori.', examples:'Jersey standard, bottoni commodity, poliestere base.' },
   non:   { title:'📦 Non Critico', color:'var(--text-muted)', strategy:'E-procurement con catalogi online, aggregazione fabbisogni, riduzione parco fornitori, automatizzare il processo di supply.', examples:'Cancelleria, MRO generico, forniture ufficio.' },
 };
-
 function selectKQ(el, q) {
   document.querySelectorAll('.mq-cell').forEach(c => c.classList.remove('sel'));
   el.classList.add('sel');
@@ -3302,7 +2984,6 @@ function selectKQ(el, q) {
     <div style="font-size:12.5px;color:var(--text-secondary);margin-top:6px;padding-top:6px;border-top:1px solid var(--border);">${d.strategy}</div>
     <div style="font-size:11px;color:var(--text-faint);margin-top:6px;"><strong>Esempi:</strong> ${d.examples}</div>`;
 }
-
 /* ═══════════════════════════════════
    VENDOR RATING
 ═══════════════════════════════════ */
@@ -3311,18 +2992,15 @@ function rateVendor() {
   const forza = +document.getElementById('vr-forza').value || 5;
   document.getElementById('vr-attr-v').textContent  = attr;
   document.getElementById('vr-forza-v').textContent = forza;
-
   let strat, color, action;
   if (attr>=5 && forza>=5) { strat='PARTNERSHIP STRATEGICA'; color='var(--emerald)'; action='Investire in innovazione congiunta. Integrare i processi. Obiettivo di lungo periodo.'; }
   else if (attr>=5 && forza<5) { strat='SVILUPPO RELAZIONE'; color='var(--amber-600)'; action='Rafforzare il rapporto. Aumentare interazioni e fiducia. Investimenti relazionali selettivi.'; }
   else if (attr<5 && forza>=5) { strat='RAZIONALIZZAZIONE'; color='var(--navy-600)'; action='Valutare riduzione dipendenza. Rinegoziare condizioni. Evitare over-investment.'; }
   else { strat='DISIMPEGNO / SOSTITUZIONE'; color='var(--rose)'; action='Minimizzare investimenti relazionali. Standardizzare. Cercare fornitori alternativi.'; }
-
   document.getElementById('vr-result').innerHTML=`
     <div class="result-row"><span class="result-label">Strategia</span><span class="result-value" style="color:${color}">${strat}</span></div>
     <div style="font-size:12px;color:var(--text-secondary);margin-top:6px;">${action}</div>`;
 }
-
 /* ═══════════════════════════════════
    SC STRATEGY
 ═══════════════════════════════════ */
@@ -3331,24 +3009,20 @@ function selectSC() {
   const ip = +document.getElementById('sc-ip').value || 5;
   document.getElementById('sc-vd-v').textContent = vd;
   document.getElementById('sc-ip-v').textContent = ip;
-
   let strat, color, desc, cell;
   if (vd<5 && ip<5) { strat='LEAN'; color='var(--navy-700)'; desc='Domanda stabile, processi maturi. Massimizzare efficienza, eliminare waste, economie di scala, automazione.'; cell='sc-lean-cell'; }
   else if (vd>=5 && ip<5) { strat='RESPONSIVE'; color='var(--amber-600)'; desc='Alta variabilità domanda, processi stabili. Build-to-order, mass customization, Time-to-Market critico.'; cell='sc-resp-cell'; }
   else if (vd<5 && ip>=5) { strat='RISK HEDGING'; color='var(--navy-600)'; desc='Domanda relativamente stabile ma processi/supply instabili. Backup sistematici, condivisione risorse capacità.'; cell='sc-risk-cell'; }
   else { strat='AGILE'; color='var(--rose)'; desc='Alta variabilità e processi instabili. Flessibilità massima + risk hedging simultanei. La sfida più complessa.'; cell='sc-agile-cell'; }
-
   document.getElementById('sc-strat-result').innerHTML=`
     <div class="result-row"><span class="result-label">Strategia Ottimale</span><span class="result-value feature" style="color:${color}">${strat}</span></div>
     <div style="font-size:12.5px;color:var(--text-secondary);margin-top:6px;">${desc}</div>`;
-
   // Highlight cell
   ['sc-lean-cell','sc-resp-cell','sc-risk-cell','sc-agile-cell'].forEach(id => {
     const el=document.getElementById(id);
     if(el) el.style.outline = id===cell ? '2px solid var(--navy-700)' : 'none';
   });
 }
-
 /* ═══════════════════════════════════
    BULLWHIP
 ═══════════════════════════════════ */
@@ -3357,7 +3031,6 @@ function drawBW() {
   const amp = +document.getElementById('bw-amp').value || 1.8;
   document.getElementById('bw-cv-v').textContent  = Math.round(cv*100) + '%';
   document.getElementById('bw-amp-v').textContent = amp.toFixed(1) + '×';
-
   const c=document.getElementById('bw-canvas');
   if(!c) return;
   const ctx=c.getContext('2d'), W=c.width, H=c.height;
@@ -3373,12 +3046,10 @@ function drawBW() {
   const gW=W-pad.l-pad.r, gH=H-pad.t-pad.b;
   const stH=gH/stages.length;
   const maxAmp=base*cv*stages[stages.length-1].ampF;
-
   stages.forEach((s,si)=>{
     const y0=pad.t+si*stH, ym=y0+stH/2;
     const amplitude=base*cv*s.ampF;
     const scale=(stH*0.38)/maxAmp;
-
     ctx.strokeStyle=s.color; ctx.lineWidth=1.8;
     ctx.beginPath();
     for(let i=0;i<N;i++){
@@ -3400,52 +3071,43 @@ function drawBW() {
   ctx.fillStyle='#b83050'; ctx.font='bold 10px DM Sans'; ctx.textAlign='center';
   ctx.fillText('↑ Amplificazione a monte', pad.l+gW/2, pad.t+8);
 }
-
 /* ═══════════════════════════════════
    PUSH / PULL
 ═══════════════════════════════════ */
 function drawPP() {
   const dp=+document.getElementById('pp-dp').value || 50;
   document.getElementById('pp-dp-v').textContent = Math.round(dp)+'%';
-
   const c=document.getElementById('pp-canvas');
   if(!c) return;
   const ctx=c.getContext('2d'), W=c.width, H=c.height;
   ctx.clearRect(0,0,W,H);
   const y0=15, h=50;
   const pushW=(dp/100)*W;
-
   ctx.fillStyle='rgba(22,48,88,0.1)'; ctx.fillRect(0,y0,pushW,h);
   ctx.strokeStyle='#163058'; ctx.lineWidth=1.5; ctx.strokeRect(0,y0,pushW,h);
   ctx.fillStyle='#163058'; ctx.font='bold 10.5px DM Sans'; ctx.textAlign='center';
   if(pushW>60) ctx.fillText('PUSH', pushW/2, y0+h/2+4);
-
   ctx.fillStyle='rgba(184,104,0,0.1)'; ctx.fillRect(pushW,y0,W-pushW,h);
   ctx.strokeStyle='#b86800'; ctx.lineWidth=1.5; ctx.strokeRect(pushW,y0,W-pushW,h);
   ctx.fillStyle='#b86800';
   if(W-pushW>60) ctx.fillText('PULL', pushW+(W-pushW)/2, y0+h/2+4);
-
   ctx.fillStyle='#0a1628'; ctx.fillRect(pushW-2,y0-6,4,h+12);
   ctx.font='9px DM Sans'; ctx.fillStyle='#0a1628'; ctx.textAlign='center';
   ctx.fillText('Decoupling point', pushW, y0-8);
-
   ctx.fillStyle='#a8bdd0'; ctx.font='9px DM Sans';
   ctx.textAlign='left'; ctx.fillText('Fornitori', 4, y0+h+14);
   ctx.textAlign='right'; ctx.fillText('Clienti', W-4, y0+h+14);
-
   let mode;
   if(dp<20) mode='Pull totale (Build-to-order, sartoria)';
   else if(dp<40) mode='Prev. Pull (Assemblaggio su ordine)';
   else if(dp<60) mode='Bilanciato — Postponement (Dell, Vernici)';
   else if(dp<80) mode='Prev. Push (Make-to-stock, stock base)';
   else mode='Push totale (Commodity, grandi lotti)';
-
   document.getElementById('pp-result').innerHTML=`
     <div class="result-row"><span class="result-label">Modalità</span><span class="result-value">${mode}</span></div>
     <div class="result-row"><span class="result-label">Rischio sovrascorta</span><span class="result-value ${dp>60?'neg':dp>40?'warn':'pos'}">${dp>60?'Alto':dp>40?'Medio':'Basso'}</span></div>
     <div class="result-row"><span class="result-label">Reattività</span><span class="result-value ${dp<40?'pos':dp<60?'warn':'neg'}">${dp<40?'Alta':dp<60?'Media':'Bassa'}</span></div>`;
 }
-
 /* ═══════════════════════════════════
    APP BOOT
 ═══════════════════════════════════ */
@@ -3453,27 +3115,17 @@ const App = (() => {
   function init() {
     // Show auth screen
     document.getElementById('auth-screen').style.display = 'block';
-
     // Pre-fill stored user data
     const user = Store.get('user');
     if (user?.email) document.getElementById('auth-email').value = user.email;
-
     // Subscribe to org changes
     Store.subscribe('org', val => {
       const el = document.getElementById('dash-org');
       if (el) el.textContent = val;
     });
-
-    console.log('[FilieraOS] Boot complete. Architecture:', {
-      modules: ['App', 'Router', 'Store', 'API', 'Features', 'View'],
-      patterns: ['Module pattern', 'Pub/Sub', 'Strategy', 'Lazy init'],
-      saas_ready: true,
-    });
   }
-
   return { init };
 })();
-
 /* ═══════════════════════════════════
    LEAN — OEE CALCULATOR
 ═══════════════════════════════════ */
@@ -3482,29 +3134,24 @@ function calcOEE() {
   const pdt = +document.getElementById('oee-pdt').value || 60;
   const vel = +document.getElementById('oee-vel').value || 80;
   const q   = +document.getElementById('oee-q').value   || 97;
-
   document.getElementById('oee-tp-v').textContent  = tp + 'h';
   document.getElementById('oee-pdt-v').textContent = pdt + ' min';
   document.getElementById('oee-vel-v').textContent = vel + '%';
   document.getElementById('oee-q-v').textContent   = q + '%';
-
   const tpMin  = tp * 60;
   const disp   = Math.max(0, (tpMin - pdt) / tpMin);
   const perf   = vel / 100;
   const qual   = q / 100;
   const oee    = disp * perf * qual * 100;
-
   document.getElementById('oee-disp-big').textContent = (disp * 100).toFixed(1) + '%';
   document.getElementById('oee-perf-big').textContent = vel + '%';
   document.getElementById('oee-qual-big').textContent = q + '%';
   const rb = document.getElementById('oee-result-big');
   rb.textContent = oee.toFixed(1) + '%';
   rb.style.color = oee >= 85 ? '#1a7a5a' : oee >= 65 ? '#d4840a' : '#b83050';
-
   const grade = document.getElementById('oee-grade');
   grade.textContent = oee >= 85 ? '✓ WORLD CLASS' : oee >= 65 ? '⚡ BUONO' : '⚠ DA MIGLIORARE';
   grade.style.color = oee >= 85 ? '#1a7a5a' : oee >= 65 ? '#d4840a' : '#b83050';
-
   document.getElementById('oee-breakdown').innerHTML = `
     <div class="result-row"><span class="result-label">Tempo pianificato</span><span class="result-value">${tp}h = ${tpMin} min</span></div>
     <div class="result-row"><span class="result-label">Tempo operativo</span><span class="result-value">${(tpMin - pdt)} min</span></div>
@@ -3512,16 +3159,13 @@ function calcOEE() {
     <div class="result-row"><span class="result-label">Performance</span><span class="result-value ${perf>=0.95?'pos':perf>=0.8?'warn':'neg'}">${(perf*100).toFixed(1)}%</span></div>
     <div class="result-row"><span class="result-label">Qualità</span><span class="result-value ${qual>=0.99?'pos':qual>=0.95?'warn':'neg'}">${(qual*100).toFixed(1)}%</span></div>
     <div class="result-row"><span class="result-label"><strong>OEE</strong></span><span class="result-value feature ${oee>=85?'pos':oee>=65?'warn':'neg'}">${oee.toFixed(1)}%</span></div>`;
-
   drawOEEChart(disp*100, perf*100, qual*100, oee);
 }
-
 function drawOEEChart(disp, perf, qual, oee) {
   const c = document.getElementById('oee-canvas');
   if (!c) return;
   const ctx = c.getContext('2d'), W = c.width, H = c.height;
   ctx.clearRect(0, 0, W, H);
-
   // Waterfall bars
   const bars = [
     { label: 'Produttività\nIdeale', val: 100, base: 0, col: '#163058' },
@@ -3532,12 +3176,10 @@ function drawOEEChart(disp, perf, qual, oee) {
     { label: 'Perdite\nQualità', val: -(disp * perf / 100 - oee), base: oee, col: '#b86800' },
     { label: 'OEE\nAttuale', val: oee, base: 0, col: oee >= 85 ? '#1a7a5a' : oee >= 65 ? '#d4840a' : '#b83050' },
   ];
-
   const pad = { l: 10, r: 10, t: 20, b: 50 };
   const gW = W - pad.l - pad.r, gH = H - pad.t - pad.b;
   const bW = gW / bars.length - 4;
   const sy = v => pad.t + (1 - v / 100) * gH;
-
   // Grid
   ctx.strokeStyle = '#dde6f0'; ctx.lineWidth = 1;
   [0, 25, 50, 75, 100].forEach(v => {
@@ -3545,33 +3187,28 @@ function drawOEEChart(disp, perf, qual, oee) {
     ctx.fillStyle = '#a8bdd0'; ctx.font = '9px DM Mono'; ctx.textAlign = 'right';
     ctx.fillText(v + '%', pad.l + 22, sy(v) + 3);
   });
-
   bars.forEach((bar, i) => {
     const x = pad.l + 28 + i * (bW + 4);
     const top = Math.min(bar.val, 0) === 0 ? bar.base : bar.base;
     const h = Math.abs(bar.val) / 100 * gH;
     const y = bar.val >= 0 ? sy(bar.base + bar.val) : sy(bar.base);
-
     ctx.globalAlpha = bar.ghost ? 0.25 : 1;
     ctx.fillStyle = bar.col;
     ctx.beginPath();
     ctx.roundRect(x, y, bW, h, 3);
     ctx.fill();
     ctx.globalAlpha = 1;
-
     // Value label
     ctx.fillStyle = bar.ghost ? '#a8bdd0' : '#0a1628';
     ctx.font = 'bold 10px DM Sans';
     ctx.textAlign = 'center';
     const labelY = bar.val >= 0 ? sy(bar.base + bar.val) - 4 : sy(bar.base) - 4;
     ctx.fillText(Math.abs(bar.val).toFixed(1) + '%', x + bW / 2, labelY);
-
     // X label (multiline)
     ctx.fillStyle = '#6688aa'; ctx.font = '8.5px DM Sans';
     const lines = bar.label.split('\n');
     lines.forEach((ln, li) => ctx.fillText(ln, x + bW / 2, H - pad.b + 12 + li * 12));
   });
-
   // World class line
   ctx.strokeStyle = '#1a7a5a'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 3]);
   ctx.beginPath(); ctx.moveTo(pad.l + 28, sy(85)); ctx.lineTo(W - pad.r, sy(85)); ctx.stroke();
@@ -3579,7 +3216,6 @@ function drawOEEChart(disp, perf, qual, oee) {
   ctx.fillStyle = '#1a7a5a'; ctx.font = '9px DM Sans'; ctx.textAlign = 'right';
   ctx.fillText('World Class 85%', W - pad.r - 2, sy(85) - 4);
 }
-
 /* ═══════════════════════════════════
    LEAN — PRODUCTION FLOW
 ═══════════════════════════════════ */
@@ -3591,7 +3227,6 @@ const flowData = {
   continuo:   { title: 'Continuo o Teso', desc: 'Le fasi tecnologiche si evolvono senza interruzione di continuità. Nessun buffer di processo. Ideale Lean ma richiede bilanciamento perfetto.' },
   discontinuo:{ title: 'Discontinuo o Intermittente', desc: 'Il flusso subisce delle attese tra le fasi (buffer WIP). Comune nei terzisti tessili: ogni reparto lavora in batch e accoda.' },
 };
-
 function showFlow(type, btn) {
   document.querySelectorAll('#flow-btns button').forEach(b => { b.className = 'btn btn-outline'; });
   if (btn) btn.className = 'btn btn-navy';
@@ -3599,30 +3234,25 @@ function showFlow(type, btn) {
   document.getElementById('flow-desc').innerHTML = `<h4>${d.title}</h4><p>${d.desc}</p>`;
   drawFlowChart(type);
 }
-
 function drawFlowChart(type) {
   const c = document.getElementById('flow-canvas');
   if (!c) return;
   const ctx = c.getContext('2d'), W = c.width, H = c.height;
   ctx.clearRect(0, 0, W, H);
-
   const COL_MG = '#163058', COL_F = '#2a5490', COL_MF = '#1a7a5a', COL_BP = '#d4840a';
   const COL_TXT = '#ffffff';
-
   function circle(x, y, r, col, label, sub) {
     ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = COL_TXT; ctx.font = 'bold 10px DM Sans'; ctx.textAlign = 'center';
     ctx.fillText(label, x, y + 4);
     if (sub) { ctx.font = '8px DM Sans'; ctx.fillStyle = 'rgba(255,255,255,0.65)'; ctx.fillText(sub, x, y + 14); }
   }
-
   function triangle(x, y, size, col, label) {
     ctx.fillStyle = col;
     ctx.beginPath(); ctx.moveTo(x, y - size); ctx.lineTo(x + size, y + size * 0.6); ctx.lineTo(x - size, y + size * 0.6); ctx.closePath(); ctx.fill();
     ctx.fillStyle = COL_TXT; ctx.font = '9px DM Mono'; ctx.textAlign = 'center';
     ctx.fillText(label, x, y + 4);
   }
-
   function arrow(x1, y1, x2, y2) {
     const dx = x2 - x1, dy = y2 - y1, len = Math.sqrt(dx*dx+dy*dy);
     const ux = dx/len, uy = dy/len;
@@ -3631,9 +3261,7 @@ function drawFlowChart(type) {
     ctx.fillStyle = '#c8d8ec';
     ctx.beginPath(); ctx.moveTo(x2, y2); ctx.lineTo(x2 - ux*12 - uy*5, y2 - uy*12 + ux*5); ctx.lineTo(x2 - ux*12 + uy*5, y2 - uy*12 - ux*5); ctx.closePath(); ctx.fill();
   }
-
   ctx.fillStyle = '#f8fafc'; ctx.fillRect(0, 0, W, H);
-
   if (type === 'lineare') {
     const y = H / 2, nodes = [
       { x: 50, label: 'mg', col: COL_MG, tri: true },
@@ -3756,7 +3384,6 @@ function drawFlowChart(type) {
     ctx.fillText('⏸ Attesa tra fasi = WIP in coda', 40, H - 12);
   }
 }
-
 /* ═══════════════════════════════════
    LEAN — CODP / WORTMANN
 ═══════════════════════════════════ */
@@ -3768,7 +3395,6 @@ const codpData = {
   eto: { label: 'Engineer to Order', dlTime: 'Molto alto', scorte: 'Zero', rischio: 'Zero', flex: 'Massima', esempi: 'Alta moda su misura, tessuti tecnici con R&D dedicato.' },
 };
 let _currentCODP = 'mts';
-
 function setCODP(key, btn) {
   _currentCODP = key;
   document.querySelectorAll('#codp-btns button').forEach(b => b.className = 'btn btn-outline');
@@ -3783,31 +3409,25 @@ function setCODP(key, btn) {
     <div style="font-size:11.5px;color:var(--text-secondary);margin-top:8px;"><strong>Esempi tessile:</strong> ${d.esempi}</div>`;
   drawCODPChart(key);
 }
-
 function drawCODPChart(active) {
   const c = document.getElementById('codp-canvas');
   if (!c) return;
   const ctx = c.getContext('2d'), W = c.width, H = c.height;
   ctx.clearRect(0, 0, W, H);
-
   const stages = ['Progettazione', 'Approvv.', 'Fabbricazione', 'Assemblaggio', 'Spedizione'];
   const positions = { mts: 4, ato: 3, mto: 2, pto: 1, eto: 0 };
   const dotColors = { mts: '#1a7a5a', ato: '#2a5490', mto: '#d4840a', pto: '#b86800', eto: '#b83050' };
   const dotLabels = { mts: 'MTS', ato: 'ATO', mto: 'MTO', pto: 'PTO', eto: 'ETO' };
-
   const pad = { l: 70, r: 30, t: 30, b: 70 };
   const gW = W - pad.l - pad.r, gH = H - pad.t - pad.b;
-
   // PUSH area
   ctx.fillStyle = 'rgba(22,48,88,0.06)';
   ctx.fillRect(pad.l, pad.t, gW, gH);
   ctx.fillStyle = '#163058'; ctx.font = 'bold 11px DM Sans'; ctx.textAlign = 'left';
   ctx.globalAlpha = 0.4; ctx.fillText('Area PUSH', pad.l + 8, pad.t + 20); ctx.globalAlpha = 1;
-
   // Diagonal manufacturing lead time line
   ctx.strokeStyle = '#0a1628'; ctx.lineWidth = 2;
   ctx.beginPath(); ctx.moveTo(pad.l, pad.t + gH); ctx.lineTo(pad.l + gW, pad.t); ctx.stroke();
-
   // Stage labels on X axis
   const stageX = (i) => pad.l + (i / (stages.length - 1)) * gW;
   ctx.fillStyle = '#6688aa'; ctx.font = '10px DM Sans'; ctx.textAlign = 'center';
@@ -3816,12 +3436,10 @@ function drawCODPChart(active) {
     ctx.strokeStyle = '#e8f0f8'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(stageX(i), pad.t); ctx.lineTo(stageX(i), pad.t + gH); ctx.stroke();
   });
-
   // Y axis label
   ctx.save(); ctx.translate(16, pad.t + gH / 2); ctx.rotate(-Math.PI / 2);
   ctx.fillStyle = '#6688aa'; ctx.font = '10px DM Sans'; ctx.textAlign = 'center';
   ctx.fillText('Delivery Lead Time →', 0, 0); ctx.restore();
-
   // Horizontal dashed lines and dots for each CODP
   const allKeys = ['eto', 'pto', 'mto', 'ato', 'mts'];
   allKeys.forEach((k, rank) => {
@@ -3829,28 +3447,23 @@ function drawCODPChart(active) {
     const px = stageX(stageIdx);
     const py = pad.t + gH - (stageIdx / (stages.length - 1)) * gH;
     const rightY = pad.t + (1 - rank / (allKeys.length - 1)) * gH * 0.85;
-
     const isActive = k === active;
     ctx.strokeStyle = isActive ? dotColors[k] : '#c8d8ec';
     ctx.lineWidth = isActive ? 2 : 1;
     ctx.setLineDash(isActive ? [5, 3] : [3, 4]);
     ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(W - pad.r, rightY); ctx.stroke();
     ctx.setLineDash([]);
-
     ctx.fillStyle = isActive ? dotColors[k] : '#c8d8ec';
     ctx.beginPath(); ctx.arc(px, py, isActive ? 9 : 6, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = '#fff'; ctx.font = isActive ? 'bold 8px DM Mono' : '7px DM Mono'; ctx.textAlign = 'center';
     ctx.fillText(dotLabels[k], px, py + 3);
-
     ctx.fillStyle = isActive ? dotColors[k] : '#a8bdd0';
     ctx.font = isActive ? 'bold 11px DM Sans' : '10px DM Sans'; ctx.textAlign = 'left';
     ctx.fillText(dotLabels[k] + ' — ' + codpData[k].label, W - pad.r + 4, rightY + 4);
   });
-
   ctx.fillStyle = '#b83050'; ctx.font = '10px DM Sans'; ctx.textAlign = 'left';
   ctx.fillText('← Area PULL', pad.l + gW / 2, pad.t + gH - 10);
 }
-
 /* ═══════════════════════════════════
    LEAN — SMART FACTORY RADAR
 ═══════════════════════════════════ */
@@ -3865,17 +3478,14 @@ function calcSF() {
   ['sf-iot','sf-cloud','sf-ai','sf-robot','sf-dt'].forEach(id => {
     document.getElementById(id+'-v').textContent = document.getElementById(id).value;
   });
-
   const score = Math.round((vals.iot + vals.cloud + vals.ai + vals.robot + vals.dt) / 5 * 10);
   document.getElementById('sf-score-big').textContent = score;
-
   let level, col;
   if (score >= 80) { level = 'Smart Factory Avanzata'; col = '#1a7a5a'; }
   else if (score >= 60) { level = 'Smart Factory Integrata'; col = '#2a5490'; }
   else if (score >= 40) { level = 'Parzialmente Connessa'; col = '#d4840a'; }
   else if (score >= 20) { level = 'Digitalizzazione Base'; col = '#b86800'; }
   else { level = 'Fabbrica Tradizionale'; col = '#b83050'; }
-
   document.getElementById('sf-result').innerHTML = `
     <div class="result-row"><span class="result-label">Score Maturità</span><span class="result-value feature" style="color:${col}">${score}/100 · ${level}</span></div>
     <div class="result-row"><span class="result-label">IoT & Sensori</span><span class="result-value">${vals.iot}/10</span></div>
@@ -3884,16 +3494,13 @@ function calcSF() {
     <div class="result-row"><span class="result-label">Robotica Collaborativa</span><span class="result-value">${vals.robot}/10</span></div>
     <div class="result-row"><span class="result-label">Digital Twin</span><span class="result-value">${vals.dt}/10</span></div>
     <div style="margin-top:6px;font-size:11.5px;color:var(--text-muted);">Next step: ${vals.dt < 4 ? 'Avviare progetto Digital Twin' : vals.ai < 4 ? 'Investire in AI/ML per manutenzione predittiva' : 'Integrare i sistemi esistenti in piattaforma unificata'}</div>`;
-
   drawSFRadar(vals);
 }
-
 function drawSFRadar(vals) {
   const c = document.getElementById('sf-canvas');
   if (!c) return;
   const ctx = c.getContext('2d'), W = c.width, H = c.height;
   ctx.clearRect(0, 0, W, H);
-
   const cx = W / 2, cy = H / 2 + 10;
   const R = Math.min(W, H) / 2 - 40;
   const axes = [
@@ -3905,7 +3512,6 @@ function drawSFRadar(vals) {
   ];
   const N = axes.length;
   const angle = (i) => (i / N) * Math.PI * 2 - Math.PI / 2;
-
   // Concentric grid circles
   [2, 4, 6, 8, 10].forEach((v, gi) => {
     ctx.strokeStyle = gi === 4 ? '#c8d8ec' : '#e8f0f8';
@@ -3920,13 +3526,11 @@ function drawSFRadar(vals) {
     ctx.fillStyle = '#a8bdd0'; ctx.font = '8px DM Mono'; ctx.textAlign = 'center';
     ctx.fillText(v, cx + (v/10)*R*Math.cos(angle(0)) + 4, cy + (v/10)*R*Math.sin(angle(0)) - 3);
   });
-
   // Axis lines
   axes.forEach((ax, i) => {
     ctx.strokeStyle = '#dde6f0'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + R * Math.cos(angle(i)), cy + R * Math.sin(angle(i))); ctx.stroke();
   });
-
   // World class polygon (value=8.5)
   ctx.strokeStyle = 'rgba(26,122,74,0.3)'; ctx.lineWidth = 1.5; ctx.setLineDash([3,3]);
   ctx.beginPath();
@@ -3936,7 +3540,6 @@ function drawSFRadar(vals) {
     i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
   });
   ctx.closePath(); ctx.stroke(); ctx.setLineDash([]);
-
   // Actual values polygon
   ctx.fillStyle = 'rgba(22,48,88,0.18)';
   ctx.strokeStyle = '#163058'; ctx.lineWidth = 2;
@@ -3947,7 +3550,6 @@ function drawSFRadar(vals) {
     i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
   });
   ctx.closePath(); ctx.fill(); ctx.stroke();
-
   // Dots & labels
   axes.forEach((ax, i) => {
     const r = (vals[ax.key] / 10) * R;
@@ -3961,7 +3563,6 @@ function drawSFRadar(vals) {
     ctx.textAlign = Math.cos(angle(i)) > 0.1 ? 'left' : Math.cos(angle(i)) < -0.1 ? 'right' : 'center';
     ctx.fillText(ax.label, lx, ly + 3);
   });
-
   // World class legend
   ctx.strokeStyle = 'rgba(26,122,74,0.6)'; ctx.lineWidth = 1.5; ctx.setLineDash([3,3]);
   ctx.beginPath(); ctx.moveTo(cx - R + 5, cy + R + 22); ctx.lineTo(cx - R + 30, cy + R + 22); ctx.stroke();
@@ -3969,7 +3570,6 @@ function drawSFRadar(vals) {
   ctx.fillStyle = '#1a7a5a'; ctx.font = '9px DM Sans'; ctx.textAlign = 'left';
   ctx.fillText('World Class (8.5/10)', cx - R + 34, cy + R + 26);
 }
-
 /* ═══════════════════════════════════
    LEAN — 6 WASTES
 ═══════════════════════════════════ */
@@ -3980,16 +3580,13 @@ function calcWastes() {
   const slow   = +document.getElementById('w-slow').value   || 0.8;
   const scarti = +document.getElementById('w-scarti').value || 0.1;
   const rilaw  = +document.getElementById('w-rilaw').value  || 0.1;
-
   ['w-guasti','w-setup','w-micro','w-slow','w-scarti','w-rilaw'].forEach(id => {
     document.getElementById(id+'-v').textContent = document.getElementById(id).value + 'h';
   });
-
   const tp = 8;
   const totalWaste = guasti + setup + micro + slow + scarti + rilaw;
   const productive = Math.max(0, tp - totalWaste);
   const oee = (productive / tp * 100).toFixed(1);
-
   document.getElementById('wastes-result').innerHTML = `
     <div class="result-row"><span class="result-label">Ore produttive effettive</span><span class="result-value pos">${productive.toFixed(1)}h / ${tp}h</span></div>
     <div class="result-row"><span class="result-label">Totale ore perse</span><span class="result-value neg">${totalWaste.toFixed(1)}h</span></div>
@@ -4000,7 +3597,6 @@ function calcWastes() {
       Math.max(guasti,setup,micro,slow,scarti,rilaw) === guasti ? 'Guasti macchine' :
       Math.max(guasti,setup,micro,slow,scarti,rilaw) === micro ? 'Micro-fermate' : 'Scarti/Rilavorazioni'
     }</span></div>`;
-
   drawWastesChart([
     { label: 'Guasti', val: guasti, col: '#b83050' },
     { label: 'Setup', val: setup, col: '#b83050' },
@@ -4011,35 +3607,28 @@ function calcWastes() {
     { label: 'Produttivo', val: productive, col: '#163058' },
   ], tp);
 }
-
 function drawWastesChart(data, total) {
   const c = document.getElementById('wastes-canvas');
   if (!c) return;
   const ctx = c.getContext('2d'), W = c.width, H = c.height;
   ctx.clearRect(0, 0, W, H);
-
   const pad = { l: 110, r: 20, t: 16, b: 20 };
   const gW = W - pad.l - pad.r, gH = H - pad.t - pad.b;
   const bH = (gH / data.length) - 4;
-
   data.forEach((d, i) => {
     const y = pad.t + i * (bH + 4);
     const w = (d.val / total) * gW;
-
     ctx.fillStyle = d.col;
     ctx.globalAlpha = d.label === 'Produttivo' ? 1 : 0.75;
     ctx.beginPath(); ctx.roundRect(pad.l, y, Math.max(w, 2), bH, 3); ctx.fill();
     ctx.globalAlpha = 1;
-
     ctx.fillStyle = '#0a1628'; ctx.font = '11px DM Sans'; ctx.textAlign = 'right';
     ctx.fillText(d.label, pad.l - 6, y + bH / 2 + 4);
-
     ctx.fillStyle = w > 30 ? '#fff' : '#0a1628';
     ctx.font = 'bold 10px DM Mono'; ctx.textAlign = 'left';
     ctx.fillText((d.val / total * 100).toFixed(0) + '%', pad.l + Math.max(w, 2) + 4, y + bH / 2 + 4);
   });
 }
-
 // Boot
 App.init();
 </script>
