@@ -15,33 +15,33 @@
 ═══════════════════════════════════════════════ */
 :root {
   /* Palette — Navy + Cream + Amber */
-  --navy-950: #111111;
-  --navy-900: #1a1a1a;
-  --navy-800: #222222;
-  --navy-700: #2a2a2a;
-  --navy-600: #333333;
-  --navy-500: #3a3a3a;
-  --navy-400: #444444;
-  --navy-300: #666666;
-  --navy-200: #999999;
-  --navy-100: #bbbbbb;
-  --navy-50:  #e0e0e0;
-  --cream-100: #f5f5f5;
-  --cream-200: #e8e8e8;
-  --cream-300: #d8d0c0;
+  --navy-950: #0a1628;
+  --navy-900: #0f2040;
+  --navy-800: #163058;
+  --navy-700: #1e4070;
+  --navy-600: #2a5490;
+  --navy-500: #3a6898;
+  --navy-400: #4472b0;
+  --navy-300: #6688aa;
+  --navy-200: #8aa8d0;
+  --navy-100: #b8c8e0;
+  --navy-50:  #e0f0ff;
+  --cream-100: #f5f8ff;
+  --cream-200: #eaf4ff;
+  --cream-300: #ffcc66;
   --amber-600: #b86800;
   --amber-500: #e07000;
   --amber-400: #d06000;
-  --amber-200: #ddb080;
-  --amber-100: #e8d8b0;
-  --emerald: #5a7a4a;
-  --rose:    #aa3333;
+  --amber-200: #ffaa22;
+  --amber-100: #ffbb44;
+  --emerald: #2a5490;
+  --rose:    #ff7700;
   /* Surfaces */
   --bg:        var(--cream-100);
-  --surface:   #fafafa;
+  --surface:   #f8faff;
   --surface-2: var(--cream-200);
-  --border:    #cccccc;
-  --border-2:  #aaaaaa;
+  --border:    #a0c8f0;
+  --border-2:  #a8bdd0;
   /* Text */
   --text-primary:   var(--navy-900);
   --text-secondary: var(--navy-600);
@@ -62,10 +62,10 @@
   --r-lg: 16px;
   --r-xl: 24px;
   /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(26,26,26,0.08), 0 1px 2px rgba(26,26,26,0.05);
-  --shadow-md: 0 4px 12px rgba(26,26,26,0.10), 0 2px 4px rgba(26,26,26,0.06);
-  --shadow-lg: 0 12px 36px rgba(26,26,26,0.14), 0 4px 12px rgba(26,26,26,0.08);
-  --shadow-xl: 0 24px 64px rgba(26,26,26,0.18), 0 8px 24px rgba(26,26,26,0.10);
+  --shadow-sm: 0 1px 3px rgba(10,22,40,0.08), 0 1px 2px rgba(10,22,40,0.05);
+  --shadow-md: 0 4px 12px rgba(10,22,40,0.10), 0 2px 4px rgba(10,22,40,0.06);
+  --shadow-lg: 0 12px 36px rgba(10,22,40,0.14), 0 4px 12px rgba(10,22,40,0.08);
+  --shadow-xl: 0 24px 64px rgba(10,22,40,0.18), 0 8px 24px rgba(10,22,40,0.10);
 }
 /* ═══════════════════════════════════════════════
    RESET
@@ -102,8 +102,8 @@ a { text-decoration: none; color: inherit; }
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 60% 50% at 20% 50%, rgba(136,153,170,0.35) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 60% at 80% 20%, rgba(224,112,0,0.15) 0%, transparent 50%);
+    radial-gradient(ellipse 60% 50% at 20% 50%, rgba(100,140,180,0.35) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 80% 20%, rgba(255,140,0,0.15) 0%, transparent 50%);
   pointer-events: none;
 }
 /* Grid texture */
@@ -133,7 +133,7 @@ a { text-decoration: none; color: inherit; }
   font-family: var(--font-display);
   font-size: 26px;
   font-weight: 400;
-  color: #fafafa;
+  color: #f8faff;
   letter-spacing: 0.5px;
   margin-bottom: 64px;
   display: flex;
@@ -151,7 +151,7 @@ a { text-decoration: none; color: inherit; }
   font-size: 52px;
   font-weight: 300;
   line-height: 1.12;
-  color: #fafafa;
+  color: #f8faff;
   margin-bottom: 20px;
 }
 .auth-hero h1 em {
@@ -260,14 +260,14 @@ a { text-decoration: none; color: inherit; }
 }
 .form-input:focus {
   border-color: var(--navy-400);
-  box-shadow: 0 0 0 3px rgba(136,153,170,0.12);
+  box-shadow: 0 0 0 3px rgba(100,140,180,0.12);
   background: var(--surface);
 }
 .btn-primary {
   width: 100%;
   padding: 12px;
   background: var(--navy-800);
-  color: #fafafa;
+  color: #f8faff;
   border: none;
   border-radius: var(--r-sm);
   font-size: 14px;
@@ -393,7 +393,7 @@ a { text-decoration: none; color: inherit; }
   display: flex; align-items: center; justify-content: center;
   font-size: 13px;
   font-weight: 600;
-  color: #fafafa;
+  color: #f8faff;
   cursor: pointer;
   position: relative;
 }
@@ -569,7 +569,7 @@ input[type=range]::-webkit-slider-thumb {
   width: 16px; height: 16px;
   border-radius: 50%;
   background: var(--navy-700);
-  box-shadow: 0 1px 4px rgba(26,26,26,0.25);
+  box-shadow: 0 1px 4px rgba(10,22,40,0.25);
   cursor: pointer;
   transition: background 0.14s;
 }
@@ -607,7 +607,7 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--navy-600); }
 }
 .btn-navy {
   background: var(--navy-800);
-  color: #fafafa;
+  color: #f8faff;
 }
 .btn-navy:hover { background: var(--navy-700); box-shadow: var(--shadow-sm); }
 .btn-outline {
@@ -618,7 +618,7 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--navy-600); }
 .btn-outline:hover { background: var(--surface-2); border-color: var(--navy-300); }
 .btn-amber {
   background: var(--amber-500);
-  color: #fafafa;
+  color: #f8faff;
 }
 .btn-amber:hover { background: var(--amber-600); }
 .btn-sm { padding: 6px 12px; font-size: 12px; }
@@ -637,8 +637,8 @@ input[type=range]::-webkit-slider-thumb:hover { background: var(--navy-600); }
 }
 .badge-navy   { background: var(--navy-100);  color: var(--navy-800); }
 .badge-amber  { background: var(--amber-100); color: var(--amber-600); }
-.badge-green  { background: #c8d8b8; color: var(--emerald); }
-.badge-rose   { background: #ddb8b8; color: var(--rose); }
+.badge-green  { background: #b0d0f0; color: var(--emerald); }
+.badge-rose   { background: #ffcc88; color: var(--rose); }
 .badge-muted  { background: var(--surface-2); color: var(--text-muted); }
 /* ═══════════════════════════════════════════════
    TABLE
@@ -703,9 +703,9 @@ tbody tr:hover td { background: var(--surface-2); }
 .highlight p  { font-size: 12.5px; color: var(--text-secondary); }
 .highlight.amber { border-left-color: var(--amber-500); background: var(--amber-100); }
 .highlight.amber h4 { color: var(--amber-600); }
-.highlight.green { border-left-color: var(--emerald); background: #c8d8b8; }
+.highlight.green { border-left-color: var(--emerald); background: #b0d0f0; }
 .highlight.green h4 { color: var(--emerald); }
-.highlight.rose { border-left-color: var(--rose); background: #ddb8b8; }
+.highlight.rose { border-left-color: var(--rose); background: #ffcc88; }
 .highlight.rose h4 { color: var(--rose); }
 /* ═══════════════════════════════════════════════
    TABS (sub)
@@ -833,7 +833,7 @@ canvas { display: block; }
 }
 .toast {
   background: var(--navy-900);
-  color: #fafafa;
+  color: #f8faff;
   padding: 12px 18px;
   border-radius: var(--r-md);
   font-size: 13px;
@@ -1068,7 +1068,7 @@ canvas { display: block; }
         </div>
         <div class="auth-divider">or continue with</div>
         <button class="btn-ghost">
-          <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#cc4422" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#8899aa" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#ff8c00" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#6a8a5a" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.36-8.16 2.36-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#ff8c00" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#5a80c0" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#ff8c00" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#3a6898" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.36-8.16 2.36-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
           Google
         </button>
         <p class="auth-note">By signing in you agree to our Terms of Service</p>
@@ -1219,7 +1219,7 @@ canvas { display: block; }
         <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
           <div style="flex:1;min-width:200px;">
             <div class="view-kicker" style="color:var(--navy-300);">Architecture</div>
-            <div class="card-title" style="color:#fafafa;font-size:20px;">Built to scale into SaaS</div>
+            <div class="card-title" style="color:#f8faff;font-size:20px;">Built to scale into SaaS</div>
             <p style="color:var(--navy-200);font-size:13px;margin-top:4px;font-weight:300;">
               Module pattern · State store · API layer stub · Router · Multi-tenant ready · Feature flags per plan
             </p>
@@ -1659,7 +1659,7 @@ canvas { display: block; }
             <div class="card-title">Kraljic Matrix — 1983</div>
             <div class="matrix-2x2 mt-8" id="kq-matrix">
               <div class="mq-cell" onclick="selectKQ(this,'strat')" data-q="strat">
-                <div class="mq-label" style="background:#ddb8b8;color:var(--rose);">Strategici</div>
+                <div class="mq-label" style="background:#ffcc88;color:var(--rose);">Strategici</div>
                 <h5 style="color:var(--rose);">🔑 Strategici</h5>
                 <p>Alta importanza, mercato difficile. Partnership, single sourcing, co-design.</p>
               </div>
@@ -1669,7 +1669,7 @@ canvas { display: block; }
                 <p>Bassa importanza, mercato difficile. Scorte sicurezza, dual sourcing.</p>
               </div>
               <div class="mq-cell" onclick="selectKQ(this,'leva')" data-q="leva" style="border-top:1px solid var(--border);">
-                <div class="mq-label" style="background:#c8d8b8;color:var(--emerald);">Leva</div>
+                <div class="mq-label" style="background:#b0d0f0;color:var(--emerald);">Leva</div>
                 <h5 style="color:var(--emerald);">💪 Leva</h5>
                 <p>Alta importanza, mercato facile. Multiple sourcing, aste, pressione prezzi.</p>
               </div>
@@ -2124,18 +2124,18 @@ canvas { display: block; }
 <!-- ── LEAN & SMART FACTORY ── full-width outside app-content max-width ── -->
 <div id="view-lean" class="view" style="animation: viewIn 0.22s ease;">
   <!-- HERO BANNER -->
-  <div style="background:linear-gradient(135deg,#111111 0%,#222222 55%,#333333 100%);padding:36px 32px 28px;position:relative;overflow:hidden;">
-    <div style="position:absolute;right:-60px;top:-60px;width:300px;height:300px;border-radius:50%;background:rgba(224,112,0,0.08);pointer-events:none;"></div>
-    <div style="position:absolute;left:40%;bottom:-80px;width:200px;height:200px;border-radius:50%;background:rgba(136,153,170,0.15);pointer-events:none;"></div>
+  <div style="background:linear-gradient(135deg,#0a1628 0%,#163058 55%,#2a5490 100%);padding:36px 32px 28px;position:relative;overflow:hidden;">
+    <div style="position:absolute;right:-60px;top:-60px;width:300px;height:300px;border-radius:50%;background:rgba(255,140,0,0.08);pointer-events:none;"></div>
+    <div style="position:absolute;left:40%;bottom:-80px;width:200px;height:200px;border-radius:50%;background:rgba(100,140,180,0.15);pointer-events:none;"></div>
     <div style="max-width:1280px;margin:0 auto;">
-      <div style="font-size:10px;text-transform:uppercase;letter-spacing:3px;color:rgba(136,136,136,0.7);margin-bottom:8px;">De Carlo · GEFITES 2025</div>
-      <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:38px;font-weight:300;color:#fafafa;line-height:1.15;margin-bottom:10px;">Lean Manufacturing<br><em style="color:#d06000;">& Fabbrica Intelligente</em></h2>
-      <p style="font-size:14px;color:rgba(136,136,136,0.75);max-width:620px;font-weight:300;">Impianti industriali, classificazioni del flusso produttivo, OEE, Sei Grandi Sprechi e Smart Factory Industry 4.0 — tutto interattivo.</p>
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:3px;color:rgba(120,160,200,0.7);margin-bottom:8px;">De Carlo · GEFITES 2025</div>
+      <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:38px;font-weight:300;color:#f8faff;line-height:1.15;margin-bottom:10px;">Lean Manufacturing<br><em style="color:#d06000;">& Fabbrica Intelligente</em></h2>
+      <p style="font-size:14px;color:rgba(120,160,200,0.75);max-width:620px;font-weight:300;">Impianti industriali, classificazioni del flusso produttivo, OEE, Sei Grandi Sprechi e Smart Factory Industry 4.0 — tutto interattivo.</p>
       <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
-        <span style="background:rgba(255,255,255,0.08);color:rgba(170,170,170,0.85);padding:4px 14px;border-radius:20px;font-size:11px;border:1px solid rgba(255,255,255,0.1);">OEE Live</span>
-        <span style="background:rgba(255,255,255,0.08);color:rgba(170,170,170,0.85);padding:4px 14px;border-radius:20px;font-size:11px;border:1px solid rgba(255,255,255,0.1);">CODP Wortmann</span>
-        <span style="background:rgba(255,255,255,0.08);color:rgba(170,170,170,0.85);padding:4px 14px;border-radius:20px;font-size:11px;border:1px solid rgba(255,255,255,0.1);">6 Sprechi Nakajima</span>
-        <span style="background:rgba(224,112,0,0.25);color:#d06000;padding:4px 14px;border-radius:20px;font-size:11px;border:1px solid rgba(224,112,0,0.4);">Smart Factory Maturity</span>
+        <span style="background:rgba(255,255,255,0.08);color:rgba(150,180,210,0.85);padding:4px 14px;border-radius:20px;font-size:11px;border:1px solid rgba(255,255,255,0.1);">OEE Live</span>
+        <span style="background:rgba(255,255,255,0.08);color:rgba(150,180,210,0.85);padding:4px 14px;border-radius:20px;font-size:11px;border:1px solid rgba(255,255,255,0.1);">CODP Wortmann</span>
+        <span style="background:rgba(255,255,255,0.08);color:rgba(150,180,210,0.85);padding:4px 14px;border-radius:20px;font-size:11px;border:1px solid rgba(255,255,255,0.1);">6 Sprechi Nakajima</span>
+        <span style="background:rgba(255,140,0,0.25);color:#d06000;padding:4px 14px;border-radius:20px;font-size:11px;border:1px solid rgba(255,140,0,0.4);">Smart Factory Maturity</span>
       </div>
     </div>
   </div>
@@ -2157,19 +2157,19 @@ canvas { display: block; }
             <div style="background:var(--navy-900);border-radius:var(--r-md);padding:16px;margin:12px 0;">
               <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center;">
                 <div>
-                  <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(136,136,136,0.6);margin-bottom:4px;">Disponibilità</div>
-                  <div id="oee-disp-big" style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:#fafafa;">85%</div>
+                  <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(120,160,200,0.6);margin-bottom:4px;">Disponibilità</div>
+                  <div id="oee-disp-big" style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:#f8faff;">85%</div>
                 </div>
                 <div style="display:flex;align-items:center;justify-content:center;font-size:22px;color:rgba(255,255,255,0.3);">×</div>
                 <div>
-                  <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(136,136,136,0.6);margin-bottom:4px;">Performance</div>
-                  <div id="oee-perf-big" style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:#fafafa;">80%</div>
+                  <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(120,160,200,0.6);margin-bottom:4px;">Performance</div>
+                  <div id="oee-perf-big" style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:#f8faff;">80%</div>
                 </div>
               </div>
               <div style="text-align:center;margin-top:8px;display:flex;align-items:center;gap:12px;justify-content:center;">
                 <div>
-                  <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(136,136,136,0.6);margin-bottom:4px;">Qualità</div>
-                  <div id="oee-qual-big" style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:#fafafa;">97%</div>
+                  <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(120,160,200,0.6);margin-bottom:4px;">Qualità</div>
+                  <div id="oee-qual-big" style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:#f8faff;">97%</div>
                 </div>
                 <div style="font-size:22px;color:rgba(255,255,255,0.3);">=</div>
                 <div>
@@ -2310,14 +2310,14 @@ canvas { display: block; }
     <!-- ══ SMART FACTORY ══ -->
     <div id="lean-smart" class="sub-panel">
       <!-- Maturity banner -->
-      <div style="background:linear-gradient(135deg,#1a1a1a,#2a2a2a);border-radius:var(--r-lg);padding:24px 28px;margin-bottom:20px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;">
+      <div style="background:linear-gradient(135deg,#0f2040,#1e4070);border-radius:var(--r-lg);padding:24px 28px;margin-bottom:20px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;">
         <div style="flex:1;min-width:200px;">
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:rgba(136,136,136,0.6);margin-bottom:6px;">Smart Factory Assessment</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#fafafa;font-weight:300;">Quanto è <em style="color:#d06000;">intelligente</em> il tuo impianto?</div>
-          <p style="font-size:13px;color:rgba(136,136,136,0.7);margin-top:6px;">Valuta il livello di maturità digitale per ciascuna tecnologia Industry 4.0</p>
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:rgba(120,160,200,0.6);margin-bottom:6px;">Smart Factory Assessment</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#f8faff;font-weight:300;">Quanto è <em style="color:#d06000;">intelligente</em> il tuo impianto?</div>
+          <p style="font-size:13px;color:rgba(120,160,200,0.7);margin-top:6px;">Valuta il livello di maturità digitale per ciascuna tecnologia Industry 4.0</p>
         </div>
         <div style="text-align:center;">
-          <div style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:#fafafa;line-height:1;" id="sf-score-big">42</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:#f8faff;line-height:1;" id="sf-score-big">42</div>
           <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#d06000;">/100 · Parzialmente Connessa</div>
         </div>
       </div>
@@ -2362,7 +2362,7 @@ canvas { display: block; }
               <div style="color:var(--text-faint);">→</div>
               <div style="padding:6px 12px;background:var(--surface-2);border-radius:20px;font-size:11px;color:var(--amber-600);border:1px solid var(--amber-200);">🧠 Decisione AI</div>
               <div style="color:var(--text-faint);">→</div>
-              <div style="padding:6px 12px;background:var(--surface-2);border-radius:20px;font-size:11px;color:var(--emerald);border:1px solid #8aaa7a;">🤖 Azione</div>
+              <div style="padding:6px 12px;background:var(--surface-2);border-radius:20px;font-size:11px;color:var(--emerald);border:1px solid #5a80c0;">🤖 Azione</div>
             </div>
           </div>
         </div>
@@ -2660,13 +2660,13 @@ function calcTCE() {
   let reco, color, cls;
   if (tce <= 3.5) {
     reco = { title: '✅ Mercato Competitivo', desc: 'Bassa complessità di transazione. Multiple sourcing con fornitori in competizione. Nel distretto Prato: terzisti specializzati su lavorazioni standard.', badge: 'badge-green', label: 'BUY — Market' };
-    color = '#5a7a4a'; cls = 'green';
+    color = '#2a5490'; cls = 'green';
   } else if (tce <= 6.5) {
     reco = { title: '⚡ Mercato Collaborativo', desc: 'Costi di transazione sostenibili. Single/dual sourcing con investimenti relazionali. Co-sviluppo con terzisti, contratti quadro stagionali.', badge: 'badge-amber', label: 'BUY — Partnership' };
     color = '#b86800'; cls = 'amber';
   } else {
     reco = { title: '⚠️ Integrazione Verticale', desc: 'Alti costi di transazione. Valutare insourcing o creare il mercato (come P&G/3M). Il controllo diretto diventa necessario.', badge: 'badge-rose', label: 'MAKE' };
-    color = '#aa3333'; cls = 'rose';
+    color = '#ff7700'; cls = 'rose';
   }
   document.getElementById('tce-reco').innerHTML = `
     <div class="highlight ${cls}">
@@ -2693,9 +2693,9 @@ function drawTCECanvas(tce) {
   const W = c.width, H = c.height;
   ctx.clearRect(0, 0, W, H);
   const zones = [
-    { label: 'Competitivo', color: '#c8d8b8', stroke: '#5a7a4a', x: 0 },
-    { label: 'Collaborativo', color: '#e8d8b0', stroke: '#b86800', x: W/3 },
-    { label: 'Integrazione', color: '#ddb8b8', stroke: '#aa3333', x: W*2/3 },
+    { label: 'Competitivo', color: '#b0d0f0', stroke: '#2a5490', x: 0 },
+    { label: 'Collaborativo', color: '#ffbb44', stroke: '#b86800', x: W/3 },
+    { label: 'Integrazione', color: '#ffcc88', stroke: '#ff7700', x: W*2/3 },
   ];
   zones.forEach((z, i) => {
     const w = W / 3 - 2;
@@ -2712,11 +2712,11 @@ function drawTCECanvas(tce) {
   });
   // Indicator
   const x = 2 + (tce / 10) * (W - 8);
-  ctx.fillStyle = '#1a1a1a';
+  ctx.fillStyle = '#0f2040';
   ctx.beginPath();
   ctx.arc(x, H / 2 - 12, 10, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = '#fafafa';
+  ctx.fillStyle = '#f8faff';
   ctx.font = 'bold 10px DM Mono, monospace';
   ctx.textAlign = 'center';
   ctx.fillText(tce.toFixed(0), x, H / 2 - 8);
@@ -2797,29 +2797,29 @@ function drawBEPChart(p, cvu, cft, x, xp, mdcu) {
   const sx = v => pad.l + v / xMax * gW;
   const sy = v => pad.t + (1 - v / maxV) * gH;
   // Grid
-  ctx.strokeStyle = '#cccccc'; ctx.lineWidth = 1;
+  ctx.strokeStyle = '#a0c8f0'; ctx.lineWidth = 1;
   [0,.25,.5,.75,1].forEach(f => {
     ctx.beginPath(); ctx.moveTo(pad.l, pad.t + f*gH); ctx.lineTo(pad.l+gW, pad.t + f*gH); ctx.stroke();
-    ctx.fillStyle = '#888888'; ctx.font = '9px DM Mono';
+    ctx.fillStyle = '#7a98c0'; ctx.font = '9px DM Mono';
     ctx.textAlign = 'right';
     ctx.fillText((maxV*(1-f)/1000).toFixed(1)+'k', pad.l-4, pad.t + f*gH + 3);
   });
   // Axes
-  ctx.strokeStyle = '#aaaaaa'; ctx.lineWidth = 1.5;
+  ctx.strokeStyle = '#a8bdd0'; ctx.lineWidth = 1.5;
   ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,pad.t+gH); ctx.lineTo(pad.l+gW,pad.t+gH); ctx.stroke();
   // Profit/loss zones
   const yZ = sy(0);
-  ctx.fillStyle = 'rgba(90,122,74,0.05)'; ctx.fillRect(pad.l, pad.t, gW, yZ-pad.t);
-  ctx.fillStyle = 'rgba(204,68,34,0.05)'; ctx.fillRect(pad.l, yZ, gW, pad.t+gH-yZ);
+  ctx.fillStyle = 'rgba(42,84,144,0.05)'; ctx.fillRect(pad.l, pad.t, gW, yZ-pad.t);
+  ctx.fillStyle = 'rgba(255,120,0,0.05)'; ctx.fillRect(pad.l, yZ, gW, pad.t+gH-yZ);
   // CFT line
-  ctx.strokeStyle = '#aaaaaa'; ctx.setLineDash([4,3]); ctx.lineWidth=1;
+  ctx.strokeStyle = '#a8bdd0'; ctx.setLineDash([4,3]); ctx.lineWidth=1;
   ctx.beginPath(); ctx.moveTo(sx(0),sy(cft)); ctx.lineTo(sx(xMax),sy(cft)); ctx.stroke();
   ctx.setLineDash([]);
   // CT
-  ctx.strokeStyle = '#aa3333'; ctx.lineWidth=2;
+  ctx.strokeStyle = '#ff7700'; ctx.lineWidth=2;
   ctx.beginPath(); ctx.moveTo(sx(0),sy(cft)); ctx.lineTo(sx(xMax),sy(cft+cvu*xMax)); ctx.stroke();
   // RT
-  ctx.strokeStyle = '#2a2a2a'; ctx.lineWidth=2.5;
+  ctx.strokeStyle = '#1e4070'; ctx.lineWidth=2.5;
   ctx.beginPath(); ctx.moveTo(sx(0),sy(0)); ctx.lineTo(sx(xMax),sy(p*xMax)); ctx.stroke();
   // BEP line
   ctx.strokeStyle = '#b86800'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
@@ -2829,16 +2829,16 @@ function drawBEPChart(p, cvu, cft, x, xp, mdcu) {
   ctx.beginPath(); ctx.arc(sx(xp),sy(p*xp),5,0,Math.PI*2); ctx.fill();
   // X marker
   const prEff = mdcu*x - cft;
-  ctx.fillStyle = prEff>=0 ? '#5a7a4a' : '#aa3333';
+  ctx.fillStyle = prEff>=0 ? '#2a5490' : '#ff7700';
   ctx.beginPath(); ctx.arc(sx(x),sy(p*x),6,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle = '#fafafa'; ctx.font='bold 9px DM Mono'; ctx.textAlign='center';
+  ctx.fillStyle = '#f8faff'; ctx.font='bold 9px DM Mono'; ctx.textAlign='center';
   ctx.fillText('X', sx(x), sy(p*x)+3);
   // Labels
-  ctx.fillStyle = '#2a2a2a'; ctx.font='bold 10px DM Sans'; ctx.textAlign='left';
+  ctx.fillStyle = '#1e4070'; ctx.font='bold 10px DM Sans'; ctx.textAlign='left';
   ctx.fillText('RT', sx(xMax*.8), sy(p*xMax*.8)-5);
-  ctx.fillStyle = '#aa3333';
+  ctx.fillStyle = '#ff7700';
   ctx.fillText('CT', sx(xMax*.8), sy(cft+cvu*xMax*.8)+12);
-  ctx.fillStyle = '#888888'; ctx.font='9px DM Mono'; ctx.textAlign='center';
+  ctx.fillStyle = '#7a98c0'; ctx.font='9px DM Mono'; ctx.textAlign='center';
   [0, Math.round(xMax/4), Math.round(xMax/2), Math.round(xMax*3/4), Math.round(xMax)].forEach(v => {
     ctx.fillText(v, sx(v), pad.t+gH+14);
   });
@@ -2878,28 +2878,28 @@ function drawLOChart(p,cvu,cft,x,xp,L) {
   // Zero line
   ctx.strokeStyle='#b86800'; ctx.lineWidth=1.5;
   ctx.beginPath(); ctx.moveTo(pad.l,sy(0)); ctx.lineTo(pad.l+gW,sy(0)); ctx.stroke();
-  ctx.strokeStyle='#aaaaaa'; ctx.lineWidth=1.5;
+  ctx.strokeStyle='#a8bdd0'; ctx.lineWidth=1.5;
   ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,pad.t+gH); ctx.lineTo(pad.l+gW,pad.t+gH); ctx.stroke();
   const yZ=sy(0);
-  ctx.fillStyle='rgba(90,122,74,0.06)'; ctx.fillRect(pad.l,pad.t,gW,yZ-pad.t);
-  ctx.fillStyle='rgba(204,68,34,0.06)'; ctx.fillRect(pad.l,yZ,gW,pad.t+gH-yZ);
-  ctx.strokeStyle='#2a2a2a'; ctx.lineWidth=2.5;
+  ctx.fillStyle='rgba(42,84,144,0.06)'; ctx.fillRect(pad.l,pad.t,gW,yZ-pad.t);
+  ctx.fillStyle='rgba(255,120,0,0.06)'; ctx.fillRect(pad.l,yZ,gW,pad.t+gH-yZ);
+  ctx.strokeStyle='#1e4070'; ctx.lineWidth=2.5;
   ctx.beginPath(); ctx.moveTo(sx(0),sy(-cft)); ctx.lineTo(sx(xMax),sy(mdcu*xMax-cft)); ctx.stroke();
   ctx.strokeStyle='#b86800'; ctx.lineWidth=1; ctx.setLineDash([4,3]);
   ctx.beginPath(); ctx.moveTo(sx(xp),pad.t); ctx.lineTo(sx(xp),pad.t+gH); ctx.stroke();
   ctx.setLineDash([]);
   const pr=mdcu*x-cft;
-  ctx.fillStyle=pr>=0?'#5a7a4a':'#aa3333';
+  ctx.fillStyle=pr>=0?'#2a5490':'#ff7700';
   ctx.beginPath(); ctx.arc(sx(x),sy(pr),6,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#aa3333'; ctx.font='9px DM Mono'; ctx.textAlign='right';
+  ctx.fillStyle='#ff7700'; ctx.font='9px DM Mono'; ctx.textAlign='right';
   ctx.fillText('-CFT', pad.l-3, sy(-cft)+3);
   ctx.fillStyle='#b86800'; ctx.textAlign='center';
   ctx.fillText('Xp', sx(xp), pad.t+11);
-  ctx.fillStyle='#888888'; ctx.font='9px DM Mono'; ctx.textAlign='center';
+  ctx.fillStyle='#7a98c0'; ctx.font='9px DM Mono'; ctx.textAlign='center';
   [0,Math.round(xMax/4),Math.round(xMax/2),Math.round(xMax*3/4),Math.round(xMax)].forEach(v => {
     ctx.fillText(v, sx(v), pad.t+gH+14);
   });
-  ctx.fillStyle='#2a2a2a'; ctx.font='bold 11px DM Sans'; ctx.textAlign='left';
+  ctx.fillStyle='#1e4070'; ctx.font='bold 11px DM Sans'; ctx.textAlign='left';
   ctx.fillText('Profitto vs Volume', pad.l+4, pad.t+14);
 }
 /* ═══════════════════════════════════
@@ -2916,17 +2916,17 @@ function drawCT() {
   const maxV=(cft+cvu*xMax)*1.08;
   const sx=v=>pad.l+(v/xMax)*gW;
   const sy=v=>pad.t+(1-v/maxV)*gH;
-  ctx.strokeStyle='#cccccc'; ctx.lineWidth=1;
+  ctx.strokeStyle='#a0c8f0'; ctx.lineWidth=1;
   [0,.25,.5,.75,1].forEach(f => {
     ctx.beginPath(); ctx.moveTo(pad.l,pad.t+f*gH); ctx.lineTo(pad.l+gW,pad.t+f*gH); ctx.stroke();
-    ctx.fillStyle='#888888'; ctx.font='9px DM Mono'; ctx.textAlign='right';
+    ctx.fillStyle='#7a98c0'; ctx.font='9px DM Mono'; ctx.textAlign='right';
     ctx.fillText((maxV*(1-f)).toFixed(0), pad.l-4, pad.t+f*gH+3);
   });
-  ctx.strokeStyle='#aaaaaa'; ctx.lineWidth=1.5;
+  ctx.strokeStyle='#a8bdd0'; ctx.lineWidth=1.5;
   ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,pad.t+gH); ctx.lineTo(pad.l+gW,pad.t+gH); ctx.stroke();
   // Relevance range shading
   const rl=sx(50), rr=sx(200);
-  ctx.fillStyle='rgba(42,42,42,0.04)'; ctx.fillRect(rl,pad.t,rr-rl,gH);
+  ctx.fillStyle='rgba(22,48,88,0.04)'; ctx.fillRect(rl,pad.t,rr-rl,gH);
   ctx.strokeStyle='#b86800'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
   ctx.beginPath(); ctx.moveTo(rl,pad.t); ctx.lineTo(rl,pad.t+gH); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(rr,pad.t); ctx.lineTo(rr,pad.t+gH); ctx.stroke();
@@ -2936,18 +2936,18 @@ function drawCT() {
   ctx.strokeStyle='#b86800'; ctx.lineWidth=2; ctx.setLineDash([5,3]);
   ctx.beginPath(); ctx.moveTo(sx(0),sy(cft)); ctx.lineTo(sx(xMax),sy(cft)); ctx.stroke(); ctx.setLineDash([]);
   // Variable
-  ctx.strokeStyle='#667788'; ctx.lineWidth=2;
+  ctx.strokeStyle='#3a6898'; ctx.lineWidth=2;
   ctx.beginPath(); ctx.moveTo(sx(0),sy(0)); ctx.lineTo(sx(xMax),sy(cvu*xMax)); ctx.stroke();
   // Total
-  ctx.strokeStyle='#1a1a1a'; ctx.lineWidth=2.5;
+  ctx.strokeStyle='#0f2040'; ctx.lineWidth=2.5;
   ctx.beginPath(); ctx.moveTo(sx(0),sy(cft));
   for(let x=0;x<=xMax;x+=xMax/100) ctx.lineTo(sx(x),sy(cft+cvu*x));
   ctx.stroke();
   ctx.fillStyle='#b86800'; ctx.font='bold 9px DM Sans'; ctx.textAlign='left';
   ctx.fillText('CFT', sx(xMax*.7)+4, sy(cft)-4);
-  ctx.fillStyle='#667788'; ctx.fillText('CVT', sx(xMax*.7)+4, sy(cvu*xMax*.7)+12);
-  ctx.fillStyle='#1a1a1a'; ctx.fillText('CT', sx(xMax*.85)+4, sy(cft+cvu*xMax*.85)-4);
-  ctx.fillStyle='#888888'; ctx.font='9px DM Mono'; ctx.textAlign='center';
+  ctx.fillStyle='#3a6898'; ctx.fillText('CVT', sx(xMax*.7)+4, sy(cvu*xMax*.7)+12);
+  ctx.fillStyle='#0f2040'; ctx.fillText('CT', sx(xMax*.85)+4, sy(cft+cvu*xMax*.85)-4);
+  ctx.fillStyle='#7a98c0'; ctx.font='9px DM Mono'; ctx.textAlign='center';
   [0,50,100,150,200,250].forEach(v => ctx.fillText(v, sx(v), pad.t+gH+14));
 }
 /* ═══════════════════════════════════
@@ -3036,10 +3036,10 @@ function drawBW() {
   const ctx=c.getContext('2d'), W=c.width, H=c.height;
   ctx.clearRect(0,0,W,H);
   const stages=[
-    {label:'Clienti Finali', color:'#2a2a2a', ampF:1},
-    {label:'Dettagliante',   color:'#3a3a3a', ampF:amp},
+    {label:'Clienti Finali', color:'#1e4070', ampF:1},
+    {label:'Dettagliante',   color:'#3a6898', ampF:amp},
     {label:'Distributore',  color:'#b86800', ampF:amp*amp},
-    {label:'Produttore',    color:'#aa3333', ampF:amp*amp*amp},
+    {label:'Produttore',    color:'#ff7700', ampF:amp*amp*amp},
   ];
   const N=60, base=100;
   const pad={l:10,r:90,t:16,b:10};
@@ -3068,7 +3068,7 @@ function drawBW() {
     ctx.font='9px DM Mono';
     ctx.fillText('CV≈'+(cv*s.ampF*100).toFixed(0)+'%', pad.l+gW+6, ym+10);
   });
-  ctx.fillStyle='#aa3333'; ctx.font='bold 10px DM Sans'; ctx.textAlign='center';
+  ctx.fillStyle='#ff7700'; ctx.font='bold 10px DM Sans'; ctx.textAlign='center';
   ctx.fillText('↑ Amplificazione a monte', pad.l+gW/2, pad.t+8);
 }
 /* ═══════════════════════════════════
@@ -3083,18 +3083,18 @@ function drawPP() {
   ctx.clearRect(0,0,W,H);
   const y0=15, h=50;
   const pushW=(dp/100)*W;
-  ctx.fillStyle='rgba(42,42,42,0.1)'; ctx.fillRect(0,y0,pushW,h);
-  ctx.strokeStyle='#2a2a2a'; ctx.lineWidth=1.5; ctx.strokeRect(0,y0,pushW,h);
-  ctx.fillStyle='#2a2a2a'; ctx.font='bold 10.5px DM Sans'; ctx.textAlign='center';
+  ctx.fillStyle='rgba(22,48,88,0.1)'; ctx.fillRect(0,y0,pushW,h);
+  ctx.strokeStyle='#1e4070'; ctx.lineWidth=1.5; ctx.strokeRect(0,y0,pushW,h);
+  ctx.fillStyle='#1e4070'; ctx.font='bold 10.5px DM Sans'; ctx.textAlign='center';
   if(pushW>60) ctx.fillText('PUSH', pushW/2, y0+h/2+4);
   ctx.fillStyle='rgba(255,140,0,0.1)'; ctx.fillRect(pushW,y0,W-pushW,h);
   ctx.strokeStyle='#b86800'; ctx.lineWidth=1.5; ctx.strokeRect(pushW,y0,W-pushW,h);
   ctx.fillStyle='#b86800';
   if(W-pushW>60) ctx.fillText('PULL', pushW+(W-pushW)/2, y0+h/2+4);
-  ctx.fillStyle='#1a1a1a'; ctx.fillRect(pushW-2,y0-6,4,h+12);
-  ctx.font='9px DM Sans'; ctx.fillStyle='#1a1a1a'; ctx.textAlign='center';
+  ctx.fillStyle='#0f2040'; ctx.fillRect(pushW-2,y0-6,4,h+12);
+  ctx.font='9px DM Sans'; ctx.fillStyle='#0f2040'; ctx.textAlign='center';
   ctx.fillText('Decoupling point', pushW, y0-8);
-  ctx.fillStyle='#888888'; ctx.font='9px DM Sans';
+  ctx.fillStyle='#7a98c0'; ctx.font='9px DM Sans';
   ctx.textAlign='left'; ctx.fillText('Fornitori', 4, y0+h+14);
   ctx.textAlign='right'; ctx.fillText('Clienti', W-4, y0+h+14);
   let mode;
@@ -3148,10 +3148,10 @@ function calcOEE() {
   document.getElementById('oee-qual-big').textContent = q + '%';
   const rb = document.getElementById('oee-result-big');
   rb.textContent = oee.toFixed(1) + '%';
-  rb.style.color = oee >= 85 ? '#5a7a4a' : oee >= 65 ? '#e07000' : '#aa3333';
+  rb.style.color = oee >= 85 ? '#2a5490' : oee >= 65 ? '#e07000' : '#ff7700';
   const grade = document.getElementById('oee-grade');
   grade.textContent = oee >= 85 ? '✓ WORLD CLASS' : oee >= 65 ? '⚡ BUONO' : '⚠ DA MIGLIORARE';
-  grade.style.color = oee >= 85 ? '#5a7a4a' : oee >= 65 ? '#e07000' : '#aa3333';
+  grade.style.color = oee >= 85 ? '#2a5490' : oee >= 65 ? '#e07000' : '#ff7700';
   document.getElementById('oee-breakdown').innerHTML = `
     <div class="result-row"><span class="result-label">Tempo pianificato</span><span class="result-value">${tp}h = ${tpMin} min</span></div>
     <div class="result-row"><span class="result-label">Tempo operativo</span><span class="result-value">${(tpMin - pdt)} min</span></div>
@@ -3168,23 +3168,23 @@ function drawOEEChart(disp, perf, qual, oee) {
   ctx.clearRect(0, 0, W, H);
   // Waterfall bars
   const bars = [
-    { label: 'Produttività\nIdeale', val: 100, base: 0, col: '#2a2a2a' },
-    { label: 'Perdite\nTempo', val: -(100 - disp), base: disp, col: '#aa3333' },
-    { label: 'Disponibilità', val: disp, base: 0, col: '#3a3a3a', ghost: true },
+    { label: 'Produttività\nIdeale', val: 100, base: 0, col: '#1e4070' },
+    { label: 'Perdite\nTempo', val: -(100 - disp), base: disp, col: '#ff7700' },
+    { label: 'Disponibilità', val: disp, base: 0, col: '#3a6898', ghost: true },
     { label: 'Perdite\nVelocità', val: -(disp - disp * perf / 100), base: disp * perf / 100, col: '#e07000' },
-    { label: 'Performance', val: disp * perf / 100, base: 0, col: '#667788', ghost: true },
+    { label: 'Performance', val: disp * perf / 100, base: 0, col: '#3a6898', ghost: true },
     { label: 'Perdite\nQualità', val: -(disp * perf / 100 - oee), base: oee, col: '#b86800' },
-    { label: 'OEE\nAttuale', val: oee, base: 0, col: oee >= 85 ? '#5a7a4a' : oee >= 65 ? '#e07000' : '#aa3333' },
+    { label: 'OEE\nAttuale', val: oee, base: 0, col: oee >= 85 ? '#2a5490' : oee >= 65 ? '#e07000' : '#ff7700' },
   ];
   const pad = { l: 10, r: 10, t: 20, b: 50 };
   const gW = W - pad.l - pad.r, gH = H - pad.t - pad.b;
   const bW = gW / bars.length - 4;
   const sy = v => pad.t + (1 - v / 100) * gH;
   // Grid
-  ctx.strokeStyle = '#cccccc'; ctx.lineWidth = 1;
+  ctx.strokeStyle = '#a0c8f0'; ctx.lineWidth = 1;
   [0, 25, 50, 75, 100].forEach(v => {
     ctx.beginPath(); ctx.moveTo(pad.l, sy(v)); ctx.lineTo(W - pad.r, sy(v)); ctx.stroke();
-    ctx.fillStyle = '#888888'; ctx.font = '9px DM Mono'; ctx.textAlign = 'right';
+    ctx.fillStyle = '#7a98c0'; ctx.font = '9px DM Mono'; ctx.textAlign = 'right';
     ctx.fillText(v + '%', pad.l + 22, sy(v) + 3);
   });
   bars.forEach((bar, i) => {
@@ -3199,21 +3199,21 @@ function drawOEEChart(disp, perf, qual, oee) {
     ctx.fill();
     ctx.globalAlpha = 1;
     // Value label
-    ctx.fillStyle = bar.ghost ? '#888888' : '#1a1a1a';
+    ctx.fillStyle = bar.ghost ? '#7a98c0' : '#0f2040';
     ctx.font = 'bold 10px DM Sans';
     ctx.textAlign = 'center';
     const labelY = bar.val >= 0 ? sy(bar.base + bar.val) - 4 : sy(bar.base) - 4;
     ctx.fillText(Math.abs(bar.val).toFixed(1) + '%', x + bW / 2, labelY);
     // X label (multiline)
-    ctx.fillStyle = '#555555'; ctx.font = '8.5px DM Sans';
+    ctx.fillStyle = '#5a80c0'; ctx.font = '8.5px DM Sans';
     const lines = bar.label.split('\n');
     lines.forEach((ln, li) => ctx.fillText(ln, x + bW / 2, H - pad.b + 12 + li * 12));
   });
   // World class line
-  ctx.strokeStyle = '#5a7a4a'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 3]);
+  ctx.strokeStyle = '#2a5490'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 3]);
   ctx.beginPath(); ctx.moveTo(pad.l + 28, sy(85)); ctx.lineTo(W - pad.r, sy(85)); ctx.stroke();
   ctx.setLineDash([]);
-  ctx.fillStyle = '#5a7a4a'; ctx.font = '9px DM Sans'; ctx.textAlign = 'right';
+  ctx.fillStyle = '#2a5490'; ctx.font = '9px DM Sans'; ctx.textAlign = 'right';
   ctx.fillText('World Class 85%', W - pad.r - 2, sy(85) - 4);
 }
 /* ═══════════════════════════════════
@@ -3239,8 +3239,8 @@ function drawFlowChart(type) {
   if (!c) return;
   const ctx = c.getContext('2d'), W = c.width, H = c.height;
   ctx.clearRect(0, 0, W, H);
-  const COL_MG = '#2a2a2a', COL_F = '#3a3a3a', COL_MF = '#5a7a4a', COL_BP = '#e07000';
-  const COL_TXT = '#fafafa';
+  const COL_MG = '#1e4070', COL_F = '#3a6898', COL_MF = '#2a5490', COL_BP = '#e07000';
+  const COL_TXT = '#f8faff';
   function circle(x, y, r, col, label, sub) {
     ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = COL_TXT; ctx.font = 'bold 10px DM Sans'; ctx.textAlign = 'center';
@@ -3256,12 +3256,12 @@ function drawFlowChart(type) {
   function arrow(x1, y1, x2, y2) {
     const dx = x2 - x1, dy = y2 - y1, len = Math.sqrt(dx*dx+dy*dy);
     const ux = dx/len, uy = dy/len;
-    ctx.strokeStyle = '#aaaaaa'; ctx.lineWidth = 1.5;
+    ctx.strokeStyle = '#a8bdd0'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2 - ux*8, y2 - uy*8); ctx.stroke();
-    ctx.fillStyle = '#aaaaaa';
+    ctx.fillStyle = '#a8bdd0';
     ctx.beginPath(); ctx.moveTo(x2, y2); ctx.lineTo(x2 - ux*12 - uy*5, y2 - uy*12 + ux*5); ctx.lineTo(x2 - ux*12 + uy*5, y2 - uy*12 - ux*5); ctx.closePath(); ctx.fill();
   }
-  ctx.fillStyle = '#f0f0f0'; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = '#f0f0ff'; ctx.fillRect(0, 0, W, H);
   if (type === 'lineare') {
     const y = H / 2, nodes = [
       { x: 50, label: 'mg', col: COL_MG, tri: true },
@@ -3290,11 +3290,11 @@ function drawFlowChart(type) {
     arrow(307, 80, 340, 90);
     arrow(307, 185, 340, 175);
     arrow(307, 195, 340, 210);
-    triangle(360, 55, 12, '#5a7a4a', 'a1');
-    triangle(360, 95, 12, '#667788', 'a2');
+    triangle(360, 55, 12, '#2a5490', 'a1');
+    triangle(360, 95, 12, '#3a6898', 'a2');
     triangle(360, 170, 12, COL_MF, 'b1');
     triangle(360, 215, 12, COL_MG, 'b2');
-    ctx.fillStyle = '#555555'; ctx.font = '10px DM Sans'; ctx.textAlign = 'left';
+    ctx.fillStyle = '#5a80c0'; ctx.font = '10px DM Sans'; ctx.textAlign = 'left';
     ctx.fillText('↑ Output multipli da 1 input', 380, 80);
   } else if (type === 'sintetico') {
     const inputs = [{ y: 70, lbl: 'mga' }, { y: 155, lbl: 'mgb' }, { y: 240, lbl: 'mgc' }];
@@ -3314,7 +3314,7 @@ function drawFlowChart(type) {
     arrow(205, 70, 225, 140);
     arrow(205, 155, 216, 155);
     arrow(205, 240, 225, 170);
-    ctx.fillStyle = '#555555'; ctx.font = '10px DM Sans'; ctx.textAlign = 'right';
+    ctx.fillStyle = '#5a80c0'; ctx.font = '10px DM Sans'; ctx.textAlign = 'right';
     ctx.fillText('n input → 1 output', W - 10, 20);
   } else if (type === 'misto') {
     triangle(40, 80, 12, COL_MG, 'mga');
@@ -3335,7 +3335,7 @@ function drawFlowChart(type) {
     circle(260, 200, 20, COL_F, 'f4b');
     arrow(280, 200, 310, 200);
     triangle(330, 200, 12, COL_MF, 'y');
-    ctx.fillStyle = '#555555'; ctx.font = '10px DM Sans'; ctx.textAlign = 'left';
+    ctx.fillStyle = '#5a80c0'; ctx.font = '10px DM Sans'; ctx.textAlign = 'left';
     ctx.fillText('Ricombinazione su richiesta cliente', 40, 270);
   } else if (type === 'continuo') {
     const y = H / 2 - 20;
@@ -3344,7 +3344,7 @@ function drawFlowChart(type) {
       { x: 280, lbl: 'f3' }, { x: 360, lbl: 'f4.1' }, { x: 440, lbl: 'a1', tri: true },
     ];
     // Highlight: green flow = no buffer
-    ctx.strokeStyle = '#5a7a4a'; ctx.lineWidth = 3;
+    ctx.strokeStyle = '#2a5490'; ctx.lineWidth = 3;
     ctx.beginPath(); ctx.moveTo(64, y); ctx.lineTo(430, y); ctx.stroke();
     nodes.forEach((n, i) => {
       if (n.tri) triangle(n.x, y, 14, n.lbl === 'mg' ? COL_MG : COL_MF, n.lbl);
@@ -3352,10 +3352,10 @@ function drawFlowChart(type) {
     });
     // Second branch
     arrow(360, H/2, 400, H/2 + 60);
-    circle(420, H/2 + 70, 20, '#667788', 'f4.2');
+    circle(420, H/2 + 70, 20, '#3a6898', 'f4.2');
     arrow(440, H/2 + 70, 455, H/2 + 70);
     triangle(460, H/2 + 70, 12, COL_MF, 'a2');
-    ctx.fillStyle = '#5a7a4a'; ctx.font = '10px DM Sans'; ctx.textAlign = 'left';
+    ctx.fillStyle = '#2a5490'; ctx.font = '10px DM Sans'; ctx.textAlign = 'left';
     ctx.fillText('∞ Flusso continuo — zero attese', 40, H - 12);
   } else if (type === 'discontinuo') {
     const y = H / 2 - 10;
@@ -3369,10 +3369,10 @@ function drawFlowChart(type) {
     ctx.fillStyle = COL_BP;
     ctx.beginPath(); // D shape for delay
     ctx.roundRect(242, y - 18, 36, 36, [0, 10, 10, 0]); ctx.fill();
-    ctx.fillStyle = '#fafafa'; ctx.font = '9px DM Sans'; ctx.textAlign = 'center';
+    ctx.fillStyle = '#f8faff'; ctx.font = '9px DM Sans'; ctx.textAlign = 'center';
     ctx.fillText('bp', 260, y + 4);
     // Wavy waiting line
-    ctx.strokeStyle = '#aa3333'; ctx.lineWidth = 2; ctx.setLineDash([3, 3]);
+    ctx.strokeStyle = '#ff7700'; ctx.lineWidth = 2; ctx.setLineDash([3, 3]);
     ctx.beginPath();
     for (let i = 0; i < 8; i++) ctx.lineTo(242 + i * 5, y - 28 + (i % 2 === 0 ? -4 : 4));
     ctx.stroke(); ctx.setLineDash([]);
@@ -3380,7 +3380,7 @@ function drawFlowChart(type) {
     circle(330, y, 22, COL_F, 'f3');
     arrow(352, y, 385, y);
     triangle(405, y, 14, COL_MF, 'mf');
-    ctx.fillStyle = '#aa3333'; ctx.font = '10px DM Sans'; ctx.textAlign = 'left';
+    ctx.fillStyle = '#ff7700'; ctx.font = '10px DM Sans'; ctx.textAlign = 'left';
     ctx.fillText('⏸ Attesa tra fasi = WIP in coda', 40, H - 12);
   }
 }
@@ -3416,29 +3416,29 @@ function drawCODPChart(active) {
   ctx.clearRect(0, 0, W, H);
   const stages = ['Progettazione', 'Approvv.', 'Fabbricazione', 'Assemblaggio', 'Spedizione'];
   const positions = { mts: 4, ato: 3, mto: 2, pto: 1, eto: 0 };
-  const dotColors = { mts: '#5a7a4a', ato: '#3a3a3a', mto: '#e07000', pto: '#b86800', eto: '#aa3333' };
+  const dotColors = { mts: '#2a5490', ato: '#3a6898', mto: '#e07000', pto: '#b86800', eto: '#ff7700' };
   const dotLabels = { mts: 'MTS', ato: 'ATO', mto: 'MTO', pto: 'PTO', eto: 'ETO' };
   const pad = { l: 70, r: 30, t: 30, b: 70 };
   const gW = W - pad.l - pad.r, gH = H - pad.t - pad.b;
   // PUSH area
-  ctx.fillStyle = 'rgba(42,42,42,0.06)';
+  ctx.fillStyle = 'rgba(22,48,88,0.06)';
   ctx.fillRect(pad.l, pad.t, gW, gH);
-  ctx.fillStyle = '#2a2a2a'; ctx.font = 'bold 11px DM Sans'; ctx.textAlign = 'left';
+  ctx.fillStyle = '#1e4070'; ctx.font = 'bold 11px DM Sans'; ctx.textAlign = 'left';
   ctx.globalAlpha = 0.4; ctx.fillText('Area PUSH', pad.l + 8, pad.t + 20); ctx.globalAlpha = 1;
   // Diagonal manufacturing lead time line
-  ctx.strokeStyle = '#1a1a1a'; ctx.lineWidth = 2;
+  ctx.strokeStyle = '#0f2040'; ctx.lineWidth = 2;
   ctx.beginPath(); ctx.moveTo(pad.l, pad.t + gH); ctx.lineTo(pad.l + gW, pad.t); ctx.stroke();
   // Stage labels on X axis
   const stageX = (i) => pad.l + (i / (stages.length - 1)) * gW;
-  ctx.fillStyle = '#555555'; ctx.font = '10px DM Sans'; ctx.textAlign = 'center';
+  ctx.fillStyle = '#5a80c0'; ctx.font = '10px DM Sans'; ctx.textAlign = 'center';
   stages.forEach((s, i) => {
     ctx.fillText(s, stageX(i), H - 10);
-    ctx.strokeStyle = '#dddddd'; ctx.lineWidth = 1;
+    ctx.strokeStyle = '#c0e0ff'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(stageX(i), pad.t); ctx.lineTo(stageX(i), pad.t + gH); ctx.stroke();
   });
   // Y axis label
   ctx.save(); ctx.translate(16, pad.t + gH / 2); ctx.rotate(-Math.PI / 2);
-  ctx.fillStyle = '#555555'; ctx.font = '10px DM Sans'; ctx.textAlign = 'center';
+  ctx.fillStyle = '#5a80c0'; ctx.font = '10px DM Sans'; ctx.textAlign = 'center';
   ctx.fillText('Delivery Lead Time →', 0, 0); ctx.restore();
   // Horizontal dashed lines and dots for each CODP
   const allKeys = ['eto', 'pto', 'mto', 'ato', 'mts'];
@@ -3448,20 +3448,20 @@ function drawCODPChart(active) {
     const py = pad.t + gH - (stageIdx / (stages.length - 1)) * gH;
     const rightY = pad.t + (1 - rank / (allKeys.length - 1)) * gH * 0.85;
     const isActive = k === active;
-    ctx.strokeStyle = isActive ? dotColors[k] : '#aaaaaa';
+    ctx.strokeStyle = isActive ? dotColors[k] : '#a8bdd0';
     ctx.lineWidth = isActive ? 2 : 1;
     ctx.setLineDash(isActive ? [5, 3] : [3, 4]);
     ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(W - pad.r, rightY); ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = isActive ? dotColors[k] : '#aaaaaa';
+    ctx.fillStyle = isActive ? dotColors[k] : '#a8bdd0';
     ctx.beginPath(); ctx.arc(px, py, isActive ? 9 : 6, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#fafafa'; ctx.font = isActive ? 'bold 8px DM Mono' : '7px DM Mono'; ctx.textAlign = 'center';
+    ctx.fillStyle = '#f8faff'; ctx.font = isActive ? 'bold 8px DM Mono' : '7px DM Mono'; ctx.textAlign = 'center';
     ctx.fillText(dotLabels[k], px, py + 3);
-    ctx.fillStyle = isActive ? dotColors[k] : '#888888';
+    ctx.fillStyle = isActive ? dotColors[k] : '#7a98c0';
     ctx.font = isActive ? 'bold 11px DM Sans' : '10px DM Sans'; ctx.textAlign = 'left';
     ctx.fillText(dotLabels[k] + ' — ' + codpData[k].label, W - pad.r + 4, rightY + 4);
   });
-  ctx.fillStyle = '#aa3333'; ctx.font = '10px DM Sans'; ctx.textAlign = 'left';
+  ctx.fillStyle = '#ff7700'; ctx.font = '10px DM Sans'; ctx.textAlign = 'left';
   ctx.fillText('← Area PULL', pad.l + gW / 2, pad.t + gH - 10);
 }
 /* ═══════════════════════════════════
@@ -3481,11 +3481,11 @@ function calcSF() {
   const score = Math.round((vals.iot + vals.cloud + vals.ai + vals.robot + vals.dt) / 5 * 10);
   document.getElementById('sf-score-big').textContent = score;
   let level, col;
-  if (score >= 80) { level = 'Smart Factory Avanzata'; col = '#5a7a4a'; }
-  else if (score >= 60) { level = 'Smart Factory Integrata'; col = '#3a3a3a'; }
+  if (score >= 80) { level = 'Smart Factory Avanzata'; col = '#2a5490'; }
+  else if (score >= 60) { level = 'Smart Factory Integrata'; col = '#3a6898'; }
   else if (score >= 40) { level = 'Parzialmente Connessa'; col = '#e07000'; }
   else if (score >= 20) { level = 'Digitalizzazione Base'; col = '#b86800'; }
-  else { level = 'Fabbrica Tradizionale'; col = '#aa3333'; }
+  else { level = 'Fabbrica Tradizionale'; col = '#ff7700'; }
   document.getElementById('sf-result').innerHTML = `
     <div class="result-row"><span class="result-label">Score Maturità</span><span class="result-value feature" style="color:${col}">${score}/100 · ${level}</span></div>
     <div class="result-row"><span class="result-label">IoT & Sensori</span><span class="result-value">${vals.iot}/10</span></div>
@@ -3504,17 +3504,17 @@ function drawSFRadar(vals) {
   const cx = W / 2, cy = H / 2 + 10;
   const R = Math.min(W, H) / 2 - 40;
   const axes = [
-    { key: 'iot', label: 'IoT & Sensori', col: '#3a3a3a' },
-    { key: 'cloud', label: 'Cloud & Big Data', col: '#2a2a2a' },
-    { key: 'ai', label: 'AI & ML', col: '#aa3333' },
+    { key: 'iot', label: 'IoT & Sensori', col: '#3a6898' },
+    { key: 'cloud', label: 'Cloud & Big Data', col: '#1e4070' },
+    { key: 'ai', label: 'AI & ML', col: '#ff7700' },
     { key: 'robot', label: 'Robotica', col: '#e07000' },
-    { key: 'dt', label: 'Digital Twin', col: '#5a7a4a' },
+    { key: 'dt', label: 'Digital Twin', col: '#2a5490' },
   ];
   const N = axes.length;
   const angle = (i) => (i / N) * Math.PI * 2 - Math.PI / 2;
   // Concentric grid circles
   [2, 4, 6, 8, 10].forEach((v, gi) => {
-    ctx.strokeStyle = gi === 4 ? '#aaaaaa' : '#dddddd';
+    ctx.strokeStyle = gi === 4 ? '#a8bdd0' : '#c0e0ff';
     ctx.lineWidth = gi === 4 ? 1.5 : 1;
     ctx.beginPath();
     axes.forEach((_, i) => {
@@ -3523,16 +3523,16 @@ function drawSFRadar(vals) {
       i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
     });
     ctx.closePath(); ctx.stroke();
-    ctx.fillStyle = '#888888'; ctx.font = '8px DM Mono'; ctx.textAlign = 'center';
+    ctx.fillStyle = '#7a98c0'; ctx.font = '8px DM Mono'; ctx.textAlign = 'center';
     ctx.fillText(v, cx + (v/10)*R*Math.cos(angle(0)) + 4, cy + (v/10)*R*Math.sin(angle(0)) - 3);
   });
   // Axis lines
   axes.forEach((ax, i) => {
-    ctx.strokeStyle = '#cccccc'; ctx.lineWidth = 1;
+    ctx.strokeStyle = '#a0c8f0'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + R * Math.cos(angle(i)), cy + R * Math.sin(angle(i))); ctx.stroke();
   });
   // World class polygon (value=8.5)
-  ctx.strokeStyle = 'rgba(90,122,74,0.3)'; ctx.lineWidth = 1.5; ctx.setLineDash([3,3]);
+  ctx.strokeStyle = 'rgba(42,84,144,0.3)'; ctx.lineWidth = 1.5; ctx.setLineDash([3,3]);
   ctx.beginPath();
   axes.forEach((_, i) => {
     const r = 0.85 * R;
@@ -3541,8 +3541,8 @@ function drawSFRadar(vals) {
   });
   ctx.closePath(); ctx.stroke(); ctx.setLineDash([]);
   // Actual values polygon
-  ctx.fillStyle = 'rgba(42,42,42,0.18)';
-  ctx.strokeStyle = '#2a2a2a'; ctx.lineWidth = 2;
+  ctx.fillStyle = 'rgba(22,48,88,0.18)';
+  ctx.strokeStyle = '#1e4070'; ctx.lineWidth = 2;
   ctx.beginPath();
   axes.forEach((ax, i) => {
     const r = (vals[ax.key] / 10) * R;
@@ -3555,7 +3555,7 @@ function drawSFRadar(vals) {
     const r = (vals[ax.key] / 10) * R;
     const x = cx + r * Math.cos(angle(i)), y = cy + r * Math.sin(angle(i));
     ctx.fillStyle = ax.col; ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#fafafa'; ctx.font = 'bold 8px DM Mono'; ctx.textAlign = 'center';
+    ctx.fillStyle = '#f8faff'; ctx.font = 'bold 8px DM Mono'; ctx.textAlign = 'center';
     ctx.fillText(vals[ax.key], x, y + 3);
     // Axis label
     const lx = cx + (R + 24) * Math.cos(angle(i)), ly = cy + (R + 24) * Math.sin(angle(i));
@@ -3564,10 +3564,10 @@ function drawSFRadar(vals) {
     ctx.fillText(ax.label, lx, ly + 3);
   });
   // World class legend
-  ctx.strokeStyle = 'rgba(90,122,74,0.6)'; ctx.lineWidth = 1.5; ctx.setLineDash([3,3]);
+  ctx.strokeStyle = 'rgba(42,84,144,0.6)'; ctx.lineWidth = 1.5; ctx.setLineDash([3,3]);
   ctx.beginPath(); ctx.moveTo(cx - R + 5, cy + R + 22); ctx.lineTo(cx - R + 30, cy + R + 22); ctx.stroke();
   ctx.setLineDash([]);
-  ctx.fillStyle = '#5a7a4a'; ctx.font = '9px DM Sans'; ctx.textAlign = 'left';
+  ctx.fillStyle = '#2a5490'; ctx.font = '9px DM Sans'; ctx.textAlign = 'left';
   ctx.fillText('World Class (8.5/10)', cx - R + 34, cy + R + 26);
 }
 /* ═══════════════════════════════════
@@ -3598,13 +3598,13 @@ function calcWastes() {
       Math.max(guasti,setup,micro,slow,scarti,rilaw) === micro ? 'Micro-fermate' : 'Scarti/Rilavorazioni'
     }</span></div>`;
   drawWastesChart([
-    { label: 'Guasti', val: guasti, col: '#aa3333' },
-    { label: 'Setup', val: setup, col: '#aa3333' },
+    { label: 'Guasti', val: guasti, col: '#ff7700' },
+    { label: 'Setup', val: setup, col: '#ff7700' },
     { label: 'Micro-fermate', val: micro, col: '#e07000' },
     { label: 'Riduz. Velocità', val: slow, col: '#e07000' },
-    { label: 'Scarti', val: scarti, col: '#5a7a4a' },
-    { label: 'Rilavorazioni', val: rilaw, col: '#5a7a4a' },
-    { label: 'Produttivo', val: productive, col: '#2a2a2a' },
+    { label: 'Scarti', val: scarti, col: '#2a5490' },
+    { label: 'Rilavorazioni', val: rilaw, col: '#2a5490' },
+    { label: 'Produttivo', val: productive, col: '#1e4070' },
   ], tp);
 }
 function drawWastesChart(data, total) {
@@ -3622,9 +3622,9 @@ function drawWastesChart(data, total) {
     ctx.globalAlpha = d.label === 'Produttivo' ? 1 : 0.75;
     ctx.beginPath(); ctx.roundRect(pad.l, y, Math.max(w, 2), bH, 3); ctx.fill();
     ctx.globalAlpha = 1;
-    ctx.fillStyle = '#1a1a1a'; ctx.font = '11px DM Sans'; ctx.textAlign = 'right';
+    ctx.fillStyle = '#0f2040'; ctx.font = '11px DM Sans'; ctx.textAlign = 'right';
     ctx.fillText(d.label, pad.l - 6, y + bH / 2 + 4);
-    ctx.fillStyle = w > 30 ? '#fafafa' : '#1a1a1a';
+    ctx.fillStyle = w > 30 ? '#f8faff' : '#0f2040';
     ctx.font = 'bold 10px DM Mono'; ctx.textAlign = 'left';
     ctx.fillText((d.val / total * 100).toFixed(0) + '%', pad.l + Math.max(w, 2) + 4, y + bH / 2 + 4);
   });
