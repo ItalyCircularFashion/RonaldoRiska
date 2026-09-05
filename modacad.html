@@ -6,612 +6,342 @@
 <title>ModaCAD Studio — Modellistica Digitale</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* ═══════════════════════════════════════════════
-     DESIGN TOKENS — Punto 5: Magic numbers → costanti
-  ═══════════════════════════════════════════════ */
-  :root {
-    /* Colors */
-    --bg: #0a1628;
-    --surface: #0f2040;
-    --surface-2: #163058;
-    --surface-3: #1e4070;
-    --border: #ff8c00;
-    --border-2: #ffaa00;
-    --border-3: #2a5490;
-    --text: #ffffff;
-    --text-2: #e0e0e0;
-    --text-muted: #8899aa;
-    --accent: #ff8c00;
-    --accent-2: #ffaa00;
-    --accent-3: #cc7700;
-    --danger: #ff4d4d;
-    --success: #00ff9d;
-    --info: #00f6ff;
-    --grid: rgba(255,255,255,0.04);
-    --shadow: 0 4px 24px rgba(0,0,0,0.4);
+:root {
+  --bg: #0a1628;
+  --surface: #0f2040;
+  --surface-2: #163058;
+  --surface-3: #1e4070;
+  --border: #ff8c00;
+  --border-2: #ffaa00;
+  --border-3: #2a5490;
+  --text: #ffffff;
+  --text-2: #e0e0e0;
+  --text-muted: #8899aa;
+  --accent: #ff8c00;
+  --accent-2: #ffaa00;
+  --danger: #ff4d4d;
+  --grid: rgba(255,255,255,0.04);
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+::-webkit-scrollbar { width:4px; height:4px; }
+::-webkit-scrollbar-track { background:var(--surface); }
+::-webkit-scrollbar-thumb { background:var(--border-3); border-radius:2px; }
 
-    /* Layout */
-    --header-height: 48px;
-    --sidebar-width: 220px;
-    --right-panel-width: 240px;
+/* HEADER */
+.app-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 20px; height:48px;
+  background:var(--surface); border-bottom:2px solid var(--border);
+  flex-shrink:0; z-index:100;
+}
+.app-logo { font-family:'Plus Jakarta Sans',sans-serif; font-size:20px; font-weight:700; letter-spacing:0.04em; }
+.app-logo span { color:var(--accent); font-style:italic; }
+.header-tabs { display:flex; gap:2px; }
+.header-tab {
+  padding:6px 16px; font-size:10px; letter-spacing:0.12em; text-transform:uppercase;
+  cursor:pointer; border:none; background:transparent; color:var(--text-muted);
+  border-bottom:2px solid transparent; transition:all 0.2s;
+}
+.header-tab.active { color:var(--text); border-bottom-color:var(--accent); }
+.header-actions { display:flex; gap:8px; align-items:center; }
+.btn {
+  padding:6px 14px; font-size:10px; letter-spacing:0.1em; text-transform:uppercase;
+  border:1px solid var(--border-3); background:var(--surface-2); color:var(--text);
+  cursor:pointer; border-radius:4px; transition:all 0.2s;
+}
+.btn:hover { border-color:var(--accent); background:var(--surface-3); }
+.btn-primary { background:var(--accent); border-color:var(--accent); color:var(--bg); font-weight:600; }
+.btn-primary:hover { background:var(--accent-2); }
 
-    /* Canvas */
-    --canvas-width: 900;
-    --canvas-height: 650;
-    --grid-size-default: 20;
-    --zoom-default: 100;
-    --stroke-default: 2;
-    --seam-allowance: 8;
+/* MAIN */
+.app-body { display:flex; flex:1; overflow:hidden; }
 
-    /* Grading */
-    --base-size: 40;
-    --size-step: 0.5;
+/* SIDEBAR */
+.sidebar {
+  width:220px; background:var(--surface); border-right:1px solid var(--border-3);
+  display:flex; flex-direction:column; flex-shrink:0; overflow-y:auto;
+}
+.sidebar-section { padding:12px 14px; border-bottom:1px solid var(--border-3); }
+.sidebar-title { font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; font-weight:600; }
+.tool-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:4px; }
+.tool-btn {
+  aspect-ratio:1; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; gap:2px; background:var(--surface-2); border:1px solid var(--border-3);
+  cursor:pointer; font-size:8px; letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--text-muted); border-radius:4px; padding:4px;
+}
+.tool-btn:hover { border-color:var(--accent); color:var(--accent); }
+.tool-btn.active { background:var(--accent); color:var(--bg); border-color:var(--accent); font-weight:600; }
+.tool-icon { font-size:14px; }
 
-    /* Spacing */
-    --space-xs: 4px;
-    --space-sm: 8px;
-    --space-md: 12px;
-    --space-lg: 16px;
-    --space-xl: 20px;
+.pattern-list { display:flex; flex-direction:column; gap:4px; }
+.pattern-item {
+  display:flex; align-items:center; gap:8px; padding:8px 10px;
+  background:var(--surface-2); border:1px solid var(--border-3); cursor:pointer;
+  font-size:10px; color:var(--text-2); border-radius:4px;
+}
+.pattern-item:hover { border-color:var(--accent); background:var(--surface-3); }
+.pattern-item.active { border-color:var(--accent); background:var(--accent); color:var(--bg); font-weight:600; }
+.pattern-icon { font-size:16px; }
 
-    /* Border radius */
-    --radius-sm: 2px;
-    --radius-md: 4px;
-    --radius-lg: 8px;
-  }
+.size-list { display:flex; flex-wrap:wrap; gap:4px; }
+.size-chip {
+  padding:4px 10px; font-size:10px; border:1px solid var(--border-3);
+  cursor:pointer; background:var(--surface-2); color:var(--text-2); border-radius:2px;
+}
+.size-chip:hover { border-color:var(--accent); }
+.size-chip.active { background:var(--accent); color:var(--bg); border-color:var(--accent); font-weight:600; }
 
-  /* ═══════════════════════════════════════════════
-     RESET
-  ═══════════════════════════════════════════════ */
-  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family:'Inter',system-ui,sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    height:100vh;
-    overflow:hidden;
-    display:flex;
-    flex-direction:column;
-  }
-  button { font-family:inherit; cursor:pointer; border:none; background:transparent; color:inherit; }
-  input, select { font-family:inherit; }
-  a { text-decoration:none; color:inherit; }
+/* CANVAS AREA */
+.canvas-area { flex:1; display:flex; flex-direction:column; overflow:hidden; position:relative; }
+.canvas-toolbar {
+  display:flex; align-items:center; gap:8px; padding:8px 16px;
+  background:var(--surface); border-bottom:1px solid var(--border-3); flex-shrink:0;
+}
+.canvas-toolbar select, .canvas-toolbar input[type=range] {
+  font-size:10px; padding:4px 8px;
+  border:1px solid var(--border-3); background:var(--surface-2); color:var(--text); border-radius:2px;
+}
+.canvas-toolbar label { font-size:9px; color:var(--text-muted); }
+.toolbar-sep { width:1px; height:20px; background:var(--border-3); margin:0 4px; }
+.color-swatches { display:flex; gap:4px; }
+.color-swatch {
+  width:22px; height:22px; border-radius:50%; border:2px solid var(--border-3); cursor:pointer;
+}
+.color-swatch:hover { border-color:var(--accent); transform:scale(1.1); }
+.color-swatch.active { border-color:var(--accent); box-shadow:0 0 0 2px rgba(255,140,0,0.3); }
 
-  /* ═══════════════════════════════════════════════
-     SCROLLBAR
-  ═══════════════════════════════════════════════ */
-  ::-webkit-scrollbar { width:4px; height:4px; }
-  ::-webkit-scrollbar-track { background:var(--surface); }
-  ::-webkit-scrollbar-thumb { background:var(--border-3); border-radius:2px; }
+.view-tabs { display:flex; }
+.view-tab {
+  padding:4px 14px; font-size:9px; letter-spacing:0.12em; text-transform:uppercase;
+  cursor:pointer; border:none; background:transparent; color:var(--text-muted);
+  border-bottom:2px solid transparent;
+}
+.view-tab.active { color:var(--text); border-bottom-color:var(--accent); }
 
-  /* ═══════════════════════════════════════════════
-     ANIMATIONS
-  ═══════════════════════════════════════════════ */
-  @keyframes fadeUp { from { opacity:0; transform:translateY(12px);} to { opacity:1; transform:none;} }
-  @keyframes slideIn { from { opacity:0; transform:translateX(12px);} to { opacity:1; transform:none;} }
+.canvas-wrapper {
+  flex:1; overflow:auto; position:relative;
+  background:linear-gradient(var(--grid) 1px, transparent 1px),
+             linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+             var(--surface-2);
+  background-size:20px 20px;
+}
+.canvas-wrapper canvas { display:block; cursor:crosshair; margin:20px auto; border:1px solid var(--border-3); }
+.canvas-info {
+  position:absolute; bottom:12px; left:50%; transform:translateX(-50%);
+  font-size:9px; color:var(--text-muted); letter-spacing:0.1em;
+  background:rgba(15,32,64,0.9); padding:4px 12px; border:1px solid var(--border-3); border-radius:4px;
+}
 
-  /* ═══════════════════════════════════════════════
-     HEADER
-  ═══════════════════════════════════════════════ */
-  .app-header {
-    display:flex; align-items:center; justify-content:space-between;
-    padding:0 var(--space-lg);
-    height:var(--header-height);
-    background:var(--surface);
-    border-bottom:2px solid var(--border);
-    flex-shrink:0;
-    position:relative;
-    z-index:100;
-  }
-  .app-logo {
-    font-family:'Plus Jakarta Sans',sans-serif;
-    font-size:20px; font-weight:700; letter-spacing:0.04em;
-  }
-  .app-logo span { color:var(--accent); font-style:italic; }
-  .header-tabs { display:flex; gap:2px; }
-  .header-tab {
-    padding:6px 16px; font-size:10px; letter-spacing:0.12em; text-transform:uppercase;
-    cursor:pointer; border:none; background:transparent; color:var(--text-muted);
-    border-bottom:2px solid transparent; transition:all 0.2s;
-  }
-  .header-tab.active { color:var(--text); border-bottom-color:var(--accent); }
-  .header-tab:hover { color:var(--text); }
-  .header-actions { display:flex; gap:var(--space-sm); align-items:center; }
+/* 3D Preview */
+.view-3d { display:none; flex:1; align-items:center; justify-content:center; flex-direction:column; gap:16px; background:var(--surface-2); }
+.view-3d.active { display:flex; }
+.view-3d canvas { border:1px solid var(--border-3); border-radius:4px; }
 
-  /* ═══════════════════════════════════════════════
-     BUTTONS
-  ═══════════════════════════════════════════════ */
-  .btn {
-    padding:5px 12px; font-size:10px; letter-spacing:0.1em; text-transform:uppercase;
-    border:1px solid var(--border-3); background:transparent; color:var(--text);
-    cursor:pointer; transition:all 0.2s; border-radius:var(--radius-md);
-    display:inline-flex; align-items:center; gap:var(--space-xs);
-  }
-  .btn:hover { background:var(--surface-2); border-color:var(--border); }
-  .btn-primary { background:var(--accent); border-color:var(--accent); color:var(--bg); font-weight:600; }
-  .btn-primary:hover { background:var(--accent-2); }
-  .btn-icon { padding:var(--space-xs); width:28px; height:28px; justify-content:center; }
+/* RIGHT PANEL */
+.right-panel {
+  width:240px; background:var(--surface); border-left:1px solid var(--border-3);
+  display:flex; flex-direction:column; flex-shrink:0; overflow-y:auto;
+}
+.rp-section { padding:12px 14px; border-bottom:1px solid var(--border-3); }
+.rp-title { font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent); margin-bottom:10px; font-weight:600; }
+.prop-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; font-size:10px; }
+.prop-label { color:var(--text-muted); }
+.prop-input { font-size:10px; padding:3px 8px; border:1px solid var(--border-3); background:var(--surface-2); color:var(--text); width:90px; font-family:'JetBrains Mono',monospace; border-radius:2px; }
 
-  /* ═══════════════════════════════════════════════
-     MAIN LAYOUT
-  ═══════════════════════════════════════════════ */
-  .app-body { display:flex; flex:1; overflow:hidden; }
+.grading-table { width:100%; border-collapse:collapse; font-size:10px; }
+.grading-table th { background:var(--surface-2); color:var(--text-muted); padding:5px 8px; text-align:left; font-weight:500; letter-spacing:0.08em; font-size:9px; border-bottom:1px solid var(--border-3); }
+.grading-table td { padding:5px 8px; border-bottom:1px solid var(--border-3); color:var(--text-2); }
+.grading-table input { width:50px; padding:2px 4px; border:1px solid var(--border-3); font-family:'JetBrains Mono',monospace; font-size:10px; background:transparent; color:var(--text); }
+.grading-table input:focus { border-color:var(--accent); outline:none; }
 
-  /* ═══════════════════════════════════════════════
-     LEFT SIDEBAR
-  ═══════════════════════════════════════════════ */
-  .sidebar {
-    width:var(--sidebar-width); background:var(--surface); border-right:1px solid var(--border-3);
-    display:flex; flex-direction:column; flex-shrink:0; overflow:hidden;
-  }
-  .sidebar-section { padding:var(--space-md); border-bottom:1px solid var(--border-3); animation:fadeUp 0.4s ease both; }
-  .sidebar-title {
-    font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent);
-    margin-bottom:var(--space-sm); font-weight:600;
-  }
+.efficiency-bar-outer { height:8px; background:var(--surface-2); border-radius:4px; overflow:hidden; margin:6px 0; }
+.efficiency-bar-inner { height:100%; background:var(--accent); border-radius:4px; transition:width 0.6s ease; }
+.eff-number { font-size:22px; font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; color:var(--accent); }
 
-  /* Tool Grid */
-  .tool-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:var(--space-xs); }
-  .tool-btn {
-    aspect-ratio:1; display:flex; flex-direction:column; align-items:center;
-    justify-content:center; gap:2px; background:var(--surface-2); border:1px solid var(--border-3);
-    cursor:pointer; font-size:8px; letter-spacing:0.08em; text-transform:uppercase;
-    color:var(--text-muted); transition:all 0.15s; border-radius:var(--radius-md);
-    padding:var(--space-xs);
-  }
-  .tool-btn:hover { border-color:var(--accent); color:var(--accent); background:var(--surface-3); }
-  .tool-btn.active { background:var(--accent); color:var(--bg); border-color:var(--accent); font-weight:600; }
-  .tool-btn .tool-icon { font-size:14px; }
+/* LAYERS */
+.layers-list { display:flex; flex-direction:column; gap:4px; }
+.layer-item { display:flex; align-items:center; gap:8px; padding:6px 10px; background:var(--surface-2); border:1px solid var(--border-3); cursor:pointer; font-size:10px; color:var(--text-2); border-radius:4px; }
+.layer-item:hover { border-color:var(--accent); }
+.layer-item.active { border-color:var(--accent); background:var(--surface-3); }
+.layer-visibility { margin-left:auto; cursor:pointer; opacity:0.6; }
 
-  /* Pattern Library */
-  .pattern-list { display:flex; flex-direction:column; gap:var(--space-xs); }
-  .pattern-item {
-    display:flex; align-items:center; gap:var(--space-sm); padding:var(--space-sm) var(--space-md);
-    background:var(--surface-2); border:1px solid var(--border-3); cursor:pointer;
-    font-size:10px; color:var(--text-2); transition:all 0.15s; border-radius:var(--radius-md);
-  }
-  .pattern-item:hover { border-color:var(--accent); background:var(--surface-3); }
-  .pattern-item.active { border-color:var(--accent); background:var(--accent); color:var(--bg); font-weight:600; }
-  .pattern-icon { font-size:16px; }
+/* NESTING */
+.nesting-overlay { display:none; position:absolute; inset:0; background:var(--surface-2); z-index:50; flex-direction:column; }
+.nesting-overlay.active { display:flex; }
+.nesting-header { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; background:var(--surface); border-bottom:1px solid var(--border-3); }
+.nesting-title { font-family:'Plus Jakarta Sans',sans-serif; font-size:18px; font-weight:600; }
+.nesting-body { flex:1; overflow:auto; padding:20px; display:flex; justify-content:center; }
 
-  /* Size Chips */
-  .size-list { display:flex; flex-wrap:wrap; gap:var(--space-xs); }
-  .size-chip {
-    padding:var(--space-xs) var(--space-sm); font-size:10px; border:1px solid var(--border-3);
-    cursor:pointer; background:var(--surface-2); color:var(--text-2);
-    transition:all 0.15s; border-radius:var(--radius-sm);
-  }
-  .size-chip:hover { border-color:var(--accent); }
-  .size-chip.active { background:var(--accent); color:var(--bg); border-color:var(--accent); font-weight:600; }
+/* MODAL */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:200; align-items:center; justify-content:center; }
+.modal-overlay.active { display:flex; }
+.modal { background:var(--surface); border:1px solid var(--border-3); width:460px; box-shadow:var(--shadow); border-radius:8px; }
+.modal-header { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; border-bottom:1px solid var(--border-3); }
+.modal-title { font-family:'Plus Jakarta Sans',sans-serif; font-size:16px; font-weight:600; }
+.modal-body { padding:18px; }
+.modal-row { display:flex; gap:12px; margin-bottom:12px; }
+.modal-field { flex:1; }
+.modal-field label { display:block; font-size:9px; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:4px; }
+.modal-field input, .modal-field select { width:100%; padding:8px 10px; border:1px solid var(--border-3); background:var(--surface-2); font-family:'Inter',sans-serif; font-size:11px; color:var(--text); border-radius:4px; }
+.modal-footer { display:flex; gap:8px; justify-content:flex-end; padding:14px 18px; border-top:1px solid var(--border-3); }
 
-  /* Layers */
-  .layers-list { display:flex; flex-direction:column; gap:var(--space-xs); }
-  .layer-item {
-    display:flex; align-items:center; gap:var(--space-sm); padding:var(--space-xs) var(--space-md);
-    background:var(--surface-2); border:1px solid var(--border-3); cursor:pointer;
-    font-size:10px; color:var(--text-2); border-radius:var(--radius-md);
-  }
-  .layer-item:hover { border-color:var(--accent); }
-  .layer-item.active { border-color:var(--accent); background:var(--surface-3); }
-  .layer-visibility { margin-left:auto; cursor:pointer; opacity:0.6; font-size:12px; }
-  .layer-visibility:hover { opacity:1; }
-  .layer-visibility.hidden { opacity:0.3; text-decoration:line-through; }
-
-  /* ═══════════════════════════════════════════════
-     CANVAS AREA
-  ═══════════════════════════════════════════════ */
-  .canvas-area {
-    flex:1; display:flex; flex-direction:column; overflow:hidden; position:relative;
-  }
-  .canvas-toolbar {
-    display:flex; align-items:center; gap:var(--space-sm); padding:var(--space-sm) var(--space-lg);
-    background:var(--surface); border-bottom:1px solid var(--border-3); flex-shrink:0;
-  }
-  .canvas-toolbar select, .canvas-toolbar input[type=range] {
-    font-family:'Inter',sans-serif; font-size:10px; padding:var(--space-xs) var(--space-sm);
-    border:1px solid var(--border-3); background:var(--surface-2); color:var(--text);
-    border-radius:var(--radius-sm);
-  }
-  .canvas-toolbar label { font-size:9px; color:var(--text-muted); letter-spacing:0.08em; }
-  .toolbar-sep { width:1px; height:20px; background:var(--border-3); margin:0 var(--space-xs); }
-
-  /* Color Swatches */
-  .color-swatches { display:flex; gap:var(--space-xs); }
-  .color-swatch {
-    width:22px; height:22px; border-radius:50%; border:2px solid var(--border-3);
-    cursor:pointer; transition:all 0.15s;
-  }
-  .color-swatch:hover { border-color:var(--accent); transform:scale(1.1); }
-  .color-swatch.active { border-color:var(--accent); box-shadow:0 0 0 2px rgba(255,140,0,0.3); }
-
-  /* View Tabs */
-  .view-tabs { display:flex; }
-  .view-tab {
-    padding:var(--space-xs) 14px; font-size:9px; letter-spacing:0.12em; text-transform:uppercase;
-    cursor:pointer; border:none; background:transparent; color:var(--text-muted);
-    border-bottom:2px solid transparent; transition:all 0.2s;
-  }
-  .view-tab.active { color:var(--text); border-bottom-color:var(--accent); }
-
-  .canvas-wrapper {
-    flex:1; overflow:auto; position:relative;
-    background:
-      linear-gradient(var(--grid) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid) 1px, transparent 1px),
-      var(--surface-2);
-    background-size:20px 20px;
-  }
-  .canvas-wrapper canvas { display:block; cursor:crosshair; margin:var(--space-xl) auto; border:1px solid var(--border-3); }
-  .canvas-info {
-    position:absolute; bottom:var(--space-md); left:50%; transform:translateX(-50%);
-    font-size:9px; color:var(--text-muted); letter-spacing:0.1em;
-    background:rgba(15,32,64,0.9); padding:var(--space-xs) var(--space-md); border:1px solid var(--border-3);
-    pointer-events:none; border-radius:var(--radius-md);
-  }
-
-  /* 3D Preview */
-  .view-3d {
-    display:none; flex:1; align-items:center; justify-content:center; flex-direction:column; gap:var(--space-lg);
-    background:var(--surface-2);
-  }
-  .view-3d.active { display:flex; }
-  .view-3d canvas { border:1px solid var(--border-3); border-radius:var(--radius-md); }
-  .view-3d-placeholder {
-    font-family:'Plus Jakarta Sans',sans-serif; font-size:24px; color:var(--text-muted);
-    text-align:center;
-  }
-  .view-3d-hint { font-size:10px; color:var(--text-muted); }
-
-  /* ═══════════════════════════════════════════════
-     RIGHT PANEL
-  ═══════════════════════════════════════════════ */
-  .right-panel {
-    width:var(--right-panel-width); background:var(--surface); border-left:1px solid var(--border-3);
-    display:flex; flex-direction:column; flex-shrink:0; overflow-y:auto;
-  }
-  .rp-section { padding:var(--space-md); border-bottom:1px solid var(--border-3); animation:slideIn 0.4s ease both; }
-  .rp-title {
-    font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent);
-    margin-bottom:var(--space-md); font-weight:600;
-  }
-
-  /* Properties */
-  .prop-row {
-    display:flex; align-items:center; justify-content:space-between;
-    margin-bottom:var(--space-sm); font-size:10px;
-  }
-  .prop-label { color:var(--text-muted); }
-  .prop-input {
-    font-size:10px; padding:3px var(--space-sm); border:1px solid var(--border-3);
-    background:var(--surface-2); color:var(--text); width:90px;
-    font-family:'JetBrains Mono',monospace; border-radius:var(--radius-sm);
-  }
-  .prop-input:focus { border-color:var(--accent); outline:none; }
-  .prop-input.invalid { border-color:var(--danger); }
-
-  /* Grading Table */
-  .grading-table { width:100%; border-collapse:collapse; font-size:10px; }
-  .grading-table th {
-    background:var(--surface-2); color:var(--text-muted); padding:var(--space-xs) var(--space-sm);
-    text-align:left; font-weight:500; letter-spacing:0.08em; font-size:9px;
-    border-bottom:1px solid var(--border-3);
-  }
-  .grading-table td {
-    padding:var(--space-xs) var(--space-sm); border-bottom:1px solid var(--border-3);
-    color:var(--text-2);
-  }
-  .grading-table tr:hover td { background:var(--surface-2); }
-  .grading-table tr.base-size td { background:rgba(255,140,0,0.1); }
-  .grading-table input {
-    width:50px; padding:2px var(--space-xs); border:1px solid var(--border-3);
-    font-family:'JetBrains Mono',monospace; font-size:10px; background:transparent;
-    color:var(--text); border-radius:var(--radius-sm);
-  }
-  .grading-table input:focus { border-color:var(--accent); outline:none; }
-  .grading-table input.invalid { border-color:var(--danger); color:var(--danger); }
-
-  /* Efficiency */
-  .efficiency-bar-outer {
-    height:8px; background:var(--surface-2); border-radius:var(--radius-md); overflow:hidden; margin:var(--space-sm) 0;
-  }
-  .efficiency-bar-inner {
-    height:100%; background:var(--accent); border-radius:var(--radius-md); transition:width 0.6s ease;
-  }
-  .eff-number { font-size:22px; font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; color:var(--accent); }
-
-  /* ═══════════════════════════════════════════════
-     NESTING OVERLAY
-  ═══════════════════════════════════════════════ */
-  .nesting-overlay {
-    display:none; position:absolute; inset:0; background:var(--surface-2);
-    z-index:50; flex-direction:column;
-  }
-  .nesting-overlay.active { display:flex; }
-  .nesting-header {
-    display:flex; align-items:center; justify-content:space-between;
-    padding:var(--space-md) var(--space-lg); background:var(--surface); border-bottom:1px solid var(--border-3);
-  }
-  .nesting-title { font-family:'Plus Jakarta Sans',sans-serif; font-size:18px; font-weight:600; }
-  .nesting-subtitle { font-size:10px; color:var(--text-muted); }
-  .nesting-body { flex:1; overflow:auto; padding:var(--space-lg); display:flex; justify-content:center; }
-  .nesting-canvas { border:1px solid var(--border-3); }
-
-  /* ═══════════════════════════════════════════════
-     MODAL
-  ═══════════════════════════════════════════════ */
-  .modal-overlay {
-    display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6);
-    z-index:200; align-items:center; justify-content:center;
-  }
-  .modal-overlay.active { display:flex; }
-  .modal {
-    background:var(--surface); border:1px solid var(--border-3); width:460px;
-    box-shadow:var(--shadow); border-radius:var(--radius-lg);
-  }
-  .modal-header {
-    display:flex; align-items:center; justify-content:space-between;
-    padding:var(--space-md) var(--space-lg); border-bottom:1px solid var(--border-3);
-  }
-  .modal-title { font-family:'Plus Jakarta Sans',sans-serif; font-size:16px; font-weight:600; }
-  .modal-body { padding:var(--space-lg); }
-  .modal-row { display:flex; gap:var(--space-md); margin-bottom:var(--space-md); }
-  .modal-field { flex:1; }
-  .modal-field label { display:block; font-size:9px; letter-spacing:0.1em; color:var(--text-muted); margin-bottom:var(--space-xs); }
-  .modal-field input, .modal-field select {
-    width:100%; padding:var(--space-sm) var(--space-md); border:1px solid var(--border-3);
-    background:var(--surface-2); font-family:'Inter',sans-serif; font-size:11px;
-    color:var(--text); border-radius:var(--radius-md);
-  }
-  .modal-field input:focus, .modal-field select:focus { border-color:var(--accent); outline:none; }
-  .modal-footer { display:flex; gap:var(--space-sm); justify-content:flex-end; padding:var(--space-md) var(--space-lg); border-top:1px solid var(--border-3); }
-
-  /* ═══════════════════════════════════════════════
-     TOOLTIP — Punto 10: Tooltip personalizzato
-  ═══════════════════════════════════════════════ */
-  .tooltip {
-    position:relative;
-  }
-  .tooltip::after {
-    content:attr(data-tooltip);
-    position:absolute; bottom:100%; left:50%; transform:translateX(-50%);
-    background:var(--surface); color:var(--text); padding:var(--space-xs) var(--space-sm);
-    font-size:10px; white-space:nowrap; border-radius:var(--radius-sm);
-    border:1px solid var(--border-3); opacity:0; pointer-events:none;
-    transition:opacity 0.2s; z-index:1000;
-  }
-  .tooltip:hover::after { opacity:1; }
-
-  /* ═══════════════════════════════════════════════
-     TOAST
-  ═══════════════════════════════════════════════ */
-  .toast {
-    position:fixed; bottom:var(--space-xl); right:var(--space-xl); background:var(--surface); color:var(--text);
-    padding:var(--space-md) var(--space-lg); font-size:11px; letter-spacing:0.06em; opacity:0;
-    transition:opacity 0.3s; z-index:9999; border-left:3px solid var(--accent);
-    border-radius:var(--radius-md); box-shadow:var(--shadow);
-  }
-  .toast.active { opacity:1; }
-
-  /* ═══════════════════════════════════════════════
-     ACCESSIBILITY — Punto 9: ARIA labels
-  ═══════════════════════════════════════════════ */
-  .sr-only {
-    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
-    overflow:hidden; clip:rect(0,0,0,0); border:0;
-  }
-  [role="button"] { cursor:pointer; }
-  button:focus-visible, [role="button"]:focus-visible, input:focus-visible, select:focus-visible {
-    outline:2px solid var(--accent); outline-offset:2px;
-  }
+/* TOAST */
+.toast { position:fixed; bottom:24px; right:24px; background:var(--surface); color:var(--text); padding:10px 20px; font-size:11px; letter-spacing:0.06em; opacity:0; transition:opacity 0.3s; z-index:9999; border-left:3px solid var(--accent); border-radius:4px; box-shadow:var(--shadow); }
+.toast.active { opacity:1; }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header class="app-header" role="banner">
+<header class="app-header">
   <div class="app-logo">Moda<span>CAD</span> Studio</div>
-  <nav class="header-tabs" aria-label="Navigazione principale">
-    <button class="header-tab active" data-view="modellistica" aria-selected="true">Modellistica</button>
-    <button class="header-tab" data-view="taglie" aria-selected="false">Sviluppo Taglie</button>
-    <button class="header-tab" data-view="piazzamento" aria-selected="false">Piazzamento</button>
-    <button class="header-tab" data-view="libreria" aria-selected="false">Libreria</button>
+  <nav class="header-tabs">
+    <button class="header-tab active" data-view="modellistica">Modellistica</button>
+    <button class="header-tab" data-view="taglie">Sviluppo Taglie</button>
+    <button class="header-tab" data-view="piazzamento">Piazzamento</button>
+    <button class="header-tab" data-view="libreria">Libreria</button>
   </nav>
   <div class="header-actions">
-    <button class="btn" id="btn-export-svg" aria-label="Esporta progetto in formato SVG">Esporta SVG</button>
-    <button class="btn" id="btn-clear" aria-label="Cancella tutto il canvas">Pulisci</button>
-    <button class="btn btn-primary" id="btn-new-project" aria-label="Crea un nuovo progetto">+ Nuovo</button>
+    <button class="btn" id="btn-export-svg">Esporta SVG</button>
+    <button class="btn" id="btn-clear">Pulisci</button>
+    <button class="btn btn-primary" id="btn-new-project">+ Nuovo</button>
   </div>
 </header>
 
-<!-- MAIN -->
 <div class="app-body">
 
-  <!-- LEFT SIDEBAR -->
-  <aside class="sidebar" role="complementary" aria-label="Libreria pattern e strumenti">
-
-    <!-- Tools -->
+  <aside class="sidebar">
     <div class="sidebar-section">
       <div class="sidebar-title">Strumenti</div>
-      <div class="tool-grid" role="toolbar" aria-label="Strumenti di disegno">
-        <button class="tool-btn active" data-tool="select" aria-label="Strumento seleziona" aria-pressed="true">
-          <span class="tool-icon">↖</span>Seleziona
-        </button>
-        <button class="tool-btn" data-tool="pen" aria-label="Strumento penna" aria-pressed="false">
-          <span class="tool-icon">✒</span>Penna
-        </button>
-        <button class="tool-btn" data-tool="line" aria-label="Strumento linea" aria-pressed="false">
-          <span class="tool-icon">╱</span>Linea
-        </button>
-        <button class="tool-btn" data-tool="rect" aria-label="Strumento rettangolo" aria-pressed="false">
-          <span class="tool-icon">▭</span>Rettangolo
-        </button>
-        <button class="tool-btn" data-tool="curve" aria-label="Strumento curva" aria-pressed="false">
-          <span class="tool-icon">∫</span>Curva
-        </button>
-        <button class="tool-btn" data-tool="measure" aria-label="Strumento misura" aria-pressed="false">
-          <span class="tool-icon">⟷</span>Misura
-        </button>
-        <button class="tool-btn" data-tool="seam" aria-label="Strumento cucitura" aria-pressed="false">
-          <span class="tool-icon">⋯</span>Cucitura
-        </button>
-        <button class="tool-btn" data-tool="notch" aria-label="Strumento tacca" aria-pressed="false">
-          <span class="tool-icon">▲</span>Tacca
-        </button>
-        <button class="tool-btn" data-tool="dart" aria-label="Strumento pince" aria-pressed="false">
-          <span class="tool-icon">◁</span>Pince
-        </button>
+      <div class="tool-grid">
+        <button class="tool-btn active" data-tool="select"><span class="tool-icon">↖</span>Seleziona</button>
+        <button class="tool-btn" data-tool="pen"><span class="tool-icon">✒</span>Penna</button>
+        <button class="tool-btn" data-tool="line"><span class="tool-icon">╱</span>Linea</button>
+        <button class="tool-btn" data-tool="rect"><span class="tool-icon">▭</span>Rettangolo</button>
+        <button class="tool-btn" data-tool="curve"><span class="tool-icon">∫</span>Curva</button>
+        <button class="tool-btn" data-tool="measure"><span class="tool-icon">⟷</span>Misura</button>
+        <button class="tool-btn" data-tool="seam"><span class="tool-icon">⋯</span>Cucitura</button>
+        <button class="tool-btn" data-tool="notch"><span class="tool-icon">▲</span>Tacca</button>
+        <button class="tool-btn" data-tool="dart"><span class="tool-icon">◁</span>Pince</button>
       </div>
     </div>
 
-    <!-- Basi Predefinite -->
     <div class="sidebar-section">
       <div class="sidebar-title">Basi Predefinite</div>
-      <div class="pattern-list" role="listbox" aria-label="Seleziona base pattern">
-        <div class="pattern-item active" data-base="bodice" role="option" aria-selected="true">
-          <span class="pattern-icon">👘</span>Corpino
-        </div>
-        <div class="pattern-item" data-base="skirt" role="option" aria-selected="false">
-          <span class="pattern-icon">🩱</span>Gonna
-        </div>
-        <div class="pattern-item" data-base="sleeve" role="option" aria-selected="false">
-          <span class="pattern-icon">🧥</span>Manica
-        </div>
-        <div class="pattern-item" data-base="trouser" role="option" aria-selected="false">
-          <span class="pattern-icon">👖</span>Pantalone
-        </div>
-        <div class="pattern-item" data-base="collar" role="option" aria-selected="false">
-          <span class="pattern-icon">👔</span>Colletto
-        </div>
+      <div class="pattern-list">
+        <div class="pattern-item active" data-base="bodice"><span class="pattern-icon">👘</span>Corpino</div>
+        <div class="pattern-item" data-base="skirt"><span class="pattern-icon">🩱</span>Gonna</div>
+        <div class="pattern-item" data-base="sleeve"><span class="pattern-icon">🧥</span>Manica</div>
+        <div class="pattern-item" data-base="trouser"><span class="pattern-icon">👖</span>Pantalone</div>
+        <div class="pattern-item" data-base="collar"><span class="pattern-icon">👔</span>Colletto</div>
       </div>
     </div>
 
-    <!-- Taglie -->
     <div class="sidebar-section">
       <div class="sidebar-title">Taglie attive</div>
-      <div class="size-list" role="group" aria-label="Seleziona taglie attive">
-        <button class="size-chip" data-size="36" aria-pressed="false">36</button>
-        <button class="size-chip active" data-size="38" aria-pressed="true">38</button>
-        <button class="size-chip active" data-size="40" aria-pressed="true">40</button>
-        <button class="size-chip active" data-size="42" aria-pressed="true">42</button>
-        <button class="size-chip" data-size="44" aria-pressed="false">44</button>
-        <button class="size-chip" data-size="46" aria-pressed="false">46</button>
-        <button class="size-chip" data-size="48" aria-pressed="false">48</button>
+      <div class="size-list">
+        <button class="size-chip" data-size="36">36</button>
+        <button class="size-chip active" data-size="38">38</button>
+        <button class="size-chip active" data-size="40">40</button>
+        <button class="size-chip active" data-size="42">42</button>
+        <button class="size-chip" data-size="44">44</button>
+        <button class="size-chip" data-size="46">46</button>
+        <button class="size-chip" data-size="48">48</button>
       </div>
     </div>
 
-    <!-- Layer -->
     <div class="sidebar-section" style="flex:1; overflow-y:auto;">
       <div class="sidebar-title">Layer</div>
-      <div class="layers-list" role="listbox" aria-label="Layer del progetto"></div>
-      <button class="tool-btn" id="btn-add-layer" style="width:100%;aspect-ratio:unset;padding:6px;margin-top:6px;" aria-label="Aggiungi nuovo layer">
-        + Aggiungi layer
-      </button>
+      <div class="layers-list" id="layers-list"></div>
+      <button class="btn" id="btn-add-layer" style="width:100%;margin-top:8px;">+ Aggiungi layer</button>
     </div>
   </aside>
 
-  <!-- CANVAS AREA -->
-  <main class="canvas-area" role="main">
-    <div class="canvas-toolbar" role="toolbar" aria-label="Opzioni canvas">
-      <div class="view-tabs" role="tablist" aria-label="Vista canvas">
-        <button class="view-tab active" data-canvas-view="2d" role="tab" aria-selected="true">Vista 2D</button>
-        <button class="view-tab" data-canvas-view="3d" role="tab" aria-selected="false">Anteprima 3D</button>
+  <main class="canvas-area">
+    <div class="canvas-toolbar">
+      <div class="view-tabs">
+        <button class="view-tab active" data-view="2d">Vista 2D</button>
+        <button class="view-tab" data-view="3d">Anteprima 3D</button>
       </div>
       <div class="toolbar-sep"></div>
-      <label for="zoom-slider">Zoom</label>
-      <input type="range" id="zoom-slider" min="30" max="200" value="100" style="width:80px" aria-label="Livello zoom">
+      <label>Zoom</label>
+      <input type="range" id="zoom-slider" min="30" max="200" value="100" style="width:80px">
       <span id="zoom-label" style="font-size:9px;color:var(--text-muted);min-width:32px;">100%</span>
       <div class="toolbar-sep"></div>
-      <label for="grid-select">Griglia</label>
-      <select id="grid-select" aria-label="Dimensione griglia">
+      <label>Griglia</label>
+      <select id="grid-select">
         <option value="10">1 cm</option>
         <option value="20" selected>2 cm</option>
         <option value="50">5 cm</option>
         <option value="100">10 cm</option>
       </select>
       <div class="toolbar-sep"></div>
-      <label for="stroke-size">Spessore</label>
-      <input type="range" id="stroke-size" min="1" max="6" value="2" style="width:60px" aria-label="Spessore tratto">
+      <label>Spessore</label>
+      <input type="range" id="stroke-size" min="1" max="6" value="2" style="width:60px">
       <div class="toolbar-sep"></div>
-      <div class="color-swatches" aria-label="Selettore colore">
-        <button class="color-swatch active" data-color="#ff8c00" style="background:#ff8c00" aria-label="Colore arancione"></button>
-        <button class="color-swatch" data-color="#ffaa00" style="background:#ffaa00" aria-label="Colore ambra"></button>
-        <button class="color-swatch" data-color="#ffffff" style="background:#ffffff" aria-label="Colore bianco"></button>
-        <button class="color-swatch" data-color="#00f6ff" style="background:#00f6ff" aria-label="Colore ciano"></button>
+      <div class="color-swatches">
+        <button class="color-swatch active" data-color="#ff8c00" style="background:#ff8c00"></button>
+        <button class="color-swatch" data-color="#ffaa00" style="background:#ffaa00"></button>
+        <button class="color-swatch" data-color="#ffffff" style="background:#ffffff"></button>
+        <button class="color-swatch" data-color="#00f6ff" style="background:#00f6ff"></button>
       </div>
     </div>
 
     <div class="canvas-wrapper" id="canvas-wrapper">
-      <canvas id="main-canvas" width="900" height="650" aria-label="Area di disegno pattern"></canvas>
-      <div class="canvas-info" id="canvas-info" role="status" aria-live="polite">X: 0 cm — Y: 0 cm | Base: Corpino | Taglia: 40</div>
+      <canvas id="main-canvas" width="900" height="650"></canvas>
+      <div class="canvas-info" id="canvas-info">X: 0 cm — Y: 0 cm | Base: Corpino | Taglia: 40</div>
     </div>
 
-    <!-- 3D Preview -->
-    <div class="view-3d" id="view-3d" role="img" aria-label="Anteprima 3D del capo">
-      <div class="view-3d-placeholder">Anteprima 3D</div>
+    <div class="view-3d" id="view-3d">
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;color:var(--text-muted);">Anteprima 3D</div>
       <canvas id="canvas3d" width="600" height="420"></canvas>
-      <div class="view-3d-hint">Visualizzazione simulata del cartamodello</div>
+      <div style="font-size:10px;color:var(--text-muted);">Visualizzazione simulata del cartamodello</div>
     </div>
   </main>
 
-  <!-- RIGHT PANEL -->
-  <aside class="right-panel" role="complementary" aria-label="Proprietà e opzioni">
-
-    <!-- Properties -->
+  <aside class="right-panel">
     <div class="rp-section">
       <div class="rp-title">Proprietà Pezzo</div>
-      <div class="prop-row">
-        <label class="prop-label" for="prop-name">Nome</label>
-        <input class="prop-input" id="prop-name" value="CF Corpino" aria-label="Nome del pezzo">
-      </div>
-      <div class="prop-row">
-        <label class="prop-label" for="prop-width">Larghezza</label>
-        <input class="prop-input" id="prop-width" value="42.0 cm" aria-label="Larghezza pezzo">
-      </div>
-      <div class="prop-row">
-        <label class="prop-label" for="prop-height">Lunghezza</label>
-        <input class="prop-input" id="prop-height" value="58.5 cm" aria-label="Lunghezza pezzo">
-      </div>
-      <div class="prop-row">
-        <label class="prop-label" for="prop-seam">C. cucitura</label>
-        <input class="prop-input" id="prop-seam" value="1.5 cm" aria-label="Costanza cucitura">
-      </div>
-      <div class="prop-row">
-        <label class="prop-label" for="prop-grain">Verso filo</label>
-        <input class="prop-input" id="prop-grain" value="verticale" aria-label="Direzione del filo">
-      </div>
+      <div class="prop-row"><span class="prop-label">Nome</span><input class="prop-input" id="prop-name" value="CF Corpino"></div>
+      <div class="prop-row"><span class="prop-label">Larghezza</span><input class="prop-input" id="prop-width" value="42.0 cm"></div>
+      <div class="prop-row"><span class="prop-label">Lunghezza</span><input class="prop-input" id="prop-height" value="58.5 cm"></div>
+      <div class="prop-row"><span class="prop-label">C. cucitura</span><input class="prop-input" id="prop-seam" value="1.5 cm"></div>
+      <div class="prop-row"><span class="prop-label">Verso filo</span><input class="prop-input" id="prop-grain" value="verticale"></div>
     </div>
 
-    <!-- Grading -->
     <div class="rp-section">
       <div class="rp-title">Sviluppo Taglie — Δ</div>
-      <table class="grading-table" aria-label="Tabella sviluppo taglie">
-        <thead>
-          <tr><th>Taglia</th><th>ΔL (cm)</th><th>ΔP (cm)</th></tr>
-        </thead>
+      <table class="grading-table">
+        <thead><tr><th>Taglia</th><th>ΔL (cm)</th><th>ΔP (cm)</th></tr></thead>
         <tbody id="grading-body"></tbody>
       </table>
       <button class="btn" id="btn-apply-grading" style="margin-top:8px;width:100%;padding:8px;">Applica Sviluppo Taglie</button>
     </div>
 
-    <!-- Nesting Efficiency -->
     <div class="rp-section">
       <div class="rp-title">Efficienza Piazzamento</div>
       <div class="eff-number" id="eff-number">—</div>
-      <div class="efficiency-bar-outer">
-        <div class="efficiency-bar-inner" id="eff-bar" style="width:0%"></div>
-      </div>
+      <div class="efficiency-bar-outer"><div class="efficiency-bar-inner" id="eff-bar" style="width:0%"></div></div>
       <div style="font-size:9px;color:var(--text-muted);margin-top:4px;">Tessuto: <span id="fabric-info">150cm × 6.5m</span></div>
       <div style="font-size:9px;color:var(--text-muted);">Sprechi: <span id="waste-info">—</span></div>
       <button class="btn" id="btn-run-nesting" style="margin-top:8px;width:100%;padding:8px;">▶ Auto-Piazzamento</button>
     </div>
 
-    <!-- Technical Sheet -->
     <div class="rp-section">
       <div class="rp-title">Scheda Tecnica</div>
       <div style="font-size:10px;color:var(--text-muted);line-height:1.7;">
-        Tessuto: <b style="color:var(--text);" id="tech-fabric">Cotone/Lino</b><br>
+        Tessuto: <b style="color:var(--text);">Cotone/Lino</b><br>
         Peso: <b style="color:var(--text);">180 g/m²</b><br>
-        Restringimento: <b style="color:var(--text);">3% L / 2% T</b><br>
         Pezzi totali: <b style="color:var(--text);" id="piece-count">6</b><br>
         Perim. totale: <b style="color:var(--text);">18.4 m</b>
       </div>
@@ -619,75 +349,39 @@
   </aside>
 </div>
 
-<!-- NESTING OVERLAY -->
-<div class="nesting-overlay" id="nesting-view" role="dialog" aria-label="Piazzamento automatico" aria-modal="true">
+<div class="nesting-overlay" id="nesting-view">
   <div class="nesting-header">
     <div>
       <div class="nesting-title">Piazzamento Automatico</div>
-      <div class="nesting-subtitle" id="nesting-info">Calcolo in corso...</div>
+      <div style="font-size:10px;color:var(--text-muted);" id="nesting-info">Calcolo in corso...</div>
     </div>
     <div style="display:flex;gap:8px;">
-      <button class="btn" id="btn-export-dxf" aria-label="Esporta piazzamento in DXF">Esporta DXF</button>
-      <button class="btn btn-primary" id="btn-close-nesting" aria-label="Chiudi piazzamento">✕ Chiudi</button>
+      <button class="btn" id="btn-export-dxf">Esporta DXF</button>
+      <button class="btn btn-primary" id="btn-close-nesting">✕ Chiudi</button>
     </div>
   </div>
   <div class="nesting-body">
-    <canvas id="nesting-canvas" width="900" height="500" class="nesting-canvas" aria-label="Canvas piazzamento"></canvas>
+    <canvas id="nesting-canvas" width="900" height="500"></canvas>
   </div>
 </div>
 
-<!-- NEW PROJECT MODAL -->
-<div class="modal-overlay" id="modal" role="dialog" aria-label="Nuovo progetto" aria-modal="true">
+<div class="modal-overlay" id="modal">
   <div class="modal">
     <div class="modal-header">
       <div class="modal-title">Nuovo Progetto</div>
-      <button class="btn btn-icon" id="btn-close-modal" aria-label="Chiudi finestra">✕</button>
+      <button class="btn" id="btn-close-modal">✕</button>
     </div>
     <div class="modal-body">
       <div class="modal-row">
-        <div class="modal-field">
-          <label for="proj-name">Nome Progetto</label>
-          <input type="text" value="Collezione Primavera 2025" id="proj-name" aria-label="Nome del progetto">
-        </div>
+        <div class="modal-field"><label>Nome Progetto</label><input type="text" value="Collezione Primavera 2025" id="proj-name"></div>
       </div>
       <div class="modal-row">
-        <div class="modal-field">
-          <label for="proj-type">Tipo Capo</label>
-          <select id="proj-type" aria-label="Tipo di capo">
-            <option>Gonna</option><option>Pantalone</option><option>Giacca</option>
-            <option>Camicia/Blusa</option><option>Abito</option><option>Cappotto</option>
-          </select>
-        </div>
-        <div class="modal-field">
-          <label for="proj-size">Taglia Base</label>
-          <select id="proj-size" aria-label="Taglia base">
-            <option>38</option><option selected>40</option><option>42</option>
-          </select>
-        </div>
+        <div class="modal-field"><label>Tipo Capo</label><select id="proj-type"><option>Gonna</option><option>Pantalone</option><option>Giacca</option><option>Camicia/Blusa</option><option>Abito</option><option>Cappotto</option></select></div>
+        <div class="modal-field"><label>Taglia Base</label><select id="proj-size"><option>38</option><option selected>40</option><option>42</option></select></div>
       </div>
       <div class="modal-row">
-        <div class="modal-field">
-          <label for="proj-fabric">Tessuto</label>
-          <input type="text" value="Cotone 100%" id="proj-fabric" aria-label="Tipo di tessuto">
-        </div>
-        <div class="modal-field">
-          <label for="proj-fabric-width">Larghezza Tessuto</label>
-          <select id="proj-fabric-width" aria-label="Larghezza del tessuto">
-            <option>110 cm</option><option selected>150 cm</option><option>180 cm</option>
-          </select>
-        </div>
-      </div>
-      <div class="modal-row">
-        <div class="modal-field">
-          <label for="proj-unit">Unità di misura</label>
-          <select id="proj-unit" aria-label="Unità di misura">
-            <option selected>Centimetri (cm)</option><option>Millimetri (mm)</option><option>Pollici (in)</option>
-          </select>
-        </div>
-        <div class="modal-field">
-          <label for="proj-seam-allowance">C. cucitura</label>
-          <input type="text" value="1.5 cm" id="proj-seam-allowance" aria-label="Costanza cucitura predefinita">
-        </div>
+        <div class="modal-field"><label>Tessuto</label><input type="text" value="Cotone 100%" id="proj-fabric"></div>
+        <div class="modal-field"><label>Larghezza Tessuto</label><select id="proj-width"><option>110 cm</option><option selected>150 cm</option><option>180 cm</option></select></div>
       </div>
     </div>
     <div class="modal-footer">
@@ -697,132 +391,80 @@
   </div>
 </div>
 
-<!-- TOAST -->
-<div class="toast" id="toast" role="alert" aria-live="assertive"></div>
+<div class="toast" id="toast"></div>
 
 <script>
-/* ═══════════════════════════════════════════════════════════════
-   CONFIG — Punto 5: Magic numbers → costanti
-   ═══════════════════════════════════════════════════════════════ */
+// ═══════════════════════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════════════════════
 const CONFIG = {
   canvas: { width: 900, height: 650 },
-  grid: { default: 20, options: [10, 20, 50, 100] },
-  zoom: { default: 100, min: 30, max: 200 },
-  stroke: { default: 2, min: 1, max: 6 },
-  seamAllowance: 8,
-  grading: { baseSize: 40, step: 0.5 },
-  fabric: { defaultWidth: 150, defaultLength: 650 },
-  colors: {
-    outline: '#ff8c00',
-    seam: '#ffaa00',
-    grading: { 36:'#60a5fa', 38:'#34d399', 42:'#f59e0b', 44:'#f97316', 46:'#a78bfa', 48:'#ec4899' }
-  }
+  colors: { outline: '#ff8c00', seam: '#ffaa00', fill: 'rgba(30,64,112,0.5)', seamAllowance: 'rgba(255,140,0,0.4)' },
+  grading: { step: 0.5 }
 };
 
-/* ═══════════════════════════════════════════════════════════════
-   STATE
-   ═══════════════════════════════════════════════════════════════ */
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
 const state = {
   tool: 'select',
   color: CONFIG.colors.outline,
-  strokeWidth: CONFIG.stroke.default,
+  strokeWidth: 2,
   zoom: 1,
-  gridSize: CONFIG.grid.default,
+  gridSize: 20,
   currentBase: 'bodice',
   view: '2d',
-  layers: ['Base', 'Costruzione', 'Taglie', 'Cuciture'],
-  activeLayer: 0,
   paths: [],
   currentPath: [],
   isDrawing: false,
   startPoint: null,
   undoStack: [],
-  project: {
-    name: 'Collezione Primavera 2025',
-    type: 'Gonna',
-    baseSize: 40,
-    fabric: 'Cotone 100%',
-    fabricWidth: 150,
-    seamAllowance: 1.5
-  }
+  layers: ['Base', 'Costruzione', 'Taglie', 'Cuciture'],
+  activeLayer: 0,
+  project: { name: 'Nuovo Progetto', baseSize: 40, fabricWidth: 150 }
 };
 
-/* ═══════════════════════════════════════════════════════════════
-   BASE PATTERNS — Punto 6: Dati pattern centralizzati
-   ═══════════════════════════════════════════════════════════════ */
+// ═══════════════════════════════════════════════════════════════
+// PATTERNS
+// ═══════════════════════════════════════════════════════════════
 const BASE_PATTERNS = {
-  bodice: {
-    name: 'Corpino Anteriore',
-    pieces: [{
-      label: 'CF Corpino',
-      color: CONFIG.colors.outline,
-      pts: [[100,80],[320,80],[330,200],[310,380],[290,440],[200,460],[140,450],[100,380],[90,200]],
-      darts: [[200,80,210,160],[220,80,215,165]]
-    }]
-  },
-  skirt: {
-    name: 'Gonna Dritta',
-    pieces: [
-      { label: 'CF Gonna', color: CONFIG.colors.outline, pts: [[120,60],[310,60],[330,400],[280,420],[140,415],[100,400]] },
-      { label: 'CB Gonna', color: CONFIG.colors.seam, pts: [[380,60],[560,60],[580,400],[530,415],[400,415],[360,400]] }
-    ]
-  },
-  sleeve: {
-    name: 'Manica Dritta',
-    pieces: [
-      { label: 'Manica', color: CONFIG.colors.outline, pts: [[200,60],[280,60],[310,120],[330,300],[320,380],[250,410],[200,410],[150,380],[140,300],[160,120]] }
-    ]
-  },
-  trouser: {
-    name: 'Pantalone',
-    pieces: [
-      { label: 'Gamba Ant.', color: CONFIG.colors.outline, pts: [[100,60],[240,60],[260,200],[280,520],[240,540],[180,540],[130,520],[110,200]] },
-      { label: 'Gamba Post.', color: CONFIG.colors.seam, pts: [[320,60],[480,60],[510,200],[530,520],[490,540],[420,540],[370,520],[330,200]] }
-    ]
-  },
-  collar: {
-    name: 'Colletto Camicia',
-    pieces: [
-      { label: 'Colletto', color: CONFIG.colors.outline, pts: [[80,160],[500,160],[520,200],[500,240],[80,240],[60,200]] }
-    ]
-  }
+  bodice: { name: 'Corpino Anteriore', pieces: [
+    { label: 'CF Corpino', color: CONFIG.colors.outline, pts: [[100,80],[320,80],[330,200],[310,380],[290,440],[200,460],[140,450],[100,380],[90,200]], darts: [[200,80,210,160],[220,80,215,165]] }
+  ]},
+  skirt: { name: 'Gonna Dritta', pieces: [
+    { label: 'CF Gonna', color: CONFIG.colors.outline, pts: [[120,60],[310,60],[330,400],[280,420],[140,415],[100,400]] },
+    { label: 'CB Gonna', color: CONFIG.colors.seam, pts: [[380,60],[560,60],[580,400],[530,415],[400,415],[360,400]] }
+  ]},
+  sleeve: { name: 'Manica Dritta', pieces: [
+    { label: 'Manica', color: CONFIG.colors.outline, pts: [[200,60],[280,60],[310,120],[330,300],[320,380],[250,410],[200,410],[150,380],[140,300],[160,120]] }
+  ]},
+  trouser: { name: 'Pantalone', pieces: [
+    { label: 'Gamba Ant.', color: CONFIG.colors.outline, pts: [[100,60],[240,60],[260,200],[280,520],[240,540],[180,540],[130,520],[110,200]] },
+    { label: 'Gamba Post.', color: CONFIG.colors.seam, pts: [[320,60],[480,60],[510,200],[530,520],[490,540],[420,540],[370,520],[330,200]] }
+  ]},
+  collar: { name: 'Colletto Camicia', pieces: [
+    { label: 'Colletto', color: CONFIG.colors.outline, pts: [[80,160],[500,160],[520,200],[500,240],[80,240],[60,200]] }
+  ]}
 };
 
-/* ═══════════════════════════════════════════════════════════════
-   GRADING DATA — Punto 6: Calcolo dinamico Δ
-   ═══════════════════════════════════════════════════════════════ */
-const SIZES = [36, 38, 40, 42, 44, 46, 48];
-
-function calculateGradingDeltas(baseSize) {
-  return SIZES.map(size => {
-    const diff = (size - baseSize) * CONFIG.grading.step;
-    return {
-      size,
-      deltaL: diff,
-      deltaP: diff * 0.75,
-      isBase: size === baseSize
-    };
-  });
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   DOM REFERENCES
-   ═══════════════════════════════════════════════════════════════ */
+// ═══════════════════════════════════════════════════════════════
+// DOM REFS
+// ═══════════════════════════════════════════════════════════════
 const canvas = document.getElementById('main-canvas');
 const ctx = canvas.getContext('2d');
 const canvasWrapper = document.getElementById('canvas-wrapper');
-const view3d = document.getElementById('view-3d');
+const view3dEl = document.getElementById('view-3d');
 const canvas3d = document.getElementById('canvas3d');
 const nestingView = document.getElementById('nesting-view');
 const nestingCanvas = document.getElementById('nesting-canvas');
 const modal = document.getElementById('modal');
-const toast = document.getElementById('toast');
+const toastEl = document.getElementById('toast');
 const gradingBody = document.getElementById('grading-body');
 const layersList = document.getElementById('layers-list');
 
-/* ═══════════════════════════════════════════════════════════════
-   CANVAS RENDERING — Punto 11: Ottimizzazione
-   ═══════════════════════════════════════════════════════════════ */
+// ═══════════════════════════════════════════════════════════════
+// RENDERING
+// ═══════════════════════════════════════════════════════════════
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.save();
@@ -835,110 +477,71 @@ function render() {
 }
 
 function drawGrid() {
-  const w = canvas.width / state.zoom;
-  const h = canvas.height / state.zoom;
+  const w = canvas.width / state.zoom, h = canvas.height / state.zoom;
   ctx.strokeStyle = 'rgba(255,255,255,0.04)';
   ctx.lineWidth = 0.5 / state.zoom;
-  for (let x = 0; x < w; x += state.gridSize) {
-    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
-  }
-  for (let y = 0; y < h; y += state.gridSize) {
-    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
-  }
-  // Origin lines
-  ctx.strokeStyle = 'rgba(255,140,0,0.15)';
-  ctx.lineWidth = 1 / state.zoom;
+  for (let x = 0; x < w; x += state.gridSize) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
+  for (let y = 0; y < h; y += state.gridSize) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
+  ctx.strokeStyle = 'rgba(255,140,0,0.15)'; ctx.lineWidth = 1 / state.zoom;
   ctx.beginPath(); ctx.moveTo(0, h/2); ctx.lineTo(w, h/2); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(w/2, 0); ctx.lineTo(w/2, h); ctx.stroke();
 }
 
 function drawBasePieces() {
   const base = BASE_PATTERNS[state.currentBase];
-  if (!base || !base.pieces) return;
-  base.pieces.forEach(piece => drawPiece(piece));
+  if (base && base.pieces) base.pieces.forEach(p => drawPiece(p));
 }
 
 function drawPiece(piece) {
   const pts = piece.pts;
   if (!pts || pts.length < 2) return;
-
   // Fill
   ctx.beginPath();
   pts.forEach((p, i) => i === 0 ? ctx.moveTo(p[0], p[1]) : ctx.lineTo(p[0], p[1]));
   ctx.closePath();
-  ctx.fillStyle = 'rgba(30,64,112,0.5)';
+  ctx.fillStyle = CONFIG.colors.fill;
   ctx.fill();
-
   // Stroke
   ctx.strokeStyle = piece.color || CONFIG.colors.outline;
   ctx.lineWidth = 2 / state.zoom;
   ctx.stroke();
-
   // Seam allowance
   ctx.setLineDash([4/state.zoom, 3/state.zoom]);
-  ctx.strokeStyle = 'rgba(255,140,0,0.4)';
+  ctx.strokeStyle = CONFIG.colors.seamAllowance;
   ctx.lineWidth = 1 / state.zoom;
   ctx.beginPath();
   pts.forEach((p, i) => {
-    const x = p[0], y = p[1];
     const nx = pts[(i+1)%pts.length][0], ny = pts[(i+1)%pts.length][1];
-    const dx = nx-x, dy = ny-y;
+    const dx = nx-p[0], dy = ny-p[1];
     const len = Math.sqrt(dx*dx+dy*dy);
-    const px = -dy/len*CONFIG.seamAllowance, py = dx/len*CONFIG.seamAllowance;
-    i === 0 ? ctx.moveTo(x+px, y+py) : ctx.lineTo(x+px, y+py);
+    const off = 8/len;
+    i === 0 ? ctx.moveTo(p[0]-dy*off, p[1]+dx*off) : ctx.lineTo(p[0]-dy*off, p[1]+dx*off);
   });
-  ctx.closePath();
-  ctx.stroke();
+  ctx.closePath(); ctx.stroke();
   ctx.setLineDash([]);
-
   // Grain line
-  const cxp = pts.reduce((s,p)=>s+p[0],0)/pts.length;
-  const cyp = pts.reduce((s,p)=>s+p[1],0)/pts.length;
-  ctx.strokeStyle = 'rgba(255,255,255,0.4)';
-  ctx.lineWidth = 1.5 / state.zoom;
-  ctx.beginPath(); ctx.moveTo(cxp, cyp-25); ctx.lineTo(cxp, cyp+25); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(cxp-5, cyp-20); ctx.lineTo(cxp, cyp-25); ctx.lineTo(cxp+5, cyp-20); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(cxp-5, cyp+20); ctx.lineTo(cxp, cyp+25); ctx.lineTo(cxp+5, cyp+20); ctx.stroke();
-
+  const cx = pts.reduce((s,p)=>s+p[0],0)/pts.length;
+  const cy = pts.reduce((s,p)=>s+p[1],0)/pts.length;
+  ctx.strokeStyle = 'rgba(255,255,255,0.4)'; ctx.lineWidth = 1.5/state.zoom;
+  ctx.beginPath(); ctx.moveTo(cx, cy-25); ctx.lineTo(cx, cy+25); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx-5, cy-20); ctx.lineTo(cx, cy-25); ctx.lineTo(cx+5, cy-20); ctx.stroke();
   // Label
-  ctx.font = `${11/state.zoom}px 'Inter',sans-serif`;
-  ctx.fillStyle = '#ffffff';
-  ctx.textAlign = 'center';
-  ctx.fillText(piece.label, cxp, cyp - 35);
-
+  ctx.font = `${11/state.zoom}px Inter, sans-serif`;
+  ctx.fillStyle = '#fff'; ctx.textAlign = 'center';
+  ctx.fillText(piece.label, cx, cy - 35);
   // Darts
   if (piece.darts) {
     piece.darts.forEach(d => {
-      ctx.strokeStyle = CONFIG.colors.outline;
-      ctx.lineWidth = 1.5 / state.zoom;
+      ctx.strokeStyle = CONFIG.colors.outline; ctx.lineWidth = 1.5/state.zoom;
       ctx.beginPath(); ctx.moveTo(d[0], d[1]); ctx.lineTo(d[2], d[3]); ctx.stroke();
     });
   }
-
-  // Grading overlays
-  const activeSizes = [...document.querySelectorAll('.size-chip.active')].map(el => parseInt(el.dataset.size));
-  activeSizes.forEach(sz => {
-    if (sz === state.project.baseSize) return;
-    const delta = (sz - state.project.baseSize) * CONFIG.grading.step;
-    ctx.strokeStyle = CONFIG.colors.grading[sz] || '#999';
-    ctx.lineWidth = 1 / state.zoom;
-    ctx.setLineDash([3/state.zoom, 2/state.zoom]);
-    ctx.beginPath();
-    pts.forEach((p, i) => {
-      const nx = p[0] + delta, ny = p[1] + delta * 0.5;
-      i === 0 ? ctx.moveTo(nx, ny) : ctx.lineTo(nx, ny);
-    });
-    ctx.closePath();
-    ctx.stroke();
-    ctx.setLineDash([]);
-  });
 }
 
 function drawUserPaths() {
   state.paths.forEach(p => {
     ctx.beginPath();
-    ctx.strokeStyle = p.color;
-    ctx.lineWidth = p.size / state.zoom;
+    ctx.strokeStyle = p.color; ctx.lineWidth = p.size / state.zoom;
     p.points.forEach((pt, i) => i === 0 ? ctx.moveTo(pt[0], pt[1]) : ctx.lineTo(pt[0], pt[1]));
     ctx.stroke();
   });
@@ -947,246 +550,163 @@ function drawUserPaths() {
 function drawCurrentPath() {
   if (state.currentPath.length < 2) return;
   ctx.beginPath();
-  ctx.strokeStyle = state.color;
-  ctx.lineWidth = state.strokeWidth / state.zoom;
+  ctx.strokeStyle = state.color; ctx.lineWidth = state.strokeWidth / state.zoom;
   state.currentPath.forEach((pt, i) => i === 0 ? ctx.moveTo(pt[0], pt[1]) : ctx.lineTo(pt[0], pt[1]));
   ctx.stroke();
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   CANVAS EVENTS — Punto 2: addEventListener
-   ═══════════════════════════════════════════════════════════════ */
-canvas.addEventListener('mousemove', handleCanvasMouseMove);
-canvas.addEventListener('mousedown', handleCanvasMouseDown);
-canvas.addEventListener('mouseup', handleCanvasMouseUp);
-canvas.addEventListener('mouseleave', handleCanvasMouseUp);
-canvas.addEventListener('touchstart', handleCanvasTouchStart, { passive: false });
-canvas.addEventListener('touchmove', handleCanvasTouchMove, { passive: false });
-canvas.addEventListener('touchend', handleCanvasMouseUp);
-
-function getCanvasCoords(e) {
+// ═══════════════════════════════════════════════════════════════
+// CANVAS EVENTS
+// ═══════════════════════════════════════════════════════════════
+function getCoords(e) {
   const rect = canvas.getBoundingClientRect();
-  return {
-    x: (e.clientX - rect.left) / state.zoom,
-    y: (e.clientY - rect.top) / state.zoom
-  };
+  return { x: (e.clientX - rect.left) / state.zoom, y: (e.clientY - rect.top) / state.zoom };
 }
 
-function handleCanvasMouseMove(e) {
-  const coords = getCanvasCoords(e);
-  const cmx = (coords.x / state.gridSize * 2).toFixed(1);
-  const cmy = (coords.y / state.gridSize * 2).toFixed(1);
-  document.getElementById('canvas-info').textContent =
-    `X: ${cmx} cm — Y: ${cmy} cm | Base: ${BASE_PATTERNS[state.currentBase].name} | Taglia: ${state.project.baseSize}`;
+canvas.addEventListener('mousedown', e => {
+  state.startPoint = getCoords(e);
+  state.isDrawing = true;
+  saveState();
+  if (state.tool === 'pen') state.currentPath = [[state.startPoint.x, state.startPoint.y]];
+});
 
+canvas.addEventListener('mousemove', e => {
+  const coords = getCoords(e);
+  document.getElementById('canvas-info').textContent = `X: ${(coords.x/state.gridSize*2).toFixed(1)} cm — Y: ${(coords.y/state.gridSize*2).toFixed(1)} cm | Base: ${BASE_PATTERNS[state.currentBase].name} | Taglia: ${state.project.baseSize}`;
   if (state.isDrawing && state.tool === 'pen') {
     state.currentPath.push([coords.x, coords.y]);
     render();
   }
-}
+});
 
-function handleCanvasMouseDown(e) {
-  const coords = getCanvasCoords(e);
-  state.startPoint = { x: coords.x, y: coords.y };
-  state.isDrawing = true;
-  saveState();
-
-  if (state.tool === 'pen') state.currentPath = [[coords.x, coords.y]];
-  if (state.tool === 'line') state.currentPath = [[coords.x, coords.y]];
-}
-
-function handleCanvasMouseUp(e) {
+canvas.addEventListener('mouseup', e => {
   if (!state.isDrawing) return;
-  const coords = getCanvasCoords(e);
-
+  const coords = getCoords(e);
   if (state.tool === 'pen' && state.currentPath.length > 1) {
     state.paths.push({ points: [...state.currentPath], color: state.color, size: state.strokeWidth });
     state.currentPath = [];
   }
   if (state.tool === 'line' && state.startPoint) {
     state.paths.push({ points: [[state.startPoint.x, state.startPoint.y], [coords.x, coords.y]], color: state.color, size: state.strokeWidth });
-    state.currentPath = [];
   }
   if (state.tool === 'rect' && state.startPoint) {
-    const pts = [
-      [state.startPoint.x, state.startPoint.y],
-      [coords.x, state.startPoint.y],
-      [coords.x, coords.y],
-      [state.startPoint.x, coords.y],
-      [state.startPoint.x, state.startPoint.y]
-    ];
+    const pts = [[state.startPoint.x, state.startPoint.y], [coords.x, state.startPoint.y], [coords.x, coords.y], [state.startPoint.x, coords.y], [state.startPoint.x, state.startPoint.y]];
     state.paths.push({ points: pts, color: state.color, size: state.strokeWidth });
   }
-
   state.isDrawing = false;
   state.startPoint = null;
   render();
-}
+});
 
-function handleCanvasTouchStart(e) {
-  e.preventDefault();
-  const touch = e.touches[0];
-  handleCanvasMouseDown({ clientX: touch.clientX, clientY: touch.clientY });
-}
-
-function handleCanvasTouchMove(e) {
-  e.preventDefault();
-  const touch = e.touches[0];
-  handleCanvasMouseMove({ clientX: touch.clientX, clientY: touch.clientY });
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   UNDO
-   ═══════════════════════════════════════════════════════════════ */
-function saveState() {
-  if (state.undoStack.length > 30) state.undoStack.shift();
-  state.undoStack.push(canvas.toDataURL());
-}
-
-function undoLast() {
-  if (state.undoStack.length === 0) return;
-  const img = new Image();
-  img.onload = () => {
-    const dpr = window.devicePixelRatio || 1;
-    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
-    ctx.drawImage(img, 0, 0, canvas.width / dpr, canvas.height / dpr);
-  };
-  img.src = state.undoStack.pop();
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   TOOL SELECTION — Punto 2: addEventListener
-   ═══════════════════════════════════════════════════════════════ */
-document.querySelectorAll('.tool-btn[data-tool]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    state.tool = btn.dataset.tool;
-    document.querySelectorAll('.tool-btn[data-tool]').forEach(b => {
-      b.classList.toggle('active', b === btn);
-      b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
-    });
+// ═══════════════════════════════════════════════════════════════
+// TOOL SELECTION
+// ═══════════════════════════════════════════════════════════════
+document.querySelectorAll('.tool-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    state.tool = this.dataset.tool;
+    document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
     showToast('Strumento: ' + state.tool);
   });
 });
 
-/* ═══════════════════════════════════════════════════════════════
-   COLOR SELECTION
-   ═══════════════════════════════════════════════════════════════ */
-document.querySelectorAll('.color-swatch[data-color]').forEach(swatch => {
-  swatch.addEventListener('click', () => {
-    state.color = swatch.dataset.color;
+// ═══════════════════════════════════════════════════════════════
+// COLOR SELECTION
+// ═══════════════════════════════════════════════════════════════
+document.querySelectorAll('.color-swatch').forEach(swatch => {
+  swatch.addEventListener('click', function() {
+    state.color = this.dataset.color;
     document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
-    swatch.classList.add('active');
+    this.classList.add('active');
   });
 });
 
-/* ═══════════════════════════════════════════════════════════════
-   PATTERN SELECTION
-   ═══════════════════════════════════════════════════════════════ */
-document.querySelectorAll('.pattern-item[data-base]').forEach(item => {
-  item.addEventListener('click', () => {
-    state.currentBase = item.dataset.base;
-    document.querySelectorAll('.pattern-item[data-base]').forEach(i => {
-      i.classList.toggle('active', i === item);
-      i.setAttribute('aria-selected', i === item ? 'true' : 'false');
-    });
+// ═══════════════════════════════════════════════════════════════
+// PATTERN SELECTION
+// ═══════════════════════════════════════════════════════════════
+document.querySelectorAll('.pattern-item').forEach(item => {
+  item.addEventListener('click', function() {
+    state.currentBase = this.dataset.base;
+    document.querySelectorAll('.pattern-item').forEach(i => i.classList.remove('active'));
+    this.classList.add('active');
     document.getElementById('prop-name').value = BASE_PATTERNS[state.currentBase].pieces[0].label;
     render();
-    showToast('Base caricata: ' + BASE_PATTERNS[state.currentBase].name);
+    showToast('Base: ' + BASE_PATTERNS[state.currentBase].name);
   });
 });
 
-/* ═══════════════════════════════════════════════════════════════
-   SIZE SELECTION
-   ═══════════════════════════════════════════════════════════════ */
-document.querySelectorAll('.size-chip[data-size]').forEach(chip => {
-  chip.addEventListener('click', () => {
-    chip.classList.toggle('active');
-    chip.setAttribute('aria-pressed', chip.classList.contains('active') ? 'true' : 'false');
+// ═══════════════════════════════════════════════════════════════
+// SIZE SELECTION
+// ═══════════════════════════════════════════════════════════════
+document.querySelectorAll('.size-chip').forEach(chip => {
+  chip.addEventListener('click', function() {
+    this.classList.toggle('active');
     render();
   });
 });
 
-/* ═══════════════════════════════════════════════════════════════
-   ZOOM & GRID
-   ═══════════════════════════════════════════════════════════════ */
-document.getElementById('zoom-slider').addEventListener('input', (e) => {
-  state.zoom = parseInt(e.target.value) / 100;
-  document.getElementById('zoom-label').textContent = e.target.value + '%';
+// ═══════════════════════════════════════════════════════════════
+// ZOOM & GRID
+// ═══════════════════════════════════════════════════════════════
+document.getElementById('zoom-slider').addEventListener('input', function() {
+  state.zoom = parseInt(this.value) / 100;
+  document.getElementById('zoom-label').textContent = this.value + '%';
   render();
 });
 
-document.getElementById('grid-select').addEventListener('change', (e) => {
-  state.gridSize = parseInt(e.target.value);
+document.getElementById('grid-select').addEventListener('change', function() {
+  state.gridSize = parseInt(this.value);
   render();
 });
 
-document.getElementById('stroke-size').addEventListener('input', (e) => {
-  state.strokeWidth = parseInt(e.target.value);
+document.getElementById('stroke-size').addEventListener('input', function() {
+  state.strokeWidth = parseInt(this.value);
 });
 
-/* ═══════════════════════════════════════════════════════════════
-   VIEW TABS
-   ═══════════════════════════════════════════════════════════════ */
-document.querySelectorAll('.view-tab[data-canvas-view]').forEach(tab => {
-  tab.addEventListener('click', () => {
-    const viewName = tab.dataset.canvasView;
+// ═══════════════════════════════════════════════════════════════
+// VIEW TABS
+// ═══════════════════════════════════════════════════════════════
+document.querySelectorAll('.view-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    const viewName = this.dataset.view;
     state.view = viewName;
-    document.querySelectorAll('.view-tab[data-canvas-view]').forEach(t => {
-      t.classList.toggle('active', t === tab);
-      t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
-    });
+    document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
     if (viewName === '3d') {
       canvasWrapper.style.display = 'none';
-      view3d.classList.add('active');
+      view3dEl.classList.add('active');
       draw3D();
     } else {
       canvasWrapper.style.display = '';
-      view3d.classList.remove('active');
+      view3dEl.classList.remove('active');
     }
   });
 });
 
-/* ═══════════════════════════════════════════════════════════════
-   HEADER TABS
-   ═══════════════════════════════════════════════════════════════ */
-document.querySelectorAll('.header-tab[data-view]').forEach(tab => {
-  tab.addEventListener('click', () => {
-    const viewName = tab.dataset.view;
-    document.querySelectorAll('.header-tab[data-view]').forEach(t => {
-      t.classList.toggle('active', t === tab);
-      t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
-    });
-    if (viewName === 'piazzamento') runNesting();
-    else if (viewName === 'taglie') showToast('Vista Sviluppo Taglie — seleziona taglie a sinistra');
-    else if (viewName === 'libreria') showToast('Libreria basi predefinite');
+// ═══════════════════════════════════════════════════════════════
+// HEADER TABS
+// ═══════════════════════════════════════════════════════════════
+document.querySelectorAll('.header-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.header-tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+    const view = this.dataset.view;
+    if (view === 'piazzamento') runNesting();
+    else if (view === 'taglie') showToast('Seleziona taglie a sinistra');
+    else if (view === 'libreria') showToast('Libreria basi predefinite');
     else showToast('Modellistica 2D');
   });
 });
 
-/* ═══════════════════════════════════════════════════════════════
-   GRADING TABLE — Punto 6: Calcolo dinamico
-   ═══════════════════════════════════════════════════════════════ */
+// ═══════════════════════════════════════════════════════════════
+// GRADING TABLE
+// ═══════════════════════════════════════════════════════════════
 function renderGradingTable() {
-  const deltas = calculateGradingDeltas(state.project.baseSize);
-  gradingBody.innerHTML = deltas.map(d => `
-    <tr class="${d.isBase ? 'base-size' : ''}">
-      <td>${d.size}${d.isBase ? ' ●' : ''}</td>
-      <td><input type="number" value="${d.deltaL.toFixed(1)}" step="0.1" data-size="${d.size}" data-type="deltaL" aria-label="Delta lunghezza taglia ${d.size}"></td>
-      <td><input type="number" value="${d.deltaP.toFixed(2)}" step="0.01" data-size="${d.size}" data-type="deltaP" aria-label="Delta perimetro taglia ${d.size}"></td>
-    </tr>
-  `).join('');
-
-  // Punto 7: Validazione input
-  gradingBody.querySelectorAll('input').forEach(input => {
-    input.addEventListener('input', (e) => {
-      const val = parseFloat(e.target.value);
-      if (isNaN(val)) {
-        e.target.classList.add('invalid');
-      } else {
-        e.target.classList.remove('invalid');
-      }
-    });
-  });
+  const sizes = [36, 38, 40, 42, 44, 46, 48];
+  gradingBody.innerHTML = sizes.map(sz => {
+    const diff = (sz - state.project.baseSize) * CONFIG.grading.step;
+    return `<tr style="${sz === state.project.baseSize ? 'background:rgba(255,140,0,0.1)' : ''}"><td>${sz}${sz === state.project.baseSize ? ' ●' : ''}</td><td><input type="number" value="${diff.toFixed(1)}" step="0.1" style="width:50px;padding:2px;border:1px solid #2a5490;background:transparent;color:#fff;font-family:monospace;font-size:10px;"></td><td><input type="number" value="${(diff*0.75).toFixed(2)}" step="0.01" style="width:50px;padding:2px;border:1px solid #2a5490;background:transparent;color:#fff;font-family:monospace;font-size:10px;"></td></tr>`;
+  }).join('');
 }
 
 document.getElementById('btn-apply-grading').addEventListener('click', () => {
@@ -1194,30 +714,21 @@ document.getElementById('btn-apply-grading').addEventListener('click', () => {
   showToast('Sviluppo taglie applicato!');
 });
 
-/* ═══════════════════════════════════════════════════════════════
-   LAYERS
-   ═══════════════════════════════════════════════════════════════ */
+// ═══════════════════════════════════════════════════════════════
+// LAYERS
+// ═══════════════════════════════════════════════════════════════
 function renderLayers() {
   layersList.innerHTML = state.layers.map((layer, i) => `
-    <div class="layer-item ${i === state.activeLayer ? 'active' : ''}" data-layer-index="${i}" role="option" aria-selected="${i === state.activeLayer}">
+    <div class="layer-item ${i === state.activeLayer ? 'active' : ''}" data-index="${i}">
       <span style="color:var(--accent)">⬜</span>
-      <span class="layer-name">${layer}</span>
-      <span class="layer-visibility" data-layer-toggle="${i}">👁️</span>
+      <span>${layer}</span>
+      <span class="layer-visibility">👁️</span>
     </div>
   `).join('');
-
   layersList.querySelectorAll('.layer-item').forEach(item => {
-    item.addEventListener('click', (e) => {
-      if (e.target.dataset.layerToggle) return;
-      state.activeLayer = parseInt(item.dataset.layerIndex);
+    item.addEventListener('click', function() {
+      state.activeLayer = parseInt(this.dataset.index);
       renderLayers();
-    });
-  });
-
-  layersList.querySelectorAll('.layer-visibility').forEach(toggle => {
-    toggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggle.classList.toggle('hidden');
     });
   });
 }
@@ -1227,9 +738,9 @@ document.getElementById('btn-add-layer').addEventListener('click', () => {
   renderLayers();
 });
 
-/* ═══════════════════════════════════════════════════════════════
-   NESTING — Punto 3: Calcolo dinamico
-   ═══════════════════════════════════════════════════════════════ */
+// ═══════════════════════════════════════════════════════════════
+// NESTING
+// ═══════════════════════════════════════════════════════════════
 document.getElementById('btn-run-nesting').addEventListener('click', runNesting);
 document.getElementById('btn-close-nesting').addEventListener('click', () => nestingView.classList.remove('active'));
 document.getElementById('btn-export-dxf').addEventListener('click', exportDXF);
@@ -1237,7 +748,7 @@ document.getElementById('btn-export-dxf').addEventListener('click', exportDXF);
 function runNesting() {
   nestingView.classList.add('active');
   drawNesting();
-  showToast('Piazzamento automatico calcolato');
+  showToast('Piazzamento calcolato');
 }
 
 function drawNesting() {
@@ -1246,45 +757,42 @@ function drawNesting() {
   nctx.clearRect(0, 0, nc.width, nc.height);
   nctx.fillStyle = '#0f2040';
   nctx.fillRect(0, 0, nc.width, nc.height);
-
-  // Fabric border
   nctx.strokeStyle = '#2a5490';
   nctx.lineWidth = 2;
   nctx.strokeRect(10, 10, 880, 480);
-
-  // Fabric label
   nctx.font = '10px Inter, sans-serif';
   nctx.fillStyle = '#8899aa';
-  nctx.textAlign = 'left';
   nctx.fillText(`TESSUTO ${state.project.fabricWidth}cm × 6.5m`, 18, 26);
 
-  // Get pieces from current base
   const base = BASE_PATTERNS[state.currentBase];
-  if (!base || !base.pieces) {
-    document.getElementById('nesting-info').textContent = 'Nessun pezzo da piazzare';
-    return;
-  }
+  if (!base || !base.pieces) return;
 
-  // Calculate placements dynamically
-  const placements = calculateNestingPlacements(base.pieces);
+  let x = 30, y = 40, rowHeight = 0;
+  const colors = ['rgba(255,140,0,0.4)', 'rgba(0,246,255,0.4)', 'rgba(255,77,77,0.4)', 'rgba(0,255,157,0.4)'];
 
-  // Draw placements
-  placements.forEach(p => {
-    nctx.fillStyle = p.color;
-    nctx.strokeStyle = p.strokeColor;
+  base.pieces.forEach((piece, idx) => {
+    const xs = piece.pts.map(p => p[0]);
+    const ys = piece.pts.map(p => p[1]);
+    const w = Math.max(...xs) - Math.min(...xs) + 20;
+    const h = Math.max(...ys) - Math.min(...ys) + 20;
+
+    if (x + w > 640) { x = 30; y += rowHeight + 10; rowHeight = 0; }
+
+    nctx.fillStyle = colors[idx % colors.length];
+    nctx.strokeStyle = colors[idx % colors.length].replace('0.4', '0.8');
     nctx.lineWidth = 1.5;
-    nctx.beginPath();
-    nctx.rect(p.x, p.y, p.w, p.h);
-    nctx.fill();
-    nctx.stroke();
+    nctx.fillRect(x, y, w, h);
+    nctx.strokeRect(x, y, w, h);
     nctx.font = '8px Inter, sans-serif';
-    nctx.fillStyle = '#ffffff';
+    nctx.fillStyle = '#fff';
     nctx.textAlign = 'center';
-    nctx.fillText(p.label, p.x + p.w/2, p.y + p.h/2);
+    nctx.fillText(piece.label, x + w/2, y + h/2);
+
+    x += w + 10;
+    rowHeight = Math.max(rowHeight, h);
   });
 
-  // Waste area
-  const wasteArea = calculateWaste(placements);
+  // Waste
   nctx.fillStyle = 'rgba(255,77,77,0.06)';
   nctx.fillRect(655, 40, 230, 430);
   nctx.font = '9px Inter, sans-serif';
@@ -1293,278 +801,186 @@ function drawNesting() {
   nctx.fillText('SCARTO', 770, 250);
 
   // Efficiency
-  const efficiency = calculateEfficiency(placements);
+  const totalArea = 880 * 480;
+  const usedArea = base.pieces.reduce((sum, p) => {
+    const xs = p.pts.map(pt => pt[0]);
+    const ys = p.pts.map(pt => pt[1]);
+    return sum + (Math.max(...xs) - Math.min(...xs) + 20) * (Math.max(...ys) - Math.min(...ys) + 20);
+  }, 0);
+  const efficiency = (usedArea / totalArea) * 100;
+  const waste = (totalArea - usedArea) / 10000;
+
   document.getElementById('eff-number').textContent = efficiency.toFixed(1) + '%';
   document.getElementById('eff-bar').style.width = efficiency + '%';
   document.getElementById('nesting-info').textContent = `${state.project.fabricWidth}cm × 6.5m — Efficienza ${efficiency.toFixed(1)}%`;
-  document.getElementById('waste-info').textContent = `${wasteArea.toFixed(2)} m² | Risparmio: ~€${(wasteArea * 5).toFixed(2)}`;
+  document.getElementById('waste-info').textContent = `${waste.toFixed(2)} m²`;
 
-  // Summary
   nctx.font = '11px JetBrains Mono, monospace';
-  nctx.fillStyle = '#ffffff';
+  nctx.fillStyle = '#fff';
   nctx.textAlign = 'right';
-  nctx.fillText(`Efficienza: ${efficiency.toFixed(1)}% | Risparmio: ~€${(wasteArea * 5).toFixed(2)}`, 885, 490);
+  nctx.fillText(`Efficienza: ${efficiency.toFixed(1)}%`, 885, 490);
 }
 
-function calculateNestingPlacements(pieces) {
-  const placements = [];
-  let x = 30, y = 40, rowHeight = 0;
-
-  pieces.forEach((piece, idx) => {
-    // Calculate bounding box
-    const xs = piece.pts.map(p => p[0]);
-    const ys = piece.pts.map(p => p[1]);
-    const w = Math.max(...xs) - Math.min(...xs) + 20;
-    const h = Math.max(...ys) - Math.min(...ys) + 20;
-
-    // Check if fits in row
-    if (x + w > 640) {
-      x = 30;
-      y += rowHeight + 10;
-      rowHeight = 0;
-    }
-
-    const colors = ['rgba(255,140,0,0.3)', 'rgba(0,246,255,0.3)', 'rgba(255,77,77,0.3)', 'rgba(0,255,157,0.3)'];
-    const strokeColors = ['rgba(255,140,0,0.8)', 'rgba(0,246,255,0.8)', 'rgba(255,77,77,0.8)', 'rgba(0,255,157,0.8)'];
-
-    placements.push({
-      label: piece.label,
-      x: x,
-      y: y,
-      w: w,
-      h: h,
-      color: colors[idx % colors.length],
-      strokeColor: strokeColors[idx % strokeColors.length]
-    });
-
-    x += w + 10;
-    rowHeight = Math.max(rowHeight, h);
-  });
-
-  return placements;
-}
-
-function calculateWaste(placements) {
-  const totalArea = 880 * 480;
-  const usedArea = placements.reduce((sum, p) => sum + p.w * p.h, 0);
-  return (totalArea - usedArea) / 10000; // Convert to m²
-}
-
-function calculateEfficiency(placements) {
-  const totalArea = 880 * 480;
-  const usedArea = placements.reduce((sum, p) => sum + p.w * p.h, 0);
-  return (usedArea / totalArea) * 100;
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   EXPORT DXF — Punto 4: Implementazione reale
-   ═══════════════════════════════════════════════════════════════ */
+// ═══════════════════════════════════════════════════════════════
+// EXPORT DXF
+// ═══════════════════════════════════════════════════════════════
 function exportDXF() {
-  showToast('Generazione DXF in corso...');
-
+  showToast('Generazione DXF...');
   setTimeout(() => {
     const base = BASE_PATTERNS[state.currentBase];
-    if (!base || !base.pieces) {
-      showToast('Errore: nessun pezzo da esportare');
-      return;
-    }
+    if (!base || !base.pieces) { showToast('Errore: nessun pezzo'); return; }
 
-    let dxfContent = generateDXF(base.pieces);
+    let dxf = '0\nSECTION\n2\nENTITIES\n';
+    base.pieces.forEach(piece => {
+      dxf += '0\nLWPOLYLINE\n8\npattern\n90\n' + piece.pts.length + '\n70\n1\n';
+      piece.pts.forEach(pt => { dxf += '10\n' + pt[0] + '\n20\n' + pt[1] + '\n'; });
+      dxf += '10\n' + piece.pts[0][0] + '\n20\n' + piece.pts[0][1] + '\n';
+      const cx = piece.pts.reduce((s,pt)=>s+pt[0],0)/piece.pts.length;
+      const cy = piece.pts.reduce((s,pt)=>s+pt[1],0)/piece.pts.length;
+      dxf += '0\nTEXT\n8\nlabels\n10\n' + cx + '\n20\n' + (cy-35) + '\n40\n10\n1\n' + piece.label + '\n';
+    });
+    dxf += '0\nENDSEC\n0\nEOF\n';
 
-    const blob = new Blob([dxfContent], { type: 'application/dxf' });
+    const blob = new Blob([dxf], { type: 'application/dxf' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.download = `modacad-${state.currentBase}-${Date.now()}.dxf`;
     a.click();
     URL.revokeObjectURL(url);
-
-    showToast('DXF esportato con successo!');
+    showToast('DXF esportato!');
   }, 500);
 }
 
-function generateDXF(pieces) {
-  let dxf = '0\nSECTION\n2\nENTITIES\n';
-
-  pieces.forEach(piece => {
-    // Generate LWPOLYLINE for each piece
-    dxf += '0\nLWPOLYLINE\n8\npattern\n90\n' + piece.pts.length + '\n70\n1\n';
-    piece.pts.forEach(pt => {
-      dxf += '10\n' + pt[0] + '\n20\n' + pt[1] + '\n';
-    });
-    // Close the polyline
-    dxf += '10\n' + piece.pts[0][0] + '\n20\n' + piece.pts[0][1] + '\n';
-
-    // Add label as TEXT
-    const cx = piece.pts.reduce((s, pt) => s + pt[0], 0) / piece.pts.length;
-    const cy = piece.pts.reduce((s, pt) => s + pt[1], 0) / piece.pts.length;
-    dxf += '0\nTEXT\n8\nlabels\n10\n' + cx + '\n20\n' + (cy - 35) + '\n40\n10\n1\n' + piece.label + '\n';
-  });
-
-  dxf += '0\nENDSEC\n0\nEOF\n';
-  return dxf;
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   EXPORT SVG
-   ═══════════════════════════════════════════════════════════════ */
-document.getElementById('btn-export-svg').addEventListener('click', exportSVG);
-
-function exportSVG() {
-  showToast('Esportazione SVG in corso...');
-
+// ═══════════════════════════════════════════════════════════════
+// EXPORT SVG
+// ═══════════════════════════════════════════════════════════════
+document.getElementById('btn-export-svg').addEventListener('click', () => {
+  showToast('Esportazione SVG...');
   setTimeout(() => {
     const base = BASE_PATTERNS[state.currentBase];
-    let svgContent = `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="${CONFIG.canvas.width}" height="${CONFIG.canvas.height}">\n  <rect width="${CONFIG.canvas.width}" height="${CONFIG.canvas.height}" fill="#0a1628"/>`;
-
+    let svg = `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="900" height="650">\n<rect width="900" height="650" fill="#0a1628"/>`;
     if (base && base.pieces) {
       base.pieces.forEach(p => {
         const d = 'M ' + p.pts.map(pt => pt.join(' ')).join(' L ') + ' Z';
-        svgContent += `\n  <path d="${d}" fill="rgba(30,64,112,0.5)" stroke="${p.color}" stroke-width="2"/>`;
-        svgContent += `\n  <text x="${p.pts.reduce((s,pt)=>s+pt[0],0)/p.pts.length}" y="${p.pts.reduce((s,pt)=>s+pt[1],0)/p.pts.length - 35}" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#ffffff">${p.label}</text>`;
+        svg += `\n<path d="${d}" fill="rgba(30,64,112,0.5)" stroke="${p.color}" stroke-width="2"/>`;
+        svg += `\n<text x="${p.pts.reduce((s,pt)=>s+pt[0],0)/p.pts.length}" y="${p.pts.reduce((s,pt)=>s+pt[1],0)/p.pts.length-35}" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#ffffff">${p.label}</text>`;
       });
     }
-
-    svgContent += '\n</svg>';
-    const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+    svg += '\n</svg>';
+    const blob = new Blob([svg], { type: 'image/svg+xml' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.download = `modacad-${state.currentBase}-${Date.now()}.svg`;
     a.click();
     URL.revokeObjectURL(url);
-
     showToast('SVG esportato!');
   }, 600);
-}
+});
 
-/* ═══════════════════════════════════════════════════════════════
-   3D PREVIEW — Punto 8: Placeholder migliorato
-   ═══════════════════════════════════════════════════════════════ */
+// ═══════════════════════════════════════════════════════════════
+// 3D PREVIEW
+// ═══════════════════════════════════════════════════════════════
 function draw3D() {
   const c = canvas3d;
   const x = c.getContext('2d');
   x.clearRect(0, 0, c.width, c.height);
   x.fillStyle = '#0f2040';
   x.fillRect(0, 0, c.width, c.height);
-
-  // Draw mannequin silhouette
   x.strokeStyle = '#ff8c00';
   x.lineWidth = 2;
-
   // Head
-  x.beginPath();
-  x.ellipse(300, 120, 40, 55, 0, 0, Math.PI * 2);
-  x.stroke();
-
+  x.beginPath(); x.ellipse(300, 120, 40, 55, 0, 0, Math.PI*2); x.stroke();
   // Body
   x.beginPath();
-  x.moveTo(270, 170);
-  x.bezierCurveTo(210, 220, 190, 300, 200, 380);
+  x.moveTo(270, 170); x.bezierCurveTo(210, 220, 190, 300, 200, 380);
   x.bezierCurveTo(210, 420, 390, 420, 400, 380);
-  x.bezierCurveTo(410, 300, 390, 220, 330, 170);
-  x.stroke();
-
-  // Fabric overlay
+  x.bezierCurveTo(410, 300, 390, 220, 330, 170); x.stroke();
+  // Fabric
   x.fillStyle = 'rgba(255,140,0,0.15)';
   x.beginPath();
-  x.moveTo(275, 175);
-  x.bezierCurveTo(215, 225, 195, 305, 205, 385);
+  x.moveTo(275, 175); x.bezierCurveTo(215, 225, 195, 305, 205, 385);
   x.bezierCurveTo(215, 418, 385, 418, 395, 385);
   x.bezierCurveTo(405, 305, 385, 225, 325, 175);
-  x.fill();
-  x.strokeStyle = '#ff8c00';
-  x.lineWidth = 1.5;
-  x.stroke();
-
+  x.fill(); x.stroke();
   // Seams
-  x.strokeStyle = 'rgba(255,140,0,0.5)';
-  x.lineWidth = 1;
-  x.setLineDash([4, 3]);
-  x.beginPath();
-  x.moveTo(300, 175);
-  x.lineTo(300, 385);
-  x.stroke();
+  x.strokeStyle = 'rgba(255,140,0,0.5)'; x.lineWidth = 1; x.setLineDash([4, 3]);
+  x.beginPath(); x.moveTo(300, 175); x.lineTo(300, 385); x.stroke();
   x.setLineDash([]);
-
   // Labels
   x.font = "13px 'Plus Jakarta Sans', sans-serif";
-  x.fillStyle = '#8899aa';
-  x.textAlign = 'center';
+  x.fillStyle = '#8899aa'; x.textAlign = 'center';
   x.fillText(`Anteprima 3D — ${BASE_PATTERNS[state.currentBase].name} Taglia ${state.project.baseSize}`, 300, 450);
-  x.font = "10px 'Inter', sans-serif";
-  x.fillStyle = '#667788';
-  x.fillText('Visualizzazione simulata del cartamodello', 300, 470);
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   MODAL
-   ═══════════════════════════════════════════════════════════════ */
+// ═══════════════════════════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════════════════════════
 document.getElementById('btn-new-project').addEventListener('click', () => modal.classList.add('active'));
 document.getElementById('btn-close-modal').addEventListener('click', () => modal.classList.remove('active'));
 document.getElementById('btn-cancel-project').addEventListener('click', () => modal.classList.remove('active'));
-document.getElementById('btn-create-project').addEventListener('click', createProject);
-
-function createProject() {
+document.getElementById('btn-create-project').addEventListener('click', () => {
   state.project.name = document.getElementById('proj-name').value;
-  state.project.type = document.getElementById('proj-type').value;
   state.project.baseSize = parseInt(document.getElementById('proj-size').value);
   state.project.fabric = document.getElementById('proj-fabric').value;
-  state.project.fabricWidth = parseInt(document.getElementById('proj-fabric-width').value);
-  state.project.seamAllowance = parseFloat(document.getElementById('proj-seam-allowance').value) || 1.5;
-
+  state.project.fabricWidth = parseInt(document.getElementById('proj-width').value);
   modal.classList.remove('active');
   clearCanvas();
   renderGradingTable();
-  showToast('Progetto creato: ' + state.project.name);
-}
+  showToast('Progetto: ' + state.project.name);
+});
 
-/* ═══════════════════════════════════════════════════════════════
-   CLEAR CANVAS
-   ═══════════════════════════════════════════════════════════════ */
+// ═══════════════════════════════════════════════════════════════
+// CLEAR
+// ═══════════════════════════════════════════════════════════════
 document.getElementById('btn-clear').addEventListener('click', clearCanvas);
 
 function clearCanvas() {
   saveState();
   state.paths = [];
   state.currentPath = [];
-  state.currentBase = 'bodice';
   render();
   showToast('Canvas pulito');
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   TOAST — Punto 10: Toast personalizzato
-   ═══════════════════════════════════════════════════════════════ */
-let toastTimeout;
-function showToast(message) {
-  clearTimeout(toastTimeout);
-  toast.textContent = message;
-  toast.classList.add('active');
-  toastTimeout = setTimeout(() => toast.classList.remove('active'), 2400);
+// ═══════════════════════════════════════════════════════════════
+// UNDO
+// ═══════════════════════════════════════════════════════════════
+function saveState() {
+  if (state.undoStack.length > 30) state.undoStack.shift();
+  state.undoStack.push(canvas.toDataURL());
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   KEYBOARD SHORTCUTS
-   ═══════════════════════════════════════════════════════════════ */
-document.addEventListener('keydown', (e) => {
-  if (e.ctrlKey || e.metaKey) {
-    if (e.key === 'z') {
-      e.preventDefault();
-      undoLast();
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+    e.preventDefault();
+    if (state.undoStack.length > 0) {
+      const img = new Image();
+      img.onload = () => {
+        const dpr = window.devicePixelRatio || 1;
+        ctx.clearRect(0, 0, canvas.width/dpr, canvas.height/dpr);
+        ctx.drawImage(img, 0, 0, canvas.width/dpr, canvas.height/dpr);
+      };
+      img.src = state.undoStack.pop();
     }
-  }
-  // Tool shortcuts
-  const toolKeys = { 's': 'select', 'p': 'pen', 'l': 'line', 'r': 'rect', 'c': 'curve', 'm': 'measure', 'e': 'eraser' };
-  if (toolKeys[e.key] && !e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT') {
-    const btn = document.querySelector(`.tool-btn[data-tool="${toolKeys[e.key]}"]`);
-    if (btn) btn.click();
   }
 });
 
-/* ═══════════════════════════════════════════════════════════════
-   INITIALIZATION
-   ═══════════════════════════════════════════════════════════════ */
+// ═══════════════════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════════════════
+let toastTimeout;
+function showToast(msg) {
+  clearTimeout(toastTimeout);
+  toastEl.textContent = msg;
+  toastEl.classList.add('active');
+  toastTimeout = setTimeout(() => toastEl.classList.remove('active'), 2400);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
 renderGradingTable();
 renderLayers();
 render();
