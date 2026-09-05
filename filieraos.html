@@ -14,7 +14,7 @@
    DESIGN TOKENS
 ═══════════════════════════════════════════════ */
 :root {
-  /* Palette — Navy + Cream + Amber */
+  /* Palette — Industrial Blue + Safety Orange */
   --navy-950: #0a1628;
   --navy-900: #0f2040;
   --navy-800: #163058;
@@ -26,32 +26,32 @@
   --navy-200: #8aa8d0;
   --navy-100: #b8c8e0;
   --navy-50:  #e0f0ff;
-  --cream-100: #f5f8ff;
-  --cream-200: #eaf4ff;
-  --cream-300: #ffcc66;
-  --amber-600: #b86800;
-  --amber-500: #e07000;
-  --amber-400: #d06000;
-  --amber-200: #ffaa22;
-  --amber-100: #ffbb44;
-  --emerald: #2a5490;
-  --rose:    #ff7700;
-  /* Surfaces */
-  --bg:        var(--cream-100);
-  --surface:   #f8faff;
-  --surface-2: var(--cream-200);
-  --border:    #a0c8f0;
-  --border-2:  #a8bdd0;
-  /* Text */
-  --text-primary:   var(--navy-900);
-  --text-secondary: var(--navy-600);
-  --text-muted:     var(--navy-400);
-  --text-faint:     var(--navy-300);
+  --cream-100: #0a1628;
+  --cream-200: #0f2040;
+  --cream-300: #ff8c00;
+  --amber-600: #ff8c00;
+  --amber-500: #ff8c00;
+  --amber-400: #ffaa00;
+  --amber-200: #ffcc00;
+  --amber-100: #ffdd44;
+  --emerald: #ff8c00;
+  --rose:    #ff6600;
+  /* Surfaces - all dark blue */
+  --bg:        #0a1628;
+  --surface:   #0f2040;
+  --surface-2: #163058;
+  --border:    #2a5490;
+  --border-2:  #3a6898;
+  /* Text - orange for contrast */
+  --text-primary:   #ff8c00;
+  --text-secondary: #ffaa00;
+  --text-muted:     #cc7700;
+  --text-faint:     #995500;
   /* Brand */
-  --brand:       var(--navy-700);
-  --brand-light: var(--navy-100);
-  --accent:      var(--amber-500);
-  --accent-bg:   var(--amber-100);
+  --brand:       #ff8c00;
+  --brand-light: #ffaa00;
+  --accent:      #ff8c00;
+  --accent-bg:   #ffdd44;
   /* Typography */
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body:    'DM Sans', system-ui, sans-serif;
@@ -160,7 +160,7 @@ a { text-decoration: none; color: inherit; }
 }
 .auth-hero p {
   font-size: 16px;
-  color: rgba(255,255,255,0.55);
+  color: #ffaa00;
   max-width: 440px;
   line-height: 1.7;
   font-weight: 300;
@@ -176,7 +176,7 @@ a { text-decoration: none; color: inherit; }
   align-items: center;
   gap: 12px;
   font-size: 13px;
-  color: rgba(255,255,255,0.6);
+  color: #cc7700;
 }
 .auth-feat .feat-icon {
   width: 32px; height: 32px;
