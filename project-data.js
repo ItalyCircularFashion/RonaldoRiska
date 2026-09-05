@@ -83,6 +83,7 @@ window.portfolioProjects = [
     status:      "Live",
     type:        "html",
     url:         "filieraos.html",
+    detailPage:  "progetto.html",
     featured:    true,
     tags:        ["Make-or-Buy", "CVP", "Kraljic", "Dashboard", "KPI", "SCM"],
     detail: {

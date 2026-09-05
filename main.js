@@ -94,12 +94,13 @@ const renderProjectCard = (project, options = {}) => {
   const category = categories[project.category] || {};
   const typeClass = project.type === "html" ? "is-live" : "is-source";
   const directHref = fromRoot(project.url);
+  const schedaHref = project.detailPage ? project.detailPage : detailHref(project);
 
   return `
     <article class="project-card reveal ${typeClass}" data-project-card data-category="${escapeHtml(
     project.category
   )}" data-search="${escapeHtml(`${project.title} ${project.description} ${project.tags.join(" ")}`.toLowerCase())}">
-      <a class="project-preview" href="${detailHref(project)}" aria-label="Apri scheda ${escapeHtml(project.title)}">
+      <a class="project-preview" href="${schedaHref}" aria-label="Apri scheda ${escapeHtml(project.title)}">
         <span class="preview-topline"></span>
         <span class="preview-grid" aria-hidden="true">
           <span></span><span></span><span></span><span></span>
@@ -116,7 +117,7 @@ const renderProjectCard = (project, options = {}) => {
         <ul class="tag-list" aria-label="Tag progetto">${renderTagList(project.tags.slice(0, options.compact ? 3 : 5))}</ul>
       </div>
       <div class="card-actions">
-        <a class="button button-primary" href="${detailHref(project)}">Scheda tecnica</a>
+        <a class="button button-primary" href="${schedaHref}">Scheda tecnica</a>
         <a class="button button-ghost" href="${directHref}" target="_blank" rel="noopener">${projectTypeLabel[project.type] || "Apri"}</a>
       </div>
     </article>
