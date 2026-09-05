@@ -1,146 +1,471 @@
-<!doctype html>
-<html style="font-family:'Bahnschrift', 'Segoe UI', 'Arial', sans-serif" lang="it" data-theme="dark" data-page="cad">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ModaCAD | Ronaldo Riska</title>
-    <link rel="alternate" hreflang="it" href="https://italycircularfashion.github.io/RonaldoRiska/modacad.html">
-    <meta name="description" content="ModaCAD: sistema completo di modellistica e cartamodelli digitali per il settore fashion. Concept e prototipi.">
-    <meta name="keywords" content="Ronaldo Riska, ModaCAD, sistema, completo, modellistica, cartamodelli, digitali, settore, fashion, Concept, prototipi">
-    <meta name="theme-color" content="#08110c">
-    <link rel="canonical" href="https://italycircularfashion.github.io/RonaldoRiska/modacad.html">
-    
-    <!-- ── STRUCTURED DATA ── -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": "ModaCAD | Ronaldo Riska",
-      "url": "https://italycircularfashion.github.io/RonaldoRiska/modacad.html",
-      "description": "ModaCAD: sistema di modellistica e cartamodelli digitali per il settore fashion. Concept e prototipi in browser.",
-      "inLanguage": "it",
-      "about": { "@type": "Person", "name": "Ronaldo Riska" }
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>ModaCAD Studio | Ronaldo Riska</title>
+  <meta name="description" content="ModaCAD Studio: workspace CAD per modellistica digitale, cartamodelli e gradazione taglie. Interfaccia professionale ispirata a Audaces e Lectra.">
+  <meta name="keywords" content="Ronaldo Riska, ModaCAD, CAD, moda, cartamodelli, modellistica, pattern making">
+  <meta name="theme-color" content="#0a1628">
+  <link rel="alternate" hreflang="it" href="https://italycircularfashion.github.io/RonaldoRiska/modacad.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="canonical" href="https://italycircularfashion.github.io/RonaldoRiska/modacad.html">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #0a1628;
+      color: #ffffff;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
-    </script>
-        <link rel="preload" as="style" href="site.css" onload="this.rel='stylesheet'">
-    <link rel="preload" as="style" href="site-patch.css" onload="this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="site.css"><link rel="stylesheet" href="site-patch.css"></noscript>    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://italycircularfashion.github.io/RonaldoRiska/" }
-      ]
+    .app-header {
+      background: #0f2040;
+      border-bottom: 2px solid #ff8c00;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
     }
-    </script>
-  </head>
-  <body>
-    <div class="sheep-walk-container" aria-hidden="true">
-      <canvas id="sheepCanvas"></canvas>
+    .app-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .app-title span { color: #ff8c00; }
+    .header-actions { display: flex; gap: 8px; }
+    .btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: #ff8c00; color: #0a1628; }
+    .btn-primary:hover { background: #ffaa00; }
+    .btn-secondary { background: #163058; color: #ffffff; border: 1px solid #2a5490; }
+    .btn-secondary:hover { background: #1e4070; }
+
+    .app-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+    .toolbar {
+      width: 220px;
+      background: #0f2040;
+      border-right: 1px solid #2a5490;
+      padding: 16px;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+    .tool-section { margin-bottom: 20px; }
+    .tool-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #ff8c00;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+    .tool-btn {
+      padding: 10px 8px;
+      background: #163058;
+      border: 1px solid #2a5490;
+      border-radius: 6px;
+      color: #ffffff;
+      font-size: 12px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+    }
+    .tool-btn:hover { background: #1e4070; border-color: #ff8c00; }
+    .tool-btn.active { background: #ff8c00; color: #0a1628; border-color: #ff8c00; }
+    .tool-btn .icon { font-size: 18px; display: block; margin-bottom: 2px; }
+
+    .color-palette { display: flex; flex-wrap: wrap; gap: 4px; }
+    .color-swatch {
+      width: 24px; height: 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+    .color-swatch:hover { border-color: #ffffff; }
+    .color-swatch.active { border-color: #ff8c00; }
+
+    .canvas-container {
+      flex: 1;
+      position: relative;
+      background: #163058;
+      overflow: hidden;
+    }
+    #main-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      cursor: crosshair;
+    }
+    .grid-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      opacity: 0.1;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    .info-panel {
+      position: absolute;
+      bottom: 16px; right: 16px;
+      background: #0f2040;
+      border: 1px solid #2a5490;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 12px;
+      min-width: 160px;
+    }
+    .info-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+    .info-label { color: #8899aa; }
+    .info-value { color: #ff8c00; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="app-title">ModaCAD <span>Studio</span></div>
+    <div class="header-actions">
+      <button class="btn btn-secondary" onclick="clearCanvas()">Cancella</button>
+      <button class="btn btn-secondary" onclick="undoLast()">Annulla</button>
+      <button class="btn btn-primary" onclick="exportPNG()">Esporta PNG</button>
     </div>
-    <a href="./" class="logo-animated-container" aria-label="Torna alla home">
-      <canvas id="animatedLogoCanvas"></canvas>
-    </a>
-    <a class="skip-link" href="#main">Salta al contenuto</a>
-    <header class="site-header">
-      <nav class="nav container" aria-label="Navigazione principale">
-        <a class="brand" href="index.html"><span class="brand-mark">RR</span><span class="brand-text"><span>Ronaldo Riska</span><span>CAD Moda</span></span></a>
-        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu" data-nav-toggle><span aria-hidden="true"></span><span class="sr-only">Apri menu</span></button>
-        <div class="nav-links" id="site-menu" data-nav-menu>
-          <a href="index.html">Home</a>
-          <a href="curriculum.html">Curriculum</a>
-          <a href="tessitura.html">Tessitura</a>
-          <a href="supply-chain-production.html">Supply Chain</a>
-          <a href="index.html#contatti">Contatti</a>
-        </div>
-      </nav>
-    </header>
+  </header>
 
-    <main id="main">
-      <section class="page-hero section">
-        <div class="container dashboard-grid">
-          <div class="reveal">
-            <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><span>CAD Moda</span></nav>
-            <p class="eyebrow">Macro-area professionale</p>
-            <h1 data-category-page-title>CAD Moda</h1>
-            <p class="lead" data-category-page-summary></p>
-            <div class="hero-actions">
-              <a class="button button-primary" href="#lista-progetti">Apri i tool</a>
-              <a class="button button-secondary" href="progetto.html?id=modacad-ep1">Scheda ModaCAD</a>
-            </div>
-          </div>
-          <div class="dashboard-panel reveal">
-            <canvas data-kpi-canvas aria-label="Grafico maturita area CAD moda"></canvas>
-          </div>
+  <div class="app-body">
+    <!-- Toolbar -->
+    <aside class="toolbar">
+      <div class="tool-section">
+        <div class="tool-label">Strumenti</div>
+        <div class="tool-grid">
+          <button class="tool-btn active" data-tool="pencil" onclick="selectTool('pencil')">
+            <span class="icon">✏️</span>Matita
+          </button>
+          <button class="tool-btn" data-tool="line" onclick="selectTool('line')">
+            <span class="icon">📏</span>Linea
+          </button>
+          <button class="tool-btn" data-tool="rect" onclick="selectTool('rect')">
+            <span class="icon">⬜</span>Rettangolo
+          </button>
+          <button class="tool-btn" data-tool="eraser" onclick="selectTool('eraser')">
+            <span class="icon">🧽</span>Gomma
+          </button>
         </div>
-      </section>
-
-      <section class="section section-band">
-        <div class="container">
-          <div class="section-heading reveal">
-            <p class="eyebrow">Product workflow</p>
-            <h2>Dalla modellistica al prototipo digitale.</h2>
-          </div>
-          <ul class="process-list">
-            <li class="reveal"><strong>01</strong><span>Studio CAD moda con strumenti di progettazione e interfaccia da workspace tecnico.</span></li>
-            <li class="reveal"><strong>02</strong><span>Cartamodelli digitali jeans uomo/donna e visualizzazione delle costruzioni prodotto.</span></li>
-            <li class="reveal"><strong>03</strong><span>SketchHD e workflow AI-oriented per trasformare concept e sketch in output piu' definiti.</span></li>
-          </ul>
-        </div>
-      </section>
-
-      <section class="section" id="lista-progetti">
-        <div class="container">
-          <div class="section-heading reveal">
-            <p class="eyebrow">Progetti CAD Moda</p>
-            <h2>Strumenti moda, prodotto e design digitale.</h2>
-          </div>
-          <div class="project-grid" data-project-list data-category="cad"></div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <p>&copy; <span data-year></span> Ronaldo Riska. CAD Moda.</p>
-        <a href="index.html">Home</a>
       </div>
-    </footer>
+
+      <div class="tool-section">
+        <div class="tool-label">Spessore</div>
+        <div class="tool-grid">
+          <button class="tool-btn" data-width="2" onclick="setWidth(2)">Sottile</button>
+          <button class="tool-btn active" data-width="4" onclick="setWidth(4)">Medio</button>
+          <button class="tool-btn" data-width="8" onclick="setWidth(8)">Spesso</button>
+          <button class="tool-btn" data-width="16" onclick="setWidth(16)">Extra</button>
+        </div>
+      </div>
+
+      <div class="tool-section">
+        <div class="tool-label">Colore</div>
+        <div class="color-palette">
+          <div class="color-swatch active" style="background:#ff8c00" onclick="setColor('#ff8c00')"></div>
+          <div class="color-swatch" style="background:#ffaa00" onclick="setColor('#ffaa00')"></div>
+          <div class="color-swatch" style="background:#ffffff" onclick="setColor('#ffffff')"></div>
+          <div class="color-swatch" style="background:#00f6ff" onclick="setColor('#00f6ff')"></div>
+          <div class="color-swatch" style="background:#ff4d4d" onclick="setColor('#ff4d4d')"></div>
+          <div class="color-swatch" style="background:#00ff9d" onclick="setColor('#00ff9d')"></div>
+          <div class="color-swatch" style="background:#ffaa00" onclick="setColor('#ffaa00')"></div>
+          <div class="color-swatch" style="background:#3a6898" onclick="setColor('#3a6898')"></div>
+        </div>
+      </div>
+
+      <div class="tool-section">
+        <div class="tool-label">Pattern Predefiniti</div>
+        <div class="tool-grid">
+          <button class="tool-btn" onclick="loadPattern('front')">Fronte</button>
+          <button class="tool-btn" onclick="loadPattern('back')">Retro</button>
+          <button class="tool-btn" onclick="loadPattern('sleeve')">Manica</button>
+          <button class="tool-btn" onclick="loadPattern('collar')">Collo</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Canvas -->
+    <main class="canvas-container">
+      <canvas id="main-canvas"></canvas>
+      <div class="grid-overlay"></div>
+      <div class="info-panel">
+        <div class="info-row"><span class="info-label">Strumento:</span><span class="info-value" id="info-tool">Matita</span></div>
+        <div class="info-row"><span class="info-label">Spessore:</span><span class="info-value" id="info-width">4px</span></div>
+        <div class="info-row"><span class="info-label">Colore:</span><span class="info-value" id="info-color">#ff8c00</span></div>
+        <div class="info-row"><span class="info-label">Tratti:</span><span class="info-value" id="info-strokes">0</span></div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('main-canvas');
+    const ctx = canvas.getContext('2d');
     
-    <script src="main.js" defer></script>
-  <script src="loader.js"></script>
-      <script src="logo-loom-animated.js" defer></script>
-      <script src="sheep-walk.js" defer></script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Ronaldo Riska",
-      "url": "https://italycircularfashion.github.io/RonaldoRiska/",
-      "logo": "https://italycircularfashion.github.io/RonaldoRiska/profile.jpg",
-      "email": "ronaldo.riska@gmail.com",
-      "sameAs": [
-        "https://github.com/ItalyCircularFashion",
-        "https://italycircularfashion.github.io/RonaldoRiskaCV/"
-      ],
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Prato",
-        "addressCountry": "IT"
+    // State
+    let currentTool = 'pencil';
+    let currentColor = '#ff8c00';
+    let currentWidth = 4;
+    let isDrawing = false;
+    let startX = 0, startY = 0;
+    let strokes = 0;
+    let undoStack = [];
+    let tempCanvas = null;
+
+    // Resize canvas
+    function resizeCanvas() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      canvas.style.width = rect.width + 'px';
+      canvas.style.height = rect.height + 'px';
+      ctx.scale(dpr, dpr);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      redrawCanvas();
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    setTimeout(resizeCanvas, 100);
+
+    // Save state for undo
+    function saveState() {
+      if (undoStack.length > 20) undoStack.shift();
+      undoStack.push(canvas.toDataURL());
+    }
+
+    // Tool selection
+    function selectTool(tool) {
+      currentTool = tool;
+      document.querySelectorAll('.tool-btn[data-tool]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tool === tool);
+      });
+      document.getElementById('info-tool').textContent = tool.charAt(0).toUpperCase() + tool.slice(1);
+    }
+
+    // Width selection
+    function setWidth(width) {
+      currentWidth = width;
+      document.querySelectorAll('.tool-btn[data-width]').forEach(btn => {
+        btn.classList.toggle('active', parseInt(btn.dataset.width) === width);
+      });
+      document.getElementById('info-width').textContent = width + 'px';
+    }
+
+    // Color selection
+    function setColor(color) {
+      currentColor = color;
+      document.querySelectorAll('.color-swatch').forEach(s => {
+        s.classList.toggle('active', s.style.background === color || s.style.backgroundColor === color);
+      });
+      document.getElementById('info-color').textContent = color;
+    }
+
+    // Canvas events
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseleave', stopDrawing);
+
+    // Touch support
+    canvas.addEventListener('touchstart', handleTouch);
+    canvas.addEventListener('touchmove', handleTouchMove);
+    canvas.addEventListener('touchend', stopDrawing);
+
+    function getCoords(e) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      };
+    }
+
+    function startDrawing(e) {
+      isDrawing = true;
+      const coords = getCoords(e);
+      startX = coords.x;
+      startY = coords.y;
+      saveState();
+
+      if (currentTool === 'pencil' || currentTool === 'eraser') {
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
       }
     }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "Ronaldo Riska — Tool",
-      "url": "https://italycircularfashion.github.io/RonaldoRiska/",
-      "applicationCategory": "BusinessApplication",
-      "operatingSystem": "Web",
-      "author": { "@type": "Person", "name": "Ronaldo Riska" },
-      "description": "Tool digitale per la filiera tessile e la supply chain."
+
+    function draw(e) {
+      if (!isDrawing) return;
+      const coords = getCoords(e);
+
+      ctx.strokeStyle = currentTool === 'eraser' ? '#163058' : currentColor;
+      ctx.lineWidth = currentWidth;
+
+      if (currentTool === 'pencil' || currentTool === 'eraser') {
+        ctx.lineTo(coords.x, coords.y);
+        ctx.stroke();
+      } else if (currentTool === 'line' || currentTool === 'rect') {
+        // For line/rect, redraw from saved state
+        if (tempCanvas) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          const img = new Image();
+          img.onload = () => {
+            ctx.drawImage(img, 0, 0);
+            drawShape(coords);
+          };
+          img.src = tempCanvas;
+        } else {
+          drawShape(coords);
+        }
+      }
     }
-    </script>
-  </body>
+
+    function drawShape(coords) {
+      ctx.strokeStyle = currentColor;
+      ctx.lineWidth = currentWidth;
+      ctx.beginPath();
+      if (currentTool === 'line') {
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(coords.x, coords.y);
+      } else if (currentTool === 'rect') {
+        ctx.rect(startX, startY, coords.x - startX, coords.y - startY);
+      }
+      ctx.stroke();
+    }
+
+    function stopDrawing(e) {
+      if (!isDrawing) return;
+      isDrawing = false;
+      strokes++;
+      document.getElementById('info-strokes').textContent = strokes;
+      tempCanvas = null;
+    }
+
+    function handleTouch(e) {
+      e.preventDefault();
+      const touch = e.touches[0];
+      startDrawing({ clientX: touch.clientX, clientY: touch.clientY });
+    }
+
+    function handleTouchMove(e) {
+      e.preventDefault();
+      const touch = e.touches[0];
+      draw({ clientX: touch.clientX, clientY: touch.clientY });
+    }
+
+    function redrawCanvas() {
+      ctx.fillStyle = '#163058';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function clearCanvas() {
+      saveState();
+      ctx.fillStyle = '#163058';
+      ctx.fillRect(0, 0, canvas.width / (window.devicePixelRatio || 1), canvas.height / (window.devicePixelRatio || 1));
+      strokes = 0;
+      document.getElementById('info-strokes').textContent = '0';
+    }
+
+    function undoLast() {
+      if (undoStack.length === 0) return;
+      const img = new Image();
+      img.onload = () => {
+        const dpr = window.devicePixelRatio || 1;
+        ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+        ctx.drawImage(img, 0, 0, canvas.width / dpr, canvas.height / dpr);
+      };
+      img.src = undoStack.pop();
+    }
+
+    function exportPNG() {
+      const link = document.createElement('a');
+      link.download = 'modacad-pattern.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+
+    // Pattern presets
+    function loadPattern(type) {
+      saveState();
+      const w = canvas.width / (window.devicePixelRatio || 1);
+      const h = canvas.height / (window.devicePixelRatio || 1);
+      ctx.fillStyle = '#163058';
+      ctx.fillRect(0, 0, w, h);
+      
+      ctx.strokeStyle = '#ff8c00';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+
+      const cx = w / 2;
+      const cy = h / 2;
+
+      if (type === 'front') {
+        // Front bodice
+        ctx.moveTo(cx - 60, cy - 100);
+        ctx.lineTo(cx + 60, cy - 100);
+        ctx.lineTo(cx + 80, cy);
+        ctx.lineTo(cx + 70, cy + 120);
+        ctx.lineTo(cx - 70, cy + 120);
+        ctx.lineTo(cx - 80, cy);
+        ctx.closePath();
+        ctx.stroke();
+        // Neckline
+        ctx.beginPath();
+        ctx.arc(cx, cy - 100, 30, 0, Math.PI, false);
+        ctx.stroke();
+      } else if (type === 'back') {
+        // Back bodice
+        ctx.moveTo(cx - 60, cy - 100);
+        ctx.lineTo(cx + 60, cy - 100);
+        ctx.lineTo(cx + 80, cy);
+        ctx.lineTo(cx + 70, cy + 120);
+        ctx.lineTo(cx - 70, cy + 120);
+        ctx.lineTo(cx - 80, cy);
+        ctx.closePath();
+        ctx.stroke();
+      } else if (type === 'sleeve') {
+        // Sleeve
+        ctx.moveTo(cx - 80, cy - 60);
+        ctx.lineTo(cx + 80, cy - 60);
+        ctx.lineTo(cx + 60, cy + 80);
+        ctx.lineTo(cx - 60, cy + 80);
+        ctx.closePath();
+        ctx.stroke();
+      } else if (type === 'collar') {
+        // Collar
+        ctx.moveTo(cx - 50, cy);
+        ctx.quadraticCurveTo(cx, cy - 40, cx + 50, cy);
+        ctx.quadraticCurveTo(cx, cy + 20, cx - 50, cy);
+        ctx.stroke();
+      }
+    }
+  </script>
+
+</body>
 </html>
