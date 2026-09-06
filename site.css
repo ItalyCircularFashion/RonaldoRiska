@@ -67,6 +67,8 @@ body {
   background-size: 54px 54px, 54px 54px, auto, auto;
   font-family: var(--font);
   line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   padding-block: var(--space-section-tight);
 }
