@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
 
+Disallow: /backend/
+Disallow: /docs/
+Disallow: /scripts/
+Disallow: /ai/
+Disallow: /archive/
+
 Sitemap: https://italycircularfashion.github.io/RonaldoRiska/sitemap.xml
