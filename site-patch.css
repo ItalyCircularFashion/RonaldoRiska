@@ -2380,10 +2380,14 @@ body::before {
   line-height: 1.1;
 }
 .dig-form-lead {
-  font-size: 1.05rem;
-  color: rgba(255,255,255,.75);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.92);
   margin: 0 0 1.5rem;
-  line-height: 1.6;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 .dig-form-grid {
   display: grid;
@@ -2398,11 +2402,10 @@ body::before {
   grid-column: 1 / -1;
 }
 .dig-field span {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
   color: #ff2d6f;
 }
 .dig-field input,
