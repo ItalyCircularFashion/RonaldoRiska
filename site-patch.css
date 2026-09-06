@@ -2245,6 +2245,14 @@ body::before {
   height: 24px;
   margin-top: 1.5rem;
 }
+.baroque-cta {
+  margin-top: 2rem;
+  text-align: center;
+}
+.baroque-cta .button {
+  font-size: 1rem;
+  padding: 0.9rem 1.8rem;
+}
 .footer-ornament {
   position: absolute;
   top: 0;
