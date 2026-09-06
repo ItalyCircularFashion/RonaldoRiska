@@ -3,505 +3,740 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial=1">
-<meta name="description" content="Progetto digitalizzazione impresa: dashboard KPI, digital twin, analisi colli di bottiglia e AI per la governance aziendale.'impresa, KPI misurabili, identificazione colli di bottiglia e dashboard AI per decisioni data-driven.">
-<meta name="keywords" content="Ronaldo Riska, Progetto, digitalizzazione, impresa, dashboard, digital, twin, analisi, colli, bottiglia, governance, aziendale">
-    <meta name="robots" content="index, follow">
+<meta name="description" content="Progetto digitalizzazione impresa: dashboard KPI, digital twin, analisi colli di bottiglia e AI per la governance aziendale. KPI misurabili, identificazione colli di bottiglia e dashboard AI per decisioni data-driven.">
+<meta name="keywords" content="Ronaldo Riska, Progetto, digitalizzazione, impresa, dashboard, digital twin, analisi, colli di bottiglia, governance aziendale, Industria 4.0">
+<meta name="robots" content="index, follow">
 <meta name="theme-color" content="#0b0c0f">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Digitalizzazione Impresa | KPI Dashboard + AI">
+<meta property="og:description" content="Trasforma i dati operativi in KPI azionabili. Dashboard AI, digital twin, analisi colli di bottiglia.">
+<meta property="og:url" content="https://italycircularfashion.github.io/RonaldoRiska/progetto-digitalizzazione-impresa.html">
+<meta property="og:locale" content="it_IT">
 <link rel="canonical" href="https://italycircularfashion.github.io/RonaldoRiska/progetto-digitalizzazione-impresa.html">
 <link rel="alternate" hreflang="it" href="https://italycircularfashion.github.io/RonaldoRiska/progetto-digitalizzazione-impresa.html">
 <link rel="alternate" hreflang="x-default" href="https://italycircularfashion.github.io/RonaldoRiska/progetto-digitalizzazione-impresa.html">
-<title>Digitalizzazione Impresa | Ronaldo Riska</title>
+<title>Digitalizzazione Impresa | KPI Dashboard + AI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; }
-  html, body { margin: 0; }
-  body {
-    font-family: 'Inter', sans-serif;
-    background: #080a0c;
-    color: #e6e8ec;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+* { box-sizing: border-box; }
+html, body { margin: 0; scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #080a0c;
+  color: #e6e8ec;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.wrap { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+a { color: inherit; text-decoration: none; }
 
-  header {
-    border-bottom: 1px solid #1f2937;
-    padding: 18px 0;
-    display: flex; justify-content: space-between; align-items: center;
-    background:
-      repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255,255,255,0.02) 20px),
-      linear-gradient(180deg,#0b0c0f,#090a0d);
-  }
-  .brand {
-    font-family: 'Oswald', sans-serif;
-    font-weight: 700;
-    color: #fff;
-    font-size: 20px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-  .brand small {
-    display: block;
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: #22d3ee;
-    margin-top: 4px;
-    text-transform: uppercase;
-  }
-  nav a {
-    color: #9ca3ab;
-    margin-left: 22px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-  nav a:hover { color: #22d3ee; text-decoration: none; }
+/* ── HEADER ── */
+header {
+  border-bottom: 1px solid #1f2937;
+  padding: 18px 0;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(11,12,15,0.92);
+  backdrop-filter: blur(12px);
+  position: sticky; top: 0; z-index: 100;
+}
+.brand {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  color: #fff;
+  font-size: 20px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.brand small {
+  display: block;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #22d3ee;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+.nav-links {
+  display: flex; align-items: center; gap: 22px;
+}
+.nav-links a {
+  color: #9ca3ab;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: color .2s;
+}
+.nav-links a:hover { color: #22d3ee; }
+.nav-cta {
+  background: #22d3ee;
+  color: #080a0c !important;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 700 !important;
+  transition: transform .2s, box-shadow .2s !important;
+}
+.nav-cta:hover {
+  background: #06b6d4 !important;
+  color: #080a0c !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(34,211,238,0.3);
+}
+@media (max-width: 700px) {
+  .nav-links a:not(.nav-cta) { display: none; }
+}
 
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    position: relative;
-    display: flex; align-items: center; justify-content: center;
-    background:
-      repeating-linear-gradient(0deg, transparent, transparent 23px, rgba(34,211,238,0.04) 24px),
-      repeating-linear-gradient(90deg, transparent, transparent 23px, rgba(34,211,238,0.04) 24px),
-      linear-gradient(135deg,#0b0c0f,#0a0b0e);
-    border-bottom: 1px solid #1f2937;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background:
-      radial-gradient(circle at 30% 20%, rgba(34,211,238,0.08), transparent 40%),
-      radial-gradient(circle at 70% 70%, rgba(255,255,255,0.03), transparent 40%);
-    pointer-events: none;
-  }
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(34,211,238,0.10), transparent 40%),
+    radial-gradient(circle at 70% 70%, rgba(255,255,255,0.04), transparent 40%),
+    linear-gradient(135deg,#0b0c0f,#0a0b0e);
+  border-bottom: 1px solid #1f2937;
+  overflow: hidden;
+  padding: 60px 0;
+}
+.hero-bg-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(34,211,238,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34,211,238,0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 70%);
+}
+.hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  width: 92%;
+  max-width: 900px;
+}
+.eyebrow {
+  font-family: 'Space Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-size: 11px;
+  color: #22d3ee;
+  margin: 0 0 20px;
+  font-weight: 700;
+}
+h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(38px, 6vw, 80px);
+  margin: 0 0 20px;
+  line-height: 0.95;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+.hero-sub {
+  font-size: 18px;
+  color: #cbd5e1;
+  max-width: 640px;
+  margin: 0 auto 36px;
+  font-weight: 400;
+  line-height: 1.7;
+}
+.hero-actions {
+  display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+}
+.btn-primary {
+  background: #22d3ee;
+  color: #080a0c;
+  padding: 16px 32px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  transition: transform .2s, box-shadow .2s;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(34,211,238,0.4);
+}
+.btn-secondary {
+  background: transparent;
+  color: #fff;
+  padding: 16px 32px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 1px solid #374151;
+  border-radius: 4px;
+  transition: border-color .2s, background .2s;
+}
+.btn-secondary:hover {
+  border-color: #22d3ee;
+  background: rgba(34,211,238,0.05);
+}
+.hero-stats {
+  display: flex; gap: 40px; justify-content: center; margin-top: 56px;
+  flex-wrap: wrap;
+}
+.hero-stat {
+  text-align: center;
+}
+.hero-stat-value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.2rem;
+  color: #22d3ee;
+  font-weight: 700;
+  line-height: 1;
+}
+.hero-stat-label {
+  font-size: 11px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 6px;
+}
 
-  /* AERIAL VIEW VISUAL */
-  .aerial-container {
-    position: relative;
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto 60px;
-    aspect-ratio: 16/9;
-    border: 1px solid #1f2937;
-    background:
-      repeating-linear-gradient(0deg, transparent, transparent 23px, rgba(34,211,238,0.03) 24px),
-      repeating-linear-grid(90deg, transparent, transparent 23px, rgba(34,211,238,0.03) 24px),
-      linear-gradient(135deg,#0a0b0e,#0b0c0f);
-    overflow: hidden;
-  }
-  .aerial-grid {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-image:
-      linear-gradient(rgba(34,211,238,0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(34,211,238,0.06) 1px, transparent 1px);
-    background-size: 40px 40px;
-  }
-  .building {
-    position: absolute;
-    background: rgba(34,211,238,0.1);
-    border: 1px solid rgba(34,211,238,0.3);
-    box-shadow: 0 0 20px rgba(34,211,238,0.15);
-  }
-  .building-1 { top: 20%; left: 15%; width: 25%; height: 40%; }
-  .building-2 { top: 30%; left: 45%; width: 20%; height: 30%; }
-  .building-3 { top: 15%; left: 70%; width: 18%; height: 35%; }
-  .data-overlay {
-    position: absolute;
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    color: #22d3ee;
-    background: rgba(0,0,0,0.7);
-    padding: 4px 10px;
-    border: 1px solid rgba(34,211,238,0.3);
-    white-space: nowrap;
-  }
-  .formula-overlay {
-    position: absolute;
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    color: rgba(232,196,124,0.9);
-    background: rgba(0,0,0,0.6);
-    padding: 6px 12px;
-    border: 1px solid rgba(232,196,124,0.3);
-    font-style: italic;
-  }
-  .formula-1 { top: 10%; right: 10%; }
-  .formula-2 { bottom: 20%; left: 10%; }
-  .formula-3 { top: 50%; right: 5%; }
+/* ── SECTIONS ── */
+section { padding: 100px 0; border-bottom: 1px solid #1f2937; }
+.section-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 3.6vw, 48px);
+  color: #fff;
+  text-transform: uppercase;
+  margin: 0 0 18px;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+.section-meta {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #22d3ee;
+  margin-bottom: 40px;
+}
+.section-desc {
+  color: #9ca3ab; margin: 0 0 40px; max-width: 720px; font-size: 15px;
+}
 
-  .hero-content {
-    position: relative;
-    z-index: 10;
-    text-align: center;
-    width: 90%;
-    max-width: 900px;
-  }
-  .eyebrow {
-    font-family: 'Space Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    font-size: 11px;
-    color: #22d3ee;
-    margin: 0 0 16px;
-    font-weight: 700;
-  }
-  h1 {
-    font-family: 'Oswald', sans-serif;
-    font-size: clamp(36px, 5vw, 72px);
-    margin: 0 0 18px;
-    line-height: 1;
-    font-weight: 700;
-    color: #fff;
-    text-transform: uppercase;
-    letter-spacing: -0.02em;
-  }
-  .lead {
-    font-size: 16px;
-    color: #9ca3ab;
-    max-width: 720px;
-    margin: 0 auto 28px;
-    font-weight: 400;
-  }
+/* ── FOMO ── */
+.fomo-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+}
+.fomo-card {
+  background: linear-gradient(135deg, rgba(249,115,22,0.08), rgba(15,16,20,1));
+  border: 1px solid rgba(249,115,22,0.2);
+  padding: 28px;
+  border-radius: 6px;
+  transition: transform .3s, border-color .3s;
+}
+.fomo-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(249,115,22,0.4);
+}
+.fomo-icon {
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+.fomo-card h3 {
+  margin: 0 0 10px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.fomo-card p {
+  margin: 0;
+  color: #9ca3ab;
+  font-size: 13px;
+  line-height: 1.7;
+}
 
-  /* SECTIONS */
-  section { padding: 80px 0; border-bottom: 1px solid #1f2937; }
-  .section-title {
-    font-family: 'Oswald', sans-serif;
-    font-size: clamp(28px, 3.6vw, 48px);
-    color: #fff;
-    text-transform: uppercase;
-    margin: 0 0 18px;
-    letter-spacing: -0.01em;
-  }
-  .section-meta {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: #22d3ee;
-    margin-bottom: 40px;
-  }
+/* ── KPI DASHBOARD ── */
+.kpi-dashboard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: #1f2937;
+  border: 1px solid #1f2937;
+}
+.kpi-box {
+  background: #0b0c0f;
+  padding: 28px 24px;
+  position: relative;
+  overflow: hidden;
+  transition: background .3s;
+}
+.kpi-box:hover { background: #0f1014; }
+.kpi-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, #22d3ee, transparent);
+}
+.kpi-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #22d3ee;
+  margin-bottom: 12px;
+}
+.kpi-value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.kpi-desc {
+  font-size: 12px;
+  color: #9ca3ab;
+  line-height: 1.6;
+}
+.kpi-bar {
+  height: 4px;
+  background: #1f2937;
+  margin-top: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.kpi-bar-fill {
+  height: 100%;
+  background: #22d3ee;
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
-  /* KPI DASHBOARD */
-  .kpi-dashboard {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: #1f2937;
-    border: 1px solid #1f2937;
-  }
-  .kpi-box {
-    background: #0b0c0f;
-    padding: 28px 24px;
-    position: relative;
-    overflow: hidden;
-    transition: background .3s;
-  }
-  .kpi-box:hover { background: #0f1014; }
-  .kpi-box::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 2px;
-    background: linear-gradient(90deg, #22d3ee, transparent);
-  }
-  .kpi-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: #22d3ee;
-    margin-bottom: 12px;
-  }
-  .kpi-value {
-    font-family: 'Oswald', sans-serif;
-    font-size: 2.8rem;
-    font-weight: 700;
-    color: #fff;
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-  .kpi-desc {
-    font-size: 12px;
-    color: #9ca3ab;
-    line-height: 1.6;
-  }
-  .kpi-bar {
-    height: 4px;
-    background: #1f2937;
-    margin-top: 14px;
-    position: relative;
-    overflow: hidden;
-  }
-  .kpi-bar-fill {
-    height: 100%;
-    background: #22d3ee;
-    transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
-  }
+/* ── METHODOLOGY ── */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  background: #1f2937;
+  border: 1px solid #1f2937;
+}
+.step {
+  background: #0b0c0f;
+  padding: 28px 22px;
+  transition: background .35s;
+}
+.step:hover { background: #0f1014; }
+.step-num {
+  font-family: 'Oswald', sans-serif;
+  font-size: 42px;
+  color: #22d3ee;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 12px;
+  opacity: 0.6;
+}
+.step h4 {
+  margin: 0 0 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+.step p {
+  margin: 0;
+  color: #9ca3ab;
+  font-size: 12px;
+  line-height: 1.7;
+}
 
-  /* STEPS */
-  .steps {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2px;
-    background: #1f2937;
-    border: 1px solid #1f2937;
-  }
-  .step {
-    background: #0b0c0f;
-    padding: 28px 22px;
-    transition: background .35s;
-  }
-  .step:hover { background: #0f1014; }
-  .step-num {
-    font-family: 'Oswald', sans-serif;
-    font-size: 42px;
-    color: #22d3ee;
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: 12px;
-    opacity: 0.6;
-  }
-  .step h4 {
-    margin: 0 0 8px;
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
-    color: #fff;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-  }
-  .step p {
-    margin: 0;
-    color: #9ca3ab;
-    font-size: 12px;
-    line-height: 1.7;
-  }
+/* ── ROI CALCULATOR ── */
+.roi-card {
+  background: linear-gradient(135deg, #0f1014, #0b0c0f);
+  border: 1px solid #1f2937;
+  padding: 40px;
+  border-radius: 8px;
+}
+.roi-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+.roi-input label {
+  display: block;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+.roi-input input {
+  width: 100%;
+  background: #1f2937;
+  border: 1px solid #374151;
+  color: #fff;
+  padding: 12px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color .2s;
+}
+.roi-input input:focus {
+  border-color: #22d3ee;
+}
+.roi-results {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+.roi-result {
+  text-align: center;
+  padding: 24px 16px;
+  background: #0b0c0f;
+  border: 1px solid #1f2937;
+  border-radius: 6px;
+}
+.roi-result-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+.roi-result-value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2rem;
+  color: #22d3ee;
+  font-weight: 700;
+  line-height: 1;
+}
 
-  /* BOTTLENECK SECTION */
-  .bottleneck-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 22px;
-  }
-  .bottleneck-card {
-    background: linear-gradient(135deg,#0f1014,#0b0c0f);
-    border: 1px solid #1f2937;
-    padding: 24px;
-    transition: border-color .3s;
-  }
-  .bottleneck-card:hover { border-color: #22d3ee; }
-  .bottleneck-card h3 {
-    margin: 0 0 10px;
-    font-family: 'Oswald', sans-serif;
-    font-size: 18px;
-    color: #fff;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .bottleneck-card p {
-    margin: 0;
-    color: #9ca3ab;
-    font-size: 13px;
-  }
-  .bottleneck-icon {
-    font-family: 'Space Mono', monospace;
-    font-size: 12px;
-    color: #22d3ee;
-    margin-bottom: 12px;
-    letter-spacing: 1px;
-  }
+/* ── BOTTLENECK ── */
+.bottleneck-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+.bottleneck-card {
+  background: linear-gradient(135deg,#0f1014,#0b0c0f);
+  border: 1px solid #1f2937;
+  padding: 24px;
+  transition: border-color .3s;
+  border-radius: 6px;
+}
+.bottleneck-card:hover { border-color: #22d3ee; }
+.bottleneck-card h3 {
+  margin: 0 0 10px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.bottleneck-card p {
+  margin: 0;
+  color: #9ca3ab;
+  font-size: 13px;
+}
+.bottleneck-icon {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  color: #22d3ee;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
 
-  footer {
-    padding: 24px 0;
-    color: #6b7280;
-    font-size: 12px;
-    font-family: 'Space Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    border-top: 1px solid #1f2937;
-  }
+/* ── CTA SECTION ── */
+.cta-section {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(34,211,238,0.08), transparent 60%),
+    linear-gradient(135deg,#0b0c0f,#0a0b0e);
+  text-align: center;
+  padding: 120px 0;
+  border-bottom: none;
+}
+.cta-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(32px, 4.5vw, 56px);
+  color: #fff;
+  text-transform: uppercase;
+  margin: 0 0 20px;
+}
+.cta-desc {
+  color: #9ca3ab;
+  font-size: 16px;
+  max-width: 560px;
+  margin: 0 auto 40px;
+}
+.contact-form {
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+.contact-form label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #6b7280;
+}
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  background: #1f2937;
+  border: 1px solid #374151;
+  color: #fff;
+  padding: 14px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  border-radius: 4px;
+  outline: none;
+  resize: vertical;
+}
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #22d3ee;
+}
+.contact-form button {
+  margin-top: 8px;
+  background: #22d3ee;
+  color: #080a0c;
+  padding: 16px 32px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+.contact-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(34,211,238,0.4);
+}
+.form-note {
+  font-size: 11px;
+  color: #4b5563;
+  text-align: center;
+  margin-top: 12px;
+}
 
-  @media (max-width: 900px) {
-    .kpi-dashboard { grid-template-columns: 1fr; }
-    .steps { grid-template-columns: 1fr; }
-    .bottleneck-grid { grid-template-columns: 1fr; }
-  }
+/* ── FOOTER ── */
+footer {
+  padding: 24px 0;
+  color: #6b7280;
+  font-size: 12px;
+  font-family: 'Space Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-top: 1px solid #1f2937;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .fomo-grid { grid-template-columns: 1fr; }
+  .kpi-dashboard { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr; }
+  .bottleneck-grid { grid-template-columns: 1fr; }
+  .roi-inputs { grid-template-columns: 1fr; }
+  .roi-results { grid-template-columns: 1fr; }
+  .hero-stats { gap: 24px; }
+}
 </style>
 
-    <!-- ── STRUCTURED DATA ── -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": "Digitalizzazione Impresa | Ronaldo Riska",
-      "url": "https://italycircularfashion.github.io/RonaldoRiska/progetto-digitalizzazione-impresa.html",
-      "description": "Progetto digitalizzazione impresa: dashboard KPI, digital twin, analisi colli di bottiglia e AI per la governance.",
-      "inLanguage": "it",
-      "about": { "@type": "Person", "name": "Ronaldo Riska" }
-    }
-    </script>
-      <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://italycircularfashion.github.io/RonaldoRiska/" }
-      ]
-    }
-    </script>
-  </head>
+<!-- ── STRUCTURED DATA ── -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Digitalizzazione Impresa | Ronaldo Riska",
+  "url": "https://italycircularfashion.github.io/RonaldoRiska/progetto-digitalizzazione-impresa.html",
+  "description": "Progetto digitalizzazione impresa: dashboard KPI, digital twin, analisi colli di bottiglia e AI per la governance.",
+  "inLanguage": "it",
+  "about": { "@type": "Person", "name": "Ronaldo Riska" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://italycircularfashion.github.io/RonaldoRiska/" },
+    { "@type": "ListItem", "position": 2, "name": "Digitalizzazione Impresa", "item": "https://italycircularfashion.github.io/RonaldoRiska/progetto-digitalizzazione-impresa.html" }
+  ]
+}
+</script>
+</head>
 <body>
   <header>
     <div class="wrap" style="display:flex;justify-content:space-between;width:100%;align-items:center;">
       <div class="brand">DIGITAL FACTORY<small>Industria 4.0</small></div>
-      <nav>
+      <nav class="nav-links">
         <a href="index.html">Portfolio</a>
-        <a href="#">Progetto</a>
-        <a href="#">Demo</a>
-        <a href="#">Contatti</a>
+        <a href="#metodologia">Metodologia</a>
+        <a href="#kpi">KPI</a>
+        <a href="#roi">ROI</a>
+        <a href="#contatti" class="nav-cta">Inizia Ora</a>
       </nav>
     </div>
   </header>
 
+  <!-- ── HERO ── -->
   <section class="hero">
+    <div class="hero-bg-grid"></div>
     <div class="hero-content">
-      <p class="eyebrow">Industria 4.0 & AI</p>
-      <h1>Digitalizzazione<br>della tua impresa</h1>
-      <p class="lead">Trasforma i tuoi processi produttivi in dati misurabili. KPI chiari, colli di bottiglia identificati, sistemi intelligenti che imparano dal tuo business.</p>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <div class="section-header">
-        <div>
-          <h2 class="section-title">Fotografia digitale<br>dell'azienda</h2>
-          <p class="section-meta">Step 01 — Mappatura completa</p>
-        </div>
-      </div>
-      <p style="color:#9ca3ab;margin:0 0 40px;max-width:720px;font-size:15px;">
-        Il primo passo è creare una rappresentazione digitale fedele della tua azienda: flussi, tempi, risorse e formule matematiche che descrivono il tuo modo di produrre. Un modello matematico-logico dei tuoi processi.
+      <p class="eyebrow">Industria 4.0 &bull; AI Applicata &bull; Data-Driven</p>
+      <h1>La tua impresa<br>ha bisogno di dati,<br>non di intuizioni</h1>
+      <p class="hero-sub">
+        Ogni giorno senza un sistema di monitoraggio KPI è un giorno in cui perdi soldi senza saperlo.
+        I colli di bottiglia silenziosi, lo spreco di risorse e le decisioni prese a occhio ti costano
+        molto più di quanto la digitalizzazione farebbe risparmiare.
       </p>
-      <div class="aerial-container">
-        <div class="aerial-grid"></div>
-        <div class="building building-1"></div>
-        <div class="building building-2"></div>
-        <div class="building building-3"></div>
-        <div class="data-overlay" style="top:25%;left:18%;">📊 OEE: 78.4%</div>
-        <div class="data-overlay" style="top:35%;left:48%;">⚙️ Throughput: 1,240 u/h</div>
-        <div class="data-overlay" style="top:20%;left:73%;">📦 WIP: 342 unità</div>
-        <div class="data-overlay" style="bottom:25%;left:20%;">⏱️ Lead time: 4.2h</div>
-        <div class="data-overlay" style="bottom:30%;left:50%;">🎯 First pass: 96.8%</div>
-        <div class="formula-overlay formula-1">OEE = A × P × Q</div>
-        <div class="formula-overlay formula-2">TP = WIP ÷ CT</div>
-        <div class="formula-overlay formula-3">CT = T_N / Q</div>
+      <div class="hero-actions">
+        <a href="#roi" class="btn-primary">Calcola il tuo ROI →</a>
+        <a href="#kpi" class="btn-secondary">Vedi la Dashboard</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-value">+34%</div>
+          <div class="hero-stat-label">Efficienza media</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">-28%</div>
+          <div class="hero-stat-label">Sprechi produttivi</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">2.4x</div>
+          <div class="hero-stat-label">ROI entro 12 mesi</div>
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- ── FOMO: COSTO DELL'INAZIONE ── -->
   <section>
     <div class="wrap">
-      <div class="section-header">
-        <div>
-          <h2 class="section-title">Dashboard KPI</h2>
-          <p class="section-meta">Step 02 — Monitoraggio in tempo reale</p>
+      <h2 class="section-title">Cosa costa<br>NON digitalizzare</h2>
+      <p class="section-meta">Il prezzo dell'attesa</p>
+      <p class="section-desc">
+        Ogni mese che passa senza un sistema di monitoraggio è un mese in cui i problemi crescono
+        silenziosi. E quando li vedi, sono già grandi e costosi.
+      </p>
+      <div class="fomo-grid">
+        <div class="fomo-card">
+          <div class="fomo-icon">🔥</div>
+          <h3>Colli di bottiglia nascosti</h3>
+          <p>Un reparto lento può rallentare l'intera produzione. Senza dati, lo scopri solo quando il cliente si lamenta.</p>
+        </div>
+        <div class="fomo-card">
+          <div class="fomo-icon">💸</div>
+          <h3>Sprechi invisibili</h3>
+          <p>Scarti, ritardi, sovrapproduzione: bruciano fatturato che nessuno misura. Un sistema KPI li mette in luce.</p>
+        </div>
+        <div class="fomo-card">
+          <div class="fomo-icon">⏳</div>
+          <h3>Decisioni in ritardo</h3>
+          <p>Senza dashboard in tempo reale, decidi su dati di ieri. Il mercato non aspetta: chi decide prima, vince.</p>
         </div>
       </div>
-      <p style="color:#9ca3ab;margin:0 0 40px;max-width:720px;font-size:15px;">
-        Dati aggiornati in tempo reale su produzione, efficienza e criticità. Ogni KPI è calcolato su base matematica e logica produttiva.
+    </div>
+  </section>
+
+  <!-- ── DASHBOARD KPI ── -->
+  <section id="kpi">
+    <div class="wrap">
+      <h2 class="section-title">Dashboard KPI<br>in tempo reale</h2>
+      <p class="section-meta">Monitoraggio operativo completo</p>
+      <p class="section-desc">
+        Dati aggiornati in tempo reale su produzione, efficienza e criticità. Ogni KPI è calcolato
+        su base matematica e logica produttiva — non stime, numeri reali.
       </p>
       <div class="kpi-dashboard">
         <div class="kpi-box">
           <div class="kpi-label">Produzione totale €</div>
-          <div class="kpi-value">€ 2.4M</div>
+          <div class="kpi-value" data-target="2.4" data-prefix="€ " data-suffix="M">€ 0</div>
           <div class="kpi-desc">Valore prodotto lordo mensile. Include vendite e lavorazioni interne.</div>
-          <div class="kpi-bar"><div class="kpi-bar-fill" style="width: 82%;"></div></div>
+          <div class="kpi-bar"><div class="kpi-bar-fill" data-width="82"></div></div>
         </div>
         <div class="kpi-box">
           <div class="kpi-label">Produzione oraria</div>
-          <div class="kpi-value">1.240 u/h</div>
+          <div class="kpi-value" data-target="1240" data-suffix=" u/h">0</div>
           <div class="kpi-desc">Output medio orario per linea produttiva. Calcolato su turno di 8h.</div>
-          <div class="kpi-bar"><div class="kpi-bar-fill" style="width: 76%;"></div></div>
+          <div class="kpi-bar"><div class="kpi-bar-fill" data-width="76"></div></div>
         </div>
         <div class="kpi-box">
           <div class="kpi-label">Produzione prevista</div>
-          <div class="kpi-value">18.600</div>
+          <div class="kpi-value" data-target="18600">0</div>
           <div class="kpi-desc">Target pianificato per il periodo. Basato su forecast e ordini confermati.</div>
-          <div class="kpi-bar"><div class="kpi-bar-fill" style="width: 91%;"></div></div>
+          <div class="kpi-bar"><div class="kpi-bar-fill" data-width="91"></div></div>
         </div>
         <div class="kpi-box">
           <div class="kpi-label">Produzione attuale</div>
-          <div class="kpi-value">16.847</div>
+          <div class="kpi-value" data-target="16847">0</div>
           <div class="kpi-desc">Output effettivo registrato. Aggiornamento ogni 15 minuti dai sensori linea.</div>
-          <div class="kpi-bar"><div class="kpi-bar-fill" style="width: 90%;"></div></div>
+          <div class="kpi-bar"><div class="kpi-bar-fill" data-width="90"></div></div>
         </div>
         <div class="kpi-box">
           <div class="kpi-label">Colli di bottiglia</div>
-          <div class="kpi-value">3</div>
+          <div class="kpi-value" data-target="3">0</div>
           <div class="kpi-desc">Criticità attive: Tintura L3, Magazzino componenti, Manutenzione straordinaria.</div>
-          <div class="kpi-bar"><div class="kpi-bar-fill" style="width: 35%; background: #f97316;"></div></div>
+          <div class="kpi-bar"><div class="kpi-bar-fill" data-width="35" style="background: #f97316;"></div></div>
         </div>
         <div class="kpi-box">
           <div class="kpi-label">Tempo ciclo medio</div>
-          <div class="kpi-value">4.2 h</div>
+          <div class="kpi-value" data-target="4.2" data-suffix=" h">0</div>
           <div class="kpi-desc">Tempo medio di attraversamento. Confronto con standard teorico: 3.8h.</div>
-          <div class="kpi-bar"><div class="kpi-bar-fill" style="width: 68%;"></div></div>
+          <div class="kpi-bar"><div class="kpi-bar-fill" data-width="68"></div></div>
         </div>
       </div>
     </div>
   </section>
 
-  <section>
+  <!-- ── METHODOLOGY ── -->
+  <section id="metodologia">
     <div class="wrap">
-      <div class="section-header">
-        <div>
-          <h2 class="section-title">Metodologia</h2>
-          <p class="section-meta">Come funziona</p>
-        </div>
-      </div>
+      <h2 class="section-title">Come funziona</h2>
+      <p class="section-meta">Dati → Modello → Dashboard → Decisioni</p>
       <div class="steps">
         <div class="step">
           <div class="step-num">01</div>
           <h4>Mappatura</h4>
-          <p>Analisi completa dei flussi, raccolta dati storici e identificazione dei KPI chiave per il tuo settore.</p>
+          <p>Analisi completa dei flussi produttivi, raccolta dati storici e identificazione dei KPI chiave per il tuo settore specifico.</p>
         </div>
         <div class="step">
           <div class="step-num">02</div>
           <h4>Modello matematico</h4>
-          <p>Creazione di formule e algoritmi basati sulle tue logiche produttive, temporali e di costo.</p>
+          <p>Creazione di formule e algoritmi basati sulle tue logiche produttive, temporali e di costo. Un gemello digitale del tuo modo di produrre.</p>
         </div>
         <div class="step">
           <div class="step-num">03</div>
           <h4>Fotografia digitale</h4>
-          <p>Generazione del modello digitale dell'azienda: tutti i processi sono tracciati e misurabili.</p>
+          <p>Tutti i processi diventano tracciabili e misurabili in tempo reale. Niente più zone d'ombra nella tua produzione.</p>
         </div>
         <div class="step">
           <div class="step-num">04</div>
           <h4>Dashboard AI</h4>
-          <p>Interfaccia in tempo reale con KPI, alert predittivi e suggerimenti per miglioramento continuo.</p>
+          <p>Interfaccia intelligente con KPI, alert predittivi e suggerimenti per miglioramento continuo. Il sistema impara dai tuoi dati.</p>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- ── BOTTLENECK ── -->
   <section>
     <div class="wrap">
-      <div class="section-header">
-        <div>
-          <h2 class="section-title">Identifica i colli<br>di bottiglia</h2>
-          <p class="section-meta">Analisi criticità</p>
-        </div>
-      </div>
+      <h2 class="section-title">Identifica i colli<br>di bottiglia</h2>
+      <p class="section-meta">Analisi criticità automatizzata</p>
       <div class="bottleneck-grid">
         <div class="bottleneck-card">
           <div class="bottleneck-icon">[WIP]</div>
@@ -527,68 +762,146 @@
     </div>
   </section>
 
-  <section>
+  <!-- ── ROI CALCULATOR ── -->
+  <section id="roi">
     <div class="wrap">
-      <div class="section-header">
-        <div>
-          <h2 class="section-title">Perché prima<br>lo fai, meglio è</h2>
-          <p class="section-meta">Vantaggi concreti</p>
+      <h2 class="section-title">Calcola il tuo ROI</h2>
+      <p class="section-meta">Stima il ritorno dell'investimento</p>
+      <p class="section-desc">
+        Inserisci i tuoi dati e scopri quanto potresti risparmiare con un sistema di monitoraggio KPI.
+        I numeri si basano su casi reali di aziende tessili e industriali.
+      </p>
+      <div class="roi-card">
+        <div class="roi-inputs">
+          <div class="roi-input">
+            <label>Fatturato annuo (€)</label>
+            <input type="number" id="roi-revenue" value="2400000" step="100000" min="100000">
+          </div>
+          <div class="roi-input">
+            <label>Numero dipendenti</label>
+            <input type="number" id="roi-employees" value="25" min="2">
+          </div>
+          <div class="roi-input">
+            <label>% Sprechi stimati</label>
+            <input type="number" id="roi-waste" value="12" min="1" max="50">
+          </div>
+          <div class="roi-input">
+            <label>Colli di bottiglia noti</label>
+            <input type="number" id="roi-bottlenecks" value="3" min="0" max="20">
+          </div>
         </div>
-      </div>
-      <div class="steps" style="grid-template-columns: repeat(3, 1fr);">
-        <div class="step">
-          <div class="step-num">+</div>
-          <h4>Più dati, più precisione</h4>
-          <p>Ogni giorno di dati archiviati migliora la precisione dei modelli predittivi e la comprensione dei colli di bottiglia.</p>
-        </div>
-        <div class="step">
-          <div class="step-num">⚡</div>
-          <h4>Decisioni in tempo reale</h4>
-          <p>Alert automatici e dashboard live permettono di intervenire prima che il problema diventi critico.</p>
-        </div>
-        <div class="step">
-          <div class="step-num">🎯</div>
-          <h4>Miglioramento continuo</h4>
-          <p>Il sistema impara dai tuoi dati e suggerisce ottimizzazioni su tempi, metodi e risorse.</p>
+        <div class="roi-results">
+          <div class="roi-result">
+            <div class="roi-result-label">Risparmio annuo</div>
+            <div class="roi-result-value" id="roi-savings">€ 0</div>
+          </div>
+          <div class="roi-result">
+            <div class="roi-result-label">ROI 12 mesi</div>
+            <div class="roi-result-value" id="roi-return">0x</div>
+          </div>
+          <div class="roi-result">
+            <div class="roi-result-label">Tempo di payback</div>
+            <div class="roi-result-value" id="roi-payback">0 mesi</div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- ── CTA + CONTACT FORM ── -->
+  <section class="cta-section" id="contatti">
+    <div class="wrap">
+      <h2 class="cta-title">Pronto a vedere<br>i tuoi KPI in tempo reale?</h2>
+      <p class="cta-desc">
+        Compila il form e ricevi una consulenza gratuita di 30 minuti.
+        Analizziamo i tuoi processi e ti mostriamo cosa può fare la digitalizzazione per la tua azienda.
+      </p>
+      <form class="contact-form" onsubmit="event.preventDefault(); alert('Grazie! Ti contatteremo entro 24 ore lavorative.');">
+        <label>Nome e azienda</label>
+        <input type="text" placeholder="Mario Rossi — Tessitura Rossi Srl" required>
+        <label>Email aziendale</label>
+        <input type="email" placeholder="mario@rossi.example" required>
+        <label>Cosa ti preoccupa di più della tua produzione?</label>
+        <textarea rows="3" placeholder="Es: tempi ciclo troppo lunghi, scarti elevati, non ho visibilità sui costi..." required></textarea>
+        <button type="submit">Richiedi consulenza gratuita</button>
+        <p class="form-note">Nessun impegno. Consulenza iniziale di 30 minuti, gratuita e senza vincolo.</p>
+      </form>
+    </div>
+  </section>
+
   <footer>
     <div class="wrap">
-      <div>&copy; <span id="y"></span> DIGITAL FACTORY — Demo by Ronaldo Riska</div>
+      <div>&copy; <span id="y"></span> DIGITAL FACTORY — Progetto by Ronaldo Riska</div>
     </div>
   </footer>
-  <script>document.getElementById('y').textContent=new Date().getFullYear()</script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Ronaldo Riska",
-      "url": "https://italycircularfashion.github.io/RonaldoRiska/",
-      "logo": "https://italycircularfashion.github.io/RonaldoRiska/profile.jpg",
-      "email": "ronaldo.riska@gmail.com",
-      "sameAs": [
-        "https://github.com/ItalyCircularFashion",
-        "https://italycircularfashion.github.io/RonaldoRiskaCV/"
-      ],
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Prato",
-        "addressCountry": "IT"
-      }
+
+  <script>
+    // Year
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // ROI Calculator
+    function calcROI() {
+      const revenue = parseFloat(document.getElementById('roi-revenue').value) || 0;
+      const waste = parseFloat(document.getElementById('roi-waste').value) || 0;
+      const bottlenecks = parseFloat(document.getElementById('roi-bottlenecks').value) || 0;
+
+      const savings = Math.round(revenue * (waste / 100) * 0.65 + bottlenecks * 18000);
+      const investment = Math.max(12000, Math.round(revenue * 0.015));
+      const roi = savings / investment;
+      const payback = Math.max(1, Math.round(investment / (savings / 12)));
+
+      document.getElementById('roi-savings').textContent = '€ ' + savings.toLocaleString('it-IT');
+      document.getElementById('roi-return').textContent = roi.toFixed(1) + 'x';
+      document.getElementById('roi-payback').textContent = payback + ' mesi';
     }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Project",
-      "name": "Ronaldo Riska — Progetto",
-      "url": "https://italycircularfashion.github.io/RonaldoRiska/",
-      "author": { "@type": "Person", "name": "Ronaldo Riska" },
-      "description": "Progetto operativo tessile, supply chain e digitalizzazione."
-    }
-    </script>
+    ['roi-revenue','roi-employees','roi-waste','roi-bottlenecks'].forEach(id => {
+      document.getElementById(id).addEventListener('input', calcROI);
+    });
+    calcROI();
+
+    // KPI count-up animation on scroll
+    const kpiObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseFloat(el.dataset.target);
+          const prefix = el.dataset.prefix || '';
+          const suffix = el.dataset.suffix || '';
+          const isDecimal = target % 1 !== 0;
+          let current = 0;
+          const step = target / 60;
+          const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+              current = target;
+              clearInterval(timer);
+            }
+            const display = isDecimal ? current.toFixed(1) : Math.round(current).toLocaleString('it-IT');
+            el.textContent = prefix + display + suffix;
+          }, 16);
+          kpiObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('.kpi-value[data-target]').forEach(el => kpiObserver.observe(el));
+
+    // KPI bar animation on scroll
+    const barObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const width = el.dataset.width;
+          setTimeout(() => { el.style.width = width + '%'; }, 200);
+          barObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('.kpi-bar-fill[data-width]').forEach(el => {
+      el.style.width = '0%';
+      barObserver.observe(el);
+    });
+  </script>
 </body>
 </html>
