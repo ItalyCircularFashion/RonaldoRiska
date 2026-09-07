@@ -8,3 +8,4 @@ Disallow: /ai/
 Disallow: /archive/
 
 Sitemap: https://italycircularfashion.github.io/RonaldoRiska/sitemap.xml
+Sitemap: https://italycircularfashion.github.io/RonaldoRiska/image-sitemap.xml
