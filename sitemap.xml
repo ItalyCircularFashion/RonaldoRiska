@@ -173,48 +173,4 @@
     <changefreq>monthly</changefreq>
   </url>
 
-  <!-- DEMO -->
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-moda.html</loc>
-    <lastmod>2026-09-14</lastmod>
-    <priority>0.6</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-industriale.html</loc>
-    <lastmod>2026-09-14</lastmod>
-    <priority>0.6</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-servizi.html</loc>
-    <lastmod>2026-09-14</lastmod>
-    <priority>0.6</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-giornalistico.html</loc>
-    <lastmod>2026-09-14</lastmod>
-    <priority>0.6</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-acqua.html</loc>
-    <lastmod>2026-09-14</lastmod>
-    <priority>0.6</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-agricoltura.html</loc>
-    <lastmod>2026-09-14</lastmod>
-    <priority>0.6</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://italycircularfashion.github.io/RonaldoRiska/demo-callcenter.html</loc>
-    <lastmod>2026-09-14</lastmod>
-    <priority>0.6</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-
 </urlset>
