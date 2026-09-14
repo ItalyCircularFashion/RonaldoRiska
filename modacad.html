@@ -187,6 +187,7 @@ body {
 </style>
 </head>
 <body>
+    <a class="skip-link" href="#main">Salta al contenuto</a><!-- ── SKIP LINK ── -->
 
 <!-- TOPBAR -->
 <header class="topbar">
@@ -259,7 +260,7 @@ body {
   </aside>
 
   <!-- CANVAS -->
-  <main class="canvas-area" id="canvas-area">
+  <main id="main" class="canvas-area">
     <canvas id="main-canvas"></canvas>
     <div class="zoom-badge">
       <button class="zoom-btn" id="zoom-out">−</button>
@@ -905,5 +906,6 @@ renderMatrix();
 updateStats();
 </script>
 
+    <noscript><div style="padding:20px;text-align:center;background:#1a1a1a;color:#fff;font-family:sans-serif"><h2>JavaScript disabilitato</h2><p>Questo sito richiede JavaScript per funzionare correttamente. Torna alla <a href="./" style="color:#ff2d6f">home</a>.</p></div></noscript>
 </body>
 </html>
