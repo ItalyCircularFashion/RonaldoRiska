@@ -1,0 +1,873 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Digitalizzazione verso la Sostenibilità: guida esaustiva ai certificati tessili GRS, GOTS e ZDHC. Cosa sono, requisiti, processo di certificazione e come la digitalizzazione facilita la conformità.">
+<meta name="keywords" content="GRS, GOTS, ZDHC, certificazioni tessili, sostenibilità tessile, Global Recycled Standard, Global Organic Textile Standard, Zero Discharge of Hazardous Chemicals, digitalizzazione sostenibilità, tracciabilità tessile, supply chain sostenibile">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0a1628">
+<link rel="canonical" href="https://italycircularfashion.github.io/RonaldoRiska/sostenibilita-certificazioni.html">
+<link rel="alternate" hreflang="it" href="https://italycircularfashion.github.io/RonaldoRiska/sostenibilita-certificazioni.html">
+<link rel="alternate" hreflang="x-default" href="https://italycircularfashion.github.io/RonaldoRiska/sostenibilita-certificazioni.html">
+<title>Digitalizzazione verso la Sostenibilità | GRS GOTS ZDHC | Ronaldo Riska</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0a1628;
+    color: #ffffff;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    border-bottom: 1px solid rgba(255,140,0,0.2);
+    padding: 18px 0;
+    display: flex; justify-content: space-between; align-items: center;
+    background: linear-gradient(180deg,#0a1628,#081220);
+  }
+  .brand {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    color: #fff;
+    font-size: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .brand small {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #ff8c00;
+    margin-top: 4px;
+    text-transform: uppercase;
+  }
+  nav a {
+    color: #9ca3ab;
+    margin-left: 22px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  nav a:hover { color: #ff8c00; text-decoration: none; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 23px, rgba(255,140,0,0.04) 24px),
+      repeating-linear-gradient(90deg, transparent, transparent 23px, rgba(255,140,0,0.04) 24px),
+      linear-gradient(135deg,#0a1628,#081220);
+    border-bottom: 1px solid rgba(255,140,0,0.2);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(255,140,0,0.08), transparent 40%),
+      radial-gradient(circle at 70% 70%, rgba(255,255,255,0.03), transparent 40%);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    width: 90%;
+    max-width: 900px;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 11px;
+    color: #ff8c00;
+    margin: 0 0 16px;
+    font-weight: 700;
+  }
+  h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(36px, 5vw, 72px);
+    margin: 0 0 18px;
+    line-height: 1;
+    font-weight: 800;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+  .lead {
+    font-size: 16px;
+    color: #9ca3ab;
+    max-width: 720px;
+    margin: 0 auto 28px;
+    font-weight: 400;
+  }
+
+  /* STATUS BADGE */
+  .status-badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 6px 14px;
+    border: 1px solid #ff8c00;
+    color: #ff8c00;
+    margin-bottom: 20px;
+    background: rgba(255,140,0,0.1);
+  }
+
+  /* TAGS */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border: 1px solid rgba(255,140,0,0.3);
+    color: #9ca3ab;
+    background: rgba(255,140,0,0.05);
+  }
+
+  /* CTA BUTTON */
+  .cta-button {
+    display: inline-block;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 14px 32px;
+    background: #ff8c00;
+    color: #0a1628;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .cta-button:hover {
+    background: #ffa500;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255,140,0,0.3);
+  }
+
+  /* SECTIONS */
+  section { padding: 80px 0; border-bottom: 1px solid rgba(255,140,0,0.15); }
+  .section-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(28px, 3.6vw, 48px);
+    color: #fff;
+    text-transform: uppercase;
+    margin: 0 0 18px;
+    letter-spacing: -0.01em;
+    font-weight: 800;
+  }
+  .section-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #ff8c00;
+    margin-bottom: 40px;
+  }
+
+  /* CERT CARDS */
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .cert-card {
+    background: linear-gradient(135deg,#0d1a30,#0a1628);
+    border: 1px solid rgba(255,140,0,0.2);
+    padding: 28px 24px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .cert-card:hover {
+    border-color: #ff8c00;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(255,140,0,0.15);
+  }
+  .cert-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, #ff8c00, transparent);
+  }
+  .cert-icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    color: #ff8c00;
+    margin-bottom: 16px;
+  }
+  .cert-card h3 {
+    margin: 0 0 10px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 16px;
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .cert-card p {
+    margin: 0;
+    color: #9ca3ab;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  /* DETAIL SECTIONS */
+  .detail-section {
+    background: linear-gradient(135deg,#0d1a30,#0a1628);
+    border: 1px solid rgba(255,140,0,0.2);
+    padding: 40px;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .detail-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: #ff8c00;
+  }
+  .detail-section h3 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 24px;
+    color: #fff;
+    margin: 0 0 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .detail-section h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: #ff8c00;
+    margin: 24px 0 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .detail-section p {
+    color: #9ca3ab;
+    font-size: 14px;
+    line-height: 1.8;
+    margin: 0 0 16px;
+  }
+  .detail-section ul {
+    color: #9ca3ab;
+    font-size: 14px;
+    line-height: 1.8;
+    margin: 0 0 16px;
+    padding-left: 20px;
+  }
+  .detail-section li {
+    margin-bottom: 8px;
+  }
+  .detail-section strong {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* PROCESS STEPS */
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .step {
+    background: rgba(255,140,0,0.05);
+    border: 1px solid rgba(255,140,0,0.15);
+    padding: 20px;
+    text-align: center;
+  }
+  .step-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    color: #ff8c00;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .step-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .step-desc {
+    font-size: 12px;
+    color: #9ca3ab;
+    line-height: 1.6;
+  }
+
+  /* COMPARISON TABLE */
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+    font-size: 13px;
+  }
+  .comparison-table th {
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 11px;
+    color: #ff8c00;
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,140,0,0.3);
+    text-align: left;
+  }
+  .comparison-table td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,140,0,0.1);
+    color: #9ca3ab;
+    vertical-align: top;
+  }
+  .comparison-table td:first-child {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* DIGITAL SECTION */
+  .digital-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .digital-card {
+    background: linear-gradient(135deg,#0d1a30,#0a1628);
+    border: 1px solid rgba(255,140,0,0.2);
+    padding: 28px 24px;
+    transition: all 0.3s;
+  }
+  .digital-card:hover {
+    border-color: #ff8c00;
+    transform: translateY(-4px);
+  }
+  .digital-card h4 {
+    margin: 0 0 12px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 16px;
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .digital-card p {
+    margin: 0;
+    color: #9ca3ab;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  /* CTA SECTION */
+  .cta-section {
+    text-align: center;
+    padding: 80px 0;
+  }
+  .cta-section h2 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(28px, 3.6vw, 48px);
+    color: #fff;
+    text-transform: uppercase;
+    margin: 0 0 18px;
+    font-weight: 800;
+  }
+  .cta-section p {
+    color: #9ca3ab;
+    font-size: 16px;
+    max-width: 600px;
+    margin: 0 auto 32px;
+  }
+
+  footer {
+    padding: 24px 0;
+    color: #6b7280;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-top: 1px solid rgba(255,140,0,0.15);
+  }
+
+  @media (max-width: 900px) {
+    .cert-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: repeat(2, 1fr); }
+    .digital-grid { grid-template-columns: 1fr; }
+    .detail-section { padding: 24px; }
+  }
+</style>
+
+    <!-- ── STRUCTURED DATA ── -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Digitalizzazione verso la Sostenibilità | GRS GOTS ZDHC | Ronaldo Riska",
+      "url": "https://italycircularfashion.github.io/RonaldoRiska/sostenibilita-certificazioni.html",
+      "description": "Guida esaustiva ai certificati tessili GRS, GOTS e ZDHC. Cosa sono, requisiti, processo di certificazione e come la digitalizzazione facilita la conformità.",
+      "inLanguage": "it",
+      "about": { "@type": "Person", "name": "Ronaldo Riska" }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://italycircularfashion.github.io/RonaldoRiska/" },
+        { "@type": "ListItem", "position": 2, "name": "Sostenibilità", "item": "https://italycircularfashion.github.io/RonaldoRiska/sostenibilita-certificazioni.html" }
+      ]
+    }
+    </script>
+  </head>
+<body>
+    <main id="main">
+    <a class="skip-link" href="#main">Salta al contenuto</a>
+  <header>
+    <div class="wrap" style="display:flex;justify-content:space-between;width:100%;align-items:center;">
+      <div class="brand">SOSTENIBILITÀ<small>GRS · GOTS · ZDHC · Digitalizzazione</small></div>
+      <nav>
+        <a href="index.html#progetti">Progetti</a>
+        <a href="#grs">GRS</a>
+        <a href="#gots">GOTS</a>
+        <a href="#zdhc">ZDHC</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <p class="eyebrow">Digitalizzazione & Sostenibilità Tessile</p>
+      <h1>Entra nel mondo<br>GRS · GOTS · ZDHC</h1>
+      <p class="lead">Guida esaustiva ai certificati tessili più importanti: cosa sono, come si ottengono, requisiti e come la digitalizzazione rende la conformità più efficiente, tracciabile e competitiva.</p>
+      <div class="status-badge">Guida Completa</div>
+      <div class="tags">
+        <span class="tag">GRS</span>
+        <span class="tag">GOTS</span>
+        <span class="tag">ZDHC</span>
+        <span class="tag">Tracciabilità</span>
+        <span class="tag">Supply Chain</span>
+        <span class="tag">Conformità</span>
+      </div>
+      <a href="#grs" class="cta-button">Scopri i Certificati</a>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SEZIONE INTRODUTTIVA
+       ═══════════════════════════════════════════════════════════════ -->
+  <section>
+    <div class="wrap">
+      <h2 class="section-title">Perché la Sostenibilità<br>è un Vantaggio Competitivo</h2>
+      <p class="section-meta">Il contesto attuale del settore tessile</p>
+      <p style="color:#9ca3ab;margin:0 0 40px;max-width:800px;font-size:15px;">
+        Il settore tessile è tra i più al mondo per impatto ambientale e sociale. Consumatori, brand e legislatori richiedono trasparenza, tracciabilità e responsabilità lungo tutta la filiera. Le certificazioni GRS, GOTS e ZDHC rappresentano gli standard di riferimento per dimostrare impegno concreto verso la sostenibilità.
+      </p>
+      <div class="cert-grid">
+        <div class="cert-card">
+          <div class="cert-icon">♻</div>
+          <h3>GRS</h3>
+          <p>Global Recycled Standard: certifica il contenuto di materiale riciclato e la tracciabilità lungo la filiera.</p>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon">🌿</div>
+          <h3>GOTS</h3>
+          <p>Global Organic Textile Standard: garantisce la provenienza biologica e la sostenibilità ambientale e sociale.</p>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon">⚗</div>
+          <h3>ZDHC</h3>
+          <p>Zero Discharge of Hazardous Chemicals: elimina le sostanze chimiche pericolose dalla produzione tessile.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       GRS — GLOBAL RECYCLED STANDARD
+       ═══════════════════════════════════════════════════════════════ -->
+  <section id="grs">
+    <div class="wrap">
+      <h2 class="section-title">GRS — Global Recycled Standard</h2>
+      <p class="section-meta">Certificazione per il contenuto riciclato</p>
+
+      <div class="detail-section">
+        <h3>Cos'è il GRS</h3>
+        <p>Il <strong>Global Recycled Standard (GRS)</strong> è una certificazione internazionale, volontaria e completa che verifica il contenuto di materiale riciclato nei prodotti intermedi e finiti. È gestita da <strong>Textile Exchange</strong> e si applica a prodotti che contengono almeno il 20% di materiale riciclato.</p>
+        <p>Il GRS non si limita a certificare il contenuto riciclato: include anche requisiti ambientali, sociali e chimici lungo tutta la catena di fornitura, garantendo una tracciabilità completa dal riciclo fino al prodotto finale.</p>
+
+        <h4>Requisiti Principali</h4>
+        <ul>
+          <li><strong>Contenuto riciclato:</strong> almeno 20% di materiale riciclato pre-consumo o post-consumo</li>
+          <li><strong>Tracciabilità:</strong> sistema di bilancio di massa (Mass Balance) per tracciare il materiale riciclato</li>
+          <li><strong>Requisiti ambientali:</strong> gestione delle acque reflue, consumo energetico, emissioni</li>
+          <li><strong>Requisiti sociali:</strong> rispetto dei diritti dei lavoratori, OHS, non discriminazione</li>
+          <li><strong>Requisiti chimici:</strong> limiti sulle sostanze pericolose, conformità a REACH</li>
+          <li><strong>Etichettatura:</strong> comunicazione corretta del contenuto riciclato al consumatore</li>
+        </ul>
+
+        <h4>Processo di Certificazione</h4>
+        <div class="process-steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-title">Preparazione</div>
+            <div class="step-desc">Analisi della catena di fornitura, raccolta documentazione, definizione del sistema di tracciabilità</div>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-title">Richiesta</div>
+            <div class="step-desc">Invio domanda a un organismo di certificazione accreditato (es. Control Union, SGS, Bureau Veritas)</div>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-title">Audit</div>
+            <div class="step-desc">Ispezione sul sito, verifica documentale, controllo del sistema di bilancio di massa</div>
+          </div>
+          <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-title">Certificato</div>
+            <div class="step-desc">Rilascio del certificato GRS valido 1 anno, con audit di sorveglianza annuale</div>
+          </div>
+        </div>
+
+        <h4>Chi Può Ottenere il GRS</h4>
+        <p>Il GRS è aperto a tutte le aziende che operano nella filiera tessile: filatori, tessitori, tintori, finitori, prodotti di abbigliamento, prodotti per la casa, calzature e accessori. È particolarmente rilevante per aziende che utilizzano poliestere riciclato, cotone riciclato, lana riciclata e altre fibre riciclate.</p>
+
+        <h4>Vantaggi del GRS</h4>
+        <ul>
+          <li>Accesso a mercati e brand che richiedono materiali riciclati certificati</li>
+          <li>Differenziazione competitiva in un mercato sempre più orientato alla sostenibilità</li>
+          <li>Miglioramento della gestione ambientale e sociale</li>
+          <li>Trasparenza e credibilità verso i clienti finali</li>
+          <li>Conformità con le normative europee e globali sulla sostenibilità</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       GOTS — GLOBAL ORGANIC TEXTILE STANDARD
+       ═══════════════════════════════════════════════════════════════ -->
+  <section id="gots">
+    <div class="wrap">
+      <h2 class="section-title">GOTS — Global Organic Textile Standard</h2>
+      <p class="section-meta">Certificazione per i tessuti biologici</p>
+
+      <div class="detail-section">
+        <h3>Cos'è il GOTS</h3>
+        <p>Il <strong>Global Organic Textile Standard (GOTS)</strong> è lo standard di riferimento mondiale per la lavorazione di tessuti biologici. È riconosciuto come la certificazione più completa e rigorosa per i prodotti tessili ottenuti da fibre biologiche, coprendo l'intera catena di fornitura dalla raccolta delle fibre fino al prodotto finito.</p>
+        <p>Il GOTS è gestito dalla <strong>GOTS International Working Group</strong> e richiede che i prodotti contengano almeno il 70% di fibre biologiche certificate per essere etichettati come "biologici".</p>
+
+        <h4>Requisiti Principali</h4>
+        <ul>
+          <li><strong>Fibre biologiche:</strong> almeno 70% di fibre biologiche certificate (cotone, lino, lana, seta)</li>
+          <li><strong>Divieto di OGM:</strong> nessun organismo geneticamente modificato nelle fibre</li>
+          <li><strong>Requisiti ambientali:</strong> trattamento delle acque reflue, gestione dei rifiuti, divieto di sostanze tossiche</li>
+          <li><strong>Requisiti sociali:</strong> lavoro dignitoso, salari equi, sicurezza sul lavoro, nessun lavoro forzato o minorile</li>
+          <li><strong>Requisiti chimici:</strong> divieto di metalli pesanti, formaldeide, ftalati, coloranti cancerogeni</li>
+          <li><strong>Tracciabilità:</strong> sistema di separazione e identificazione dei prodotti biologici</li>
+          <li><strong>Etichettatura:</strong> comunicazione chiara al consumatore del contenuto biologico</li>
+        </ul>
+
+        <h4>Processo di Certificazione</h4>
+        <div class="process-steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-title">Valutazione</div>
+            <div class="step-desc">Analisi della filiera, verifica delle fonti di fibre biologiche, valutazione dei fornitori</div>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-title">Richiesta</div>
+            <div class="step-desc">Invio domanda a un organismo di certificazione GOTS accreditato</div>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-title">Audit</div>
+            <div class="step-desc">Ispezione completa, verifica della separazione, controllo chimico, test sui prodotti</div>
+          </div>
+          <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-title">Certificato</div>
+            <div class="step-desc">Rilascio del certificato GOTS valido 1 anno, con audit annuali</div>
+          </div>
+        </div>
+
+        <h4>Chi Può Ottenere il GOTS</h4>
+        <p>Il GOTS è aperto a tutte le aziende della filiera tessile: coltivatori di fibre biologiche, filatori, tessitori, tintori, finitori, prodotti di abbigliamento, prodotti per la casa, prodotti per l'infanzia e molto altro. È particolarmente rilevante per il cotone biologico, il lino, la lana e la seta biologica.</p>
+
+        <h4>Vantaggi del GOTS</h4>
+        <ul>
+          <li>Accesso al mercato dei tessuti biologici in forte crescita</li>
+          <li>Riconoscimento internazionale come standard di riferimento</li>
+          <li>Garanzia di sostenibilità ambientale e sociale</li>
+          <li>Trasparenza completa lungo la filiera</li>
+          <li>Conformità con le normative UE e globali sui prodotti biologici</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       ZDHC — ZERO DISCHARGE OF HAZARDOUS CHEMICALS
+       ═══════════════════════════════════════════════════════════════ -->
+  <section id="zdhc">
+    <div class="wrap">
+      <h2 class="section-title">ZDHC — Zero Discharge of Hazardous Chemicals</h2>
+      <p class="section-meta">Certificazione per la gestione chimica</p>
+
+      <div class="detail-section">
+        <h3>Cos'è lo ZDHC</h3>
+        <p>Lo <strong>Zero Discharge of Hazardous Chemicals (ZDHC)</strong> è un'iniziativa globale che mira a eliminare l'uso di sostanze chimiche pericolose nella filiera tessile e della moda. È guidata da un consorzio di brand, produttori e fornitori che collaborano per standardizzare la gestione chimica e ridurre l'impatto ambientale.</p>
+        <p>Lo ZDHC non è una certificazione tradizionale, ma un programma di conformità basato sulle <strong>ZDHC Manufacturing Restricted Substances List (MRSL)</strong> e sulle <strong>ZDHC Wastewater Guidelines</strong>.</p>
+
+        <h4>Requisiti Principali</h4>
+        <ul>
+          <li><strong>MRSL Compliance:</strong> rispetto della lista di sostanze chimiche vietate o limitate</li>
+          <li><strong>Gestione chimica:</strong> sistema di gestione sicura dei prodotti chimici</li>
+          <li><strong>Acque reflue:</strong> conformità alle linee guida ZDHC per le acque reflue</li>
+          <li><strong>Fanghi:</strong> gestione corretta dei fanghi di depurazione</li>
+          <li><strong>Aria:</strong> controllo delle emissioni atmosferiche</li>
+          <li><strong>Formazione:</strong> personale formato sulla gestione chimica sicura</li>
+          <li><strong>Tracciabilità:</strong> registrazione e tracciabilità dei prodotti chimici utilizzati</li>
+        </ul>
+
+        <h4>Processo di Conformità</h4>
+        <div class="process-steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-title">Adesione</div>
+            <div class="step-desc">Adesione al programma ZDHC e registrazione sulla piattaforma ZDHC Gateway</div>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-title">Valutazione</div>
+            <div class="step-desc">Analisi dei prodotti chimici utilizzati, verifica della conformità MRSL</div>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-title">Test</div>
+            <div class="step-desc>Analisi chimiche su prodotti e acque reflue da parte di laboratori accreditati</div>
+          </div>
+          <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-title">Conformità</div>
+            <div class="step-desc">Riconoscimento ZDHC, livelli di conformità (Level 1, 2, 3)</div>
+          </div>
+        </div>
+
+        <h4>Chi Può Aderire allo ZDHC</h4>
+        <p>Lo ZDHC è aperto a tutte le aziende della filiera tessile: produttori di prodotti chimici, filatori, tessitori, tintori, finitori, prodotti di abbigliamento e accessori. È particolarmente rilevante per le aziende che operano nella tintura, finitura e lavorazione chimica dei tessuti.</p>
+
+        <h4>Vantaggi dello ZDHC</h4>
+        <ul>
+          <li>Accesso a brand e mercati che richiedono conformità chimica</li>
+          <li>Riduzione del rischio di contaminazione chimica</li>
+          <li>Miglioramento della sicurezza ambientale e dei lavoratori</li>
+          <li>Standardizzazione della gestione chimica</li>
+          <li>Conformità con le normative REACH e altre regolamentazioni chimiche</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       CONFRONTO TRA I CERTIFICATI
+       ═══════════════════════════════════════════════════════════════ -->
+  <section>
+    <div class="wrap">
+      <h2 class="section-title">Confronto tra<br>i Certificati</h2>
+      <p class="section-meta">Panoramica comparativa</p>
+
+      <div class="detail-section">
+        <h3>Tabella Comparativa</h3>
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Caratteristica</th>
+              <th>GRS</th>
+              <th>GOTS</th>
+              <th>ZDHC</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Focus</td>
+              <td>Materiale riciclato</td>
+              <td>Fibre biologiche</td>
+              <td>Gestione chimica</td>
+            </tr>
+            <tr>
+              <td>Contenuto minimo</td>
+              <td>20% riciclato</td>
+              <td>70% biologico</td>
+              <td>N/A (programma)</td>
+            </tr>
+            <tr>
+              <td>Tracciabilità</td>
+              <td>Mass Balance</td>
+              <td>Separazione fisica</td>
+              <td>Registrazione chimica</td>
+            </tr>
+            <tr>
+              <td>Requisiti ambientali</td>
+              <td>Sì</td>
+              <td>Sì (più rigorosi)</td>
+              <td>Sì (acque, aria, fanghi)</td>
+            </tr>
+            <tr>
+              <td>Requisiti sociali</td>
+              <td>Sì</td>
+              <td>Sì (più rigorosi)</td>
+              <td>No</td>
+            </tr>
+            <tr>
+              <td>Requisiti chimici</td>
+              <td>Sì</td>
+              <td>Sì (più rigorosi)</td>
+              <td>Sì (focus principale)</td>
+            </tr>
+            <tr>
+              <td>Validità</td>
+              <td>1 anno</td>
+              <td>1 anno</td>
+              <td>Continua (livelli)</td>
+            </tr>
+            <tr>
+              <td>Organismo</td>
+              <td>Textile Exchange</td>
+              <td>GOTS IWG</td>
+              <td>ZDHC Foundation</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       DIGITALIZZAZIONE E SOSTENIBILITÀ
+       ═══════════════════════════════════════════════════════════════ -->
+  <section>
+    <div class="wrap">
+      <h2 class="section-title">Digitalizzazione<br>alla Servizio della Sostenibilità</h2>
+      <p class="section-meta">Come la tecnologia facilita la conformità</p>
+
+      <p style="color:#9ca3ab;margin:0 0 40px;max-width:800px;font-size:15px;">
+        La digitalizzazione non è solo un'opportunità di efficienza: è un abilitatore fondamentale per raggiungere e mantenere le certificazioni di sostenibilità. Ecco come la tecnologia trasforma la gestione della conformità.
+      </p>
+
+      <div class="digital-grid">
+        <div class="digital-card">
+          <h4>Tracciabilità Digitale</h4>
+          <p>Sistemi digitali per tracciare materiali e prodotti lungo la filiera, garantendo la tracciabilità richiesta da GRS e GOTS. Registrazione automatica dei flussi di materiali e dei trasferimenti.</p>
+        </div>
+        <div class="digital-card">
+          <h4>Gestione Chimica Integrata</h4>
+          <p>Piattaforme digitali per gestire l'inventario chimico, verificare la conformità MRSL e generare report per ZDHC. Controllo in tempo reale delle sostanze utilizzate.</p>
+        </div>
+        <div class="digital-card">
+          <h4>Monitoraggio Ambientale</h4>
+          <p>Sensoristica IoT e dashboard per monitorare consumo energetico, emissioni e acque reflue. Dati in tempo reale per la conformità ambientale e l'ottimizzazione dei processi.</p>
+        </div>
+        <div class="digital-card">
+          <h4>Documentazione Automatizzata</h4>
+          <p>Generazione automatica di documentazione per audit e certificazioni. Riduzione degli errori e del tempo necessario per la preparazione dei documenti.</p>
+        </div>
+        <div class="digital-card">
+          <h4>Analisi e Reporting</h4>
+          <p>Dashboard e report per analizzare le performance di sostenibilità, identificare aree di miglioramento e comunicare i risultati agli stakeholder.</p>
+        </div>
+        <div class="digital-card">
+          <h4>Blockchain per la Trasparenza</h4>
+          <p>Tecnologie blockchain per garantire l'immutabilità e la trasparenza dei dati di sostenibilità. Verifica indipendente della conformità lungo la filiera.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       PROSSIMI PASSI
+       ═══════════════════════════════════════════════════════════════ -->
+  <section>
+    <div class="wrap">
+      <h2 class="section-title">Come Iniziare<br>il Percorso di Certificazione</h2>
+      <p class="section-meta">Passi concreti per la conformità</p>
+
+      <div class="detail-section">
+        <h3>Roadmap per la Certificazione</h3>
+
+        <h4>1. Analisi della Situazione Attuale</h4>
+        <p>Valutare lo stato attuale dell'azienda rispetto ai requisiti dei certificati di interesse. Identificare gap e aree di miglioramento. Coinvolgere i fornitori chiave fin dall'inizio.</p>
+
+        <h4>2. Definizione degli Obiettivi</h4>
+        <p>Decidere quali certificati perseguire in base al mercato target, ai requisiti dei clienti e alla strategia aziendale. Priorizzare in base all'impatto e alla fattibilità.</p>
+
+        <h4>3. Preparazione della Documentazione</h4>
+        <p>Raccogliere e organizzare la documentazione richiesta: processi, procedure, registrazioni, certificazioni dei fornitori. Implementare sistemi di gestione digitali.</p>
+
+        <h4>4. Formazione del Personale</h4>
+        <p>Formare il personale sui requisiti dei certificati, sulle procedure corrette e sulla gestione della conformità. La formazione è fondamentale per il successo della certificazione.</p>
+
+        <h4>5. Audit Interno</h4>
+        <p>Condurre un audit interno per verificare la conformità prima dell'audit esterno. Identificare e correggere eventuali non conformità.</p>
+
+        <h4>6. Selezione dell'Organismo di Certificazione</h4>
+        <p>Scegliere un organismo di certificazione accreditato e riconosciuto. Verificare l'esperienza nel settore tessile e la reputazione sul mercato.</p>
+
+        <h4>7. Audit Esterno</h4>
+        <p>Condurre l'audit esterno con l'organismo di certificazione. Rispondere alle eventuali non conformità e implementare azioni correttive.</p>
+
+        <h4>8. Mantenimento della Certificazione</h4>
+        <p>Mantenere la conformità attraverso audit di sorveglianza annuali, aggiornamento continuo dei processi e miglioramento costante.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       CTA FINALE
+       ═══════════════════════════════════════════════════════════════ -->
+  <section class="cta-section">
+    <div class="wrap">
+      <h2>Pronto a Digitalizzare<br>la Tua Sostenibilità?</h2>
+      <p>La digitalizzazione è il percorso più efficiente per raggiungere e mantenere le certificazioni tessili. Inizia oggi il tuo percorso verso la conformità.</p>
+      <a href="index.html#progetti" class="cta-button">Scopri i Progetti</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <p>&copy; 2026 Ronaldo Riska — Digitalizzazione & Sostenibilità Tessile</p>
+    </div>
+  </footer>
+    </main>
+</body>
+</html>
