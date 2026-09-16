@@ -72,7 +72,8 @@
     @keyframes check-pulse{0%,100%{background:var(--chk)}50%{background:rgba(255,45,111,.4)}}
     .sq.vm::after{content:'';position:absolute;width:22%;height:22%;border-radius:50%;background:rgba(0,0,0,.35);box-shadow:0 0 4px rgba(0,0,0,.3)}
     .sq.vc::after{content:'';position:absolute;inset:3px;border:3px solid rgba(255,45,111,.55);border-radius:50%;box-shadow:0 0 8px rgba(255,45,111,.2)}
-    .piece{line-height:1;pointer-events:none;font-size:clamp(32px,7.5vw,52px);filter:drop-shadow(2px 2px 3px rgba(0,0,0,.5));transition:transform .15s ease}
+    .piece{line-height:1;pointer-events:none;width:82%;height:82%;display:flex;align-items:center;justify-content:center;transition:transform .15s ease}
+    .piece svg{width:100%;height:100%;display:block}
     .piece.pop{animation:piece-pop .25s ease}
     @keyframes piece-pop{0%{transform:scale(1.25)}50%{transform:scale(.95)}100%{transform:scale(1)}}
 
@@ -165,7 +166,37 @@
 /* ═══════════════════════════════════════════════════════
    SCHACCHI — PERSISTENTE, ZERO SERVER
    ═══════════════════════════════════════════════════════ */
-const P={w:{k:'♔',q:'♕',r:'♖',b:'♗',n:'♘',p:'♙'},b:{k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟'}};
+function pieceSvg(piece,color){
+  const w=color==='w';
+  const fill=w?'#f8faf7':'#1a1a1a';
+  const stroke=w?'#0a0a0a':'#f0f0f0';
+  const glow=w?'drop-shadow(1px 1px 2px rgba(0,0,0,.4))':'drop-shadow(1px 1px 2px rgba(0,0,0,.5))';
+  const paths={
+    k:`<path d="M22.5 11.63L20 6h5l-2.5 5.63z" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>
+      <path d="M22.5 25s-6-4-6-9c0-4 4-6 6-6s6 2 6 6c0 5-6 9-6 9z" fill="${fill}" stroke="${stroke}" stroke-width="1.8"/>
+      <path d="M14 34l4-3 5 5 5-5 4 3v7H14v-7z" fill="${fill}" stroke="${stroke}" stroke-width="1.8"/>
+      <path d="M14 38h17v4H14z" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>
+      <ellipse cx="22.5" cy="16" rx="3" ry="2" fill="${w?'rgba(255,255,255,.4)':'rgba(255,255,255,.15)'}"/>`,
+    q:`<path d="M12 8l4 6-4 2 6 4-5 5 5 4-4 3v4h1l4-3 4 3h1v-4l-4-3 5-4-5-5 6-4-4-2 4-6c-5 0-7 4-7 4s-2-4-7-4z" fill="${fill}" stroke="${stroke}" stroke-width="1.8"/>
+      <path d="M14 34l4-3 5 5 5-5 4 3v7H14v-7z" fill="${fill}" stroke="${stroke}" stroke-width="1.8"/>
+      <path d="M14 38h17v4H14z" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>`,
+    r:`<path d="M12 8v6l5 3v16l-5 3v4h21v-4l-5-3V17l5-3V8h-4v4h-3v-4h-5v4h-3v-4z" fill="${fill}" stroke="${stroke}" stroke-width="1.8"/>
+      <path d="M14 34h17v4H14z" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>`,
+    b:`<path d="M22.5 6c-2 0-3.5 1-4.5 2.5S16 12 16 14c0 3 2 5 2 5l-2 3 2 2h1l2-2v3l-3 3h14l-3-3v-3l2 2h1l2-2-2-3s2-2 2-5c0-2-1-4-2-5.5S27 6 25 6h-2.5z" fill="${fill}" stroke="${stroke}" stroke-width="1.8"/>
+      <path d="M14 34l4-3 5 5 5-5 4 3v7H14v-7z" fill="${fill}" stroke="${stroke}" stroke-width="1.8"/>
+      <path d="M14 38h17v4H14z" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>
+      <circle cx="22.5" cy="10" r="2" fill="${w?'rgba(255,255,255,.4)':'rgba(255,255,255,.15)'}"/>`,
+    n:`<path d="M15 34l4-3 5 5 5-5 4 3v7H14v-7z" fill="${fill}" stroke="${stroke}" stroke-width="1.8"/>
+      <path d="M14 38h17v4H14z" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>
+      <path d="M22 6c-5 0-9 4-9 9 0 3 1 5 2 7l-2 4h4l1-3c2 2 5 3 9 3l1 3h3l-2-4c1-2 2-4 2-7 0-2-1-4-2-5l3-1-1-3-3 2c-1-1-3-2-5-2z" fill="${fill}" stroke="${stroke}" stroke-width="1.8"/>
+      <circle cx="19" cy="14" r="1.5" fill="${stroke}"/>`,
+    p:`<circle cx="22.5" cy="12" r="6" fill="${fill}" stroke="${stroke}" stroke-width="1.8"/>
+      <path d="M16 34l4-2 5 4 5-4 4 2v6H16v-6z" fill="${fill}" stroke="${stroke}" stroke-width="1.8"/>
+      <path d="M16 37h13v3H16z" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>
+      <ellipse cx="22.5" cy="10" rx="3" ry="2" fill="${w?'rgba(255,255,255,.5)':'rgba(255,255,255,.2)'}"/>`
+  };
+  return `<svg viewBox="0 0 45 45" style="width:100%;height:100%;filter:${glow};shape-rendering:geometricPrecision">${paths[piece]}</svg>`;
+}
 const INIT=[['br','bn','bb','bq','bk','bb','bn','br'],['bp','bp','bp','bp','bp','bp','bp','bp'],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],['wp','wp','wp','wp','wp','wp','wp','wp'],['wr','wn','wb','wq','wk','wb','wn','wr']];
 const KEY='ronaldo_schacchi_v1';
 
@@ -341,7 +372,7 @@ function showPromo(col){
   const el=$('#promo-choices');el.innerHTML='';
   for(const t of['q','r','b','n']){
     const s=document.createElement('span');s.className='pr';
-    s.textContent=P[col][t];
+    s.innerHTML=pieceSvg(t,col);
     s.onclick=()=>{$('#promo-modal').classList.remove('active');doMove(S.promo.fr,S.promo.fc,S.promo.tr,S.promo.tc,t)};
     el.appendChild(s);
   }
@@ -367,7 +398,7 @@ function render(){
     const p=S.board[dr][dc];
     if(p){
       const pe=document.createElement('span');pe.className='piece';
-      pe.textContent=P[p[0]][p[1]];
+      pe.innerHTML=pieceSvg(p[1],p[0]);
       if(S.last&&S.last.to[0]===dr&&S.last.to[1]===dc)pe.classList.add('pop');
       s.appendChild(pe)
     }
