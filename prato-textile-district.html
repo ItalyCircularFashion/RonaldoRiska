@@ -1,503 +1,341 @@
 <!doctype html>
-<html style="font-family:'Cormorant Garamond', 'Palatino', Georgia, serif" lang="it" data-theme="dark" data-page="craft">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Osservatorio Tessile — Prato Textile District | Ronaldo Riska</title>
-    <link rel="alternate" hreflang="it" href="https://italycircularfashion.github.io/RonaldoRiska/prato-textile-district.html">
-    <meta name="description" content="Osservatorio sul distretto tessile di Prato: analisi storica, filiera circolare, innovazione e dati territoriali.">
-    <meta name="keywords" content="distretto tessile Prato, Prato Textile District, filiera circolare, tessitura Prato, innovazione tessile, storia tessile">
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Osservatorio Tessile — Prato Textile District | Ronaldo Riska</title>
+  <meta name="description" content="Osservatorio sul distretto tessile di Prato: analisi storica, filiera circolare, innovazione e dati territoriali.">
+  <meta name="keywords" content="distretto tessile Prato, Prato Textile District, filiera circolare, tessitura Prato, innovazione tessile, storia tessile">
+  <meta name="theme-color" content="#0c0a08">
+  <link rel="alternate" hreflang="it" href="https://italycircularfashion.github.io/RonaldoRiska/prato-textile-district.html">
+  <link rel="canonical" href="https://italycircularfashion.github.io/RonaldoRiska/prato-textile-district.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","name":"Osservatorio Tessile — Prato Textile District","url":"https://italycircularfashion.github.io/RonaldoRiska/prato-textile-district.html","description":"Osservatorio sul distretto tessile di Prato: analisi storica, filiera circolare e innovazione industriale.","inLanguage":"it"}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://italycircularfashion.github.io/RonaldoRiska/"}]}
+  </script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --ink:#f5f0e8;--ink-dim:#a89f94;--ink-muted:#6b6258;
+      --accent:#c49c5b;--accent-dim:#8a7340;
+      --bg:#0c0a08;--surface:rgba(196,156,91,.04);
+      --border:rgba(196,156,91,.18);--border-subtle:rgba(196,156,91,.08);
+    }
+    html{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.6}
+    body{background:var(--bg);background-image:radial-gradient(ellipse 800px 500px at 50% -10%,rgba(196,156,91,.03),transparent)}
+    a{color:var(--accent);text-decoration:none;transition:color .2s}
+    a:hover{color:var(--ink)}
 
-    <meta name="theme-color" content="#0a0805">
-    <link rel="canonical" href="https://italycircularfashion.github.io/RonaldoRiska/prato-textile-district.html">
-    
-    <!-- ── STRUCTURED DATA ── -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": "Osservatorio Tessile — Prato Textile District | Ronaldo Riska",
-      "url": "https://italycircularfashion.github.io/RonaldoRiska/prato-textile-district.html",
-      "description": "Osservatorio sul distretto tessile di Prato: analisi storica, filiera circolare e innovazione industriale.",
-      "inLanguage": "it",
-      "about": { "@type": "Person", "name": "Ronaldo Riska" }
+    .skip-link{position:absolute;top:-100px;left:8px;background:var(--accent);color:var(--bg);padding:8px 16px;z-index:9999;font-weight:600;font-size:.85rem;font-family:'IBM Plex Mono',SFMono-Regular,Consolas,monospace}
+    .skip-link:focus{top:8px}
+
+    header{border-bottom:1px solid var(--border-subtle);padding:1.5rem 2rem;background:var(--bg)}
+    nav{display:flex;align-items:center;justify-content:space-between;max-width:900px;margin:0 auto}
+    .brand{display:flex;align-items:center;gap:.8rem;text-decoration:none;color:var(--ink)}
+    .brand-mark{font-family:'IBM Plex Mono',SFMono-Regular,Consolas,monospace;font-size:.8rem;background:var(--accent);color:var(--bg);padding:.3rem .55rem;letter-spacing:.05em;font-weight:600}
+    .brand-text{display:flex;flex-direction:column;line-height:1.1}
+    .brand-text span:first-child{font-size:1.1rem;font-weight:600}
+    .brand-text span:last-child{font-family:'IBM Plex Mono',SFMono-Regular,Consolas,monospace;font-size:.6rem;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.15em;margin-top:.15rem}
+    .nav-links{display:flex;gap:2.5rem;align-items:center}
+    .nav-links a{font-family:'IBM Plex Mono',SFMono-Regular,Consolas,monospace;font-size:.68rem;color:var(--ink-dim);text-transform:uppercase;letter-spacing:.12em;transition:color .2s}
+    .nav-links a:hover{color:var(--accent)}
+
+    main{max-width:720px;margin:0 auto;padding:4rem 2rem 5rem}
+
+    .hero{padding:0 0 3.5rem;border-bottom:1px solid var(--border-subtle);margin-bottom:4rem}
+    .meta{display:flex;align-items:center;gap:1.5rem;margin-bottom:2.5rem;font-family:'IBM Plex Mono',SFMono-Regular,Consolas,monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.18em;color:var(--ink-muted)}
+    .meta span:not(:last-child)::after{content:'';display:inline-block;width:3px;height:3px;background:var(--accent);border-radius:50%;margin-left:1.5rem;vertical-align:middle}
+    h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(2.8rem,6vw,4.5rem);font-weight:300;line-height:.95;letter-spacing:-.02em;color:var(--ink);margin-bottom:1.5rem}
+    .lead-text{font-size:1.35rem;color:var(--ink-dim);font-weight:300;max-width:600px;line-height:1.5;font-style:italic}
+
+    section{margin-bottom:5rem}
+    .eyebrow{font-family:'IBM Plex Mono',SFMono-Regular,Consolas,monospace;font-size:.68rem;text-transform:uppercase;letter-spacing:.2em;color:var(--accent);margin-bottom:1.2rem}
+    h2{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.7rem,3.5vw,2.4rem);font-weight:400;line-height:1.2;max-width:600px;letter-spacing:-.01em;margin-bottom:2rem}
+    section p{font-size:1.1rem;line-height:1.75;color:var(--ink);font-weight:300}
+    section p+p{margin-top:1.3rem}
+
+    .timeline{display:grid;gap:2.5rem;margin-top:2rem}
+    .timeline-item{padding-bottom:2.5rem;border-bottom:1px solid var(--border-subtle)}
+    .timeline-item:last-child{border-bottom:none;padding-bottom:0}
+    .date{font-family:'IBM Plex Mono',SFMono-Regular,Consolas,monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.18em;color:var(--accent);display:block;margin-bottom:.7rem}
+    .timeline-item h3{font-family:'Playfair Display',Georgia,serif;font-size:1.4rem;font-weight:500;margin-bottom:.7rem;color:var(--ink)}
+    .timeline-item p{font-size:1.05rem;line-height:1.7;color:var(--ink-dim);font-weight:300}
+
+    /* ── KPI CARDS COLORATI ── */
+    .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:4rem 0}
+    .kpi{padding:1.8rem 1.5rem 1.5rem;position:relative;border:1px solid var(--border-subtle);border-right:none}
+    .kpi:last-child{border-right:1px solid var(--border-subtle)}
+    .kpi-icon{font-size:1.5rem;position:absolute;top:1.2rem;right:1.2rem;opacity:.7}
+    .kpi-label{font-family:'IBM Plex Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-muted);display:block;margin-bottom:.8rem}
+    .kpi-value{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.6rem,2.8vw,2.2rem);font-weight:400;line-height:1;letter-spacing:-.02em;margin-bottom:.4rem}
+    .kpi-caption{font-size:.75rem;color:var(--ink-dim);font-weight:300;line-height:1.3}
+    .kpi-trend{font-family:'IBM Plex Mono',monospace;font-size:.6rem;display:inline-block;margin-top:.6rem;padding:.2rem .5rem;border-radius:2px}
+    .kpi-trend.up{background:rgba(34,197,94,.15);color:#22c55e}
+    .kpi-trend.down{background:rgba(255,45,111,.15);color:#ff2d6f}
+    .kpi-trend.neutral{background:rgba(196,156,91,.15);color:var(--accent)}
+
+    /* Varianti colore */
+    .kpi:nth-child(1) .kpi-value{color:#22c55e}
+    .kpi:nth-child(2) .kpi-value{color:#3b82f6}
+    .kpi:nth-child(3) .kpi-value{color:#f5a623}
+    .kpi:nth-child(4) .kpi-value{color:#a855f7}
+
+    /* ── GRAFICI ── */
+    .charts{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:4rem}
+    .chart{background:var(--surface);border:1px solid var(--border-subtle);padding:1.5rem}
+    .chart-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem}
+    .chart-label{font-family:'IBM Plex Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-muted)}
+    .chart-value{font-family:'Playfair Display',Georgia,serif;font-size:1.2rem;font-weight:500;color:var(--ink)}
+    .chart canvas{display:block;width:100%;height:160px}
+    .chart-legend{display:flex;flex-wrap:wrap;gap:.4rem 1rem;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border-subtle)}
+    .legend-item{font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:var(--ink-dim);display:flex;align-items:center;gap:.35em}
+    .legend-dot{width:6px;height:6px;border-radius:1px}
+
+    .two-cols{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:3rem}
+    .two-cols h3{font-family:'Playfair Display',Georgia,serif;font-size:1.3rem;font-weight:500;margin-bottom:.7rem;color:var(--ink)}
+    .two-cols p{font-size:1rem;line-height:1.7;color:var(--ink-dim)}
+
+    .contact{border-top:1px solid var(--border-subtle);padding-top:3rem;margin-top:5rem;display:flex;justify-content:space-between;align-items:flex-start;gap:3rem}
+    .contact h2{font-size:1.6rem;margin-bottom:0}
+    .contact-info{display:flex;flex-direction:column;gap:.6rem}
+    .contact-row{display:flex;flex-direction:column;gap:.1rem}
+    .contact-label{font-family:'IBM Plex Mono',SFMono-Regular,Consolas,monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-muted)}
+    .contact-value{font-size:.95rem;color:var(--ink)}
+
+    footer{border-top:1px solid var(--border-subtle);padding:1.5rem 2rem;text-align:center;font-family:'IBM Plex Mono',SFMono-Regular,Consolas,monospace;font-size:.65rem;color:var(--ink-muted)}
+
+    @media(max-width:700px){
+      main{padding:2.5rem 1.5rem}
+      h1{font-size:2.2rem}
+      .lead-text{font-size:1.1rem}
+      .timeline,.charts,.two-cols,.contact{flex-direction:column;display:flex}
+      .kpi-grid{grid-template-columns:repeat(2,1fr)}
+      .kpi:nth-child(odd){border-right:1px solid var(--border-subtle)}
+      .kpi:nth-child(even){border-right:none}
+      .kpi:nth-child(-n+4){border-bottom:1px solid var(--border-subtle)}
+      .nav-links{display:none}
     }
-    </script>
-        <link rel="preload" as="style" href="site.css" onload="this.rel='stylesheet'">
-    <link rel="preload" as="style" href="site-patch.css" onload="this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="site.css"><link rel="stylesheet" href="site-patch.css"></noscript>
-        <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://italycircularfashion.github.io/RonaldoRiska/" }
-      ]
-    }
-    </script>
-  </head>
-  <body>
-    <div class="sheep-walk-container" aria-hidden="true">
-      <canvas id="sheepCanvas"></canvas>
-    </div>
-    <a href="./" class="logo-animated-container" aria-label="Torna alla home">
-      <canvas id="animatedLogoCanvas"></canvas>
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main">Salta al contenuto</a>
+
+<header>
+  <nav>
+    <a class="brand" href="./">
+      <span class="brand-mark">RR</span>
+      <span class="brand-text"><span>Ronaldo Riska</span><span>Osservatorio tessile</span></span>
     </a>
-    <a class="skip-link" href="#main">Salta al contenuto</a>
+    <div class="nav-links">
+      <a href="./">Home</a>
+      <a href="curriculum.html">Curriculum</a>
+      <a href="tessitura.html">Tessitura</a>
+      <a href="cad-moda.html">CAD Moda</a>
+      <a href="supply-chain-production.html">Supply Chain</a>
+      <a href="#contatti">Contatti</a>
+    </div>
+  </nav>
+</header>
 
-    <header class="site-header">
-      <nav class="nav container" aria-label="Navigazione principale">
-        <a class="brand" href="index.html">
-          <span class="brand-mark">RR</span>
-          <span class="brand-text"><span>Ronaldo Riska</span><span>Osservatorio tessile</span></span>
-        </a>
-        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu" data-nav-toggle>
-          <span aria-hidden="true"></span><span class="sr-only">Apri menu</span>
-        </button>
-        <div class="nav-links" id="site-menu" data-nav-menu>
-          <a href="index.html">Home</a>
-          <a href="curriculum.html">Curriculum</a>
-          <a href="tessitura.html">Tessitura</a>
-          <a href="cad-moda.html">CAD Moda</a>
-          <a href="supply-chain-production.html">Supply Chain</a>
-          <a href="#contatti">Contatti</a>
-        </div>
-      </nav>
-    </header>
+<main id="main">
+  <section class="hero">
+    <div class="meta">
+      <span>Edizione distretto pratese</span>
+      <span class="date"></span>
+      <span>Osservatorio tessile</span>
+    </div>
+    <h1>Prato Textile District</h1>
+    <p class="lead-text">Analisi, storia e transizione digitale della manifattura pratese. Dalle origini lanerie al laboratorio europeo della circular fashion.</p>
+  </section>
 
-    <main id="main">
-      <!-- TESTATA GIORNALISTICA -->
-      <section class="page-hero section">
-        <div class="container">
-          <div class="newspaper-masthead reveal">
-            <div class="newspaper-meta">
-              <span class="newspaper-edition">Edizione distretto pratese</span>
-              <span class="newspaper-date"></span>
-              <span class="newspaper-section">Osservatorio tessile</span>
-            </div>
-            <h1 class="newspaper-title">Prato Textile District</h1>
-            <p class="newspaper-overline">Analisi, storia e transizione digitale della manifattura pratese</p>
-            <div class="newspaper-rule"></div>
-          </div>
-
-          <div class="newspaper-lead reveal">
-            <p class="lead">
-              Dalle origini lanerie del Medioevo all’odierno distretto della circular fashion, il territorio pratese ha trasformato la tessitura in un modello produttivo capace di rinnovarsi senza perdere identità. Questa sezione racconta quella storia e ne analizza le trasformazioni attuali.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section section-band" aria-labelledby="storia-title">
-        <div class="container">
-          <div class="section-heading reveal">
-            <p class="eyebrow">Storia del distretto</p>
-            <h2 id="storia-title">Da ieri a oggi: Prato come laboratorio tessile europeo</h2>
-          </div>
-
-          <div class="newspaper-columns">
-            <article class="intel-block reveal">
-              <span class="intel-label">XII — XIV secolo</span>
-              <h3>Le origini lanerie</h3>
-              <p>Prato afferma la propria identità manifatturiera già nel Medioevo, grazie alla lavorazione della lana e alla presenza di un’organizzazione corporativa strutturata. La città diventa un riferimento per la produzione di tessuti di qualità, scambiati nei principali mercati europei.</p>
-            </article>
-
-            <article class="intel-block reveal">
-              <span class="intel-label">XIX — XX secolo</span>
-              <h3>Industrializzazione e specializzazione</h3>
-              <p>Con la rivoluzione industriale il distretto si trasforma: nascono i primi stabilimenti meccanizzati, cresce l’occupazione specializzata e si consolida il modello di subfornitura a maglie corte. Prato diventa sinonimo di aggiornamento continuo tra tradizione e capacità produttiva di massa.</p>
-            </article>
-
-            <article class="intel-block reveal">
-              <span class="intel-label">Anni '70 — '90</span>
-              <h3>Dall'industria pesante al tessile leggero</h3>
-              <p>La crisi dei mercati tradizionali spinge Prato a diversificare verso filati più leggeri, maglieria e confezione. Si rafforza la filiera corta: tessitura, tintoria, finissaggio e confezione convivono in un tessuto produttivo denso e reattivo.</p>
-            </article>
-
-            <article class="intel-block reveal">
-              <span class="intel-label">Oggi</span>
-              <h3>Transizione digitale, sostenibilità e circular fashion</h3>
-              <p>Oggi il distretto affronta una nuova trasformazione: tracciabilità, certificazioni ESG, riconversione green e adozione di piattaforme digitali per la gestione della filiera. Prato si posiziona come avamposto di innovazione industriale sostenibile, combinando manifattura, dati e design.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section section-band" aria-labelledby="osservatorio-title">
-        <div class="container">
-          <div class="section-heading reveal">
-            <p class="eyebrow">Analisi correnti</p>
-            <h2 id="osservatorio-title">Osservatorio tessile — Prato Textile District</h2>
-            <p class="lead">Analisi operative su filiera, sostenibilità, manifattura e transizione digitale nel distretto moda‑tessile pratese.</p>
-          </div>
-
-          <div class="kpi-dashboard">
-            <div class="kpi-panel reveal">
-              <span class="kpi-label">Imprese attive</span>
-              <span class="kpi-number">4 200+</span>
-              <span class="kpi-caption">Unità produttive nel distretto pratese</span>
-              <div class="kpi-bar-track"><div class="kpi-bar" style="--pct:0.82"></div></div>
-              <span class="kpi-delta positive">+3.2% y/y</span>
-            </div>
-
-            <div class="kpi-panel reveal">
-              <span class="kpi-label">Fatturato annuo</span>
-              <span class="kpi-number">€ 2,8 mld</span>
-              <span class="kpi-caption">Valore della produzione tessile locale</span>
-              <div class="kpi-bar-track"><div class="kpi-bar" style="--pct:0.71"></div></div>
-              <span class="kpi-delta positive">+5.1% y/y</span>
-            </div>
-
-            <div class="kpi-panel reveal">
-              <span class="kpi-label">Occupazione</span>
-              <span class="kpi-number">23 000+</span>
-              <span class="kpi-caption">Addetti diretti e indotto filiera</span>
-              <div class="kpi-bar-track"><div class="kpi-bar" style="--pct:0.68"></div></div>
-              <span class="kpi-delta neutral">Stabile</span>
-            </div>
-
-            <div class="kpi-panel reveal">
-              <span class="kpi-label">Export</span>
-              <span class="kpi-number">€ 1,4 mld</span>
-              <span class="kpi-caption">Quota export sul fatturato distrettuale</span>
-              <div class="kpi-bar-track"><div class="kpi-bar" style="--pct:0.59"></div></div>
-              <span class="kpi-delta positive">+2.8% y/y</span>
-            </div>
-
-            <div class="kpi-panel reveal">
-              <span class="kpi-label">Tasso di riciclo</span>
-              <span class="kpi-number">78%</span>
-              <span class="kpi-caption">Fibre rigenerate su produzione totale</span>
-              <div class="kpi-bar-track"><div class="kpi-bar" style="--pct:0.78"></div></div>
-              <span class="kpi-delta positive">+12% y/y</span>
-            </div>
-
-            <div class="kpi-panel reveal">
-              <span class="kpi-label">Digital maturity</span>
-              <span class="kpi-number">64%</span>
-              <span class="kpi-caption">Imprese con MES/dashboard attive</span>
-              <div class="kpi-bar-track"><div class="kpi-bar" style="--pct:0.64"></div></div>
-              <span class="kpi-delta positive">+18% y/y</span>
-            </div>
-
-            <div class="kpi-panel reveal">
-              <span class="kpi-label">Lead time medio</span>
-              <span class="kpi-number">14 gg</span>
-              <span class="kpi-caption">Dall’ordine alla spedizione</span>
-              <div class="kpi-bar-track"><div class="kpi-bar" style="--pct:0.45"></div></div>
-              <span class="kpi-delta negative">-8% miglioramento</span>
-            </div>
-
-            <div class="kpi-panel reveal">
-              <span class="kpi-label">Certificazioni ESG</span>
-              <span class="kpi-number">38%</span>
-              <span class="kpi-caption">Imprese certificate su totale</span>
-              <div class="kpi-bar-track"><div class="kpi-bar" style="--pct:0.38"></div></div>
-              <span class="kpi-delta positive">+9% y/y</span>
-            </div>
-          </div>
-
-          <div class="kpi-charts">
-            <div class="kpi-chart reveal">
-              <span class="kpi-label">Fatturato distretto</span>
-              <canvas data-kpi-line aria-label="Andamento fatturato distretto tessile pratese"></canvas>
-            </div>
-            <div class="kpi-chart reveal">
-              <span class="kpi-label">Composizione export</span>
-              <canvas data-kpi-donut aria-label="Composizione export per categoria merceologica"></canvas>
-              <div class="kpi-chart-legend">
-                <span class="kpi-legend-item"><span class="kpi-legend-dot" style="background:#ef4444"></span>Maglieria</span>
-                <span class="kpi-legend-item"><span class="kpi-legend-dot" style="background:#f97316"></span>Tessuti</span>
-                <span class="kpi-legend-item"><span class="kpi-legend-dot" style="background:#eab308"></span>Filati</span>
-                <span class="kpi-legend-item"><span class="kpi-legend-dot" style="background:#22c55e"></span>Confezione</span>
-                <span class="kpi-legend-item"><span class="kpi-legend-dot" style="background:#3b82f6"></span>Tintoria</span>
-                <span class="kpi-legend-item"><span class="kpi-legend-dot" style="background:#a855f7"></span>Accessori</span>
-                <span class="kpi-legend-item"><span class="kpi-legend-dot" style="background:#ec4899"></span>Servizi</span>
-                <span class="kpi-legend-item"><span class="kpi-legend-dot" style="background:#06b6d4"></span>Riciclo</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="newspaper-columns" style="margin-top:3rem">
-            <article class="intel-block reveal">
-              <span class="intel-label">Sostenibilità</span>
-              <h3>Riciclo e rigenerazione</h3>
-              <p>Prato mantiene un primato storico nel riciclo della lana e nella rigenerazione delle fibre, con processi produttivi orientati alla circolarità e alla riduzione dell’impatto ambientale.</p>
-            </article>
-
-            <article class="intel-block reveal">
-              <span class="intel-label">Transizione digitale</span>
-              <h3>Dalla manifattura ai dati</h3>
-              <p>L’adozione di dashboard, MES e strumenti di tracciabilità digitale sta ridisegnando il distretto: meno sprechi, più visibilità e una programmazione della produzione più reattiva.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section contact-section" id="contatti">
-        <div class="container contact-grid">
-          <div class="reveal">
-            <p class="eyebrow">Contatti</p>
-            <h2>Disponibile per progetti tessili, industriali e digitali.</h2>
-          </div>
-          <address class="contact-panel reveal">
-            <div class="contact-card">
-              <span class="contact-label">Email</span>
-              <a href="mailto:ronaldo.riska@gmail.com">ronaldo.riska@gmail.com</a>
-            </div>
-            <div class="contact-card">
-              <span class="contact-label">Location</span>
-              <span>Prato, Toscana — Italy</span>
-            </div>
-          </address>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <p>&copy; <span data-year></span> Ronaldo Riska. Osservatorio tessile — Prato Textile District.</p>
-        <a href="index.html">Home</a>
+  <section>
+    <p class="eyebrow">Storia del distretto</p>
+    <h2>Da ieri a oggi: Prato come laboratorio tessile europeo</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <span class="date">XII — XIV secolo</span>
+        <h3>Le origini lanerie</h3>
+        <p>Prato afferma la propria identità manifatturiera già nel Medioevo, grazie alla lavorazione della lana e alla presenza di un'organizzazione corporativa strutturata. La città diventa un riferimento per la produzione di tessuti di qualità, scambiati nei principali mercati europei.</p>
       </div>
-    </footer>
+      <div class="timeline-item">
+        <span class="date">XIX — XX secolo</span>
+        <h3>Industrializzazione e specializzazione</h3>
+        <p>Con la rivoluzione industriale il distretto si trasforma: nascono i primi stabilimenti meccanizzati, cresce l'occupazione specializzata e si consolida il modello di subfornitura a maglie corte. Prato diventa sinonimo di aggiornamento continuo tra tradizione e capacità produttiva di massa.</p>
+      </div>
+      <div class="timeline-item">
+        <span class="date">Anni '70 — '90</span>
+        <h3>Dall'industria pesante al tessile leggero</h3>
+        <p>La crisi dei mercati tradizionali spinge Prato a diversificare verso filati più leggeri, maglieria e confezione. Si rafforza la filiera corta: tessitura, tintoria, finissaggio e confezione convivono in un tessuto produttivo denso e reattivo.</p>
+      </div>
+      <div class="timeline-item">
+        <span class="date">Oggi</span>
+        <h3>Transizione digitale e circular fashion</h3>
+        <p>Oggi il distretto affronta una nuova trasformazione: tracciabilità, certificazioni ESG, riconversione green e adozione di piattaforme digitali per la gestione della filiera. Prato si posiziona come avamposto di innovazione industriale sostenibile, combinando manifattura, dati e design.</p>
+      </div>
+    </div>
+  </section>
 
-    <script src="main.js" defer></script>
-    <script src="logo-loom-animated.js" defer></script>
-    <script src="sheep-walk.js" defer></script>
-    <script>
-      (function(){
-        const dateEl = document.querySelector(".newspaper-date");
-        if (dateEl) {
-          const d = new Date();
-          const options = { day: "2-digit", month: "long", year: "numeric" };
-          dateEl.textContent = d.toLocaleDateString("it-IT", options);
-        }
-      })();
-    </script>
-    <script>
-      (function(){
-        const dpr = window.devicePixelRatio || 1;
-        function setupCanvas(canvas) {
-          const rect = canvas.getBoundingClientRect();
-          canvas.width = rect.width * dpr;
-          canvas.height = rect.height * dpr;
-          const ctx = canvas.getContext('2d');
-          ctx.scale(dpr, dpr);
-          return { ctx, w: rect.width, h: rect.height };
-        }
+  <section>
+    <p class="eyebrow">Analisi correnti</p>
+    <h2>Osservatorio tessile — Prato Textile District</h2>
+    <p>Analisi operative su filiera, sostenibilità, manifattura e transizione digitale nel distretto moda-tessile pratese.</p>
 
-        // Interpolazione lineare per hover
-        function lerp(a, b, t) { return a + (b - a) * t; }
+    <div class="kpi-grid">
+      <div class="kpi">
+        <span class="kpi-icon">🏭</span>
+        <span class="kpi-label">Imprese attive</span>
+        <span class="kpi-value">4 200+</span>
+        <span class="kpi-caption">Unità produttive nel distretto</span>
+        <span class="kpi-trend up">+3.2% y/y</span>
+      </div>
+      <div class="kpi">
+        <span class="kpi-icon">💰</span>
+        <span class="kpi-label">Fatturato annuo</span>
+        <span class="kpi-value">€ 2,8 mld</span>
+        <span class="kpi-caption">Produzione tessile locale</span>
+        <span class="kpi-trend up">+5.1% y/y</span>
+      </div>
+      <div class="kpi">
+        <span class="kpi-icon">👥</span>
+        <span class="kpi-label">Occupazione</span>
+        <span class="kpi-value">23 000+</span>
+        <span class="kpi-caption">Addetti diretti e indotto</span>
+        <span class="kpi-trend neutral">Stabile</span>
+      </div>
+      <div class="kpi">
+        <span class="kpi-icon">🌍</span>
+        <span class="kpi-label">Export</span>
+        <span class="kpi-value">€ 1,4 mld</span>
+        <span class="kpi-caption">Quota sul fatturato</span>
+        <span class="kpi-trend up">+2.8% y/y</span>
+      </div>
+    </div>
 
-        function drawLineChart(canvas) {
-          const { ctx, w, h } = setupCanvas(canvas);
-          const data = [18, 20, 19, 22, 24, 23, 26, 28, 27, 30];
-          const labels = ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'];
-          const max = Math.max(...data) * 1.1;
-          const step = w / (data.length - 1);
-          const pad = 12;
-          const points = data.map((v, i) => ({ x: i * step, y: h - pad - (v / max) * (h - pad * 2), v, label: labels[i] }));
+    <div class="charts">
+      <div class="chart">
+        <div class="chart-header">
+          <span class="chart-label">Fatturato distretto</span>
+          <span class="chart-value">+12.4%</span>
+        </div>
+        <canvas id="chart-line" aria-label="Andamento fatturato distretto tessile pratese"></canvas>
+      </div>
+      <div class="chart">
+        <div class="chart-header">
+          <span class="chart-label">Composizione export</span>
+          <span class="chart-value">€ 1,4 mld</span>
+        </div>
+        <canvas id="chart-donut" aria-label="Composizione export per categoria merceologica"></canvas>
+        <div class="chart-legend">
+          <span class="legend-item"><span class="legend-dot" style="background:#22c55e"></span>Maglieria 18%</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span>Tessuti 16%</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#f5a623"></span>Filati 14%</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#a855f7"></span>Confezione 12%</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#ff2d6f"></span>Altro 40%</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-          function render(hoverIdx) {
-            ctx.clearRect(0, 0, w, h);
-            // Griglia
-            ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-            ctx.lineWidth = 1;
-            for (let i = 1; i < 5; i++) {
-              const y = pad + (h - pad * 2) * (i / 5);
-              ctx.beginPath();
-              ctx.moveTo(0, y);
-              ctx.lineTo(w, y);
-              ctx.stroke();
-            }
-            // Area
-            ctx.beginPath();
-            points.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
-            ctx.lineTo(w, h);
-            ctx.lineTo(0, h);
-            ctx.closePath();
-            ctx.fillStyle = 'rgba(196, 92, 62, 0.1)';
-            ctx.fill();
-            // Linea
-            ctx.beginPath();
-            points.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
-            ctx.strokeStyle = 'rgba(196, 92, 62, 0.9)';
-            ctx.lineWidth = 2.2;
-            ctx.lineJoin = 'round';
-            ctx.stroke();
-            // Punti
-            points.forEach((p, i) => {
-              ctx.beginPath();
-              ctx.arc(p.x, p.y, hoverIdx === i ? 5 : 3, 0, Math.PI * 2);
-              ctx.fillStyle = hoverIdx === i ? '#fff' : 'rgba(196, 92, 62, 0.9)';
-              ctx.fill();
-            });
-            // Tooltip
-            if (hoverIdx >= 0 && hoverIdx < points.length) {
-              const p = points[hoverIdx];
-              ctx.fillStyle = 'rgba(10, 8, 5, 0.9)';
-              ctx.roundRect(p.x - 28, p.y - 44, 56, 32, 4);
-              ctx.fill();
-              ctx.fillStyle = '#fff';
-              ctx.font = 'bold 11px sans-serif';
-              ctx.textAlign = 'center';
-              ctx.fillText(p.v + ' mln', p.x, p.y - 26);
-              ctx.fillStyle = 'rgba(244, 161, 97, 0.9)';
-              ctx.font = '10px sans-serif';
-              ctx.fillText(p.label, p.x, p.y - 12);
-            }
-          }
+  <section>
+    <h2>Sfide aperte</h2>
+    <div class="two-cols">
+      <div>
+        <span class="date">Sostenibilità</span>
+        <h3>Riciclo e rigenerazione</h3>
+        <p>Prato mantiene un primato storico nel riciclo della lana e nella rigenerazione delle fibre, con processi produttivi orientati alla circolarità e alla riduzione dell'impatto ambientale.</p>
+      </div>
+      <div>
+        <span class="date">Transizione digitale</span>
+        <h3>Dalla manifattura ai dati</h3>
+        <p>L'adozione di dashboard, MES e strumenti di tracciabilità digitale sta ridisegnando il distretto: meno sprechi, più visibilità e una programmazione della produzione più reattiva.</p>
+      </div>
+    </div>
+  </section>
 
-          render(-1);
+  <section class="contact" id="contatti">
+    <h2>Disponibile per progetti tessili, industriali e digitali.</h2>
+    <div class="contact-info">
+      <div class="contact-row">
+        <span class="contact-label">Email</span>
+        <a href="mailto:ronaldo.riska@gmail.com" class="contact-value">ronaldo.riska@gmail.com</a>
+      </div>
+      <div class="contact-row">
+        <span class="contact-label">Location</span>
+        <span class="contact-value">Prato, Toscana — Italy</span>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <span>© <span class="year"></span> Ronaldo Riska. Osservatorio tessile — Prato Textile District.</span>
+</footer>
 
-          canvas.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            let best = -1;
-            let bestDist = Infinity;
-            points.forEach((p, i) => {
-              const d = Math.abs(p.x - x);
-              if (d < bestDist) { bestDist = d; best = i; }
-            });
-            if (bestDist < step * 0.6) render(best); else render(-1);
-          });
-          canvas.addEventListener('mouseleave', () => render(-1));
-        }
+<script>
+(function(){
+  const d=new Date();
+  document.querySelector('.date').textContent=d.toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'});
+  document.querySelector('.year').textContent=d.getFullYear();
+})();
 
-        function drawDonutChart(canvas) {
-          const { ctx, w, h } = setupCanvas(canvas);
-          const data = [
-            { label: 'Maglieria', value: 18, color: '#ef4444' },
-            { label: 'Tessuti', value: 16, color: '#f97316' },
-            { label: 'Filati', value: 14, color: '#eab308' },
-            { label: 'Confezione', value: 12, color: '#22c55e' },
-            { label: 'Tintoria', value: 10, color: '#3b82f6' },
-            { label: 'Accessori', value: 10, color: '#a855f7' },
-            { label: 'Servizi', value: 10, color: '#ec4899' },
-            { label: 'Riciclo', value: 10, color: '#06b6d4' }
-          ];
-          const total = data.reduce((s, d) => s + d.value, 0);
-          const cx = w / 2;
-          const cy = h / 2;
-          const outer = Math.min(w, h) / 2 - 14;
-          const inner = outer * 0.58;
-          const slices = [];
-          let start = -Math.PI / 2;
-          data.forEach(d => {
-            const slice = (d.value / total) * Math.PI * 2;
-            slices.push({ start, end: start + slice, ...d });
-            start += slice;
-          });
-
-          function render(hoverIdx) {
-            ctx.clearRect(0, 0, w, h);
-            slices.forEach((s, i) => {
-              const isHover = i === hoverIdx;
-              const mid = (s.start + s.end) / 2;
-              const offset = isHover ? 6 : 0;
-              const ox = Math.cos(mid) * offset;
-              const oy = Math.sin(mid) * offset;
-              ctx.beginPath();
-              ctx.arc(cx + ox, cy + oy, isHover ? outer + 2 : outer, s.start, s.end);
-              ctx.arc(cx + ox, cy + oy, inner, s.end, s.start, true);
-              ctx.closePath();
-              ctx.fillStyle = s.color;
-              ctx.fill();
-              ctx.strokeStyle = 'rgba(10,8,5,0.6)';
-              ctx.lineWidth = 1.2;
-              ctx.stroke();
-            });
-            // Center label
-            ctx.fillStyle = '#fff';
-            ctx.font = 'bold 13px sans-serif';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(total + '%', cx, cy - 6);
-            ctx.fillStyle = 'rgba(244, 161, 97, 0.9)';
-            ctx.font = '10px sans-serif';
-            ctx.fillText('export', cx, cy + 12);
-            // Tooltip
-            if (hoverIdx >= 0 && hoverIdx < slices.length) {
-              const s = slices[hoverIdx];
-              const mid = (s.start + s.end) / 2;
-              const tx = cx + Math.cos(mid) * (outer + 22);
-              const ty = cy + Math.sin(mid) * (outer + 22);
-              ctx.fillStyle = 'rgba(10, 8, 5, 0.95)';
-              ctx.roundRect(tx - 34, ty - 20, 68, 34, 5);
-              ctx.fill();
-              ctx.strokeStyle = 'rgba(255,255,255,0.12)';
-              ctx.lineWidth = 1;
-              ctx.stroke();
-              ctx.fillStyle = '#fff';
-              ctx.font = 'bold 12px sans-serif';
-              ctx.textAlign = 'center';
-              ctx.fillText(s.value + '%', tx, ty - 4);
-              ctx.fillStyle = s.color;
-              ctx.font = '10px sans-serif';
-              ctx.fillText(s.label, tx, ty + 10);
-            }
-          }
-
-          render(-1);
-
-          canvas.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const dx = x - cx;
-            const dy = y - cy;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            let angle = Math.atan2(dy, dx);
-            if (angle < -Math.PI / 2) angle += Math.PI * 2;
-            let best = -1;
-            slices.forEach((s, i) => {
-              if (dist >= inner && dist <= outer + 6 && angle >= s.start && angle <= s.end) best = i;
-            });
-            render(best);
-          });
-          canvas.addEventListener('mouseleave', () => render(-1));
-        }
-
-        function initCharts() {
-          document.querySelectorAll('[data-kpi-line]').forEach(drawLineChart);
-          document.querySelectorAll('[data-kpi-donut]').forEach(drawDonutChart);
-        }
-
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', initCharts);
-        } else {
-          initCharts();
-        }
-      })();
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Ronaldo Riska",
-      "url": "https://italycircularfashion.github.io/RonaldoRiska/",
-      "logo": "https://italycircularfashion.github.io/RonaldoRiska/profile.jpg",
-      "email": "ronaldo.riska@gmail.com",
-      "sameAs": [
-        "https://github.com/ItalyCircularFashion",
-        "https://italycircularfashion.github.io/RonaldoRiskaCV/"
-      ],
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Prato",
-        "addressCountry": "IT"
-      }
+(function(){
+  const dpr=window.devicePixelRatio||1;
+  function init(c){const r=c.getBoundingClientRect();c.width=r.width*dpr;c.height=r.height*dpr;const x=c.getContext('2d');x.scale(dpr,dpr);return{x,w:r.width,h:r.height}}
+  
+  // Line chart
+  const lc=document.getElementById('chart-line');
+  if(lc){
+    const {x,w,h}=init(lc);
+    const data=[18,20,19,22,24,23,26,28,27,30];
+    const max=Math.max(...data)*1.1;
+    const step=w/(data.length-1);
+    const pad=10;
+    const pts=data.map((v,i)=>({x:i*step,y:h-pad-(v/max)*(h-pad*2),v}));
+    function render(hI){
+      x.clearRect(0,0,w,h);
+      x.strokeStyle='rgba(255,255,255,.04)';
+      x.lineWidth=1;
+      for(let i=1;i<5;i++){const y=pad+(h-pad*2)*(i/5);x.beginPath();x.moveTo(0,y);x.lineTo(w,y);x.stroke()}
+      x.beginPath();pts.forEach((p,i)=>i===0?x.moveTo(p.x,p.y):x.lineTo(p.x,p.y));
+      x.lineTo(w,h);x.lineTo(0,h);x.closePath();
+      x.fillStyle='rgba(34,197,94,.12)';x.fill();
+      x.beginPath();pts.forEach((p,i)=>i===0?x.moveTo(p.x,p.y):x.lineTo(p.x,p.y));
+      x.strokeStyle='#22c55e';x.lineWidth=2;x.lineJoin='round';x.stroke();
+      pts.forEach((p,i)=>{x.beginPath();x.arc(p.x,p.y,hI===i?4:2.5,0,Math.PI*2);x.fillStyle=hI===i?'#22c55e':'rgba(34,197,94,.7)';x.fill()});
     }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Project",
-      "name": "Ronaldo Riska — Progetto",
-      "url": "https://italycircularfashion.github.io/RonaldoRiska/",
-      "author": { "@type": "Person", "name": "Ronaldo Riska" },
-      "description": "Progetto operativo tessile, supply chain e digitalizzazione."
+    render(-1);
+    lc.addEventListener('mousemove',e=>{const r=lc.getBoundingClientRect();const mx=e.clientX-r.left;let best=-1,bestD=Infinity;pts.forEach((p,i)=>{const d=Math.abs(p.x-mx);if(d<bestD){bestD=d;best=i}});if(bestD<step*.6)render(best);else render(-1)});
+    lc.addEventListener('mouseleave',()=>render(-1));
+  }
+
+  // Donut chart
+  const dc=document.getElementById('chart-donut');
+  if(dc){
+    const {x,w,h}=init(dc);
+    const data=[{v:18,c:'#22c55e'},{v:16,c:'#3b82f6'},{v:14,c:'#f5a623'},{v:12,c:'#a855f7'},{v:10,c:'#ff2d6f'},{v:20,c:'#06b6d4'}];
+    const total=data.reduce((s,d)=>s+d.v,0);
+    const cx=w/2,cy=h/2;
+    const R=Math.min(w,h)/2-12,r2=R*.55;
+    let start=-Math.PI/2;
+    const slices=data.map(d=>{const s=(d.v/total)*Math.PI*2;const sl={start,end:start+s,c:d.c};start+=s;return sl});
+    function render(hI){
+      x.clearRect(0,0,w,h);
+      slices.forEach((s,i)=>{const mid=(s.start+s.end)/2;const off=hI===i?4:0;const ox=Math.cos(mid)*off,oy=Math.sin(mid)*off;
+        x.beginPath();x.arc(cx+ox,cy+oy,hI===i?R+1:R,s.start,s.end);x.arc(cx+ox,cy+oy,r2,s.end,s.start,true);x.closePath();
+        x.fillStyle=s.c;x.fill();x.strokeStyle='rgba(12,10,8,.5)';x.lineWidth=1;x.stroke()});
+      x.fillStyle='#fff';x.font='bold 12px sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText(total+'%',cx,cy-4);
+      x.fillStyle='rgba(196,156,91,.8)';x.font='9px sans-serif';x.fillText('export',cx,cy+10);
     }
-    </script>
-  </body>
+    render(-1);
+    dc.addEventListener('mousemove',e=>{const r=dc.getBoundingClientRect();const mx=e.clientX-r.left,my=e.clientY-r.top;const dx=mx-cx,dy=my-cy;const dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist>r2&&dist<R+10){let ang=Math.atan2(dy,dx);if(ang<-Math.PI/2)ang+=Math.PI*2;const idx=slices.findIndex(s=>ang>=s.start&&ang<s.end);if(idx>=0)render(idx);else render(-1)}else render(-1)});
+    dc.addEventListener('mouseleave',()=>render(-1));
+  }
+})();
+</script>
+</body>
 </html>

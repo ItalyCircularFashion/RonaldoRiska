@@ -234,5 +234,34 @@
     "scheda": "progetto.html?id=note-colore-calculator",
     "highlight": false,
     "url": "note-colore.html"
+  },
+  {
+    "id": "scacchi",
+    "nome": "Scacchi in Diretta",
+    "sottotitolo": "Multiplayer reale-time",
+    "area": "giochi",
+    "tipo": "tool",
+    "stato": "live",
+    "anno": 2026,
+    "descrizione": "Applicazione scacchi multiplayer in tempo reale. Crea partite condivisibili, gioca come Bianco o Nero, oppure entra come spettatore. Persistente: le partite non vengono mai cancellate.",
+    "valore": "Gioco operativo per intrattenimento e logica strategica — accessibile a tutti via browser.",
+    "tags": [
+      "Scacchi",
+      "Multiplayer",
+      "Firebase",
+      "Real-time",
+      "Game"
+    ],
+    "tech": [
+      "JavaScript",
+      "Firebase Realtime DB",
+      "HTML",
+      "CSS"
+    ],
+    "linkLabel": "Gioca a scacchi",
+    "sorgente": null,
+    "scheda": null,
+    "highlight": false,
+    "url": "scacchi.html"
   }
 ]
