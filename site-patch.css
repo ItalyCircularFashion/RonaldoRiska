@@ -2471,3 +2471,33 @@ body::before {
     padding: 1.5rem;
   }
 }
+
+/* ── TECNICO TESILE NAV HIGHLIGHT ── */
+.nav-link-highlight {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff !important;
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
+  transition: all 0.2s ease;
+  animation: navHighlightPulse 2s ease-in-out infinite;
+}
+
+.nav-link-highlight:hover {
+  background: linear-gradient(135deg, #34d399, #10b981);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.5);
+  transform: translateY(-1px);
+  color: #ffffff !important;
+}
+
+@keyframes navHighlightPulse {
+  0%, 100% { box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35); }
+  50% { box-shadow: 0 4px 18px rgba(16, 185, 129, 0.6); }
+}

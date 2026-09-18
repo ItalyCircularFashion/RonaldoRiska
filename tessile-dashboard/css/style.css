@@ -1,0 +1,444 @@
+:root {
+    --bg-primary: #1a1a2e;
+    --bg-secondary: #16213e;
+    --bg-tertiary: #0f3460;
+    --accent-primary: #e94560;
+    --accent-secondary: #ff6b6b;
+    --text-primary: #eaeaea;
+    --text-secondary: #a0a0b0;
+    --success: #4ecdc4;
+    --warning: #ffe66d;
+    --border-color: #2a2a4a;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-header {
+    background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+    border-bottom: 2px solid var(--accent-primary);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    background: var(--accent-primary);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: white;
+}
+
+.title-block h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.main-nav {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.nav-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.85rem;
+}
+
+.nav-btn:hover {
+    border-color: var(--accent-primary);
+    color: var(--text-primary);
+}
+
+.nav-btn.active {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: white;
+    font-weight: 600;
+}
+
+.app-main {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.module {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.module.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.module h2 {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent-primary);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.module h3 {
+    font-size: 1.1rem;
+    margin: 1.5rem 0 1rem;
+    color: var(--accent-secondary);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.6rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 2px rgba(233, 69, 96, 0.2);
+}
+
+.form-group input::placeholder {
+    color: #555;
+}
+
+.btn-calcola {
+    background: var(--accent-primary);
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin: 1rem 0;
+}
+
+.btn-calcola:hover {
+    background: var(--accent-secondary);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(233, 69, 96, 0.4);
+}
+
+.btn-calcola:active {
+    transform: translateY(0);
+}
+
+.risultato {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    min-height: 60px;
+    line-height: 1.8;
+}
+
+.risultato:empty::before {
+    content: "Inserisci i dati e premi Calcola per vedere i risultati.";
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.risultato .formula {
+    color: var(--success);
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    margin: 0.3rem 0;
+}
+
+.risultato .valore {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.risultato .highlight {
+    color: var(--warning);
+    font-weight: 700;
+}
+
+.risultato .errore {
+    color: var(--accent-primary);
+    font-weight: 600;
+}
+
+.risultato table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+.risultato th,
+.risultato td {
+    border: 1px solid var(--border-color);
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.risultato th {
+    background: var(--bg-tertiary);
+    color: var(--accent-primary);
+}
+
+.risultato-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.risultato-card {
+    background: var(--bg-tertiary);
+    border-radius: 6px;
+    padding: 1rem;
+    border-left: 3px solid var(--accent-primary);
+}
+
+.risultato-card .label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+.risultato-card .value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 0.2rem;
+}
+
+.sub-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.sub-tab {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.sub-tab:hover {
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+}
+
+.sub-tab.active {
+    color: var(--accent-primary);
+    font-weight: 600;
+    border-bottom: 2px solid var(--accent-primary);
+}
+
+.sub-panel {
+    display: none;
+}
+
+.sub-panel.active {
+    display: block;
+}
+
+.composizione-grid {
+    margin-top: 1.5rem;
+}
+
+.composizione-grid table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+.composizione-grid th,
+.composizione-grid td {
+    border: 1px solid var(--border-color);
+    padding: 0.4rem;
+    text-align: center;
+}
+
+.composizione-grid th {
+    background: var(--bg-tertiary);
+    color: var(--accent-primary);
+    font-size: 0.8rem;
+}
+
+.composizione-grid input {
+    width: 100%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.3rem;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.btn-add-row {
+    background: transparent;
+    border: 1px dashed var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.4rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+}
+
+.btn-add-row:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+.matrix-container {
+    display: inline-block;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.5rem;
+    background: var(--bg-tertiary);
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.matrix-row {
+    display: flex;
+    gap: 2px;
+}
+
+.matrix-cell {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.matrix-cell.filled {
+    background: var(--accent-primary);
+    color: white;
+}
+
+.matrix-cell.empty {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+}
+
+.matrix-cell.label {
+    background: transparent;
+    color: var(--accent-secondary);
+    width: 25px;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 2rem 0;
+}
+
+.app-footer {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    padding: 1rem 2rem;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+    .app-header {
+        padding: 1rem;
+    }
+    .main-nav {
+        gap: 0.3rem;
+    }
+    .nav-btn {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.75rem;
+    }
+    .app-main {
+        padding: 1rem;
+    }
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
