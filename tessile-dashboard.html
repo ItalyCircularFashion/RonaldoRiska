@@ -41,8 +41,16 @@
             <button class="nav-item" data-module="ie">
                 <span class="icon">&#9881;</span><span>Ind. Engineering</span>
             </button>
+                        <button class="nav-item" data-module="apparel"><span class="icon">&#9826;</span><span>Apparel</span></button>
+            <button class="nav-item" data-module="knitting"><span class="icon">&#9825;</span><span>Knitting</span></button>
+            <button class="nav-item" data-module="fabric">
+                <span class="icon">&#9648;</span><span>Fabric Design</span>
+            </button>
             <button class="nav-item" data-module="weaving">
                 <span class="icon">&#9641;</span><span>Weaving Tech</span>
+            </button>
+            <button class="nav-item" data-module="produttivita">
+                <span class="icon">&#9881;</span><span>Produttivit&agrave;</span>
             </button>
             <button class="nav-item" data-module="yarn">
                 <span class="icon">&#9742;</span><span>Yarn Mfg</span>
@@ -291,6 +299,124 @@
             </div>
         </section>
 
+        <!-- Produttività -->
+        <section class="module" id="mod-produttivita">
+            <div class="module-header">
+                <h2>Produttivit&agrave; Telaio</h2>
+                <p>WIR, produzione oraria e turno, fattori di perdita</p>
+            </div>
+            <div class="card">
+                <div class="card-title">Parametri Telaio</div>
+                <div class="form-grid">
+                    <div class="form-group"><label>RPM/PPM</label><input type="number" id="pr-rpm" placeholder="400"></div>
+                    <div class="form-group"><label>Larghezza Utile (m)</label><input type="number" id="pr-width" step="0.01" placeholder="1.90"></div>
+                    <div class="form-group"><label>Efficienza (%)</label><input type="number" id="pr-efficiency" placeholder="85"></div>
+                    <div class="form-group"><label>Numero Telai</label><input type="number" id="pr-numtelai" placeholder="1"></div>
+                    <div class="form-group"><label>Densit&agrave; Trama (ppc)</label><input type="number" id="pr-pickdensity" placeholder="25"></div>
+                    <div class="form-group"><label>Ore Turno</label><input type="number" id="pr-ore" placeholder="8"></div>
+                </div>
+                <button class="btn-primary" onclick="Produttivita.calcola()">Calcola Produttivit&agrave;</button>
+                <div class="result-panel" id="ris-produttivita"></div>
+            </div>
+        </section>
+
+                <!-- Fabric Design -->
+        <section class="module" id="mod-fabric">
+            <div class="module-header">
+                <h2>Fabric Design</h2>
+                <p>Strutture tessili: telaio, twill, satin, salto</p>
+            </div>
+            <div class="card">
+                <div class="card-title">Parametri Armatura</div>
+                <div class="form-grid">
+                    <div class="form-group"><label>Numero Licci</label><input type="number" id="fd-licci" placeholder="4" min="2" max="12"></div>
+                    <div class="form-group"><label>Tipo Armatura</label>
+                        <select id="fd-tipo">
+                            <option value="telaio">Telaio (plain)</option>
+                            <option value="twill22">Twill 2/2</option>
+                            <option value="twill33">Twill 3/3</option>
+                            <option value="satin5">Satin 5</option>
+                            <option value="satin8">Satin 8</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="FabricDesign.visualizza()">Visualizza</button>
+                <div class="result-panel" id="ris-fabric"></div>
+            </div>
+            <div class="card">
+                <div class="card-title">Calcolo Salto (Satin)</div>
+                <button class="btn-primary" onclick="FabricDesign.calcolaSalto()">Calcola Salto</button>
+                <div class="result-panel" id="ris-fabric-salto"></div>
+            </div>
+        </section>
+
+                <!-- Knitting -->
+        <section class="module" id="mod-knitting">
+            <div class="module-header">
+                <h2>Knitting Technology</h2>
+                <p>Maglieria: jersey, rib, interlock, piqué, gauge</p>
+            </div>
+            <div class="card">
+                <div class="card-title">Parametri Maglia</div>
+                <div class="form-grid">
+                    <div class="form-group"><label>Tipo Maglia</label>
+                        <select id="kn-tipo">
+                            <option value="dritto">Jersey (dritto)</option>
+                            <option value="rib11">Rib 1x1</option>
+                            <option value="rib22">Rib 2x2</option>
+                            <option value="interlock">Interlock</option>
+                            <option value="pique">Piqué</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Righe (visual)</label><input type="number" id="kn-righe" placeholder="6" min="2" max="20"></div>
+                    <div class="form-group"><label>Gauge (aghi")</label><input type="number" id="kn-gauge" placeholder="10"></div>
+                </div>
+                <button class="btn-primary" onclick="Knitting.calcola()">Visualizza</button>
+                <div class="result-panel" id="ris-knitting"></div>
+            </div>
+            <div class="card">
+                <div class="card-title">Confronto Gauge</div>
+                <button class="btn-primary" onclick="Knitting.confrontaGauge()">Confronta</button>
+                <div class="result-panel" id="ris-knitting-gauge"></div>
+            </div>
+        </section>
+
+                <!-- Apparel -->
+        <section class="module" id="mod-apparel">
+            <div class="module-header">
+                <h2>Apparel & Confezione</h2>
+                <p>Gradazione taglie, marker efficiency, consumo tessuto</p>
+            </div>
+            <div class="card">
+                <div class="card-title">Gradazione Taglie</div>
+                <div class="form-grid">
+                    <div class="form-group"><label>Taglia Base</label><select id="ap-base-size"><option value="M">M</option><option value="S">S</option><option value="L">L</option></select></div>
+                    <div class="form-group"><label>Petto Base (cm)</label><input type="number" id="ap-base-chest" placeholder="92"></div>
+                    <div class="form-group"><label>Incremento (cm)</label><input type="number" id="ap-incremento" placeholder="4"></div>
+                </div>
+                <button class="btn-primary" onclick="Apparel.calcolaGradazione()">Calcola</button>
+                <div class="result-panel" id="ris-apparel"></div>
+            </div>
+            <div class="card">
+                <div class="card-title">Marker Efficiency</div>
+                <div class="form-grid">
+                    <div class="form-group"><label>Area Pattern (m²)</label><input type="number" id="mk-area-pattern" step="0.01" placeholder="8.5"></div>
+                    <div class="form-group"><label>Area Marker (m²)</label><input type="number" id="mk-area-marker" step="0.01" placeholder="10.0"></div>
+                </div>
+                <button class="btn-primary" onclick="Apparel.calcolaMarker()">Calcola</button>
+                <div class="result-panel" id="ris-marker-adv"></div>
+            </div>
+            <div class="card">
+                <div class="card-title">Consumo Tessuto</div>
+                <div class="form-grid">
+                    <div class="form-group"><label>Pezzi</label><input type="number" id="ap-pz" placeholder="100"></div>
+                    <div class="form-group"><label>Consumo per capo (m²)</label><input type="number" id="ap-consumo" step="0.1" placeholder="1.5"></div>
+                </div>
+                <button class="btn-primary" onclick="Apparel.calcolaConsumo()">Calcola</button>
+                <div class="result-panel" id="ris-apparel-consumo"></div>
+            </div>
+        </section>
+
         <!-- Weaving -->
         <section class="module" id="mod-weaving">
             <div class="module-header"><h2>Weaving Technology</h2><p>WIR, produttività, confronto macchine</p></div>
@@ -356,6 +482,9 @@
     <script src="tessile-dashboard/js/app.js"></script>
     <script src="tessile-dashboard/js/lana.js"></script>
     <script src="tessile-dashboard/js/ie.js"></script>
+                <script src="tessile-dashboard/js/apparel.js"></script>
+    <script src="tessile-dashboard/js/knitting.js"></script>
+    <script src="tessile-dashboard/js/fabric-design.js"></script>
     <script src="tessile-dashboard/js/weaving.js"></script>
     <script src="tessile-dashboard/js/app-v2.js"></script>
 </body>

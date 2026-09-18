@@ -117,7 +117,15 @@ const Pettine = {
                 out += `<p class="formula">Pettine Pratese = ${pettineDec.toFixed(1)} × 1.3 = <span class="valore">${pettinePrat.toFixed(1)}</span> → approssimato: <strong>${Math.round(pettinePrat / 2.5) * 2.5}</strong></p>`;
 
                 if (!isNaN(nm)) {
-                    const k = imp === 2 ? 18 : imp === 3 ? 17 : imp === 4 ? 15 : imp === 6 ? 14 : 17;
+                    // k-values da GEFITES: distinguere pettinato/cardato
+                    // Pettinato: k=20,18,16,14 | Cardato: k=18,17,15,13
+                    const kPettinato = imp === 2 ? 20 : imp === 3 ? 18 : imp === 4 ? 16 : imp === 6 ? 14 : 18;
+                    const kCardato = imp === 2 ? 18 : imp === 3 ? 17 : imp === 4 ? 15 : imp === 6 ? 13 : 17;
+                    const pettLimitePettinato = kPettinato * Math.sqrt(nm);
+                    const pettLimiteCardato = kCardato * Math.sqrt(nm);
+                    out += `<p class="formula">Pettine Limite Pettinato (k=${kPettinato}): ${kPettinato} × √${nm} = <span class="valore">${pettLimitePettinato.toFixed(1)}</span></p>`;
+                    out += `<p class="formula">Pettine Limite Cardato (k=${kCardato}): ${kCardato} × √${nm} = <span class="valore">${pettLimiteCardato.toFixed(1)}</span></p>`;
+                    const pettLimite = pettLimitePettinato; // default pettinato
                     const pettLimite = k * Math.sqrt(nm);
                     out += `<p class="formula">Pettine Limite (k=${k}): ${k} × √${nm} = <span class="valore">${pettLimite.toFixed(1)}</span></p>`;
                     if (pettineDec > pettLimite) {
@@ -481,6 +489,11 @@ const Peso = {
             const divEffettivo = ptTot * (1 + iio / 100) * (1 + pot / 100);
             out += `<p class="formula">Divisore Teorico = ${divTeorico.toFixed(2)} g/ml</p>`;
             out += `<p class="formula">Divisore Effettivo = ptO × (1 + IIO/100) × (1 + POT/100) = <span class="highlight">${divEffettivo.toFixed(2)} g/ml</span></p>`;
+            
+            // Fabbisogno Materiali (da GEFITES)
+            const metriProd = 1000; // placeholder, in futuro input
+            const fabbisogno = divEffettivo * metriProd / 1000; // kg per 1000m
+            out += `<p class="formula">Fabbisogno (${metriProd}m) = ${divEffettivo.toFixed(2)} × ${metriProd}/1000 = <span class="highlight">${fabbisogno.toFixed(2)} kg</span></p>`;
         }
 
         document.getElementById('ris-peso').innerHTML = out;
@@ -529,6 +542,12 @@ const Riduzione = {
         if (!isNaN(colpi) && !isNaN(iio)) {
             const colpiGreggio = colpi * (100 - iio) / 100;
             out += `<p class="formula">Colpi in Greggio = Colpi finiti × (100 - IIO)/100 = ${colpi} × (100-${iio})/100 = <span class="valore">${colpiGreggio.toFixed(2)} colpi/cm</span></p>`;
+        }
+        
+        // Formula Colpi Greggio Trama (da esercizi GEFITES)
+        if (!isNaN(ridT) && !isNaN(itt)) {
+            const colpiGreggioT = ridT * (100 - itt) / 100;
+            out += `<p class="formula">Colpi Greggio Trama = RidfT × (100-ITT)/100 = <span class="valore">${colpiGreggioT.toFixed(2)} colpi/cm</span></p>`;
         }
 
         // Formula inversa

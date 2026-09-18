@@ -1,0 +1,1120 @@
+<!doctype html>
+<html lang="it" data-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <!-- ── SEO ── -->
+    <title>Ronaldo Riska | Portfolio Tessile e Supply Chain — Prato, IT</title>
+    <meta name="description" content="Portfolio operativo di Ronaldo Riska, Supply Chain Manager tessile a Prato: tool CAD moda, progetti supply chain, dashboard industriali, AI applicata e competenze digitali per la filiera moda‑tessile.">
+    <meta name="keywords" content="portfolio tessile, supply chain manager, Prato, filiera moda, operations industriali, dashboard tessile, digitalizzazione tessile">
+
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#08110c">
+    <!-- ── OPEN GRAPH (immagine URL assoluto — era relativo: BUG CORRETTO) ── -->
+    <meta property="og:type" content="website">
+    <meta property="og:title"       content="Ronaldo Riska | Portfolio interattivo">
+    <meta property="og:description" content="CV online tecnico con progetti, dashboard e tool digitali per tessile, moda e operations industriali.">
+    <meta property="og:image"       content="https://italycircularfashion.github.io/RonaldoRiska/profile.jpg">
+    <meta property="og:url"         content="https://italycircularfashion.github.io/RonaldoRiska/">
+    <meta property="og:locale"      content="it_IT">
+    <!-- ── TWITTER CARD (aggiunto) ── -->
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="Ronaldo Riska | Portfolio tessile digitale">
+    <meta name="twitter:description" content="CV online con tool reali, simulatori e dashboard per il settore tessile.">
+    <meta name="twitter:image"       content="https://italycircularfashion.github.io/RonaldoRiska/profile.jpg">
+    <!-- ── CANONICAL ── -->
+    <link rel="canonical" href="https://italycircularfashion.github.io/RonaldoRiska/">
+    <link rel="alternate" hreflang="it" href="https://italycircularfashion.github.io/RonaldoRiska/">
+    <link rel="alternate" hreflang="x-default" href="https://italycircularfashion.github.io/RonaldoRiska/">
+    <!-- ── FONT PRECONNECT ── -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- ── PRELOAD hero image (era lazy: BUG CORRETTO — LCP) ── -->
+    <link rel="preload" as="image" href="profile.jpg">
+    <!-- ── CSS ── -->
+    <link rel="stylesheet" href="site.css">
+    <link rel="stylesheet" href="site-patch.css">
+    <!-- ── STRUCTURED DATA ── -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Ronaldo Riska",
+      "url": "https://italycircularfashion.github.io/RonaldoRiska/",
+      "image": "https://italycircularfashion.github.io/RonaldoRiska/profile.jpg",
+      "jobTitle": "Textile Supply Chain & Digital Operations",
+      "worksFor": { "@type": "Organization", "name": "Distretto Tessile di Prato" },
+      "address": { "@type": "PostalAddress", "addressLocality": "Prato", "addressCountry": "IT" },
+      "email": "ronaldo.riska@gmail.com",
+      "sameAs": ["https://github.com/ItalyCircularFashion"]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://italycircularfashion.github.io/RonaldoRiska/" }
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Ronaldo Riska",
+      "url": "https://italycircularfashion.github.io/RonaldoRiska/",
+      "description": "Portfolio tessile, supply chain e tool digitali by Ronaldo Riska",
+      "inLanguage": "it",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://italycircularfashion.github.io/RonaldoRiska/?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Ronaldo Riska",
+      "url": "https://italycircularfashion.github.io/RonaldoRiska/",
+      "logo": "https://italycircularfashion.github.io/RonaldoRiska/profile.jpg",
+      "email": "ronaldo.riska@gmail.com",
+      "sameAs": [
+        "https://github.com/ItalyCircularFashion",
+        "https://italycircularfashion.github.io/RonaldoRiskaCV/"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Prato",
+        "addressCountry": "IT"
+      }
+    }
+    </script>
+  </head>
+  <body>
+    <a class="external-site-bar" href="https://italycircularfashion.github.io/RonaldoRiskaCV/" target="_blank" rel="noopener noreferrer">
+      <span class="external-site-bar__icon">↗</span>
+      <span class="external-site-bar__text">Qui puoi vedere un altro sito realizzato interamente da me</span>
+    </a>
+    <div class="sheep-walk-container" aria-hidden="true">
+      <canvas id="sheepCanvas"></canvas>
+    </div>
+    <a href="./" class="logo-animated-container" aria-label="Torna alla home">
+      <canvas id="animatedLogoCanvas"></canvas>
+    </a>
+    <a class="skip-link" href="#main">Salta al contenuto</a><!-- ── HEADER ── -->
+    <header class="site-header">
+      <nav class="nav container" aria-label="Navigazione principale">
+        <a class="brand" href="./" aria-label="Homepage Ronaldo Riska">
+          <span class="brand-mark">RR</span>
+          <span class="brand-text">
+            <span>Ronaldo Riska</span>
+            <span>Textile digital portfolio</span>
+          </span>
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu" data-nav-toggle>
+          <span aria-hidden="true"></span>
+          <span class="sr-only">Apri menu</span>
+        </button>
+        <div class="nav-links" id="site-menu" data-nav-menu>
+          <a href="#progetti">Progetti</a>
+          <a href="curriculum.html">Curriculum</a>
+          <a href="tessitura.html">Tessitura</a>
+          <a href="cad-moda.html">CAD Moda</a>
+          <a href="supply-chain-production.html">Supply Chain</a>
+          <a href="schacchi.html">♟ Scacchi</a>
+          <a href="sostenibilita-certificazioni.html">Sostenibilità</a>
+          <a href="progetto-digitalizzazione-impresa.html">Digitalizza la tua impresa</a>
+          <a href="#contatti">Contatti</a>
+        </div>
+      </nav>
+    </header>
+
+    <!-- ── MAIN (un solo <main> per pagina: BUG CORRETTO) ── -->
+    <main id="main">
+
+      <!-- HERO -->
+      <section class="hero" id="top">
+        <div class="container hero-grid">
+          <div class="hero-copy reveal">
+            <p class="eyebrow">Portfolio tecnico operativo</p>
+            <h1>Ronaldo Riska</h1>
+            <p class="hero-role">Tessitura · CAD moda · Supply chain · Industrial tech</p>
+            <p class="lead">
+            Ogni parte del sito e ogni tool sono stati realizzati dal sottoscritto come dimostrazione di competenza
+            per filiera moda‑tessile, operations e controllo industriale.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#progetti">Esplora i progetti →</a>
+              <a class="button button-secondary" href="curriculum.html">Leggi il CV</a>
+              <a class="button button-ghost" href="Ronaldo-Riska-CV-2026.pdf" download>Scarica PDF</a>
+            </div>
+            <dl class="hero-meta" aria-label="Informazioni rapide">
+              <div><dt>Base</dt><dd>Prato, Italia</dd></div>
+              <div><dt>Focus</dt><dd>Textile operations</dd></div>
+              <div><dt>Digitale</dt><dd>Dashboard + web tools</dd></div>
+              <div><dt>Approccio</dt><dd>Industrial tech</dd></div>
+            </dl>
+          </div>
+          <figure class="hero-visual reveal" style="margin:0">
+            <!-- loading="eager" (era lazy: BUG CORRETTO — peggiora LCP) -->
+            <img src="profile.jpg" width="870" height="1260"
+                 alt="Ritratto professionale di Ronaldo Riska"
+                 loading="eager" fetchpriority="high" decoding="async">
+            <figcaption class="visual-caption" aria-hidden="true">
+              <span>Supply chain tessile</span>
+              <span>CAD prodotto</span>
+              <span>Process intelligence</span>
+            </figcaption>
+          </figure>
+          <a class="external-site-card" href="https://italycircularfashion.github.io/RonaldoRiskaCV/" target="_blank" rel="noopener noreferrer" style="margin-top:1rem; display:inline-flex;">
+            <span class="external-site-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M2 12h20"></path>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+            </span>
+            <span class="external-site-card__text">Clicca per vedere un altro sito web creato da me</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- WEB CAPABILITIES STUDIO -->
+      <section class="section section-band web-capabilities" id="web-capabilities" aria-labelledby="web-title">
+        <div class="container">
+          <div class="section-heading reveal" style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:clamp(20px,4vw,60px);text-align:center">
+            <div>
+              <p class="eyebrow">Web Studio</p>
+              <h2 id="web-title" style="color:#ff8c00;font-size:clamp(40px,5.8vw,84px);margin:0">Io creo siti web</h2>
+              <div style="margin-top:14px;display:flex;justify-content:center" aria-hidden="true">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ff8c00" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div style="max-width:520px">
+              <p style="margin:0;color:var(--muted);font-size:clamp(16px,2vw,22px);font-weight:600;line-height:1.3">Il tuo sito personalizzato in 24 ore online</p>
+            </div>
+          </div>
+
+          <div class="web-grid reveal">
+            <a class="web-card glass tilt" href="demo-giornalistico.html" target="_blank" rel="noopener">
+              <div class="web-icon" aria-hidden="true">📰</div>
+              <h3>Giornalistico</h3>
+              <p>Layout testata con ticker, hero, card e sidebar. UX da portale d’informazione.</p>
+              <div class="web-badges">
+                <span class="web-badge">Editorial</span>
+                <span class="web-badge">News</span>
+                <span class="web-badge">Apri →</span>
+              </div>
+            </a>
+            <a class="web-card glass tilt" href="demo-industriale.html" target="_blank" rel="noopener">
+              <div class="web-icon" aria-hidden="true">🏭</div>
+              <h3>Industriale</h3>
+              <p>Dashboard KPI plant, soluzioni per reparto e schede prodotto. UX da impianto moderno.</p>
+              <div class="web-badges">
+                <span class="web-badge">IIoT</span>
+                <span class="web-badge">Dashboard</span>
+                <span class="web-badge">Apri →</span>
+              </div>
+            </a>
+            <a class="web-card glass tilt" href="demo-servizi.html" target="_blank" rel="noopener">
+              <div class="web-icon" aria-hidden="true">🛎️</div>
+              <h3>Servizi</h3>
+              <p>Landing conversion-oriented con aree di servizio e modulo contatti.</p>
+              <div class="web-badges">
+                <span class="web-badge">Servizi</span>
+                <span class="web-badge">Conversion</span>
+                <span class="web-badge">Apri →</span>
+              </div>
+            </a>
+            <a class="web-card glass tilt" href="demo-moda.html" target="_blank" rel="noopener">
+              <div class="web-icon" aria-hidden="true">👗</div>
+              <h3>Moda</h3>
+              <p>Sito di brand fashion con collezione, lookbook e gamma prodotto. Stile contemporaneo.</p>
+              <div class="web-badges">
+                <span class="web-badge">E-commerce</span>
+                <span class="web-badge">Brand</span>
+                <span class="web-badge">Apri →</span>
+              </div>
+            </a>
+            <a class="web-card glass tilt" href="demo-acqua.html" target="_blank" rel="noopener">
+              <div class="web-icon" aria-hidden="true">💧</div>
+              <h3>Acqua</h3>
+              <p>Layout prodotto pulito, gamma formati, territorio e certificazioni. Comunicazione naturale.</p>
+              <div class="web-badges">
+                <span class="web-badge">FMCG</span>
+                <span class="web-badge">Prodotto</span>
+                <span class="web-badge">Apri →</span>
+              </div>
+            </a>
+            <a class="web-card glass tilt" href="demo-agricoltura.html" target="_blank" rel="noopener">
+              <div class="web-icon" aria-hidden="true">🌱</div>
+              <h3>Agricoltura</h3>
+              <p>Filiera controllata, tracciabilità e certificazioni con linguaggio rurale-tech.</p>
+              <div class="web-badges">
+                <span class="web-badge">Bio</span>
+                <span class="web-badge">Tracciabilità</span>
+                <span class="web-badge">Apri →</span>
+              </div>
+            </a>
+            <a class="web-card glass tilt" href="demo-callcenter.html" target="_blank" rel="noopener">
+              <div class="web-icon" aria-hidden="true">📞</div>
+              <h3>Call Center</h3>
+              <p>Dashboard SLA, KPI operativi, sezioni inbound/outbound e quality analytics.</p>
+              <div class="web-badges">
+                <span class="web-badge">CX</span>
+                <span class="web-badge">SLA</span>
+                <span class="web-badge">Apri →</span>
+              </div>
+            </a>
+          </div>
+
+      <noscript>
+        <div class="web-grid reveal">
+            <a class="web-card glass tilt" href="textile-platform-v5.html" rel="noopener">
+              <div class="web-icon" aria-hidden="true">📄</div>
+              <h3>Textile Platform v5</h3>
+              <p>Piattaforma ERP-grade per il settore tessile. Motore MRP reale con lot sizing L4L/MOQ/MULTIPLE, gestione domanda unificata, ciclo vita ordini fornitore, modulo Project Management PMBOK con Gantt e registro rischi, SketchHD integrato con Claude Vision.</p>
+              <div class="web-badges">
+                <span class="web-badge">MRP</span> <span class="web-badge">ERP</span> <span class="web-badge">React</span> <span class="web-badge">Supply Chain</span> <span class="web-badge">Project Management</span> <span class="web-badge">AI</span>
+                <span class="web-badge">Live</span>
+                <span class="web-badge">Apri →</span>
+              </div>
+            </a>
+            <a class="web-card glass tilt" href="mrp-iphone-planner.html" rel="noopener">
+              <div class="web-icon" aria-hidden="true">📄</div>
+              <h3>MRP iPhone Planner</h3>
+              <p>Simulatore MRP mobile-first con piano di produzione editabile, calcolo automatico fabbisogni componenti FOQ/LFL, gestione ordini aperti, clienti e fornitori. Dati reali dell'esercizio MPS/MRP (Pantony + Jacket-shirt, 20 settimane).</p>
+              <div class="web-badges">
+                <span class="web-badge">MRP</span> <span class="web-badge">MPS</span> <span class="web-badge">Mobile</span> <span class="web-badge">React</span> <span class="web-badge">Pianificazione</span>
+                <span class="web-badge">Live</span>
+                <span class="web-badge">Apri →</span>
+              </div>
+            </a>
+            <a class="web-card glass tilt" href="filieraos.html" rel="noopener">
+              <div class="web-icon" aria-hidden="true">📄</div>
+              <h3>FilieraOS — Supply Chain Simulator</h3>
+              <p>Simulatore decisionale per la supply chain tessile. Integra Make-or-Buy, CVP, leva operativa, margine di sicurezza e Matrice di Kraljic. Basato sui materiali IFTS GEFITES / Prof. Filippo Visintin (Università di Firenze).</p>
+              <div class="web-badges">
+                <span class="web-badge">Make-or-Buy</span> <span class="web-badge">CVP</span> <span class="web-badge">Kraljic</span> <span class="web-badge">Dashboard</span> <span class="web-badge">KPI</span> <span class="web-badge">SCM</span>
+                <span class="web-badge">Live</span>
+                <span class="web-badge">Apri →</span>
+              </div>
+            </a>
+            <a class="web-card glass tilt" href="business-plan.html" rel="noopener">
+              <div class="web-icon" aria-hidden="true">📄</div>
+              <h3>Business Plan Tessile</h3>
+              <p>Documento interattivo di business plan per startup tessile-digitale. Include analisi di mercato, modello finanziario, piano operativo e pitch per investitori. Orientato al distretto di Prato e compliance EU Digital Product Passport.</p>
+              <div class="web-badges">
+                <span class="web-badge">Business Plan</span> <span class="web-badge">Finanza</span> <span class="web-badge">Startup</span> <span class="web-badge">Prato</span> <span class="web-badge">EU DPP</span>
+                <span class="web-badge">Draft</span>
+                <span class="web-badge">Apri →</span>
+              </div>
+            </a>
+            <a class="web-card glass tilt" href="sketchhd-artifact.html" rel="noopener">
+              <div class="web-icon" aria-hidden="true">📄</div>
+              <h3>SketchHD — Sketch to HD</h3>
+              <p>Workflow AI per la trasformazione di sketch digitali in immagini ad alta definizione. Canvas di disegno integrato con Claude Vision per analisi e generazione prompt Stable Diffusion. Preset stilistici: Fashion, Realistic, Product, Concept, Textile.</p>
+              <div class="web-badges">
+                <span class="web-badge">AI</span> <span class="web-badge">Fashion</span> <span class="web-badge">Sketch</span> <span class="web-badge">Claude Vision</span> <span class="web-badge">Stability AI</span> <span class="web-badge">React</span>
+                <span class="web-badge">Live</span>
+                <span class="web-badge">Apri →</span>
+              </div>
+            </a>
+            <a class="web-card glass tilt" href="weavecad.html" rel="noopener">
+              <div class="web-icon" aria-hidden="true">📄</div>
+              <h3>WeaveCAD Draft Studio</h3>
+              <p>Simulatore interattivo per armature tessili: tela, saia, raso, panama e derivati. Disegno trama/ordito con parametri configurabili, visualizzazione in tempo reale del tessuto simulato, calcolo note colore e spezzature.</p>
+              <div class="web-badges">
+                <span class="web-badge">Tessitura</span> <span class="web-badge">Armature</span> <span class="web-badge">Trama</span> <span class="web-badge">Ordito</span> <span class="web-badge">Simulatore</span> <span class="web-badge">Prato</span>
+                <span class="web-badge">Live</span>
+                <span class="web-badge">Apri →</span>
+              </div>
+            </a>
+              <p>Diagramma di Gantt interattivo per la pianificazione del ciclo di lavorazione tessile: cardatura, filatura, orditura, tessitura, tintoria, rifinizione e confezione. Gestione ordini multipli, visualizzazione WIP e avanzamento per fase.</p>
+              <div class="web-badges">
+                <span class="web-badge">Gantt</span> <span class="web-badge">Pianificazione</span> <span class="web-badge">Ciclo Tessile</span> <span class="web-badge">Lanificio</span> <span class="web-badge">Prato</span>
+                <span class="web-badge">Live</span>
+                <span class="web-badge">Apri →</span>
+              </div>
+            </a>
+            <a class="web-card glass tilt" href="note-colore.html" rel="noopener">
+              <div class="web-icon" aria-hidden="true">📄</div>
+              <h3>Note Colore Calculator</h3>
+              <p>Tool per il calcolo delle note colore in ordito: spezzature, simmetrie, nuove partenze centrate e sequenze ripetute. Input parametri e output lista note pronta per l'orditrice. Riduce gli errori nel passaggio da disegno a produzione.</p>
+              <div class="web-badges">
+                <span class="web-badge">Tessitura</span> <span class="web-badge">Note Colore</span> <span class="web-badge">Orditura</span> <span class="web-badge">Calcolo</span> <span class="web-badge">Qualità</span>
+                <span class="web-badge">Live</span>
+                <span class="web-badge">Apri →</span>
+              </div>
+            </a>
+          </div>
+        </noscript>
+            <span class="web-signature-mark">RR</span>
+            <span>Progettati e sviluppati da <strong>Ronaldo Riska</strong></span>
+          </div>
+        </div>
+      </section>
+
+      
+
+<!-- OPERATIONAL METRICS DASHBOARD -->
+      <section class="metrics-section" aria-labelledby="metriche-title">
+        <div class="container">
+
+          <div class="metrics-header reveal">
+            <div class="metrics-heading">
+              <p class="eyebrow">Operational Portfolio Metrics</p>
+              <h2 id="metriche-title">Ecosistema digitale tra tessile, supply chain e industrial intelligence.</h2>
+            </div>
+            <div class="metrics-intro">
+              <p>Una struttura portfolio progettata come piattaforma operativa: dashboard, tool HTML, simulatori produttivi, moduli analitici e prototipi digitali navigabili.</p>
+              <div class="metrics-badges" aria-label="Aree di competenza">
+                <span>Industrial Tech</span>
+                <span>Digital Workflow</span>
+                <span>Textile Operations</span>
+                <span>AI Systems</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="metrics-dashboard">
+
+            <article class="metric-card metric-feature reveal">
+              <div class="metric-top">
+                <span class="metric-label">Digital Portfolio</span>
+                <span class="metric-status">Live</span>
+              </div>
+              <strong class="metric-number" data-count-to="25" aria-live="polite">0</strong>
+              <div>
+                <h3>Progetti e prototipi operativi</h3>
+                <p>Tool interattivi, dashboard industriali, simulatori tessili e moduli orientati a process intelligence e operations.</p>
+              </div>
+            </article>
+
+            <article class="metric-card reveal">
+              <div class="metric-top">
+                <span class="metric-label">Core Areas</span>
+              </div>
+              <strong class="metric-number" data-count-to="3" aria-live="polite">0</strong>
+              <div>
+                <h3>Macro-aree professionali</h3>
+                <p>Tessitura, CAD moda, supply chain e workflow industriali.</p>
+              </div>
+            </article>
+
+            <article class="metric-card reveal">
+              <div class="metric-top">
+                <span class="metric-label">Interactive Tools</span>
+              </div>
+              <strong class="metric-number" data-count-to="18" aria-live="polite">0</strong>
+              <div>
+                <h3>Dashboard e tool HTML</h3>
+                <p>Applicazioni navigabili ottimizzate per desktop, tablet e mobile.</p>
+              </div>
+            </article>
+
+            <article class="metric-card reveal">
+              <div class="metric-top">
+                <span class="metric-label">Development Layer</span>
+              </div>
+              <strong class="metric-number" data-count-to="7" aria-live="polite">0</strong>
+              <div>
+                <h3>Prototipi tecnici e sorgenti</h3>
+                <p>Strutture React, moduli JS e architetture front-end orientate a scalabilità e UX industriale.</p>
+              </div>
+            </article>
+
+            <article class="metric-insight reveal">
+              <div class="baroque-panel">
+                <div class="baroque-frame">
+                  <div class="baroque-ornament top-ornament"></div>
+                  
+                  <div class="baroque-header">
+                    <div class="baroque-kicker">Textile Intelligence</div>
+                    <h3 class="baroque-title">Digitalizza la tua impresa<br>con dati misurabili.</h3>
+                    <div class="baroque-divider">
+                      <span class="divider-ornament">❦</span>
+                    </div>
+                  </div>
+
+                  <div class="baroque-executive">
+                    <div class="executive-label">
+                      <span class="label-ornament">◆</span>
+                      <span>Executive</span>
+                      <span class="label-ornament">◆</span>
+                    </div>
+                    <div class="executive-text">
+                      <p>La digitalizzazione della filiera produttiva converte i dati operativi grezzi in KPI azionabili, trasformando volumi, tempistiche e costi in leve strategiche per la governance aziendale.</p>
+                    </div>
+                  </div>
+
+                  <div class="dig-keywords">
+                    <span class="dig-keyword">KPI azionabili</span>
+                    <span class="dig-keyword">Digital Twin</span>
+                    <span class="dig-keyword">Dashboard direzionale</span>
+                    <span class="dig-keyword">OEE &amp; saturazione</span>
+                    <span class="dig-keyword">Tempo &amp; Metodo</span>
+                    <span class="dig-keyword">AI predittiva</span>
+                    <span class="dig-keyword">Colli di bottiglia</span>
+                    <span class="dig-keyword">Miglioramento continuo</span>
+                  </div>
+
+                  <div class="dig-compare">
+                    <div class="dig-compare-col dig-compare-on">
+                      <div class="dig-compare-head">
+                        <span class="dig-compare-icon">✓</span>
+                        <h4>Azienda Digitalizzata</h4>
+                      </div>
+                      <ul class="dig-compare-list">
+                        <li>Monitoraggio KPI in tempo reale (€, resa, scostamento)</li>
+                        <li>Identificazione automatica colli di bottiglia</li>
+                        <li>Alert predittivi prima che il problema diventi critico</li>
+                        <li>Digital twin sempre più fedele all'impianto reale</li>
+                        <li>Decisioni data-driven, non basate sull'intuizione</li>
+                        <li>Miglioramento continuo: i modelli imparano dai dati</li>
+                        <li>Riduzione scarti e ottimizzazione saturazione macchine</li>
+                      </ul>
+                    </div>
+                    <div class="dig-compare-col dig-compare-off">
+                      <div class="dig-compare-head">
+                        <span class="dig-compare-icon">✗</span>
+                        <h4>Azienda NON-Digitalizzata</h4>
+                      </div>
+                      <ul class="dig-compare-list">
+                        <li>Dati sparsi, nessuna visione unificata dello stato</li>
+                        <li>Colli di bottiglia scoperti solo dopo il danno</li>
+                        <li>Decisioni reattive, sempre in ritardo</li>
+                        <li>Nessuna previsione, solo contabilità retrospettiva</li>
+                        <li>Dipendenza dall'esperienza individuale, non dal dato</li>
+                        <li>Scarti e inefficenze nascoste, costi invisibili</li>
+                        <li>Impossibilità di scalare senza aumentare errori</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div class="dig-form">
+                    <h4 class="dig-form-title">Pronto a vedere<br>i tuoi KPI in tempo reale?</h4>
+                    <p class="dig-form-lead">Compila il form e ricevi una consulenza gratuita di 30 minuti. Analizziamo i tuoi processi e ti mostriamo cosa può fare la digitalizzazione per la tua azienda.</p>
+                    <form class="dig-form-grid" action="#" method="post" aria-label="Richiedi consulenza gratuita">
+                      <label class="dig-field">
+                        <span>Nome e azienda</span>
+                        <input type="text" name="nome_azienda" placeholder="Mario Rossi — Tessitura Rossi Srl" autocomplete="organization" required>
+                      </label>
+                      <label class="dig-field">
+                        <span>Email aziendale</span>
+                        <input type="email" name="email" placeholder="mario@rossi.example" autocomplete="email" required>
+                      </label>
+                      <label class="dig-field dig-field-full">
+                        <span>Cosa ti preoccupa di più della tua produzione?</span>
+                        <textarea name="preoccupazione" placeholder="Es: tempi ciclo troppo lunghi, scarti elevati, non ho visibilità sui costi..." rows="3" required></textarea>
+                      </label>
+                      <button type="submit" class="button button-primary dig-form-submit">Richiedi consulenza gratuita</button>
+                    </form>
+                    <p class="dig-form-note">Nessun impegno. Consulenza iniziale di 30 minuti, gratuita e senza vincolo.</p>
+                  </div>
+
+                  <div class="baroque-cta">
+                    <a class="button button-primary" href="progetto-digitalizzazione-impresa.html">Scopri il progetto →</a>
+                  </div>
+
+                  <div class="baroque-footer">
+                    <div class="footer-ornament left"></div>
+                    <div class="footer-ornament right"></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </div>
+      <!-- DIGITAL COMMAND CENTER -->
+      <section class="section" aria-labelledby="command-title">
+        <div class="container">
+          <!-- KPI PIE CHARTS ROW -->
+          <div class="kpi-pie-row">
+            <div class="kpi-pie reveal">
+              <div class="pie-chart pie-2d" data-percent="78" data-color="#00f6ff">
+                <svg viewBox="0 0 36 36">
+                  <path class="pie-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path class="pie-fill" stroke-dasharray="78, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <div class="pie-center">
+                  <span class="pie-value">78%</span>
+                  <span class="pie-label">OEE</span>
+                </div>
+              </div>
+              <div class="kpi-meta">
+                <span class="kpi-icon" aria-hidden="true">⚙️</span>
+                <span class="kpi-title">Efficienza impianto</span>
+              </div>
+            </div>
+
+            <div class="kpi-pie reveal">
+              <div class="pie-chart pie-3d" data-percent="65" data-color="#00ff9d">
+                <svg viewBox="0 0 36 36">
+                  <path class="pie-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path class="pie-fill" stroke-dasharray="65, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <div class="pie-center">
+                  <span class="pie-value">65%</span>
+                  <span class="pie-label">Saturazione</span>
+                </div>
+              </div>
+              <div class="kpi-meta">
+                <span class="kpi-icon" aria-hidden="true">🏭</span>
+                <span class="kpi-title">Utilizzo macchine</span>
+              </div>
+            </div>
+
+            <div class="kpi-pie reveal">
+              <div class="pie-chart pie-2d" data-percent="92" data-color="#ff4d4d">
+                <svg viewBox="0 0 36 36">
+                  <path class="pie-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path class="pie-fill" stroke-dasharray="92, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <div class="pie-center">
+                  <span class="pie-value">92%</span>
+                  <span class="pie-label">Qualità</span>
+                </div>
+              </div>
+              <div class="kpi-meta">
+                <span class="kpi-icon" aria-hidden="true">✅</span>
+                <span class="kpi-title">First pass yield</span>
+              </div>
+            </div>
+
+            <div class="kpi-pie reveal">
+              <div class="pie-chart pie-3d" data-percent="45" data-color="#ffaa00">
+                <svg viewBox="0 0 36 36">
+                  <path class="pie-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path class="pie-fill" stroke-dasharray="45, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <div class="pie-center">
+                  <span class="pie-value">45%</span>
+                  <span class="pie-label">Riduzione scarti</span>
+                </div>
+              </div>
+              <div class="kpi-meta">
+                <span class="kpi-icon" aria-hidden="true">📉</span>
+                <span class="kpi-title">Miglioramento scarti</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- MULTI-CHARTS ROW -->
+          <div class="multi-charts">
+            <!-- Multi-color breakdown pie -->
+            <div class="chart-card reveal">
+              <div class="chart-header">
+                <span class="chart-title">Ripartizione costi</span>
+                <span class="chart-badge">Breakdown</span>
+              </div>
+              <div class="multi-pie">
+                <svg viewBox="0 0 36 36">
+                  <path class="pie-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path class="pie-fill multi" stroke-dasharray="35, 100" stroke="#ff4d4d" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  <path class="pie-fill multi" stroke-dasharray="30, 100" stroke="#00f6ff" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" transform="rotate(35 18 18)" />
+                  <path class="pie-fill multi" stroke-dasharray="25, 100" stroke="#00ff9d" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" transform="rotate(65 18 18)" />
+                </svg>
+                <div class="chart-legend">
+                  <span><i style="background:#ff4d4d"></i>Materie 35%</span>
+                  <span><i style="background:#00f6ff"></i>Lavorazioni 30%</span>
+                  <span><i style="background:#00ff9d"></i>Energia 25%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Line chart -->
+            <div class="chart-card reveal">
+              <div class="chart-header">
+                <span class="chart-title">Andamento produzione</span>
+                <span class="chart-badge">Trend 12 mesi</span>
+              </div>
+              <div class="line-chart">
+                <svg viewBox="0 0 200 80" preserveAspectRatio="none">
+                  <polyline points="5,70 25,55 45,60 65,40 85,35 105,25 125,30 145,18 165,22 185,12 195,15" fill="none" stroke="#00f6ff" stroke-width="1.5" />
+                  <polyline points="5,75 25,70 45,68 65,60 85,55 105,50 125,48 145,42 165,40 185,35 195,32" fill="none" stroke="#ff4d4d" stroke-width="1.5" opacity="0.6" />
+                </svg>
+                <div class="chart-legend">
+                  <span><i style="background:#00f6ff"></i>Attuale</span>
+                  <span><i style="background:#ff4d4d"></i>Precedente</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Donut chart -->
+            <div class="chart-card reveal">
+              <div class="chart-header">
+                <span class="chart-title">Distribuzione difetti</span>
+                <span class="chart-badge">Pareto</span>
+              </div>
+              <div class="donut-chart">
+                <svg viewBox="0 0 36 36">
+                  <path class="pie-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="3" />
+                  <path class="pie-fill" stroke-dasharray="40, 100" stroke="#ff4d4d" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="3" />
+                  <path class="pie-fill" stroke-dasharray="25, 100" stroke="#00f6ff" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="3" transform="rotate(40 18 18)" />
+                  <path class="pie-fill" stroke-dasharray="20, 100" stroke="#00ff9d" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="3" transform="rotate(65 18 18)" />
+                  <path class="pie-fill" stroke-dasharray="15, 100" stroke="#ffaa00" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="3" transform="rotate(85 18 18)" />
+                </svg>
+                <div class="chart-legend">
+                  <span><i style="background:#ff4d4d"></i>Contestazione 40%</span>
+                  <span><i style="background:#00f6ff"></i>Tintoria 25%</span>
+                  <span><i style="background:#00ff9d"></i>Tessitura 20%</span>
+                  <span><i style="background:#ffaa00"></i>Altro 15%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bar chart -->
+            <div class="chart-card reveal">
+              <div class="chart-header">
+                <span class="chart-title">KPI per reparto</span>
+                <span class="chart-badge">Confronto</span>
+              </div>
+              <div class="bar-chart">
+                <svg viewBox="0 0 200 80" preserveAspectRatio="none">
+                  <rect x="10" y="50" width="12" height="20" fill="#00f6ff" opacity="0.9" />
+                  <rect x="30" y="35" width="12" height="35" fill="#00f6ff" opacity="0.7" />
+                  <rect x="50" y="45" width="12" height="25" fill="#00ff9d" opacity="0.9" />
+                  <rect x="70" y="20" width="12" height="50" fill="#00ff9d" opacity="0.7" />
+                  <rect x="90" y="40" width="12" height="30" fill="#ffaa00" opacity="0.9" />
+                  <rect x="110" y="30" width="12" height="40" fill="#ffaa00" opacity="0.7" />
+                  <rect x="130" y="55" width="12" height="15" fill="#ff4d4d" opacity="0.9" />
+                  <rect x="150" y="45" width="12" height="25" fill="#ff4d4d" opacity="0.7" />
+                </svg>
+                <div class="chart-legend">
+                  <span><i style="background:#00f6ff"></i>OEE</span>
+                  <span><i style="background:#00ff9d"></i>Qualità</span>
+                  <span><i style="background:#ffaa00"></i>Consegna</span>
+                  <span><i style="background:#ff4d4d"></i>Scarti</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BOTTLENECK ICONS ROW -->
+          <div class="bottleneck-icons">
+            <div class="b-icon reveal">
+              <div class="b-icon-circle">
+                <span aria-hidden="true">⏱️</span>
+              </div>
+              <h4>Tempi ciclo</h4>
+              <p>Confronto teorico vs reale per ogni fase</p>
+            </div>
+            <div class="b-icon reveal">
+              <div class="b-icon-circle">
+                <span aria-hidden="true">📦</span>
+              </div>
+              <h4>WIP</h4>
+              <p>Work in progress tra reparti</p>
+            </div>
+            <div class="b-icon reveal">
+              <div class="b-icon-circle">
+                <span aria-hidden="true">🎯</span>
+              </div>
+              <h4>Advancement</h4>
+              <p>Produzione prevista vs attuale</p>
+            </div>
+            <div class="b-icon reveal">
+              <div class="b-icon-circle">
+                <span aria-hidden="true">💡</span>
+              </div>
+              <h4>Colli di bottiglia</h4>
+              <p>Identificazione automatica criticità</p>
+            </div>
+            <div class="b-icon reveal">
+              <div class="b-icon-circle">
+                <span aria-hidden="true">📊</span>
+              </div>
+              <h4>KPI dashboard</h4>
+              <p>Metriche in tempo reale</p>
+            </div>
+            <div class="b-icon reveal">
+              <div class="b-icon-circle">
+                <span aria-hidden="true">🤖</span>
+              </div>
+              <h4>AI Systems</h4>
+              <p>Modelli predittivi e suggerimenti</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MACRO-CATEGORIE -->
+      <section class="section section-band" aria-labelledby="categorie-title">
+        <div class="container">
+
+          <div class="section-heading reveal">
+            <div>
+              <p class="eyebrow">MACRO-CATEGORIE</p>
+              <h2 id="categorie-title">Tessitura · CAD Moda · Supply Chain</h2>
+            </div>
+            <p>Moduli sviluppati su casi d’uso concreti: armatura, note colore, MRP, make-or-buy, simulazione e operations analytics.</p>
+          </div>
+
+          <div class="categories-stack">
+
+            <article class="category-block reveal" data-category-card="tessitura">
+              <div class="category-header">
+                <div>
+                  <span class="category-id" data-category-tone>T01</span>
+                  <h3 class="category-name" data-category-title>Tessitura</h3>
+                  <p class="category-desc" data-category-summary>Simulatori di armatura, note colore, Gantt ciclo produttivo.</p>
+                </div>
+                <div class="category-meta">
+                  <span class="category-badge"><strong data-category-count>0</strong> <span>moduli</span></span>
+                  <a class="button button-primary category-cta" data-category-link href="tessitura.html">Apri area →</a>
+                </div>
+              </div>
+              <div class="category-tags">
+                <span>Simulatori produttivi</span>
+                <span>Armature</span>
+                <span>Pianificazione</span>
+              </div>
+            </article>
+
+            <article class="category-block reveal" data-category-card="cad">
+              <div class="category-header">
+                <div>
+                  <span class="category-id" data-category-tone>C01</span>
+                  <h3 class="category-name" data-category-title>CAD Moda</h3>
+                  <p class="category-desc" data-category-summary>Modellistica, cartamodelli, SketchHD AI e concept digitale.</p>
+                </div>
+                <div class="category-meta">
+                  <span class="category-badge"><strong data-category-count>0</strong> <span>moduli</span></span>
+                  <a class="button button-primary category-cta" data-category-link href="cad-moda.html">Apri area →</a>
+                </div>
+              </div>
+              <div class="category-tags">
+                <span>Modellistica</span>
+                <span>Sketch AI</span>
+                <span>Prodotto</span>
+              </div>
+            </article>
+
+            <article class="category-block reveal" data-category-card="supply">
+              <div class="category-header">
+                <div>
+                  <span class="category-id" data-category-tone>S01</span>
+                  <h3 class="category-name" data-category-title>Supply Chain</h3>
+                  <p class="category-desc" data-category-summary>MRP, dashboard SCM, make-or-buy e operations analytics.</p>
+                </div>
+                <div class="category-meta">
+                  <span class="category-badge"><strong data-category-count>0</strong> <span>moduli</span></span>
+                  <a class="button button-primary category-cta" data-category-link href="supply-chain-production.html">Apri area →</a>
+                </div>
+              </div>
+              <div class="category-tags">
+                <span>MRP</span>
+                <span>Dashboard</span>
+                <span>Operations Analytics</span>
+              </div>
+            </article>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- PROGETTI -->
+      <section class="section" id="progetti" aria-labelledby="progetti-title">
+        <div class="container">
+          <div class="section-heading reveal">
+            <div>
+              <p class="eyebrow">PROGETTI</p>
+              <h2 id="progetti-title">TOOL // SIMULATORI // DASHBOARD</h2>
+            </div>
+            <p>Interfacce applicative e prototipi industriali. Stack tecnico e casi d’uso in ogni scheda.</p>
+          </div>
+          <div class="toolbar reveal">
+            <div class="filter-group" role="group" aria-label="Filtri categoria progetto">
+              <button class="filter-button is-active" type="button" data-filter="all">Tutti</button>
+              <button class="filter-button" type="button" data-filter="tessitura">Tessitura</button>
+              <button class="filter-button" type="button" data-filter="cad">CAD Moda</button>
+              <button class="filter-button" type="button" data-filter="supply">Supply Chain</button>
+            </div>
+            <label class="sr-only" for="project-search">Cerca progetto</label>
+            <input id="project-search" class="search-input" type="search"
+                   placeholder="Cerca progetto, tag o tecnologia"
+                   data-project-search
+                   autocomplete="off">
+          </div>
+          <!-- Mount point: popolato da main.js tramite project-data.js -->
+          <div class="project-grid" data-density="compact" data-project-list data-category="all"
+               aria-live="polite" aria-label="Griglia progetti"></div>
+        </div>
+      </section>
+
+      <!-- CURRICULUM -->
+      <section class="section section-band" aria-labelledby="cv-title">
+        <div class="container dashboard-grid">
+          <div class="reveal">
+            <p class="eyebrow">Curriculum online</p>
+            <h2 id="cv-title">Esperienza operativa e competenze digitali in un unico percorso.</h2>
+            <p class="lead">Profilo orientato a filiera tessile, qualità, gestione fornitori, supply chain e strumenti digitali per il controllo industriale.</p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="curriculum.html">Leggi il CV completo →</a>
+              <a class="button button-secondary" href="Ronaldo-Riska-CV-2026.pdf" download>Scarica PDF</a>
+            </div>
+          </div>
+          <ul class="process-list reveal" aria-label="Sintesi competenze">
+            <li><strong>Ops</strong><span>Finissaggio, confezione, flussi produttivi, controllo qualità e documentazione logistica.</span></li>
+            <li><strong>SCM</strong><span>Make-or-buy, pianificazione, acquisti, partnership, stock, KPI e dashboard.</span></li>
+            <li><strong>Digital</strong><span>HTML, CSS, JavaScript, React prototype, SEO, AI workflow e product thinking.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- CONTATTI -->
+      <section class="section contact-section" id="contatti" aria-labelledby="contatti-title">
+        <div class="container contact-grid">
+
+          <div class="reveal">
+            <p class="eyebrow">Contatti</p>
+            <h2 id="contatti-title">Disponibile per progetti tessili, industriali e digitali.</h2>
+            <p class="lead">Collaborazioni su operations, supply chain, dashboard industriali e strumenti digitali applicati alla filiera moda‑tessile.</p>
+            <p>Integro esperienza produttiva, qualità e pianificazione con approccio data‑driven: analytics, automazione documentale, sistemi AI‑driven e interfacce web per il monitoraggio dei processi.</p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="mailto:ronaldo.riska@gmail.com">Avvia una conversazione →</a>
+              <a class="button button-secondary" href="Ronaldo-Riska-CV-2026.pdf" download>Scarica CV PDF</a>
+            </div>
+            <div class="contact-tags" aria-label="Aree di collaborazione">
+              <span>Textile Operations</span>
+              <span>CAD Fashion</span>
+              <span>Supply Chain</span>
+              <span>Industrial Analytics</span>
+              <span>Digital Workflow</span>
+              <span>AI Systems</span>
+            </div>
+          </div>
+
+          <address class="contact-panel reveal">
+            <div class="contact-card">
+              <span class="contact-label">Email</span>
+              <a href="mailto:ronaldo.riska@gmail.com">ronaldo.riska@gmail.com</a>
+            </div>
+            <div class="contact-card">
+              <span class="contact-label">Location</span>
+              <span>Prato, Toscana — Italy</span>
+            </div>
+            <div class="contact-card">
+              <span class="contact-label">GitHub Repository</span>
+              <a href="https://github.com/ItalyCircularFashion" target="_blank" rel="noopener noreferrer">
+                github.com/ItalyCircularFashion
+              </a>
+            </div>
+            <div class="contact-card">
+              <span class="contact-label">Focus operativo</span>
+              <span>Textile manufacturing · Process optimization · Industrial dashboarding · Digital product systems</span>
+            </div>
+          </address>
+
+        </div>
+      </section>
+
+      <section class="section section-band" aria-labelledby="journal-title">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="eyebrow">Textile Intelligence · Distretto pratese</p>
+            <h2 id="journal-title">Osservatorio tessile — Prato Textile District</h2>
+            <p class="lead">Analisi e contestualizzazione sul distretto tessile pratese, tra storia, manifattura e transizione digitale.</p>
+          </div>
+
+          <div class="intelligence-stack">
+            <article class="intel-block reveal">
+              <span class="intel-label">Contesto</span>
+              <h3>Prato: ieri e oggi</h3>
+              <p>Dalle origini lanerie del Medioevo all’odierno distretto della circular fashion, il territorio pratese ha trasformato la tessitura in un modello produttivo capace di rinnovarsi senza perdere identità.</p>
+              <p>La nuova sezione è dedicata a questa lettura storica e operativa, con approfondimenti su sostenibilità, tracciabilità e innovazione industriale.</p>
+            </article>
+          </div>
+
+          <div class="hero-actions" style="justify-content:center;margin-top:2.5rem">
+            <a href="prato-textile-district.html" class="button button-primary">Apri osservatorio →</a>
+            <a href="Ronaldo-Riska-CV-2026.pdf" download class="button button-secondary">Scarica CV PDF</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+    <!-- ── FINE <main> — correttamente uno solo ── -->
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>&copy; <span data-year></span> Ronaldo Riska — Textile Intelligence Portfolio</p>
+        <a href="#top">Torna su ↑</a>
+      </div>
+    </footer>
+
+    <!-- Script: project-data.js PRIMA di main.js (dipendenza) -->
+    <script src="project-data.js" defer></script>
+    <script src="main.js" defer></script>
+    <script src="logo-loom-animated.js" defer></script>
+    <script>
+    (function(){
+      const canvas = document.getElementById('animatedLogoCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      const dpr = window.devicePixelRatio || 1;
+      const size = 300;
+      canvas.width = size * dpr;
+      canvas.height = size * dpr;
+      ctx.scale(dpr, dpr);
+
+      const cols = 9;
+      const spacing = size / cols;
+      const cycleFrames = 140;
+      let frames = 0;
+
+      let wefts = [
+        { y: 40 + spacing * 4, pattern: 0 },
+        { y: 40 + spacing * 3, pattern: 1 },
+        { y: 40 + spacing * 2, pattern: 0 },
+        { y: 40 + spacing * 1, pattern: 1 },
+        { y: 40 + spacing * 0, pattern: 0 }
+      ];
+
+      function draw() {
+        ctx.clearRect(0, 0, size, size);
+
+        let p = (frames % cycleFrames) / cycleFrames;
+        let cycleIndex = Math.floor(frames / cycleFrames);
+        let isEven = cycleIndex % 2 === 0;
+
+        let shuttleX = -20;
+        let newWeftY = 25;
+        let beaterY = -20;
+        let shiftOffset = 0;
+        let newWeftWidth = 0;
+
+        if (p < 0.4) {
+          let tp = p / 0.4;
+          tp = tp < 0.5 ? 2 * tp * tp : -1 + (4 - 2 * tp) * tp;
+          if (isEven) {
+            shuttleX = tp * (size + 40) - 20;
+            newWeftWidth = Math.max(0, Math.min(size, shuttleX));
+          } else {
+            shuttleX = (size + 20) - tp * (size + 40);
+            newWeftWidth = Math.max(0, Math.min(size, size - shuttleX));
+          }
+        } else {
+          shuttleX = isEven ? size + 20 : -20;
+          newWeftWidth = size;
+        }
+
+        if (p > 0.4 && p <= 0.5) {
+          let tp = (p - 0.4) / 0.1;
+          beaterY = -15 + tp * (newWeftY + 5);
+        } else if (p > 0.5 && p <= 0.7) {
+          let tp = (p - 0.5) / 0.2;
+          tp = 1 - Math.pow(1 - tp, 3);
+          beaterY = (25 + 5) + tp * (40 - 25);
+          newWeftY = 25 + tp * (40 - 25);
+          shiftOffset = tp * spacing;
+        } else if (p > 0.7 && p <= 0.85) {
+          let tp = (p - 0.7) / 0.15;
+          tp = tp * tp;
+          beaterY = (40 + 5) - tp * (40 + 5 + 15);
+          newWeftY = 40;
+          shiftOffset = spacing;
+        } else if (p > 0.85) {
+          beaterY = -15;
+          newWeftY = 40;
+          shiftOffset = spacing;
+        }
+
+        if (frames > 0 && frames % cycleFrames === 0) {
+          wefts.unshift({ y: 40, pattern: isEven ? 1 : 0 });
+          for (let w of wefts) w.y += spacing;
+          if (wefts.length > 8) wefts.pop();
+          shiftOffset = 0;
+        }
+
+        ctx.lineWidth = 3.5;
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineCap = 'round';
+        for (let i = 1; i < cols; i++) {
+          ctx.beginPath();
+          ctx.moveTo(i * spacing, 0);
+          ctx.lineTo(i * spacing, size);
+          ctx.stroke();
+        }
+
+        function drawWeft(yPos, pattern, width, fromLeft) {
+          ctx.lineWidth = 4;
+          ctx.strokeStyle = '#dc2626';
+          ctx.beginPath();
+          if (fromLeft) {
+            ctx.moveTo(0, yPos);
+            ctx.lineTo(width, yPos);
+          } else {
+            ctx.moveTo(size, yPos);
+            ctx.lineTo(size - width, yPos);
+          }
+          ctx.stroke();
+
+          ctx.strokeStyle = '#ffffff';
+          for (let i = 1; i < cols; i++) {
+            if ((i + pattern) % 2 === 0) {
+              let x = i * spacing;
+              let isCrossed = fromLeft ? (width >= x - 2) : (size - width <= x + 2);
+              if (isCrossed) {
+                ctx.beginPath();
+                ctx.moveTo(x, yPos - 5);
+                ctx.lineTo(x, yPos + 5);
+                ctx.stroke();
+              }
+            }
+          }
+        }
+
+        for (let w of wefts) {
+          drawWeft(w.y + shiftOffset, w.pattern, size, true);
+        }
+        if (p < 0.9) drawWeft(newWeftY, isEven ? 1 : 0, newWeftWidth, isEven);
+
+        if (p < 0.45) {
+          ctx.fillStyle = '#dc2626';
+          ctx.beginPath();
+          let w = 24, h = 9;
+          ctx.moveTo(shuttleX - w/2, 25);
+          ctx.lineTo(shuttleX - w/4, 25 - h/2);
+          ctx.lineTo(shuttleX + w/4, 25 - h/2);
+          ctx.lineTo(shuttleX + w/2, 25);
+          ctx.lineTo(shuttleX + w/4, 25 + h/2);
+          ctx.lineTo(shuttleX - w/4, 25 + h/2);
+          ctx.fill();
+        }
+
+        if (beaterY > -10) {
+          ctx.strokeStyle = '#16a34a';
+          ctx.lineWidth = 1.5;
+          for (let i = 0; i <= cols; i++) {
+            let x = (i * spacing) - (spacing / 2);
+            if (x > 0 && x < size) {
+              ctx.beginPath();
+              ctx.moveTo(x, beaterY - 18);
+              ctx.lineTo(x, beaterY + 2);
+              ctx.stroke();
+            }
+          }
+          ctx.fillStyle = '#15803d';
+          ctx.fillRect(0, beaterY - 20, size, 5);
+          ctx.fillRect(0, beaterY, size, 4);
+        }
+
+        frames++;
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    })();
+    </script>
+    <!-- script.js RIMOSSO: era orphaned, tutta la logica è in main.js -->
+
+      <script src="sheep-walk.js" defer></script>
+  </body>
+</html>

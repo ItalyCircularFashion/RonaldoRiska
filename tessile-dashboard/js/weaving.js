@@ -133,6 +133,71 @@ const Weaving = {
     }
 };
 
+
+// Produttività Telaio (da ITU Chapter 2b)
+const Produttivita = {
+    calcola() {
+        const rpm = parseFloat(document.getElementById('pr-rpm').value);
+        const width = parseFloat(document.getElementById('pr-width').value);
+        const efficiency = parseFloat(document.getElementById('pr-efficiency').value) || 85;
+        const pickDensity = parseFloat(document.getElementById('pr-pickdensity').value);
+        const numTelai = parseFloat(document.getElementById('pr-numtelai').value) || 1;
+        const oreTurno = parseFloat(document.getElementById('pr-ore').value) || 8;
+
+        if (isNaN(rpm) || isNaN(width)) {
+            document.getElementById('ris-produttivita').innerHTML = '<span class="errore">Inserisci RPM e Larghezza</span>';
+            return;
+        }
+
+        let out = '<h3>Produttività Telaio</h3>';
+
+        // WIR (Weft Insertion Rate)
+        const wir = rpm * width * (efficiency / 100);
+        out += `<p class="formula">WIR = RPM × Larghezza × η = ${rpm} × ${width} × ${efficiency}% = <span class="highlight">${wir.toFixed(1)} m/min</span></p>`;
+
+        // Produzione oraria (m/h)
+        const prodOra = wir * 60;
+        out += `<p class="formula">Produzione/ora = WIR × 60 = ${wir.toFixed(1)} × 60 = <span class="valore">${prodOra.toFixed(1)} m/h</span></p>`;
+
+        // Produzione oraria (m²/h)
+        const prodOraMq = prodOra * width;
+        out += `<p class="formula">Produzione/ora (m²) = ${prodOra.toFixed(1)} × ${width} = <span class="valore">${prodOraMq.toFixed(1)} m²/h</span></p>`;
+
+        // Produzione turno (m)
+        const prodTurno = prodOra * oreTurno;
+        out += `<p class="formula">Produzione/turno = ${prodOra.toFixed(1)} × ${oreTurno}h = <span class="valore">${prodTurno.toFixed(1)} m/turno</span></p>`;
+
+        // Produzione totale (m²/turno)
+        const prodTotale = prodTurno * width * numTelai;
+        out += `<p class="formula">Produzione totale (${numTelai} telai) = ${prodTurno.toFixed(1)} × ${width} × ${numTelai} = <span class="highlight">${prodTotale.toFixed(1)} m²/turno</span></p>`;
+
+        // Se densità trama disponibile, calcoli avanzati
+        if (!isNaN(pickDensity)) {
+            // L = (60 × rpm × η) / (D × 100 × 100) — produzione lineare
+            const L = (60 * rpm * efficiency) / (pickDensity * 100 * 100);
+            out += `<p class="formula">L = (60 × ${rpm} × ${efficiency}) / (${pickDensity} × 100 × 100) = <span class="valore">${L.toFixed(3)} m/h</span></p>`;
+            
+            // P = L × b (m²/h)
+            const P = L * width;
+            out += `<p class="formula">P = ${L.toFixed(3)} × ${width} = <span class="valore">${P.toFixed(3)} m²/h</span></p>`;
+        }
+
+        // Fattori di perdita
+        out += '<h4>Fattori di Perdita</h4>';
+        out += '<ul>';
+        out += '<li>Fermi meccanici: ~10%</li>';
+        out += '<li>Rifilo/pannello: ~3%</li>';
+        out += '<li>Aria/mancata inserzione: ~2%</li>';
+        out += '<li><strong>Totale perdita: ~15%</strong></li>';
+        out += '</ul>';
+
+        const prodNetta = prodTotale * 0.85;
+        out += `<p class="formula">Produzione netta = ${prodTotale.toFixed(1)} × 0.85 = <span class="highlight">${prodNetta.toFixed(1)} m²/turno</span></p>`;
+
+        document.getElementById('ris-produttivita').innerHTML = out;
+    }
+};
+
 // Marker Making
 const Marker = {
     calcolaEfficienza() {
