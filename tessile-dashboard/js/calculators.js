@@ -650,11 +650,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Composizione - righe iniziali
+    // Composizione - righe iniziali (solo se esistono)
     const compOrdBody = document.querySelector('#comp-ordito tbody');
     const compTramaBody = document.querySelector('#comp-trama tbody');
-    for (let i = 0; i < 4; i++) {
-        compOrdBody.insertAdjacentHTML('beforeend', `<tr><td>${i+1}</td><td><input type="text" placeholder="Cotone"></td><td><input type="text" placeholder="Nm 20"></td><td><input type="text"></td><td><input type="number" step="0.1"></td><td><input type="number"></td></tr>`);
-        compTramaBody.insertAdjacentHTML('beforeend', `<tr><td>${i+1}</td><td><input type="text" placeholder="Cotone"></td><td><input type="text" placeholder="Nm 20"></td><td><input type="text"></td><td><input type="number" step="0.1"></td><td><input type="number"></td></tr>`);
+    if (compOrdBody && compTramaBody) {
+        for (let i = 0; i < 4; i++) {
+            compOrdBody.insertAdjacentHTML('beforeend', `<tr><td>${i+1}</td><td><input type="text" placeholder="Cotone"></td><td><input type="text" placeholder="Nm 20"></td><td><input type="text"></td><td><input type="number" step="0.1"></td><td><input type="number"></td></tr>`);
+            compTramaBody.insertAdjacentHTML('beforeend', `<tr><td>${i+1}</td><td><input type="text" placeholder="Cotone"></td><td><input type="text" placeholder="Nm 20"></td><td><input type="text"></td><td><input type="number" step="0.1"></td><td><input type="number"></td></tr>`);
+        }
     }
 });
