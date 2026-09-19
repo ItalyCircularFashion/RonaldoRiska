@@ -126,8 +126,7 @@ const Pettine = {
                     out += `<p class="formula">Pettine Limite Pettinato (k=${kPettinato}): ${kPettinato} × √${nm} = <span class="valore">${pettLimitePettinato.toFixed(1)}</span></p>`;
                     out += `<p class="formula">Pettine Limite Cardato (k=${kCardato}): ${kCardato} × √${nm} = <span class="valore">${pettLimiteCardato.toFixed(1)}</span></p>`;
                     const pettLimite = pettLimitePettinato; // default pettinato
-                    const pettLimite = k * Math.sqrt(nm);
-                    out += `<p class="formula">Pettine Limite (k=${k}): ${k} × √${nm} = <span class="valore">${pettLimite.toFixed(1)}</span></p>`;
+                    out += `<p class="formula">Pettine Limite: <span class="valore">${pettLimite.toFixed(1)}</span></p>`;
                     if (pettineDec > pettLimite) {
                         out += `<p class="errore">⚠ Pettine decimale (${pettineDec.toFixed(1)}) supera il limite (${pettLimite.toFixed(1)})!</p>`;
                     } else {
