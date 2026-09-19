@@ -4,335 +4,280 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tecnico Tessile Pratese</title>
-    <link rel="stylesheet" href="tessile-dashboard/css-v2/style.css">
+    <link rel="stylesheet" href="tessile-dashboard/css/style.css">
 </head>
 <body>
-    <aside class="sidebar">
-        <div class="sidebar-brand">
+    <header class="app-header">
+        <div class="header-brand">
             <div class="logo">TtP</div>
-            <h1>Tecnico Tessile Pratese</h1>
-            <p>Dashboard di Calcolo</p>
+            <div class="title-block">
+                <h1>Tecnico Tessile Pratese</h1>
+                <p class="subtitle">Dashboard di Calcolo &mdash; Tessitura Ortogonale</p>
+            </div>
         </div>
-        <nav class="sidebar-nav">
-            <button class="nav-item active" data-module="scheda">
-                <span class="icon">&#9776;</span><span>Scheda Tecnica</span>
-            </button>
-            <button class="nav-item" data-module="pettine">
-                <span class="icon">&#10002;</span><span>Calcoli Pettine</span>
-            </button>
-            <button class="nav-item" data-module="colore">
-                <span class="icon">&#10044;</span><span>Note di Colore</span>
-            </button>
-            <button class="nav-item" data-module="rincorso">
-                <span class="icon">&#9638;</span><span>Rincorso</span>
-            </button>
-            <button class="nav-item" data-module="peso">
-                <span class="icon">&#9679;</span><span>Peso</span>
-            </button>
-            <button class="nav-item" data-module="riduzione">
-                <span class="icon">&#8597;</span><span>Riduzione</span>
-            </button>
-            <button class="nav-item" data-module="titolo">
-                <span class="icon">&#8733;</span><span>Titolo</span>
-            </button>
-            <button class="nav-item" data-module="lana">
-                <span class="icon">&#9733;</span><span>Ciclo Laniero</span>
-            </button>
-            <button class="nav-item" data-module="ie">
-                <span class="icon">&#9881;</span><span>Ind. Engineering</span>
-            </button>
-                        <button class="nav-item" data-module="apparel"><span class="icon">&#9826;</span><span>Apparel</span></button>
-            <button class="nav-item" data-module="knitting"><span class="icon">&#9825;</span><span>Knitting</span></button>
-            <button class="nav-item" data-module="fabric">
-                <span class="icon">&#9648;</span><span>Fabric Design</span>
-            </button>
-            <button class="nav-item" data-module="weaving">
-                <span class="icon">&#9641;</span><span>Weaving Tech</span>
-            </button>
-            <button class="nav-item" data-module="produttivita">
-                <span class="icon">&#9881;</span><span>Produttivit&agrave;</span>
-            </button>
-            <button class="nav-item" data-module="yarn">
-                <span class="icon">&#9742;</span><span>Yarn Mfg</span>
-            </button>
+        <nav class="main-nav">
+            <button class="nav-btn active" data-module="scheda">Scheda Tecnica</button>
+            <button class="nav-btn" data-module="pettine">Calcoli Pettine</button>
+            <button class="nav-btn" data-module="colore">Note di Colore</button>
+            <button class="nav-btn" data-module="rincorso">Rincorso &amp; Armatura</button>
+            <button class="nav-btn" data-module="peso">Peso &amp; Divisore</button>
+            <button class="nav-btn" data-module="riduzione">Riduzione &amp; Imborsi</button>
+            <button class="nav-btn" data-module="titolo">Titolo &amp; Conversioni</button>
+            <button class="nav-btn" data-module="lana">Ciclo Laniero</button>
+            <button class="nav-btn" data-module="ie">Industrial Engineering</button>
+            <button class="nav-btn" data-module="weaving">Weaving Tech</button>
+            <button class="nav-btn" data-module="yarn">Yarn Mfg</button>
         </nav>
-    </aside>
+    </header>
 
-    <main class="main-content">
-        <!-- Scheda Tecnica -->
+    <main class="app-main">
+        <!-- MODULO SCHEDA TECNICA -->
         <section class="module active" id="mod-scheda">
-            <div class="module-header">
-                <h2>Scheda Tecnica</h2>
-                <p>Calcoli integrati dalla tessitura ortogonale</p>
-            </div>
-            <div class="card">
-                <div class="card-title">Parametri Articolo</div>
-                <div class="form-grid">
-                    <div class="form-group"><label>Articolo</label><input type="text" id="st-articolo" placeholder="es. Tessuto13232"></div>
-                    <div class="form-group"><label>Variante</label><input type="text" id="st-variante" placeholder="es. 023212"></div>
-                    <div class="form-group"><label>Peso Finito (g/ml)</label><input type="number" id="st-pml" step="0.1" placeholder="460"></div>
-                    <div class="form-group"><label>Altezza Finita (cm)</label><input type="number" id="st-hf" step="0.1" placeholder="150"></div>
-                    <div class="form-group"><label>Peso Metro Quadro (g/mq)</label><input type="number" id="st-pmq" step="0.1" placeholder="307.2"></div>
-                    <div class="form-group"><label>Rid. Finite Ordito (fili/dm)</label><input type="number" id="st-rfo" placeholder="320"></div>
-                    <div class="form-group"><label>Rid. Finite Trama (trame/dm)</label><input type="number" id="st-rft" placeholder="280"></div>
-                    <div class="form-group"><label>Fili Totali</label><input type="number" id="st-fili" placeholder="4800"></div>
-                    <div class="form-group"><label>Colpi a telaio (trame/dm)</label><input type="number" id="st-colpi" placeholder="260"></div>
-                    <div class="form-group"><label>Hp Teorica (cm)</label><input type="number" id="st-hp" step="0.1" placeholder="168.5"></div>
-                    <div class="form-group"><label>Pettine (denti/base/imp)</label><input type="text" id="st-pettine" placeholder="70/10/4"></div>
-                    <div class="form-group"><label>IIO (%)</label><input type="number" id="st-iio" step="0.1" placeholder="7"></div>
-                    <div class="form-group"><label>IRO (%)</label><input type="number" id="st-iro" step="0.1" placeholder="5"></div>
-                    <div class="form-group"><label>IIT (%)</label><input type="number" id="st-iit" step="0.1" placeholder="7"></div>
-                    <div class="form-group"><label>IRT (%)</label><input type="number" id="st-irt" step="0.1" placeholder="9"></div>
-                    <div class="form-group"><label>POT Perdite (%)</label><input type="number" id="st-pot" step="0.1" placeholder="0"></div>
-                    <div class="form-group"><label>Perdite Rifinizione (%)</label><input type="number" id="st-pr" step="0.1" placeholder="5"></div>
+            <h2>Scheda Tecnica</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Articolo</label>
+                    <input type="text" id="st-articolo" placeholder="es. Tessuto13232">
                 </div>
-                <button class="btn-primary" onclick="Scheda.calcola()">Calcola Scheda</button>
-                <div class="result-panel" id="ris-scheda"></div>
+                <div class="form-group">
+                    <label>Variante</label>
+                    <input type="text" id="st-variante" placeholder="es. 023212">
+                </div>
+                <div class="form-group">
+                    <label>Peso Finito a Metro Lineare (g/ml)</label>
+                    <input type="number" id="st-pml" step="0.1" placeholder="460">
+                </div>
+                <div class="form-group">
+                    <label>Altezza Finita (cm)</label>
+                    <input type="number" id="st-hf" step="0.1" placeholder="150">
+                </div>
+                <div class="form-group">
+                    <label>Peso Finito a Metro Quadro (g/mq)</label>
+                    <input type="number" id="st-pmq" step="0.1" placeholder="307.2">
+                </div>
+                <div class="form-group">
+                    <label>Riduzione Finite Ordito (fili/dm)</label>
+                    <input type="number" id="st-rfo" placeholder="320">
+                </div>
+                <div class="form-group">
+                    <label>Riduzione Finite Trama (trame/dm)</label>
+                    <input type="number" id="st-rft" placeholder="280">
+                </div>
+                <div class="form-group">
+                    <label>Fili Totali</label>
+                    <input type="number" id="st-fili" placeholder="4800">
+                </div>
+                <div class="form-group">
+                    <label>Colpi a telaio (trame/dm)</label>
+                    <input type="number" id="st-colpi" placeholder="260">
+                </div>
+                <div class="form-group">
+                    <label>Hp Teorica (cm)</label>
+                    <input type="number" id="st-hp" step="0.1" placeholder="168.5">
+                </div>
+                <div class="form-group">
+                    <label>Pettine (formato: denti/base/imp)</label>
+                    <input type="text" id="st-pettine" placeholder="70/10/4">
+                </div>
+                <div class="form-group">
+                    <label>Imborso Intreccio Ordito IIO (%)</label>
+                    <input type="number" id="st-iio" step="0.1" placeholder="7">
+                </div>
+                <div class="form-group">
+                    <label>Imborso Rifinizione Ordito IRO (%)</label>
+                    <input type="number" id="st-iro" step="0.1" placeholder="5">
+                </div>
+                <div class="form-group">
+                    <label>Imborso Intreccio Trama IIT (%)</label>
+                    <input type="number" id="st-iit" step="0.1" placeholder="7">
+                </div>
+                <div class="form-group">
+                    <label>Imborso Rifinizione Trama IRT (%)</label>
+                    <input type="number" id="st-irt" step="0.1" placeholder="9">
+                </div>
+                <div class="form-group">
+                    <label>Perdite Orditura/Tessitura (%)</label>
+                    <input type="number" id="st-pot" step="0.1" placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label>Perdite Ponderali Rifinizione (%)</label>
+                    <input type="number" id="st-pr" step="0.1" placeholder="5">
+                </div>
             </div>
+            <div class="composizione-grid">
+                <h3>Composizione Filati Ordito</h3>
+                <table id="comp-ordito">
+                    <thead><tr><th>Pos.</th><th>Tipo</th><th>Titolo</th><th>Colore</th><th>Peso Div. (g/m)</th><th>Occorrenze</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+                <h3>Composizione Filati Trama</h3>
+                <table id="comp-trama">
+                    <thead><tr><th>Pos.</th><th>Tipo</th><th>Titolo</th><th>Colore</th><th>Peso Div. (g/m)</th><th>Occorrenze</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <button class="btn-calcola" onclick="Scheda.calcola()">Calcola Scheda</button>
+            <div class="risultato" id="ris-scheda"></div>
         </section>
 
-        <!-- Pettine -->
+        <!-- MODULO CALCOLI PETTINE -->
         <section class="module" id="mod-pettine">
-            <div class="module-header"><h2>Calcoli Pettine</h2><p>Pettine limite, calcolo e conversione</p></div>
+            <h2>Calcoli Pettine</h2>
             <div class="sub-tabs">
-                <button class="sub-tab active" data-sub="pettine-limite">Limite</button>
-                <button class="sub-tab" data-sub="pettine-calcolo">Calcolo</button>
-                <button class="sub-tab" data-sub="pettine-conversione">Conversione</button>
+                <button class="sub-tab active" data-sub="pettine-limite">Pettine Limite</button>
+                <button class="sub-tab" data-sub="pettine-calcolo">Calcolo Pettine</button>
+                <button class="sub-tab" data-sub="pettine-conversione">Pratese/Decimale</button>
             </div>
             <div class="sub-panel active" id="sub-pettine-limite">
-                <div class="card">
-                    <div class="form-grid">
-                        <div class="form-group"><label>Titolo (Nm)</label><input type="number" id="pl-nm" step="0.1" placeholder="20"></div>
-                        <div class="form-group"><label>Impettinatura</label><input type="number" id="pl-imp" placeholder="2"></div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Titolo (Nm)</label>
+                        <input type="number" id="pl-nm" step="0.1" placeholder="20">
                     </div>
-                    <button class="btn-primary" onclick="Pettine.calcolaLimite()">Calcola Limite</button>
-                    <div class="result-panel" id="ris-pettine-limite"></div>
+                    <div class="form-group">
+                        <label>Impettinatura</label>
+                        <input type="number" id="pl-imp" placeholder="2">
+                    </div>
                 </div>
+                <button class="btn-calcola" onclick="Pettine.calcolaLimite()">Calcola Pettine Limite</button>
+                <div class="risultato" id="ris-pettine-limite"></div>
             </div>
             <div class="sub-panel" id="sub-pettine-calcolo">
-                <div class="card">
-                    <div class="form-grid">
-                        <div class="form-group"><label>Fili Totali</label><input type="number" id="pc-fo" placeholder="4800"></div>
-                        <div class="form-group"><label>Hp (cm)</label><input type="number" id="pc-hp" step="0.1" placeholder="168.5"></div>
-                        <div class="form-group"><label>Impettinatura</label><input type="number" id="pc-imp" placeholder="4"></div>
-                        <div class="form-group"><label>Titolo (Nm)</label><input type="number" id="pc-nm" step="0.1" placeholder="20"></div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Fili Totali (FO)</label>
+                        <input type="number" id="pc-fo" placeholder="4800">
                     </div>
-                    <button class="btn-primary" onclick="Pettine.calcola()">Calcola</button>
-                    <div class="result-panel" id="ris-pettine"></div>
+                    <div class="form-group">
+                        <label>Hp Teorica (cm)</label>
+                        <input type="number" id="pc-hp" step="0.1" placeholder="168.5">
+                    </div>
+                    <div class="form-group">
+                        <label>Hgg (cm)</label>
+                        <input type="number" id="pc-hgg" step="0.1" placeholder="164">
+                    </div>
+                    <div class="form-group">
+                        <label>Hf (cm)</label>
+                        <input type="number" id="pc-hf" step="0.1" placeholder="150">
+                    </div>
+                    <div class="form-group">
+                        <label>IIT (%)</label>
+                        <input type="number" id="pc-iit" step="0.1" placeholder="7">
+                    </div>
+                    <div class="form-group">
+                        <label>ITT (%)</label>
+                        <input type="number" id="pc-itt" step="0.1" placeholder="11">
+                    </div>
+                    <div class="form-group">
+                        <label>Impettinatura</label>
+                        <input type="number" id="pc-imp" placeholder="4">
+                    </div>
+                    <div class="form-group">
+                        <label>Titolo (Nm)</label>
+                        <input type="number" id="pc-nm" step="0.1" placeholder="20">
+                    </div>
                 </div>
+                <button class="btn-calcola" onclick="Pettine.calcola()">Calcola Pettine</button>
+                <div class="risultato" id="ris-pettine"></div>
             </div>
             <div class="sub-panel" id="sub-pettine-conversione">
-                <div class="card">
-                    <div class="form-grid">
-                        <div class="form-group"><label>Pettine Decimale</label><input type="number" id="pcon-dec" step="0.1" placeholder="70"></div>
-                        <div class="form-group"><label>oppure Pratese</label><input type="text" id="pcon-prat" placeholder="87,5/13/4"></div>
-                    </div>
-                    <button class="btn-primary" onclick="Pettine.converti()">Converti</button>
-                    <div class="result-panel" id="ris-conversione"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Colore -->
-        <section class="module" id="mod-colore">
-            <div class="module-header"><h2>Note di Colore</h2><p>Ripetizioni, centratura, simmetria</p></div>
-            <div class="card">
                 <div class="form-grid">
-                    <div class="form-group"><label>Nota (es. 60A-18C-22B-16D)</label><input type="text" id="nc-nota" placeholder="60A-18C-22B-16D-22B-18C"></div>
-                    <div class="form-group"><label>Fili Ordimento</label><input type="number" id="nc-fo" placeholder="2108"></div>
-                    <div class="form-group"><label>Simmetrizzare</label><select id="nc-simm"><option value="no">No</option><option value="yes">Sì</option></select></div>
+                    <div class="form-group">
+                        <label>Pettine Decimale (denti/10cm)</label>
+                        <input type="number" id="pcon-dec" step="0.1" placeholder="70">
+                    </div>
+                    <div class="form-group">
+                        <label>oppure Pettine Pratese</label>
+                        <input type="text" id="pcon-prat" placeholder="87,5/13/4">
+                    </div>
                 </div>
-                <button class="btn-primary" onclick="Colore.calcola()">Analizza</button>
-                <div class="result-panel" id="ris-colore"></div>
+                <button class="btn-calcola" onclick="Pettine.converti()">Converti</button>
+                <div class="risultato" id="ris-conversione"></div>
             </div>
         </section>
 
-        <!-- Rincorso -->
+        <!-- MODULO NOTE DI COLORE -->
+        <section class="module" id="mod-colore">
+            <h2>Note di Colore</h2>
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label>Nota (formato: 60A-18C-22B-16D-22B-18C)</label>
+                    <input type="text" id="nc-nota" placeholder="60A-18C-22B-16D-22B-18C">
+                </div>
+                <div class="form-group">
+                    <label>Fili Ordimento (FO)</label>
+                    <input type="number" id="nc-fo" placeholder="2108">
+                </div>
+                <div class="form-group">
+                    <label>Simmetrizzare</label>
+                    <select id="nc-simm"><option value="no">No</option><option value="yes">Sì</option></select>
+                </div>
+            </div>
+            <button class="btn-calcola" onclick="Colore.calcola()">Analizza Nota</button>
+            <div class="risultato" id="ris-colore"></div>
+        </section>
+
+        <!-- MODULO RINCORSO & ARMATURA -->
         <section class="module" id="mod-rincorso">
-            <div class="module-header"><h2>Rincorso & Armatura</h2><p>Generazione e visualizzazione intrecci</p></div>
+            <h2>Rincorso &amp; Armatura</h2>
             <div class="sub-tabs">
                 <button class="sub-tab active" data-sub="rinc-visualizza">Visualizza</button>
-                <button class="sub-tab" data-sub="rinc-calcola">Rincorso</button>
-                <button class="sub-tab" data-sub="rinc-armatura">Armatura</button>
+                <button class="sub-tab" data-sub="rinc-calcola">Calcola Rincorso</button>
+                <button class="sub-tab" data-sub="rinc-armatura">Armatura Licci</button>
             </div>
             <div class="sub-panel active" id="sub-rinc-visualizza">
-                <div class="card">
-                    <div class="form-grid">
-                        <div class="form-group"><label>Tipo Intreccio</label><select id="rv-tipo"><option value="telaio">Telaio</option><option value="batavia22">Batavia 2/2</option></select></div>
-                        <div class="form-group"><label>Numero Licci</label><input type="number" id="rv-licci" placeholder="4"></div>
-                        <div class="form-group"><label>Rincorso</label><input type="text" id="rv-rincorso" placeholder="1-2-3-4"></div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Tipo Intreccio</label>
+                        <select id="rv-tipo">
+                            <option value="telaio">Telaio (1/1)</option>
+                            <option value="batavia22">Batavia 2/2 (Twill)</option>
+                            <option value="batavia33">Batavia 3/3</option>
+                            <option value="raso5">Raso da 5</option>
+                            <option value="raso8">Raso da 8</option>
+                            <option value="personalizzato">Personalizzato</option>
+                        </select>
                     </div>
-                    <button class="btn-primary" onclick="Rincorso.visualizza()">Visualizza</button>
-                    <div class="result-panel" id="ris-rincorso-viz"></div>
+                    <div class="form-group">
+                        <label>Numero Licci</label>
+                        <input type="number" id="rv-licci" placeholder="4" min="2" max="20">
+                    </div>
+                    <div class="form-group">
+                        <label>Rincorso (es. 1-2-3-4)</label>
+                        <input type="text" id="rv-rincorso" placeholder="1-2-3-4">
+                    </div>
                 </div>
+                <button class="btn-calcola" onclick="Rincorso.visualizza()">Visualizza</button>
+                <div class="risultato" id="ris-rincorso-viz"></div>
             </div>
             <div class="sub-panel" id="sub-rinc-calcola">
-                <div class="card">
-                    <div class="form-grid">
-                        <div class="form-group"><label>Licci</label><input type="number" id="rc-licci" placeholder="4"></div>
-                        <div class="form-group"><label>Tipo</label><select id="rc-tipo"><option value="diretto">Diretto</option><option value="punto">Punto</option><option value="lisca">Lisca</option></select></div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Numero Licci</label>
+                        <input type="number" id="rc-licci" placeholder="4" min="2">
                     </div>
-                    <button class="btn-primary" onclick="Rincorso.calcola()">Genera</button>
-                    <div class="result-panel" id="ris-rincorso"></div>
+                    <div class="form-group">
+                        <label>Tipo</label>
+                        <select id="rc-tipo">
+                            <option value="diretto">Rincorso Diretto</option>
+                            <option value="punto">Rincorso a Punto</option>
+                            <option value="lisca">Rincorso a Lisca/Resca</option>
+                        </select>
+                    </div>
                 </div>
+                <button class="btn-calcola" onclick="Rincorso.calcola()">Genera Rincorso</button>
+                <div class="risultato" id="ris-rincorso"></div>
             </div>
             <div class="sub-panel" id="sub-rinc-armatura">
-                <div class="card">
-                    <div class="form-grid">
-                        <div class="form-group"><label>Licci</label><input type="number" id="ra-licci" placeholder="4"></div>
-                        <div class="form-group"><label>Tipo</label><select id="ra-tipo"><option value="telaio">Telaio</option><option value="twill22">Twill 2/2</option><option value="twill33">Twill 3/3</option></select></div>
-                    </div>
-                    <button class="btn-primary" onclick="Rincorso.armatura()">Genera</button>
-                    <div class="result-panel" id="ris-armatura"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Peso -->
-        <section class="module" id="mod-peso">
-            <div class="module-header"><h2>Peso & Divisore</h2><p>Teorico, greggio, finito</p></div>
-            <div class="card">
                 <div class="form-grid">
-                    <div class="form-group"><label>FO</label><input type="number" id="peso-fo" placeholder="4800"></div>
-                    <div class="form-group"><label>Nm Ordito</label><input type="number" id="peso-nmo" step="0.1" placeholder="20"></div>
-                    <div class="form-group"><label>Colpi (colpi/cm)</label><input type="number" id="peso-colpi" step="0.1" placeholder="26"></div>
-                    <div class="form-group"><label>Nm Trama</label><input type="number" id="peso-nmt" step="0.1" placeholder="20"></div>
-                    <div class="form-group"><label>Hp</label><input type="number" id="peso-hp" step="0.1" placeholder="168.5"></div>
-                    <div class="form-group"><label>IIO (%)</label><input type="number" id="peso-iio" step="0.1" placeholder="7"></div>
-                    <div class="form-group"><label>IRO (%)</label><input type="number" id="peso-iro" step="0.1" placeholder="5"></div>
-                    <div class="form-group"><label>POT (%)</label><input type="number" id="peso-pot" step="0.1" placeholder="0"></div>
-                </div>
-                <button class="btn-primary" onclick="Peso.calcola()">Calcola</button>
-                <div class="result-panel" id="ris-peso"></div>
-            </div>
-        </section>
-
-        <!-- Riduzione -->
-        <section class="module" id="mod-riduzione">
-            <div class="module-header"><h2>Riduzione & Imborsi</h2><p>RidtO, Hgg, Hf, imborsi</p></div>
-            <div class="card">
-                <div class="form-grid">
-                    <div class="form-group"><label>FO</label><input type="number" id="rid-fo" placeholder="2750"></div>
-                    <div class="form-group"><label>Hp</label><input type="number" id="rid-hp" step="0.1" placeholder="179"></div>
-                    <div class="form-group"><label>IIT (%)</label><input type="number" id="rid-iit" step="0.1" placeholder="7"></div>
-                    <div class="form-group"><label>IRT (%)</label><input type="number" id="rid-irt" step="0.1" placeholder="9"></div>
-                </div>
-                <button class="btn-primary" onclick="Riduzione.calcola()">Calcola</button>
-                <div class="result-panel" id="ris-riduzione"></div>
-            </div>
-        </section>
-
-        <!-- Titolo -->
-        <section class="module" id="mod-titolo">
-            <div class="module-header"><h2>Titolo & Conversioni</h2><p>Nm, Ne, Tex, Denier</p></div>
-            <div class="card">
-                <div class="form-grid">
-                    <div class="form-group"><label>Valore</label><input type="number" id="tit-valore" step="0.1" placeholder="20"></div>
-                    <div class="form-group"><label>Sistema</label><select id="tit-sistema"><option value="nm">Nm</option><option value="ne">Ne</option><option value="tex">Tex</option></select></div>
-                    <div class="form-group"><label>Capi</label><input type="number" id="tit-capi" placeholder="1"></div>
-                </div>
-                <button class="btn-primary" onclick="Titolo.converti()">Converti</button>
-                <div class="result-panel" id="ris-titolo"></div>
-            </div>
-        </section>
-
-        <!-- Lana -->
-        <section class="module" id="mod-lana">
-            <div class="module-header"><h2>Ciclo Laniero</h2><p>Rendimento, consumi, scarichi</p></div>
-            <div class="sub-tabs">
-                <button class="sub-tab active" data-sub="lana-rendimento">Rendimento</button>
-                <button class="sub-tab" data-sub="lana-consumi">Consumi</button>
-            </div>
-            <div class="sub-panel active" id="sub-lana-rendimento">
-                <div class="card">
-                    <div class="form-grid">
-                        <div class="form-group"><label>Lana Sucida (kg)</label><input type="number" id="ln-sucido" placeholder="1000"></div>
-                        <div class="form-group"><label>Resa (%)</label><input type="number" id="ln-resa" placeholder="65"></div>
-                        <div class="form-group"><label>Fiocco (%)</label><input type="number" id="ln-fiocco" placeholder="35"></div>
-                        <div class="form-group"><label>Perdite filatura (%)</label><input type="number" id="ln-pettorite" placeholder="5"></div>
+                    <div class="form-group">
+                        <label>Numero Licci</label>
+                        <input type="number" id="ra-licci" placeholder="4" min="2" max="8">
                     </div>
-                    <button class="btn-primary" onclick="Lana.calcolaRendimento()">Calcola</button>
-                    <div class="result-panel" id="ris-lana"></div>
-                </div>
-            </div>
-            <div class="sub-panel" id="sub-lana-consumi">
-                <div class="card">
-                    <div class="form-grid">
-                        <div class="form-group"><label>Tipologia</label><select id="ln-tipologia"><option value="pettinatura">Pettinatura</option><option value="tintoria">Tintoria</option><option value="lanificio">Lanificio</option></select></div>
-                        <div class="form-group"><label>Tonnellate/anno</label><input type="number" id="ln-ton" placeholder="1000"></div>
-                    </div>
-                    <button class="btn-primary" onclick="Lana.calcolaConsumi()">Calcola</button>
-                    <div class="result-panel" id="ris-consumi"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- IE -->
-        <section class="module" id="mod-ie">
-            <div class="module-header"><h2>Industrial Engineering</h2><p>SMV, Efficiency, KPIs</p></div>
-            <div class="sub-tabs">
-                <button class="sub-tab active" data-sub="ie-smv">SMV</button>
-                <button class="sub-tab" data-sub="ie-efficiency">Efficiency</button>
-            </div>
-            <div class="sub-panel active" id="sub-ie-smv">
-                <div class="card">
-                    <div class="form-grid">
-                        <div class="form-group"><label>Tempo Osservato (min)</label><input type="number" id="ie-obs-time" step="0.01" placeholder="0.85"></div>
-                        <div class="form-group"><label>Rating (%)</label><input type="number" id="ie-rating" placeholder="100"></div>
-                        <div class="form-group"><label>Macchina</label><select id="ie-machine-type"><option value="weaving-loom">Telai</option><option value="single-needle">Monoago</option></select></div>
-                    </div>
-                    <button class="btn-primary" onclick="IE.calcolaSMV()">Calcola</button>
-                    <div class="result-panel" id="ris-ie-smv"></div>
-                </div>
-            </div>
-            <div class="sub-panel" id="sub-ie-efficiency">
-                <div class="card">
-                    <div class="form-grid">
-                        <div class="form-group"><label>SMV</label><input type="number" id="ie-smv" step="0.001" placeholder="0.850"></div>
-                        <div class="form-group"><label>Produzione (pz/turno)</label><input type="number" id="ie-production" placeholder="500"></div>
-                        <div class="form-group"><label>Manpower</label><input type="number" id="ie-manpower" placeholder="1"></div>
-                        <div class="form-group"><label>Ore</label><input type="number" id="ie-working-hours" placeholder="8"></div>
-                    </div>
-                    <button class="btn-primary" onclick="IE.calcolaEfficiency()">Calcola</button>
-                    <div class="result-panel" id="ris-ie-efficiency"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Produttività -->
-        <section class="module" id="mod-produttivita">
-            <div class="module-header">
-                <h2>Produttivit&agrave; Telaio</h2>
-                <p>WIR, produzione oraria e turno, fattori di perdita</p>
-            </div>
-            <div class="card">
-                <div class="card-title">Parametri Telaio</div>
-                <div class="form-grid">
-                    <div class="form-group"><label>RPM/PPM</label><input type="number" id="pr-rpm" placeholder="400"></div>
-                    <div class="form-group"><label>Larghezza Utile (m)</label><input type="number" id="pr-width" step="0.01" placeholder="1.90"></div>
-                    <div class="form-group"><label>Efficienza (%)</label><input type="number" id="pr-efficiency" placeholder="85"></div>
-                    <div class="form-group"><label>Numero Telai</label><input type="number" id="pr-numtelai" placeholder="1"></div>
-                    <div class="form-group"><label>Densit&agrave; Trama (ppc)</label><input type="number" id="pr-pickdensity" placeholder="25"></div>
-                    <div class="form-group"><label>Ore Turno</label><input type="number" id="pr-ore" placeholder="8"></div>
-                </div>
-                <button class="btn-primary" onclick="Produttivita.calcola()">Calcola Produttivit&agrave;</button>
-                <div class="result-panel" id="ris-produttivita"></div>
-            </div>
-        </section>
-
-                <!-- Fabric Design -->
-        <section class="module" id="mod-fabric">
-            <div class="module-header">
-                <h2>Fabric Design</h2>
-                <p>Strutture tessili: telaio, twill, satin, salto</p>
-            </div>
-            <div class="card">
-                <div class="card-title">Parametri Armatura</div>
-                <div class="form-grid">
-                    <div class="form-group"><label>Numero Licci</label><input type="number" id="fd-licci" placeholder="4" min="2" max="12"></div>
-                    <div class="form-group"><label>Tipo Armatura</label>
-                        <select id="fd-tipo">
-                            <option value="telaio">Telaio (plain)</option>
+                    <div class="form-group">
+                        <label>Tipo Armatura</label>
+                        <select id="ra-tipo">
+                            <option value="telaio">Telaio</option>
                             <option value="twill22">Twill 2/2</option>
                             <option value="twill33">Twill 3/3</option>
                             <option value="satin5">Satin 5</option>
@@ -340,152 +285,425 @@
                         </select>
                     </div>
                 </div>
-                <button class="btn-primary" onclick="FabricDesign.visualizza()">Visualizza</button>
-                <div class="result-panel" id="ris-fabric"></div>
-            </div>
-            <div class="card">
-                <div class="card-title">Calcolo Salto (Satin)</div>
-                <button class="btn-primary" onclick="FabricDesign.calcolaSalto()">Calcola Salto</button>
-                <div class="result-panel" id="ris-fabric-salto"></div>
+                <button class="btn-calcola" onclick="Rincorso.armatura()">Genera Armatura</button>
+                <div class="risultato" id="ris-armatura"></div>
             </div>
         </section>
 
-                <!-- Knitting -->
-        <section class="module" id="mod-knitting">
-            <div class="module-header">
-                <h2>Knitting Technology</h2>
-                <p>Maglieria: jersey, rib, interlock, piqué, gauge</p>
+        <!-- MODULO PESO & DIVISORE -->
+        <section class="module" id="mod-peso">
+            <h2>Peso &amp; Divisore</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Fili Totali Ordito (FO)</label>
+                    <input type="number" id="peso-fo" placeholder="4800">
+                </div>
+                <div class="form-group">
+                    <label>Titolo Ordito (Nm)</label>
+                    <input type="number" id="peso-nmo" step="0.1" placeholder="20">
+                </div>
+                <div class="form-group">
+                    <label>Colpi a Telaio (colpi/cm)</label>
+                    <input type="number" id="peso-colpi" step="0.1" placeholder="26">
+                </div>
+                <div class="form-group">
+                    <label>Titolo Trama (Nm)</label>
+                    <input type="number" id="peso-nmt" step="0.1" placeholder="20">
+                </div>
+                <div class="form-group">
+                    <label>Hp Teorica (cm)</label>
+                    <input type="number" id="peso-hp" step="0.1" placeholder="168.5">
+                </div>
+                <div class="form-group">
+                    <label>IIO (%)</label>
+                    <input type="number" id="peso-iio" step="0.1" placeholder="7">
+                </div>
+                <div class="form-group">
+                    <label>IRO / PR (%)</label>
+                    <input type="number" id="peso-iro" step="0.1" placeholder="5">
+                </div>
+                <div class="form-group">
+                    <label>POT Perdite Ord./Tess. (%)</label>
+                    <input type="number" id="peso-pot" step="0.1" placeholder="0">
+                </div>
             </div>
-            <div class="card">
-                <div class="card-title">Parametri Maglia</div>
+            <button class="btn-calcola" onclick="Peso.calcola()">Calcola Peso</button>
+            <div class="risultato" id="ris-peso"></div>
+        </section>
+
+        <!-- MODULO RIDUZIONE & IMBORSI -->
+        <section class="module" id="mod-riduzione">
+            <h2>Riduzione &amp; Imborsi</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>FO (Fili Totali)</label>
+                    <input type="number" id="rid-fo" placeholder="2750">
+                </div>
+                <div class="form-group">
+                    <label>Hp (Altezza Pettine / Teorica cm)</label>
+                    <input type="number" id="rid-hp" step="0.1" placeholder="179">
+                </div>
+                <div class="form-group">
+                    <label>IIT - Restringimento Intreccio Trama (%)</label>
+                    <input type="number" id="rid-iit" step="0.1" placeholder="7">
+                </div>
+                <div class="form-group">
+                    <label>IRT - Restringimento Rifinizione Trama (%)</label>
+                    <input type="number" id="rid-irt" step="0.1" placeholder="9">
+                </div>
+                <div class="form-group">
+                    <label>IIO - Restringimento Intreccio Ordito (%)</label>
+                    <input type="number" id="rid-iio" step="0.1" placeholder="7">
+                </div>
+                <div class="form-group">
+                    <label>Colpi a telaio (trama, colpi/cm)</label>
+                    <input type="number" id="rid-colpi" step="0.1" placeholder="26">
+                </div>
+            </div>
+            <button class="btn-calcola" onclick="Riduzione.calcola()">Calcola Riduzioni</button>
+            <div class="risultato" id="ris-riduzione"></div>
+        </section>
+
+        <!-- MODULO TITOLO & CONVERSIONI -->
+        <section class="module" id="mod-titolo">
+            <h2>Titolo &amp; Conversioni</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Valore Titolo</label>
+                    <input type="number" id="tit-valore" step="0.1" placeholder="20">
+                </div>
+                <div class="form-group">
+                    <label>Sistema</label>
+                    <select id="tit-sistema">
+                        <option value="nm">Nm (Metrico)</option>
+                        <option value="ne">Ne (Inglese Cotton)</option>
+                        <option value="tex">Tex</option>
+                        <option value="den">Denier</option>
+                        <option value="np">Np (Pettinato)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Numero capi (es. 1/20 = 1 capo da 20)</label>
+                    <input type="number" id="tit-capi" placeholder="1" min="1">
+                </div>
+            </div>
+            <button class="btn-calcola" onclick="Titolo.converti()">Converti Titolo</button>
+            <div class="risultato" id="ris-titolo"></div>
+            <hr>
+            <h3>Calcolo Titolo da Campione</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Lunghezza Stesa (cm)</label>
+                    <input type="number" id="tit-lunghezza" step="0.1" placeholder="11.7">
+                </div>
+                <div class="form-group">
+                    <label>Numero Fili Campione</label>
+                    <input type="number" id="tit-nfili" placeholder="10">
+                </div>
+                <div class="form-group">
+                    <label>Peso Campione (gr)</label>
+                    <input type="number" id="tit-peso" step="0.001" placeholder="0.056">
+                </div>
+            </div>
+            <button class="btn-calcola" onclick="Titolo.daCampione()">Calcola da Campione</button>
+            <div class="risultato" id="ris-titolo-campione"></div>
+        </section>
+
+        <!-- MODULO CICLO LANIERO -->
+        <section class="module" id="mod-lana">
+            <h2>Ciclo Laniero</h2>
+            <div class="sub-tabs">
+                <button class="sub-tab active" data-sub="lana-rendimento">Rendimento</button>
+                <button class="sub-tab" data-sub="lana-consumi">Consumi/Impronta</button>
+                <button class="sub-tab" data-sub="lana-impronta">Scarichi</button>
+                <button class="sub-tab" data-sub="lana-biodegrad">Biodegradabilità</button>
+            </div>
+
+            <div class="sub-panel active" id="sub-lana-rendimento">
                 <div class="form-grid">
-                    <div class="form-group"><label>Tipo Maglia</label>
-                        <select id="kn-tipo">
-                            <option value="dritto">Jersey (dritto)</option>
-                            <option value="rib11">Rib 1x1</option>
-                            <option value="rib22">Rib 2x2</option>
-                            <option value="interlock">Interlock</option>
-                            <option value="pique">Piqué</option>
+                    <div class="form-group">
+                        <label>Lana Sucida (kg)</label>
+                        <input type="number" id="ln-sucido" placeholder="1000">
+                    </div>
+                    <div class="form-group">
+                        <label>Resa lana vera (%)</label>
+                        <input type="number" id="ln-resa" placeholder="65" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label>Fiocco/scarto pettinatura (%)</label>
+                        <input type="number" id="ln-fiocco" placeholder="35" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label>Perdite filatura (%)</label>
+                        <input type="number" id="ln-pettorite" placeholder="5" step="0.1">
+                    </div>
+                </div>
+                <button class="btn-calcola" onclick="Lana.calcolaRendimento()">Calcola Resa</button>
+                <div class="risultato" id="ris-lana"></div>
+            </div>
+
+            <div class="sub-panel" id="sub-lana-consumi">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Tipologia</label>
+                        <select id="ln-tipologia">
+                            <option value="pettinatura">Pettinatura (lavaggio sucido)</option>
+                            <option value="filatura">Filatura</option>
+                            <option value="tessitura">Tessitura</option>
+                            <option value="tintoria">Tintoria</option>
+                            <option value="finissaggio">Finissaggio</option>
+                            <option value="lanificio">Lanificio (ciclo completo)</option>
                         </select>
                     </div>
-                    <div class="form-group"><label>Righe (visual)</label><input type="number" id="kn-righe" placeholder="6" min="2" max="20"></div>
-                    <div class="form-group"><label>Gauge (aghi")</label><input type="number" id="kn-gauge" placeholder="10"></div>
+                    <div class="form-group">
+                        <label>Tonnellate trattate/anno</label>
+                        <input type="number" id="ln-ton" placeholder="1000">
+                    </div>
                 </div>
-                <button class="btn-primary" onclick="Knitting.calcola()">Visualizza</button>
-                <div class="result-panel" id="ris-knitting"></div>
+                <button class="btn-calcola" onclick="Lana.calcolaConsumi()">Calcola Consumi</button>
+                <div class="risultato" id="ris-consumi"></div>
             </div>
-            <div class="card">
-                <div class="card-title">Confronto Gauge</div>
-                <button class="btn-primary" onclick="Knitting.confrontaGauge()">Confronta</button>
-                <div class="result-panel" id="ris-knitting-gauge"></div>
+
+            <div class="sub-panel" id="sub-lana-impronta">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Acqua scaricata (mc/anno)</label>
+                        <input type="number" id="ln-mcacqua" placeholder="50000">
+                    </div>
+                    <div class="form-group">
+                        <label>Tipologia effluente</label>
+                        <select id="ln-scarico">
+                            <option value="misto">Misto</option>
+                            <option value="tintoria">Tintoria</option>
+                            <option value="follatura">Follatura</option>
+                            <option value="carbonizzo">Carbonizzo</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn-calcola" onclick="Lana.calcolaImpronta()">Analizza Impronta</button>
+                <div class="risultato" id="ris-impronta"></div>
+            </div>
+
+            <div class="sub-panel" id="sub-lana-biodegrad">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Sostanza (es. "tensioattivi", "acidi", "oli")</label>
+                        <input type="text" id="ln-sostanza" placeholder="lascia vuoto per elenco completo">
+                    </div>
+                </div>
+                <button class="btn-calcola" onclick="Lana.cercaBiodegradabilita()">Cerca</button>
+                <div class="risultato" id="ris-bio"></div>
             </div>
         </section>
 
-                <!-- Apparel -->
-        <section class="module" id="mod-apparel">
-            <div class="module-header">
-                <h2>Apparel & Confezione</h2>
-                <p>Gradazione taglie, marker efficiency, consumo tessuto</p>
+        <!-- MODULO INDUSTRIAL ENGINEERING -->
+        <section class="module" id="mod-ie">
+            <h2>Industrial Engineering</h2>
+            <div class="sub-tabs">
+                <button class="sub-tab active" data-sub="ie-smv">SMV Calculator</button>
+                <button class="sub-tab" data-sub="ie-efficiency">Efficiency</button>
+                <button class="sub-tab" data-sub="ie-kpis">Lean KPIs</button>
             </div>
-            <div class="card">
-                <div class="card-title">Gradazione Taglie</div>
+
+            <div class="sub-panel active" id="sub-ie-smv">
                 <div class="form-grid">
-                    <div class="form-group"><label>Taglia Base</label><select id="ap-base-size"><option value="M">M</option><option value="S">S</option><option value="L">L</option></select></div>
-                    <div class="form-group"><label>Petto Base (cm)</label><input type="number" id="ap-base-chest" placeholder="92"></div>
-                    <div class="form-group"><label>Incremento (cm)</label><input type="number" id="ap-incremento" placeholder="4"></div>
+                    <div class="form-group">
+                        <label>Tempo Osservato (min)</label>
+                        <input type="number" id="ie-obs-time" step="0.01" placeholder="0.85">
+                    </div>
+                    <div class="form-group">
+                        <label>Rating (%)</label>
+                        <input type="number" id="ie-rating" placeholder="100">
+                    </div>
+                    <div class="form-group">
+                        <label>Allowances Totali (%)</label>
+                        <input type="number" id="ie-allowances" placeholder="15">
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo Macchina</label>
+                        <select id="ie-machine-type">
+                            <option value="weaving-loom">Telai tessitura</option>
+                            <option value="warping">Orditura</option>
+                            <option value="sizing">Incollatura</option>
+                            <option value="single-needle">Monoago</option>
+                            <option value="twin-needle">Biaco</option>
+                            <option value="3-thread-overlock">3-fili overlock</option>
+                            <option value="4-thread-overlock">4-fili overlock</option>
+                            <option value="5-thread-overlock">5-fili overlock</option>
+                        </select>
+                    </div>
                 </div>
-                <button class="btn-primary" onclick="Apparel.calcolaGradazione()">Calcola</button>
-                <div class="result-panel" id="ris-apparel"></div>
+                <button class="btn-calcola" onclick="IE.calcolaSMV()">Calcola SMV</button>
+                <div class="risultato" id="ris-ie-smv"></div>
             </div>
-            <div class="card">
-                <div class="card-title">Marker Efficiency</div>
+
+            <div class="sub-panel" id="sub-ie-efficiency">
                 <div class="form-grid">
-                    <div class="form-group"><label>Area Pattern (m²)</label><input type="number" id="mk-area-pattern" step="0.01" placeholder="8.5"></div>
-                    <div class="form-group"><label>Area Marker (m²)</label><input type="number" id="mk-area-marker" step="0.01" placeholder="10.0"></div>
+                    <div class="form-group">
+                        <label>SMV (min/pz)</label>
+                        <input type="number" id="ie-smv" step="0.001" placeholder="0.850">
+                    </div>
+                    <div class="form-group">
+                        <label>Produzione (pz/turno)</label>
+                        <input type="number" id="ie-production" placeholder="500">
+                    </div>
+                    <div class="form-group">
+                        <label>Manpower</label>
+                        <input type="number" id="ie-manpower" placeholder="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Ore Lavorative</label>
+                        <input type="number" id="ie-working-hours" placeholder="8">
+                    </div>
                 </div>
-                <button class="btn-primary" onclick="Apparel.calcolaMarker()">Calcola</button>
-                <div class="result-panel" id="ris-marker-adv"></div>
+                <button class="btn-calcola" onclick="IE.calcolaEfficiency()">Calcola Efficiency</button>
+                <div class="risultato" id="ris-ie-efficiency"></div>
             </div>
-            <div class="card">
-                <div class="card-title">Consumo Tessuto</div>
+
+            <div class="sub-panel" id="sub-ie-kpis">
                 <div class="form-grid">
-                    <div class="form-group"><label>Pezzi</label><input type="number" id="ap-pz" placeholder="100"></div>
-                    <div class="form-group"><label>Consumo per capo (m²)</label><input type="number" id="ap-consumo" step="0.1" placeholder="1.5"></div>
+                    <div class="form-group">
+                        <label>Qty Ordine (pz)</label>
+                        <input type="number" id="ie-order-qty" placeholder="1000">
+                    </div>
+                    <div class="form-group">
+                        <label>Lunghezza Marker (m)</label>
+                        <input type="number" id="ie-marker-length" step="0.1" placeholder="100">
+                    </div>
+                    <div class="form-group">
+                        <label>Larghezza Tessuto (m)</label>
+                        <input type="number" id="ie-fabric-width" step="0.1" placeholder="1.5">
+                    </div>
+                    <div class="form-group">
+                        <label>Tessuto Utilizzato (m, opzionale)</label>
+                        <input type="number" id="ie-fabric-used" step="0.1" placeholder="120">
+                    </div>
                 </div>
-                <button class="btn-primary" onclick="Apparel.calcolaConsumo()">Calcola</button>
-                <div class="result-panel" id="ris-apparel-consumo"></div>
+                <button class="btn-calcola" onclick="IE.calcolaKPIs()">Calcola KPIs</button>
+                <div class="risultato" id="ris-ie-kpis"></div>
             </div>
         </section>
 
-        <!-- Weaving -->
+        <!-- MODULO WEAVING TECHNOLOGY -->
         <section class="module" id="mod-weaving">
-            <div class="module-header"><h2>Weaving Technology</h2><p>WIR, produttività, confronto macchine</p></div>
+            <h2>Weaving Technology</h2>
             <div class="sub-tabs">
-                <button class="sub-tab active" data-sub="weaving-wir">WIR</button>
-                <button class="sub-tab" data-sub="weaving-macc">Macchine</button>
+                <button class="sub-tab active" data-sub="weaving-wir">WIR & Produzione</button>
+                <button class="sub-tab" data-sub="weaving-macc">Confronto Macchine</button>
+                <button class="sub-tab" data-sub="weaving-prod">Produttività Telaio</button>
             </div>
+
             <div class="sub-panel active" id="sub-weaving-wir">
-                <div class="card">
-                    <div class="form-grid">
-                        <div class="form-group"><label>RPM/PPM</label><input type="number" id="wv-rpm" placeholder="400"></div>
-                        <div class="form-group"><label>Larghezza (m)</label><input type="number" id="wv-width" step="0.01" placeholder="1.90"></div>
-                        <div class="form-group"><label>Efficienza (%)</label><input type="number" id="wv-efficiency" placeholder="85"></div>
-                        <div class="form-group"><label>Densità Trama (ppc)</label><input type="number" id="wv-pickdensity" placeholder="25"></div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Velocità Telaio (rpm/ppm)</label>
+                        <input type="number" id="wv-rpm" placeholder="400">
                     </div>
-                    <button class="btn-primary" onclick="Weaving.calcolaWIR()">Calcola</button>
-                    <div class="result-panel" id="ris-weaving"></div>
+                    <div class="form-group">
+                        <label>Larghezza Utile (m)</label>
+                        <input type="number" id="wv-width" step="0.01" placeholder="1.90">
+                    </div>
+                    <div class="form-group">
+                        <label>Efficienza (%)</label>
+                        <input type="number" id="wv-efficiency" placeholder="85">
+                    </div>
+                    <div class="form-group">
+                        <label>Densità Trama (picks/cm)</label>
+                        <input type="number" id="wv-pickdensity" placeholder="25">
+                    </div>
                 </div>
+                <button class="btn-calcola" onclick="Weaving.calcolaWIR()">Calcola WIR</button>
+                <div class="risultato" id="ris-weaving"></div>
             </div>
+
             <div class="sub-panel" id="sub-weaving-macc">
-                <div class="card">
-                    <button class="btn-primary" onclick="Weaving.confrontaMacchine()">Confronta Macchine</button>
-                    <div class="result-panel" id="ris-weaving-macchine"></div>
+                <button class="btn-calcola" onclick="Weaving.confrontaMacchine()">Confronta Macchine</button>
+                <div class="risultato" id="ris-weaving-macchine"></div>
+            </div>
+
+            <div class="sub-panel" id="sub-weaving-prod">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Numero Telai</label>
+                        <input type="number" id="wv-numtelai" placeholder="10">
+                    </div>
+                    <div class="form-group">
+                        <label>WIR (m/min)</label>
+                        <input type="number" id="wv-wir" placeholder="800">
+                    </div>
+                    <div class="form-group">
+                        <label>Larghezza (m)</label>
+                        <input type="number" id="wv-width2" step="0.01" placeholder="1.90">
+                    </div>
+                    <div class="form-group">
+                        <label>Efficienza (%)</label>
+                        <input type="number" id="wv-efficienza2" placeholder="80">
+                    </div>
+                    <div class="form-group">
+                        <label>Ore Turno</label>
+                        <input type="number" id="wv-ore" placeholder="8">
+                    </div>
                 </div>
+                <button class="btn-calcola" onclick="Weaving.calcolaProduttivita()">Calcola Produttività</button>
+                <div class="risultato" id="ris-telaio"></div>
             </div>
         </section>
 
-        <!-- Yarn -->
+        <!-- MODULO YARN MANUFACTURING -->
         <section class="module" id="mod-yarn">
-            <div class="module-header"><h2>Yarn Manufacturing</h2><p>Resa filiatura, marker making</p></div>
+            <h2>Yarn Manufacturing</h2>
             <div class="sub-tabs">
-                <button class="sub-tab active" data-sub="yarn-resa">Resa</button>
-                <button class="sub-tab" data-sub="yarn-marker">Marker</button>
+                <button class="sub-tab active" data-sub="yarn-resa">Resa Filiatura</button>
+                <button class="sub-tab" data-sub="yarn-marker">Marker Making</button>
             </div>
+
             <div class="sub-panel active" id="sub-yarn-resa">
-                <div class="card">
-                    <div class="form-grid">
-                        <div class="form-group"><label>Materia Prima (kg)</label><input type="number" id="ym-materia-prima" placeholder="1000"></div>
-                        <div class="form-group"><label>Sistema</label><select id="ym-sistema"><option value="cotton-cardato">Ring Cardato</option><option value="worsted">Worsted</option><option value="open-end">Open-End</option></select></div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Materia Prima (kg)</label>
+                        <input type="number" id="ym-materia-prima" placeholder="1000">
                     </div>
-                    <button class="btn-primary" onclick="Yarn.calcolaResa()">Calcola</button>
-                    <div class="result-panel" id="ris-yarn"></div>
+                    <div class="form-group">
+                        <label>Sistema di Filiatura</label>
+                        <select id="ym-sistema">
+                            <option value="cotton-cardato">Ring Spun (Cardato)</option>
+                            <option value="cotton-pettinato">Ring Spun (Pettinato)</option>
+                            <option value="woolen">Woolen System</option>
+                            <option value="worsted">Worsted System</option>
+                            <option value="open-end">Open-End (Rotor)</option>
+                            <option value="air-jet">Air-Jet</option>
+                        </select>
+                    </div>
                 </div>
+                <button class="btn-calcola" onclick="Yarn.calcolaResa()">Calcola Resa</button>
+                <div class="risultato" id="ris-yarn"></div>
             </div>
+
             <div class="sub-panel" id="sub-yarn-marker">
-                <div class="card">
-                    <div class="form-grid">
-                        <div class="form-group"><label>Area Pattern (m²)</label><input type="number" id="mk-area-pattern" step="0.01" placeholder="8.5"></div>
-                        <div class="form-group"><label>Area Marker (m²)</label><input type="number" id="mk-area-marker" step="0.01" placeholder="10.0"></div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Area Pattern (m²)</label>
+                        <input type="number" id="mk-area-pattern" step="0.01" placeholder="8.5">
                     </div>
-                    <button class="btn-primary" onclick="Marker.calcolaEfficienza()">Calcola</button>
-                    <div class="result-panel" id="ris-marker"></div>
+                    <div class="form-group">
+                        <label>Area Marker (m²)</label>
+                        <input type="number" id="mk-area-marker" step="0.01" placeholder="10.0">
+                    </div>
                 </div>
+                <button class="btn-calcola" onclick="Marker.calcolaEfficienza()">Calcola Marker Efficiency</button>
+                <div class="risultato" id="ris-marker"></div>
             </div>
         </section>
     </main>
 
-    <footer class="footer">
-        <p>Tecnico Tessile Pratese — Stessi dati tecnici, nuovo tema.</p>
+    <footer class="app-footer">
+        <p>Tecnico Tessile Pratese &mdash; Calcoli per tessitura, filatura, laniero, weaving, industrial engineering. Nessuna AI, solo formule tessili.</p>
     </footer>
 
     <script src="tessile-dashboard/js/calculators.js"></script>
     <script src="tessile-dashboard/js/app.js"></script>
     <script src="tessile-dashboard/js/lana.js"></script>
     <script src="tessile-dashboard/js/ie.js"></script>
-                <script src="tessile-dashboard/js/apparel.js"></script>
-    <script src="tessile-dashboard/js/knitting.js"></script>
-    <script src="tessile-dashboard/js/fabric-design.js"></script>
     <script src="tessile-dashboard/js/weaving.js"></script>
-    <script src="tessile-dashboard/js/app-v2.js"></script>
 </body>
 </html>
