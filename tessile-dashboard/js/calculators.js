@@ -645,6 +645,207 @@ const Titolo = {
     }
 };
 
+// ============================================================
+// GSM & Peso Tessuto - Formule dalla normativa tessile
+// Basato su: Aungcrown, Norma Ministero, GEFITES
+// ============================================================
+
+const GSM = {
+    /**
+     * Calcolo GSM da struttura (formula approssimata)
+     * G(g/m²) = 0.01 × (Ntr × Ptr + Ntw × Ptw)
+     * dove N = titolo tex, P = densità fili/10cm
+     */
+    calcola() {
+        const texO = parseFloat(document.getElementById('gsm-tex-o').value);
+        const texT = parseFloat(document.getElementById('gsm-tex-t').value);
+        const densO = parseFloat(document.getElementById('gsm-dens-o').value);
+        const densT = parseFloat(document.getElementById('gsm-dens-t').value);
+
+        if (isNaN(texO) || isNaN(texT) || isNaN(densO) || isNaN(densT)) {
+            document.getElementById('ris-gsm').innerHTML = '<span class="errore">Inserisci tutti i dati: titolo e densità per ordito e trama</span>';
+            return;
+        }
+
+        let out = '<h3>Calcolo GSM da Struttura</h3>';
+
+        // Formula: G = 0.01 × (texOrdito × densOrdito + texTrama × densTrama)
+        const gOrdito = 0.01 * texO * densO;
+        const gTrama = 0.01 * texT * densT;
+        const gTotale = gOrdito + gTrama;
+
+        out += `<p class="formula">G_ordito = 0.01 × Tex_O × Dens_O = 0.01 × ${texO} × ${densO} = <span class="valore">${gOrdito.toFixed(2)} g/m²</span></p>`;
+        out += `<p class="formula">G_trama = 0.01 × Tex_T × Dens_T = 0.01 × ${texT} × ${densT} = <span class="valore">${gTrama.toFixed(2)} g/m²</span></p>`;
+        out += `<p class="formula">G_totale = G_ordito + G_trama = ${gOrdito.toFixed(2)} + ${gTrama.toFixed(2)} = <span class="highlight">${gTotale.toFixed(2)} g/m² (GSM)</span></p>`;
+
+        // Note sulla formula
+        out += '<h4>Note sulla formula</h4>';
+        out += '<p>Questa formula è un\'approssimazione. Non tiene conto di:</p>';
+        out += '<ul style="margin-left:1.5rem; color:var(--text-secondary); font-size:0.85rem;">';
+        out += '<li>Piegatura del filato (crimp)</li>';
+        out += '<li>Allungamento durante la tessitura</li>';
+        out += '<li>Variazioni di peso durante le lavorazioni (tintoria, finissaggio)</li>';
+        out += '</ul>';
+        out += '<p style="margin-top:0.5rem;">Per una stima più precisa, usa la <strong>Formula Commerciale</strong> sottostante.</p>';
+
+        document.getElementById('ris-gsm').innerHTML = out;
+    },
+
+    /**
+     * Formula commerciale approssimata (Aungcrown)
+     * Peso greige ≈ (Dens_O + Dens_T) × 1.1 × 59 / (2.54 × Titolo_S)
+     */
+    calcolaCommerciale() {
+        const densO = parseFloat(document.getElementById('gsm-dens-o').value);
+        const densT = parseFloat(document.getElementById('gsm-dens-t').value);
+        const s = parseFloat(document.getElementById('gsm-s').value);
+        const k = parseFloat(document.getElementById('gsm-k').value);
+
+        if (isNaN(densO) || isNaN(densT) || isNaN(s)) {
+            document.getElementById('ris-gsm-commerciale').innerHTML = '<span class="errore">Inserisci densità ordito/trama e titolo inglese (Ne/S)</span>';
+            return;
+        }
+
+        let out = '<h3>Formula Commerciale (Aungcrown)</h3>';
+
+        // Formula: (densO + densT) × 1.1 × 59 / (2.54 × S)
+        const fattoreK = isNaN(k) ? 590 : k / 10; // K/10 per conversione
+        const pesoGreige = (densO + densT) * 1.1 * (fattoreK / 100) / (2.54 * s / 100);
+
+        // Più leggibile: (densO + densT) × 1.1 × 59 / (2.54 × S)
+        const pesoGreigeStd = (densO + densT) * 1.1 * 59 / (2.54 * s);
+
+        out += `<p class="formula">Peso = (Dens_O + Dens_T) × 1.1 × 59 / (2.54 × S)</p>`;
+        out += `<p class="formula">Peso = (${densO} + ${densT}) × 1.1 × 59 / (2.54 × ${s})</p>`;
+        out += `<p class="formula">Peso = <span class="highlight">${pesoGreigeStd.toFixed(2)} g/m² (GSM greige)</span></p>`;
+
+        // Spiegazione coefficienti
+        out += '<h4>Spiegazione coefficienti</h4>';
+        out += '<ul style="margin-left:1.5rem; color:var(--text-secondary); font-size:0.85rem;">';
+        out += '<li><strong>Dens_O / 2.54</strong>: conversione densità imperiale → metrica</li>';
+        out += '<li><strong>1.1</strong>: coefficiente che considera restringimento e perdite (~10%)</li>';
+        out += '<li><strong>59 / Titolo_S</strong>: conversione titolo inglese → metrico (K ≈ 590)</li>';
+        out += '</ul>';
+
+        // Fattori K per diverse fibre
+        out += '<h4>Fattori K (costante di conversione)</h4>';
+        out += '<table><tr><th>Fibra</th><th>K</th></tr>';
+        out += '<tr><td>Cotone puro</td><td>583.1</td></tr>';
+        out += '<tr><td>Sintetico puro</td><td>590.5</td></tr>';
+        out += '<tr><td>Poliestere/Cotone</td><td>587.6</td></tr>';
+        out += '<tr><td>Cotone/Viscosa (75:25)</td><td>584.8</td></tr>';
+        out += '<tr><td>Viscosa/Cotone (50:50)</td><td>587.0</td></tr>';
+        out += '</table>';
+
+        document.getElementById('ris-gsm-commerciale').innerHTML = out;
+    },
+
+    /**
+     * Conversione tra sistemi di titolo
+     * Tex × Nm = 1000
+     * D = 9 × Tex
+     */
+    converti() {
+        const valore = parseFloat(document.getElementById('gsm-conv-val').value);
+        const da = document.getElementById('gsm-conv-da').value;
+
+        if (isNaN(valore)) {
+            document.getElementById('ris-gsm-conversione').innerHTML = '<span class="errore">Inserisci un valore</span>';
+            return;
+        }
+
+        let out = `<h3>Conversione Titolo: ${valore}</h3>`;
+
+        // Converti prima in Tex
+        let tex;
+        switch (da) {
+            case 'tex':
+                tex = valore;
+                break;
+            case 'nm':
+                tex = 1000 / valore;
+                break;
+            case 'ne':
+                tex = 583.1 / valore; // K cotone / S
+                break;
+            case 'den':
+                tex = valore / 9;
+                break;
+            default:
+                tex = valore;
+        }
+
+        const nm = 1000 / tex;
+        const ne = 583.1 / tex;
+        const den = 9 * tex;
+
+        out += '<table><tr><th>Sistema</th><th>Valore</th><th>Formula</th></tr>';
+        out += `<tr><td>Tex</td><td><span class="valore">${tex.toFixed(2)}</span></td><td>-</td></tr>`;
+        out += `<tr><td>Nm (Metrico)</td><td><span class="valore">${nm.toFixed(2)}</span></td><td>1000 / Tex</td></tr>`;
+        out += `<tr><td>Ne (Inglese)</td><td><span class="valore">${ne.toFixed(2)}</span></td><td>583.1 / Tex</td></tr>`;
+        out += `<tr><td>Denier</td><td><span class="valore">${den.toFixed(2)}</span></td><td>9 × Tex</td></tr>`;
+        out += '</table>';
+
+        // Note
+        out += '<h4>Formule di conversione</h4>';
+        out += '<ul style="margin-left:1.5rem; color:var(--text-secondary); font-size:0.85rem;">';
+        out += '<li>Tex × Nm = 1000</li>';
+        out += '<li>D = 9 × Tex</li>';
+        out += '<li>Tex × S = K (583 cotone, 590.5 sintetico)</li>';
+        out += '<li>D × S = 5315</li>';
+        out += '</ul>';
+
+        document.getElementById('ris-gsm-conversione').innerHTML = out;
+    },
+
+    /**
+     * Calcolo GK (peso a umidità standard) - Formula Ministero
+     * GK = (G0 × 100) / ((100 + WK) × L × B) × 10000
+     * dove G0 = peso secco, WK = umidità standard %, L/B = dimensioni cm
+     */
+    calcolaWK() {
+        const wk = parseFloat(document.getElementById('gsm-wk-tipo').value);
+        const g0 = parseFloat(document.getElementById('gsm-wk-g0').value);
+        const l = parseFloat(document.getElementById('gsm-wk-l').value);
+        const b = parseFloat(document.getElementById('gsm-wk-b').value);
+
+        if (isNaN(g0) || isNaN(l) || isNaN(b)) {
+            document.getElementById('ris-gsm-wk').innerHTML = '<span class="errore">Inserisci tutti i dati del campione</span>';
+            return;
+        }
+
+        let out = '<h3>Calcolo GK (Peso a Umidità Standard)</h3>';
+
+        // Formula: GK = (G0 × 100) / ((100 + WK) × L × B) × 10000
+        const area = l * b; // cm²
+        const gk = (g0 * 100 * 10000) / ((100 + wk) * area);
+
+        out += `<p class="formula">Area campione = L × B = ${l} × ${b} = ${area.toFixed(2)} cm²</p>`;
+        out += `<p class="formula">GK = (G0 × 100 × 10000) / ((100 + WK) × L × B)</p>`;
+        out += `<p class="formula">GK = (${g0} × 100 × 10000) / ((100 + ${wk}) × ${area.toFixed(2)})</p>`;
+        out += `<p class="formula">GK = <span class="highlight">${gk.toFixed(2)} g/m²</span></p>`;
+
+        // Classificazione
+        out += '<h4>Classificazione (tolleranza 5%)</h4>';
+        out += '<ul style="margin-left:1.5rem; color:var(--text-secondary); font-size:0.85rem;">';
+        out += '<li>Se GK è entro ±5% del valore dichiarato → <span style="color:var(--success)">Prodotto prima classe</span></li>';
+        out += '<li>Se GK è tra 5% e 7% di scostamento → <span style="color:var(--warning)">Prodotto seconda classe</span></li>';
+        out += '<li>Se GK supera 7% → <span style="color:var(--accent-primary)">Non conforme</span></li>';
+        out += '</ul>';
+
+        // Umidità standard per fibra
+        out += '<h4>Umidità standard (WK) per fibra</h4>';
+        out += '<table><tr><th>Fibra</th><th>WK (%)</th></tr>';
+        out += '<tr><td>Cotone</td><td>8.5%</td></tr>';
+        out += '<tr><td>Lana pettinata</td><td>16%</td></tr>';
+        out += '<tr><td>Lana cardata</td><td>15%</td></tr>';
+        out += '<tr><td>Poliestere/Cotone (65/35)</td><td>3.2%</td></tr>';
+        out += '</table>';
+
+        document.getElementById('ris-gsm-wk').innerHTML = out;
+    }
+};
+
 // Navigazione
 document.addEventListener('DOMContentLoaded', () => {
     // Nav principale

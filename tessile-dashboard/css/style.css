@@ -237,6 +237,13 @@ body {
     font-weight: 600;
 }
 
+.module-info {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    font-style: italic;
+}
+
 .risultato table {
     width: 100%;
     border-collapse: collapse;

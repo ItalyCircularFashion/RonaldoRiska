@@ -23,6 +23,7 @@
             <button class="nav-btn" data-module="peso">Peso &amp; Divisore</button>
             <button class="nav-btn" data-module="riduzione">Riduzione &amp; Imborsi</button>
             <button class="nav-btn" data-module="titolo">Titolo &amp; Conversioni</button>
+            <button class="nav-btn" data-module="gsm">GSM &amp; Peso Tessuto</button>
             <button class="nav-btn" data-module="lana">Ciclo Laniero</button>
             <button class="nav-btn" data-module="ie">Industrial Engineering</button>
             <button class="nav-btn" data-module="weaving">Weaving Tech</button>
@@ -407,6 +408,99 @@
             </div>
             <button class="btn-calcola" onclick="Titolo.daCampione()">Calcola da Campione</button>
             <div class="risultato" id="ris-titolo-campione"></div>
+        </section>
+
+        <!-- MODULO GSM & PESO TESSUTO -->
+        <section class="module" id="mod-gsm">
+            <h2>GSM &amp; Peso Tessuto</h2>
+            <p class="module-info">Calcola il peso del tessuto (GSM - g/m²) e il titolo del filato. Formule dalla normativa tessile.</p>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Titolo Ordito (Tex)</label>
+                    <input type="number" id="gsm-tex-o" step="0.1" placeholder="20">
+                </div>
+                <div class="form-group">
+                    <label>Titolo Trama (Tex)</label>
+                    <input type="number" id="gsm-tex-t" step="0.1" placeholder="20">
+                </div>
+                <div class="form-group">
+                    <label>Densità Ordito (fili/10 cm)</label>
+                    <input type="number" id="gsm-dens-o" step="0.1" placeholder="200">
+                </div>
+                <div class="form-group">
+                    <label>Densità Trama (fili/10 cm)</label>
+                    <input type="number" id="gsm-dens-t" step="0.1" placeholder="180">
+                </div>
+            </div>
+            <button class="btn-calcola" onclick="GSM.calcola()">Calcola GSM</button>
+            <div class="risultato" id="ris-gsm"></div>
+
+            <hr style="margin-top:2rem; border-color:var(--border-color);">
+
+            <h3>Formula Commerciale (approssimata)</h3>
+            <p class="module-info">Peso tessuto greige ≈ (Densità Ordito + Densità Trama) × 1.1 × 59 / (2.54 × Titolo S)</p>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Titolo Inglese (Ne/S)</label>
+                    <input type="number" id="gsm-s" step="0.1" placeholder="20">
+                </div>
+                <div class="form-group">
+                    <label>Fattore K (583 cotone, 590.5 sintetico)</label>
+                    <input type="number" id="gsm-k" step="0.1" value="583">
+                </div>
+            </div>
+            <button class="btn-calcola" onclick="GSM.calcolaCommerciale()">Calcola Peso Commerciale</button>
+            <div class="risultato" id="ris-gsm-commerciale"></div>
+
+            <hr style="margin-top:2rem; border-color:var(--border-color);">
+
+            <h3>Conversione Titolo ↔ Tex ↔ Nm ↔ Denier</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Valore</label>
+                    <input type="number" id="gsm-conv-val" step="0.1" placeholder="20">
+                </div>
+                <div class="form-group">
+                    <label>Da Sistema</label>
+                    <select id="gsm-conv-da">
+                        <option value="tex">Tex</option>
+                        <option value="nm">Nm (Metrico)</option>
+                        <option value="ne">Ne (Inglese)</option>
+                        <option value="den">Denier</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn-calcola" onclick="GSM.converti()">Converti</button>
+            <div class="risultato" id="ris-gsm-conversione"></div>
+
+            <hr style="margin-top:2rem; border-color:var(--border-color);">
+
+            <h3>Standard Umidità (WK) - Formula Ministero</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Tipologia Fibra</label>
+                    <select id="gsm-wk-tipo">
+                        <option value="8.5">Cotone (8.5%)</option>
+                        <option value="16">Lana pettinata (16%)</option>
+                        <option value="15">Lana cardata (15%)</option>
+                        <option value="3.2">Poliestere/Cotone 65/35 (3.2%)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Peso Secco Campione (g)</label>
+                    <input type="number" id="gsm-wk-g0" step="0.001" placeholder="0.500">
+                </div>
+                <div class="form-group">
+                    <label>Lunghezza Campione (cm)</label>
+                    <input type="number" id="gsm-wk-l" step="0.1" placeholder="10">
+                </div>
+                <div class="form-group">
+                    <label>Larghezza Campione (cm)</label>
+                    <input type="number" id="gsm-wk-b" step="0.1" placeholder="10">
+                </div>
+            </div>
+            <button class="btn-calcola" onclick="GSM.calcolaWK()">Calcola GK</button>
+            <div class="risultato" id="ris-gsm-wk"></div>
         </section>
 
         <!-- MODULO CICLO LANIERO -->
