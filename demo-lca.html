@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="it" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LCA Tessile demo — Ronaldo Riska | Libreria LCA, compilatore guidato</title>
+<meta name="description" content="Demo gratuita del compilatore LCA per tessile e abbigliamento. Cradle-to-gate, impronta idonea a benchmarking e tool di supporto alla compilazione tecnica. Accesso limitato, dati completi con licenza.">
+<meta name="keywords" content="LCA tessile, LCA abbigliamento, cradle to gate, benchmarking, Textile Exchange, Sphera, compilatore LCA, ecoinvent, Higg MSI">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#08110c">
+<link rel="canonical" href="https://italycircularfashion.github.io/RonaldoRiska/demo-lca.html">
+<link rel="alternate" hreflang="it" href="https://italycircularfashion.github.io/RonaldoRiska/demo-lca.html">
+<link rel="alternate" hreflang="x-default" href="https://italycircularfashion.github.io/RonaldoRiska/demo-lca.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="image" href="assets/images/lca-demo.png">
+    <link rel="preload" as="image" href="assets/images/lca-demo.png">
+    <style>
+      .demo-hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 50% 50%, rgba(199, 164, 91, 0.06), transparent 70%);
+        pointer-events: none;
+      }
+    </style>
+<link rel="stylesheet" href="site.css">
+<style>
+  :root {
+    --demo-bg: #070b09;
+    --demo-surface: #111a15;
+    --demo-surface-2: #17231d;
+    --demo-surface-3: #f7f3ea;
+    --demo-ink: #f8faf7;
+    --demo-muted: #aebbb3;
+    --demo-accent: #c7a45b;
+    --demo-accent-2: #1f6f4a;
+    --demo-danger: #c96d55;
+    --demo-chart-line: #c7a45b;
+    --demo-chart-fill: rgba(199, 164, 91, 0.16);
+  }
+  .demo-hero {
+    background: linear-gradient(160deg, #0a100a 0%, #0f1a10 50%, #0d150c 100%);
+    padding: 2.5rem 1.5rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .demo-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 80% 20%, rgba(199, 164, 91, 0.10), transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(31, 111, 74, 0.10), transparent 50%);
+    pointer-events: none;
+  }
+  .demo-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    max-width: 720px;
+    margin: 1.5rem auto 0;
+  }
+  .demo-kpi {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    backdrop-filter: blur(8px);
+  }
+  .demo-kpi b {
+    font-size: 1.6rem;
+    color: var(--demo-accent);
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+  .demo-kpi span {
+    font-size: 0.8rem;
+    color: var(--demo-muted);
+  }
+  .demo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+  @media (max-width: 820px) {
+    .demo-grid { grid-template-columns: 1fr; }
+  }
+  .demo-card {
+    background: var(--demo-surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 1.2rem;
+  }
+  .demo-card h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--demo-muted);
+    margin: 0 0 0.6rem;
+  }
+  .demo-card .value {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--demo-ink);
+  }
+  .demo-card .hint {
+    font-size: 0.75rem;
+    color: var(--demo-muted-2);
+  }
+  .demo-tabs {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+  .demo-tabs button {
+    background: var(--demo-surface-2);
+    border: 1px solid var(--line);
+    color: var(--demo-muted);
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .demo-tabs button.active {
+    background: var(--demo-accent);
+    border-color: var(--demo-accent);
+    color: #08110c;
+  }
+  .demo-shell {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 0.7rem;
+  }
+  .demo-note {
+    font-size: 0.75rem;
+    color: var(--demo-muted-2);
+    line-height: 1.4;
+  }
+  .demo-feature {
+    border: 1px dashed var(--line-strong);
+    border-radius: 8px;
+    padding: 0.8rem;
+    margin-bottom: 0.8rem;
+  }
+</style>
+</head>
+<body>
+<a class="external-site-bar" href="index.html">
+  <span class="external-site-bar__icon">←</span>
+  <span class="external-site-bar__text">Torna alla homepage</span>
+</a>
+<header class="hd">
+  <div class="t">
+    <div><h1>LCA Tessile</h1><small>Demo di accesso — compilatore guidato</small></div>
+  </div>
+  <nav id="nv"></nav>
+</header>
+<main style="max-width:1180px;margin:0 auto;padding:1.5rem;">
+  <section class="demo-hero">
+    <p>LCA Tessile — Demo operativa</p>
+    <p style="color:var(--demo-muted);font-size:0.9rem;margin-top:0.3rem;">
+      Accesso limitato. Per i dati completi e la certificazione contatta
+      <b style="color:var(--demo-accent);">Ronaldo Riska</b> (Supply Chain &amp; Quality).
+    </p>
+    <div style="display:flex;justify-content:center;align-items:center;gap:2rem;margin-top:1rem;"><img src="assets/images/lca-demo.png" alt="LCA Tessile demo" style="max-width:400px;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,0.03);padding:0.5rem;"><div class="demo-kpi-grid" style="max-width:380px;">
+      <div class="demo-kpi"><b>3</b><span>Materiali includibili</span></div>
+      <div class="demo-kpi"><b>6</b><span>Scenari di calcolo</span></div>
+      <div class="demo-kpi"><b>9</b><span>Indicatori clonati</span></div>
+      <div class="demo-kpi"><b>cradle-to-gate</b><span>Stadio di riferimento</span></div>
+    </div>
+  </section>
+
+  <div class="demo-grid">
+    <div class="demo-card">
+      <h3>Materiale <span style="color:var(--demo-muted);font-size:0.8rem;">(attuale)</span></h3>
+      <div class="demo-shell">
+        <div class="demo-tabs" id="tab-mat">
+          <button data-tab="co">Cotone</button>
+          <button data-tab="pe">Poliester</button>
+          <button data-tab="cs">Cachemire</button>
+        </div>
+        <div id="tab-content">
+          <p class="demo-note">Scegli un materiale per vedere i fattori di emissione.</p>
+        </div>
+      </div>
+      <div class="demo-shell mt-1">
+        <label style="font-size:0.75rem;color:var(--demo-muted);display:inline-block;margin-bottom:0.3rem;">GWP (kg CO₂e/kg)</label>
+        <input class="demo-input" type="range" id="gwp-range" min="0" max="13" step="0.1" value="5">
+        <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--demo-muted);">
+          <span id="gwp-min">0</span>
+          <span id="gwp-val" style="font-weight:600;">5.0</span>
+          <span id="gwp-max">13</span>
+        </div>
+      </div>
+    </div>
+    <div class="demo-card">
+      <h3>Récapitulatif <span style="color:var(--demo-muted);font-size:0.8rem;">(per 1 kg di fibre)</span></h3>
+      <div class="demo-shell" style="padding:0.8rem 0.6rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;">
+          <span style="font-size:0.75rem;color:var(--demo-muted);">CO₂e</span>
+          <span class="value" id="gwp-res">—</span>
+        </div>
+        <div class="demo-chart" style="height:36px;position:relative;">
+          <div style="position:absolute;left:0;bottom:0;height:100%;background:var(--demo-chart-fill);border-radius:3px 0 0 3px;display:flex;align-items:center;padding-left:6px;font-size:0.65rem;color:var(--demo-muted);">
+            <span style="width:calc(100% / 6);">Fibre</span>
+            <span style="width:calc(100% / 6);">Produzione</span>
+            <span style="width:calc(100% / 6);">Uso</span>
+            <span style="width:calc(100% / 6);">Fine vita</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:0.8rem;margin-top:0.4rem;">
+          <div style="flex:1;text-align:center;">
+            <span class="value" style="color:var(--demo-accent);" id="wat-res">—</span>
+            <span style="font-size:0.7rem;color:var(--demo-muted);">acqua</span>
+          </div>
+          <div style="flex:1;text-align:center;">
+            <span class="value" style="color:var(--demo-accent);" id="en-res">—</span>
+            <span style="font-size:0.7rem;color:var(--demo-muted);">energia</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-grid" style="margin-top:1.2rem;">
+    <div class="demo-card">
+      <h3>Workflow — demo <span style="color:var(--demo-muted);font-size:0.8rem;">(limitato)</span></h3>
+      <div class="demo-shell" style="padding:0.8rem 0.6rem;">
+        <div class="demo-feature">
+          <span style="font-size:0.75rem;color:var(--demo-muted);">Step 1</span>
+          <p style="font-size:0.85rem;color:var(--demo-ink);">Scegli il materiale e la quota in peso. I fattori sono preclusi per la licenza.</p>
+        </div>
+        <div class="demo-feature">
+          <span style="font-size:0.75rem;color:var(--demo-muted);">Step 2</span>
+          <p style="font-size:0.85rem;color:var(--demo-ink);">Admira i fattori, così come qualcuno affronterebbe i dati primari.</p>
+        </div>
+        <div class="demo-feature">
+          <span style="font-size:0.75rem;color:var(--demo-muted);">Step 3</span>
+          <p style="font-size:0.85rem;color:var(--demo-ink);">Visualizza l'impronta climatica, l'acqua e l'energia della tua ricetta.</p>
+        </div>
+        <div class="demo-feature">
+          <span style="font-size:0.75rem;color:var(--demo-muted);">Step 4</span>
+          <p style="font-size:0.85rem;color:var(--demo-ink);">Fai il download del report per i tuoi clienti e i revisionisti tecnici.</p>
+        </div>
+      </div>
+    </div>
+    <div class="demo-card">
+      <h3>Cosa non si vede <span style="color:var(--demo-muted);font-size:0.8rem;">(per la licenza)</span></h3>
+      <div class="demo-shell" style="padding:0.8rem 0.6rem;">
+        <ul style="font-size:0.85rem;color:var(--demo-muted);">
+          <li>• Selezione dei <b>standard di certificazione</b> (Textile Exchange, SGS, ecc.)</li>
+          <li>• <b>Dati primari e secondari</b> con data quality rating</li>
+          <li>• Scheda tecnica compiuta e datasheet del capo finito</li>
+          <li>• Gestione dei <b>rapporti pdf</b> di output</li>
+        </ul>
+        <p class="demo-note" style="margin-top:0.5rem;">
+          La demo mostra la logica del modello, non i materiali. Per la versione completa
+          (dati, standard, certificazione, export PDF) contatta la segreteria.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:0.8rem;flex-wrap:wrap;align-items:center;margin-top:1.2rem;">
+    <button class="demo-btn" id="btn-licenza" style="background:var(--demo-accent);color:#08110c;border:none;padding:0.7rem 1.4rem;border-radius:6px;cursor:pointer;font-family:inherit;font-size:0.85rem;font-weight:600;">
+      Richiedi accesso completo
+    </button>
+    <p class="demo-note" style="margin-top:0.2rem;">
+      Modulo di richiesta — ti contatteremo entro 24h operative con le condizioni licenzianti.
+    </p>
+  </div>
+
+  <footer style="margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);font-size:0.75rem;color:var(--demo-muted);">
+    <p>LCA Tessile demo — accesso limitato. I dati completi e la certificazione sono distribuiti tramite licenza.</p>
+    <p>Fonti di riferimento: Textile Exchange LCA per cotone, poliestere, cachemire (Sphera 2026); JRC129907 (PEF/OEF 2022); Textile Exchange — Ensuring Integrity in the Use of LCA Data (2025).</p>
+  </footer>
+</main>
+<script>
+  const $=s=>document.querySelector(s),$$=(s)=>[...document.querySelectorAll(s)];
+  const TABS=['co','pe','cs'];
+  const VAL={'co':4.17,'pe':5.5,'cs':25};
+  const D={'co':['Cotone convenzionale','India country average'],'pe':['Poliestere virgin','Textile Exchange / Sphera 2026'],'cs':['Cachemire','Textile Exchange / Sphera 2026']};
+  const N=(x,d=2)=>(+x).toLocaleString('it-IT',{minimumFractionDigits:d,maximumFractionDigits:d});
+  const UPDATE=()=>{
+    const g=+$('#gwp-range').value;
+    $('#gwp-val').textContent=N(g,1);
+    $('#gwp-res').textContent=N(g,3)+' kg CO₂e/kg';
+    const m=TABS[$('#tab-mat button.active')?.dataset.tab||'co'];
+    console.log('Materiale:',m,'GWP:',g,'kg CO₂e/kg');
+    console.log('Demo aggiornata — i dati completi sono distribuiti tramite licenza.');
+  };
+  $('#tab-mat').addEventListener('click',e=>{
+    if(e.target.dataset.tab){
+      $$('#tab-mat button').forEach(b=>b.classList.remove('active'));
+      e.target.classList.add('active');
+      UPDATE();
+    }
+  });
+  $('#gwp-range').addEventListener('input',UPDATE);
+  $('#btn-licenza').addEventListener('click',()=>{
+    const msg='Grazie per la tua richiesta. La versione completa del compilatore LCA Tessile è distribuita tramite licenza. Ti contatteremo tra 24h operative.';
+    if(confirm(msg)) location.href='mailto:ronaldo.riska@gmail.com?subject=Richiesta%20LCA%20completa';
+  });
+  $$('nav button').forEach(b=>b.addEventListener('click',()=>{
+    $$('nav button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+  }));
+  UPDATE();
+</script>
+</body>
+</html>
