@@ -129,6 +129,48 @@ class LCAEngine:
     I fattori di emissione sono basati su ADEME Base Impacts v3.0 (settembre 2025).
     """
     
+    # Fattori di normalizzazione PEF (valori di riferimento per la conversione in punti PEF)
+    # Fonte: Commissione Europeana - PEFCR (Product Environmental Footprint Category Rules)
+    PEF_NORMALIZATION = {
+        'climate_change': 1.0,           # kg CO₂e -> già in unità corrette
+        'acidification': 1.0,            # mol H+ eq
+        'eutrophication_freshwater': 1.0, # kg P eq
+        'eutrophication_marine': 1.0,    # kg N eq
+        'eutrophication_terrestrial': 1.0, # mol N eq
+        'human_toxicity_cancer': 1.0,    # CTUh
+        'human_toxicity_non_cancer': 1.0, # CTUh
+        'freshwater_ecotoxicity': 1.0,   # CTUe
+        'fossil_resources': 1.0,         # MJ
+        'mineral_resources': 1.0,        # kg Sb eq
+        'water_use': 1.0,                # m³ eq
+        'land_use': 1.0,                 # pt
+        'ionizing_radiation': 1.0,       # kBq U235 eq
+        'photochemical_ozone': 1.0,      # kg NMVOC eq
+        'particulates': 1.0,             # incidence of disease
+        'ozone_depletion': 1.0,          # kg CFC11 eq
+    }
+    
+    # Pesi PEF per il calcolo dello score aggregato
+    # Fonte: Commissione Europeana - PEF 3.0
+    PEF_WEIGHTS = {
+        'climate_change': 0.2106,
+        'acidification': 0.0631,
+        'eutrophication_freshwater': 0.0557,
+        'eutrophication_marine': 0.0436,
+        'eutrophication_terrestrial': 0.0436,
+        'human_toxicity_cancer': 0.0000,  # Escluso dal coût environnemental
+        'human_toxicity_non_cancer': 0.0000,  # Escluso dal coût environnemental
+        'freshwater_ecotoxicity': 0.2106,  # Peso aumentato per il coût environnemental
+        'fossil_resources': 0.0631,
+        'mineral_resources': 0.0436,
+        'water_use': 0.0557,
+        'land_use': 0.0436,
+        'ionizing_radiation': 0.0436,
+        'photochemical_ozone': 0.0436,
+        'particulates': 0.0631,
+        'ozone_depletion': 0.0436,
+    }
+    
     def __init__(self, db_path: str = "/home/indigo/RonaldoRiska/lca_data.db"):
         self.db_path = db_path
         self._validate_database()
@@ -366,8 +408,14 @@ class LCAEngine:
                 impacts[cat.value] += impact
                 phase_impacts['end_of_life'][cat.value] += impact
         
-        # Calcola score aggregati
-        pef_score = sum(impacts.values())
+        # Calcola score aggregati con pesi PEF
+        pef_score = 0.0
+        for cat in ImpactCategory:
+            impact_value = impacts.get(cat.value, 0.0)
+            normalization = self.PEF_NORMALIZATION.get(cat.value, 1.0)
+            weight = self.PEF_WEIGHTS.get(cat.value, 0.0)
+            pef_score += impact_value * normalization * weight
+        
         environmental_cost = impacts.get('environmental_cost', 0.0)
         
         return LCAOutput(

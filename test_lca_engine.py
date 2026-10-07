@@ -103,6 +103,46 @@ def test_lca_calculation():
         return False
 
 
+def test_pef_normalization():
+    """Test 4b: Verifica normalizzazione PEF con pesi corretti"""
+    print("TEST 4b: Normalizzazione PEF")
+    try:
+        engine = LCAEngine()
+        
+        # Verifica che i pesi PEF siano definiti
+        assert hasattr(engine, 'PEF_WEIGHTS'), "Pesi PEF non definiti"
+        assert hasattr(engine, 'PEF_NORMALIZATION'), "Fattori di normalizzazione non definiti"
+        
+        # Verifica che i pesi siano tra 0 e 1
+        for cat, weight in engine.PEF_WEIGHTS.items():
+            assert 0.0 <= weight <= 1.0, f"Peso {cat} fuori range: {weight}"
+        print(f"  PASS: Tutti i pesi PEF tra 0 e 1")
+        
+        # Verifica che le categorie principali abbiano pesi significativi
+        assert engine.PEF_WEIGHTS.get('climate_change', 0) > 0.15, \
+            "Climate change dovrebbe avere peso significativo"
+        assert engine.PEF_WEIGHTS.get('freshwater_ecotoxicity', 0) > 0.15, \
+            "Ecotoxicità dovrebbe avere peso significativo"
+        print(f"  PASS: Categorie principali con pesi significativi")
+        
+        # Verifica che tossicità umana sia esclusa (peso 0)
+        assert engine.PEF_WEIGHTS.get('human_toxicity_cancer', 1) == 0.0, \
+            "Tossicità cancerogena dovrebbe essere esclusa"
+        assert engine.PEF_WEIGHTS.get('human_toxicity_non_cancer', 1) == 0.0, \
+            "Tossicità non-cancerogena dovrebbe essere esclusa"
+        print(f"  PASS: Tossicità umana esclusa dal score")
+        
+        # Verifica che ecotoxicità abbia peso aumentato
+        assert engine.PEF_WEIGHTS.get('freshwater_ecotoxicity', 0) > 0.15, \
+            "Ecotoxicità dovrebbe avere peso aumentato"
+        print(f"  PASS: Ecotoxicità peso = {engine.PEF_WEIGHTS['freshwater_ecotoxicity']:.4f}")
+        
+        return True
+    except Exception as e:
+        print(f"  FAIL: {e}")
+        return False
+
+
 def test_save_and_retrieve():
     """Test 5: Verifica salvataggio e recupero risultati"""
     print("TEST 5: Salvataggio e recupero risultati")
@@ -223,6 +263,7 @@ def run_all_tests():
         test_materials_loaded,
         test_processes_loaded,
         test_lca_calculation,
+        test_pef_normalization,
         test_save_and_retrieve,
         test_impact_categories,
         test_empty_input,
