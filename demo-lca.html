@@ -888,6 +888,76 @@
     animation: pulse 2s ease-in-out infinite;
   }
 
+  /* ── LCI DATABASES ── */
+  .demo-databases-section {
+    padding: 3rem 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .demo-databases-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  @media (max-width: 900px) {
+    .demo-databases-grid { grid-template-columns: 1fr; }
+  }
+  .demo-database-card {
+    background: var(--demo-surface);
+    border: 1px solid var(--line);
+    border-radius: var(--demo-radius);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+  }
+  .demo-database-card:hover {
+    border-color: var(--demo-accent);
+    transform: translateY(-3px);
+    box-shadow: var(--demo-shadow);
+  }
+  .demo-database-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .demo-database-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .demo-database-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  .demo-database-desc {
+    font-size: 0.75rem;
+    color: var(--demo-muted);
+    margin: 0;
+  }
+  .demo-database-text {
+    font-size: 0.85rem;
+    color: var(--demo-muted);
+    line-height: 1.6;
+    margin: 0 0 1rem;
+  }
+  .demo-database-link {
+    font-size: 0.85rem;
+    color: var(--demo-accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .demo-database-link:hover {
+    text-decoration: underline;
+  }
+
   /* ── RESPONSIVE ── */
   @media (max-width: 600px) {
     .demo-hero { padding: 2rem 1rem; }
@@ -924,20 +994,20 @@
   <!-- KPI STRIP -->
   <div class="demo-kpi-strip">
     <div class="demo-kpi">
-      <span class="demo-kpi-value">3</span>
-      <span class="demo-kpi-label">Materiali</span>
+      <span class="demo-kpi-value">878.7</span>
+      <span class="demo-kpi-label">Mt CO₂e / anno · Settore abbigliamento globale</span>
     </div>
     <div class="demo-kpi">
-      <span class="demo-kpi-value">6</span>
-      <span class="demo-kpi-label">Scenari</span>
+      <span class="demo-kpi-value">50.000</span>
+      <span class="demo-kpi-label">Azi UE · CSRD reporting obbligatorio dal 2025</span>
     </div>
     <div class="demo-kpi">
-      <span class="demo-kpi-value">9</span>
-      <span class="demo-kpi-label">Indicatori</span>
+      <span class="demo-kpi-value">100.000+</span>
+      <span class="demo-kpi-label">Siti certificati · Standard Textile Exchange</span>
     </div>
     <div class="demo-kpi">
-      <span class="demo-kpi-value">C2G</span>
-      <span class="demo-kpi-label">Stadio</span>
+      <span class="demo-kpi-value">7</span>
+      <span class="demo-kpi-label">Studi LCA prioritari · Cotone, Poliestere, Cuoio, Lana, Mohair, Nylon, Cachemire</span>
     </div>
   </div>
 
@@ -957,7 +1027,74 @@
         <span class="demo-authority-desc">PEF / OEF · Normative</span>
       </div>
     </a>
+    <a href="https://www.ecoinvent.org" target="_blank" rel="noopener noreferrer" class="demo-authority-link">
+      <div class="demo-authority-logo" style="background: linear-gradient(135deg, #c7a45b, #a8893e); border-radius: 50%; color: white;">E</div>
+      <div class="demo-authority-text">
+        <span class="demo-authority-name">Ecoinvent</span>
+        <span class="demo-authority-desc">Database LCI globale</span>
+      </div>
+    </a>
+    <a href="https://base-empreinte.ademe.fr" target="_blank" rel="noopener noreferrer" class="demo-authority-link">
+      <div class="demo-authority-logo" style="background: linear-gradient(135deg, #0055a4, #00a0e3); border-radius: 50%; color: white;">FR</div>
+      <div class="demo-authority-text">
+        <span class="demo-authority-name">Base Empreinte</span>
+        <span class="demo-authority-desc">Database pubblico francese ADEME</span>
+      </div>
+    </a>
   </div>
+
+  <!-- LCI DATABASES -->
+  <section class="demo-databases-section" id="databases">
+    <div class="demo-section-head">
+      <p class="demo-section-eyebrow">Database LCI</p>
+      <h2 class="demo-section-title">Spina dorsale dell'LCA</h2>
+      <p class="demo-section-desc">I database di inventario del ciclo vitale che garantiscono la coerenza e l'affidabilità dei calcoli.</p>
+    </div>
+
+    <div class="demo-databases-grid">
+      <div class="demo-database-card">
+        <div class="demo-database-header">
+          <div class="demo-database-logo" style="background: linear-gradient(135deg, #0055a4, #00a0e3);">FR</div>
+          <div>
+            <h3 class="demo-database-name">Base Empreinte®</h3>
+            <p class="demo-database-desc">ADEME · Francia</p>
+          </div>
+        </div>
+        <p class="demo-database-text">
+          Il database pubblico ufficiale francese per i fattori di emissione, in evoluzione per soddisfare gli standard europei di sostenibilità.
+        </p>
+        <a href="https://base-empreinte.ademe.fr" target="_blank" rel="noopener noreferrer" class="demo-database-link">Visita il database →</a>
+      </div>
+
+      <div class="demo-database-card">
+        <div class="demo-database-header">
+          <div class="demo-database-logo" style="background: linear-gradient(135deg, #003399, #0066cc);">EU</div>
+          <div>
+            <h3 class="demo-database-name">Database EF</h3>
+            <p class="demo-database-desc">Commissione Europea</p>
+          </div>
+        </div>
+        <p class="demo-database-text">
+          Il database ufficiale europeo sviluppato per il metodo dell'impronta ambientale (EF), che garantisce la coerenza con le politiche di sostenibilità dell'UE.
+        </p>
+        <a href="https://environment.ec.europa.eu/topics/circular-economy_en" target="_blank" rel="noopener noreferrer" class="demo-database-link">Visita il database →</a>
+      </div>
+
+      <div class="demo-database-card">
+        <div class="demo-database-header">
+          <div class="demo-database-logo" style="background: linear-gradient(135deg, #c7a45b, #a8893e);">E</div>
+          <div>
+            <h3 class="demo-database-name">Ecoinvent®</h3>
+            <p class="demo-database-desc">Svizzera · Globale</p>
+          </div>
+        </div>
+        <p class="demo-database-text">
+          Un database globale ampiamente utilizzato che offre dati completi sull'impatto ambientale per migliaia di processi e materiali.
+        </p>
+        <a href="https://www.ecoinvent.org" target="_blank" rel="noopener noreferrer" class="demo-database-link">Visita il database →</a>
+      </div>
+    </div>
+  </section>
 
   <!-- MAIN -->
   <main class="demo-main">
