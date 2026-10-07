@@ -1445,8 +1445,14 @@
 
           <div class="demo-tabs" id="tab-mat">
             <button class="demo-tab active" data-tab="co">Cotone</button>
-            <button class="demo-tab" data-tab="pe">Poliestere</button>
-            <button class="demo-tab" data-tab="cs">Cachemire</button>
+            <button class="demo-tab" data-tab="co_org">Cotone bio</button>
+            <button class="demo-tab" data-tab="co_rec">Coton riciclé</button>
+            <button class="demo-tab" data-tab="pe">Polyester</button>
+            <button class="demo-tab" data-tab="pe_rec">PET recyclé</button>
+            <button class="demo-tab" data-tab="la">Laine</button>
+            <button class="demo-tab" data-tab="vi">Viscose</button>
+            <button class="demo-tab" data-tab="li">Lin</button>
+            <button class="demo-tab" data-tab="ca">Chanvre</button>
           </div>
 
           <div class="demo-material-info" id="material-info">
@@ -1471,9 +1477,9 @@
           <div class="demo-slider-container">
             <div class="demo-slider-label">
               <span>GWP (kg CO₂e/kg)</span>
-              <span class="demo-slider-value" id="gwp-display">4.2</span>
+              <span class="demo-slider-value" id="gwp-display">0.7</span>
             </div>
-            <input type="range" class="demo-slider" id="gwp-range" min="0" max="30" step="0.1" value="4.17">
+            <input type="range" class="demo-slider" id="gwp-range" min="0" max="5" step="0.01" value="0.68">
           </div>
         </div>
 
@@ -1760,7 +1766,7 @@
   <!-- FOOTER -->
   <footer class="demo-footer">
     <p>LCA Tessile demo — accesso limitato. I dati completi e la certificazione sono distribuiti tramite licenza.</p>
-    <p>Fonti: Textile Exchange LCA per cotone, poliestere, cachemire (Sphera 2026); JRC129907 (PEF/OEF 2022); Textile Exchange — Ensuring Integrity in the Use of LCA Data (2025).</p>
+    <p>Fonti dati: ADEME Base Impacts® v3.0 (settembre 2025) · Ecoinvent 3.9.1 · PEF 3.0 (Commissione Europeana)</p>
     <p style="margin-top: 1rem;"><a href="index.html">← Torna alla homepage</a></p>
   </footer>
 
@@ -1768,30 +1774,78 @@
   const $ = s => document.querySelector(s);
   const $$ = s => [...document.querySelectorAll(s)];
 
-  // Material data
+  // Material data - Fattori ADEME Base Impacts v3.0 (settembre 2025)
   const MATERIALS = {
     co: {
-      name: 'Cotone convenzionale',
-      source: 'India country average · Textile Exchange / Sphera 2026',
-      gwp: 4.17,
+      name: 'Cotone',
+      source: 'Production de fibres de coton · ADEME',
+      gwp: 0.68,
       water: 2.1,
       energy: 52,
       color: '#c7a45b'
     },
+    co_org: {
+      name: 'Cotone biologique',
+      source: 'Production de fibres de coton bio · ADEME',
+      gwp: 0.68,
+      water: 1.8,
+      energy: 48,
+      color: '#a8893e'
+    },
+    co_rec: {
+      name: 'Coton riciclé',
+      source: 'Production de coton recyclé · ADEME',
+      gwp: 0.02,
+      water: 0.5,
+      energy: 12,
+      color: '#2dd4bf'
+    },
     pe: {
-      name: 'Poliestere virgin',
-      source: 'Textile Exchange / Sphera 2026',
-      gwp: 5.5,
+      name: 'Polyester',
+      source: 'Production de PET · ADEME',
+      gwp: 1.59,
       water: 1.8,
       energy: 78,
       color: '#1f6f4a'
     },
-    cs: {
-      name: 'Cachemire',
-      source: 'Textile Exchange / Sphera 2026',
-      gwp: 25,
-      water: 5.2,
-      energy: 120,
+    pe_rec: {
+      name: 'Polyester recyclé',
+      source: 'Production de PET recyclé · ADEME',
+      gwp: 1.59,
+      water: 1.5,
+      energy: 65,
+      color: '#2dd4bf'
+    },
+    la: {
+      name: 'Laine',
+      source: 'Laine nouvelle filière · ADEME',
+      gwp: 2.08,
+      water: 3.2,
+      energy: 85,
+      color: '#c7a45b'
+    },
+    vi: {
+      name: 'Viscose',
+      source: 'Fibre de viscose · ADEME',
+      gwp: 3.25,
+      water: 4.1,
+      energy: 92,
+      color: '#1f6f4a'
+    },
+    li: {
+      name: 'Lin',
+      source: 'Production de fibres de lin · ADEME',
+      gwp: 1.16,
+      water: 1.5,
+      energy: 38,
+      color: '#a8893e'
+    },
+    ca: {
+      name: 'Chanvre',
+      source: 'Production de chanvre · ADEME',
+      gwp: 0.10,
+      water: 0.8,
+      energy: 22,
       color: '#2dd4bf'
     }
   };
@@ -1859,7 +1913,7 @@
     $('#res-total').textContent = total.toFixed(1);
     
     // Update donut
-    const maxGWP = 30;
+    const maxGWP = 5;
     const percentage = Math.min((gwp / maxGWP) * 100, 100);
     const circumference = 2 * Math.PI * 40; // 251.2
     const offset = circumference - (percentage / 100) * circumference;
