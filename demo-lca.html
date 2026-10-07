@@ -888,6 +888,144 @@
     animation: pulse 2s ease-in-out infinite;
   }
 
+  /* ── TECHNICAL DATA DASHBOARD ── */
+  .demo-tech-section {
+    padding: 3rem 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .demo-tech-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  @media (max-width: 900px) {
+    .demo-tech-grid { grid-template-columns: 1fr; }
+  }
+  .demo-tech-card {
+    background: var(--demo-surface);
+    border: 1px solid var(--line);
+    border-radius: var(--demo-radius);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+  }
+  .demo-tech-card:hover {
+    border-color: var(--demo-accent);
+    box-shadow: var(--demo-shadow);
+  }
+  .demo-tech-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .demo-tech-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--demo-accent), #a8893e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+  }
+  .demo-tech-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  .demo-tech-subtitle {
+    font-size: 0.75rem;
+    color: var(--demo-muted);
+    margin: 0;
+  }
+  .demo-tech-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.4rem;
+    height: 120px;
+    padding: 0.5rem 0;
+  }
+  .demo-tech-bar {
+    flex: 1;
+    background: linear-gradient(180deg, var(--demo-accent), rgba(199, 164, 91, 0.3));
+    border-radius: 4px 4px 0 0;
+    min-height: 4px;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  .demo-tech-bar:hover {
+    background: linear-gradient(180deg, var(--demo-accent-3), rgba(45, 212, 191, 0.3));
+  }
+  .demo-tech-bar-label {
+    position: absolute;
+    bottom: -1.4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.6rem;
+    color: var(--demo-muted);
+    white-space: nowrap;
+  }
+  .demo-tech-bar-value {
+    position: absolute;
+    top: -1.2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.6rem;
+    color: var(--demo-accent);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .demo-tech-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 2rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--line);
+  }
+  .demo-tech-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+    color: var(--demo-muted);
+  }
+  .demo-tech-legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .demo-tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+  }
+  .demo-tech-table th {
+    text-align: left;
+    padding: 0.5rem;
+    color: var(--demo-muted);
+    font-weight: 600;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .demo-tech-table td {
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--demo-ink);
+  }
+  .demo-tech-table tr:hover td {
+    background: rgba(199, 164, 91, 0.05);
+  }
+  .demo-tech-table .value {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--demo-accent);
+    font-weight: 600;
+  }
+
   /* ── LCI DATABASES ── */
   .demo-databases-section {
     padding: 3rem 1.5rem;
@@ -1042,6 +1180,193 @@
       </div>
     </a>
   </div>
+
+  <!-- TECHNICAL DATA DASHBOARD -->
+  <section class="demo-tech-section" id="dati-tecnici">
+    <div class="demo-section-head">
+      <p class="demo-section-eyebrow">Dati Tecnici</p>
+      <h2 class="demo-section-title">Fattori di emissione di riferimento</h2>
+      <p class="demo-section-desc">Dati tecnici sui fattori di emissione utilizzati nei calcoli LCA.</p>
+    </div>
+
+    <div class="demo-tech-grid">
+      <!-- Chart: Mix Elettrico per Paese -->
+      <div class="demo-tech-card">
+        <div class="demo-tech-header">
+          <div class="demo-tech-icon">⚡</div>
+          <div>
+            <h3 class="demo-tech-title">Mix Elettrico per Paese</h3>
+            <p class="demo-tech-subtitle">kg CO₂e / kWh</p>
+          </div>
+        </div>
+        <div class="demo-tech-chart">
+          <div class="demo-tech-bar" style="height: 7.7%;">
+            <span class="demo-tech-bar-value">0.078</span>
+            <span class="demo-tech-bar-label">FR</span>
+          </div>
+          <div class="demo-tech-bar" style="height: 40.1%;">
+            <span class="demo-tech-bar-value">0.401</span>
+            <span class="demo-tech-bar-label">IT</span>
+          </div>
+          <div class="demo-tech-bar" style="height: 102.3%;">
+            <span class="demo-tech-bar-value">1.023</span>
+            <span class="demo-tech-bar-label">CN</span>
+          </div>
+          <div class="demo-tech-bar" style="height: 137.8%;">
+            <span class="demo-tech-bar-value">1.378</span>
+            <span class="demo-tech-bar-label">IN</span>
+          </div>
+          <div class="demo-tech-bar" style="height: 26.7%;">
+            <span class="demo-tech-bar-value">0.267</span>
+            <span class="demo-tech-bar-label">ES</span>
+          </div>
+          <div class="demo-tech-bar" style="height: 97.0%;">
+            <span class="demo-tech-bar-value">0.970</span>
+            <span class="demo-tech-bar-label">AU</span>
+          </div>
+        </div>
+        <div class="demo-tech-legend">
+          <div class="demo-tech-legend-item">
+            <span class="demo-tech-legend-dot" style="background: var(--demo-accent);"></span>
+            <span>Mix elettrico nazionale</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart: Processi Tessili -->
+      <div class="demo-tech-card">
+        <div class="demo-tech-header">
+          <div class="demo-tech-icon">🏭</div>
+          <div>
+            <h3 class="demo-tech-title">Impatto Processi Tessili</h3>
+            <p class="demo-tech-subtitle">kg CO₂e / kg prodotto</p>
+          </div>
+        </div>
+        <div class="demo-tech-chart">
+          <div class="demo-tech-bar" style="height: 4.3%;">
+            <span class="demo-tech-bar-value">0.004</span>
+            <span class="demo-tech-bar-label">Apprêt</span>
+          </div>
+          <div class="demo-tech-bar" style="height: 9.1%;">
+            <span class="demo-tech-bar-value">0.091</span>
+            <span class="demo-tech-bar-label">Blanchiment</span>
+          </div>
+          <div class="demo-tech-bar" style="height: 18.3%;">
+            <span class="demo-tech-bar-value">0.183</span>
+            <span class="demo-tech-bar-label">Délavage</span>
+          </div>
+          <div class="demo-tech-bar" style="height: 52.3%;">
+            <span class="demo-tech-bar-value">0.523</span>
+            <span class="demo-tech-bar-label">Élasthanne</span>
+          </div>
+        </div>
+        <div class="demo-tech-legend">
+          <div class="demo-tech-legend-item">
+            <span class="demo-tech-legend-dot" style="background: var(--demo-accent);"></span>
+            <span>Processo di trasformazione</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table: Fattori di Emissione -->
+      <div class="demo-tech-card" style="grid-column: 1 / -1;">
+        <div class="demo-tech-header">
+          <div class="demo-tech-icon">📊</div>
+          <div>
+            <h3 class="demo-tech-title">Fattori di Emissione Dettagliati</h3>
+            <p class="demo-tech-subtitle">Base Impacts® · ADEME</p>
+          </div>
+        </div>
+        <table class="demo-tech-table">
+          <thead>
+            <tr>
+              <th>Processo</th>
+              <th>Unità</th>
+              <th>Acidificazione</th>
+              <th>Cambiamento Climatico</th>
+              <th>Eutrofizzazione</th>
+              <th>Tossicità Umana</th>
+              <th>Score PEF</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Apprêt anti-tache</td>
+              <td>kg</td>
+              <td class="value">0.0025</td>
+              <td class="value">4.33</td>
+              <td class="value">0.00003</td>
+              <td class="value">0.0096</td>
+              <td class="value">305.5</td>
+            </tr>
+            <tr>
+              <td>Blanchiment</td>
+              <td>kg</td>
+              <td class="value">0.0007</td>
+              <td class="value">0.091</td>
+              <td class="value">0.00003</td>
+              <td class="value">0.0115</td>
+              <td class="value">11.1</td>
+            </tr>
+            <tr>
+              <td>Délavage chimique</td>
+              <td>kg</td>
+              <td class="value">0.0009</td>
+              <td class="value">0.183</td>
+              <td class="value">0.00035</td>
+              <td class="value">0.0034</td>
+              <td class="value">19.0</td>
+            </tr>
+            <tr>
+              <td>Élasthanne (Lycra)</td>
+              <td>kg</td>
+              <td class="value">0.0275</td>
+              <td class="value">5.23</td>
+              <td class="value">0.0012</td>
+              <td class="value">0.153</td>
+              <td class="value">1042.6</td>
+            </tr>
+            <tr>
+              <td>Elettrica IT</td>
+              <td>kWh</td>
+              <td class="value">0.0014</td>
+              <td class="value">0.401</td>
+              <td class="value">0.00006</td>
+              <td class="value">0.0514</td>
+              <td class="value">27.0</td>
+            </tr>
+            <tr>
+              <td>Elettrica FR</td>
+              <td>kWh</td>
+              <td class="value">0.0003</td>
+              <td class="value">0.078</td>
+              <td class="value">0.00002</td>
+              <td class="value">0.5266</td>
+              <td class="value">22.0</td>
+            </tr>
+            <tr>
+              <td>Elettrica CN</td>
+              <td>kWh</td>
+              <td class="value">0.0055</td>
+              <td class="value">1.023</td>
+              <td class="value">0.00019</td>
+              <td class="value">0.0174</td>
+              <td class="value">68.7</td>
+            </tr>
+            <tr>
+              <td>Elettrica IN</td>
+              <td>kWh</td>
+              <td class="value">0.0068</td>
+              <td class="value">1.378</td>
+              <td class="value">0.00073</td>
+              <td class="value">0.0313</td>
+              <td class="value">87.6</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 
   <!-- LCI DATABASES -->
   <section class="demo-databases-section" id="databases">
