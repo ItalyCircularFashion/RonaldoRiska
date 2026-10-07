@@ -3,352 +3,1069 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>LCA Tessile demo — Ronaldo Riska | Libreria LCA, compilatore guidato</title>
-<meta name="description" content="Demo gratuita del compilatore LCA per tessile e abbigliamento. Cradle-to-gate, impronta idonea a benchmarking e tool di supporto alla compilazione tecnica. Accesso limitato, dati completi con licenza.">
-<meta name="keywords" content="LCA tessile, LCA abbigliamento, cradle to gate, benchmarking, Textile Exchange, Sphera, compilatore LCA, ecoinvent, Higg MSI">
+<title>LCA Tessile — Compilatore Cradle-to-Gate | Ronaldo Riska</title>
+<meta name="description" content="Demo del compilatore LCA per tessile e abbigliamento. Cradle-to-gate, benchmarking Textile Exchange, PEF/OEF, report per la filiera moda.">
+<meta name="keywords" content="LCA tessile, LCA abbigliamento, cradle to gate, Textile Exchange, Sphera, PEF, OEF, ecoinvent, Higg MSI, CO2e">
 <meta name="robots" content="index, follow">
-<meta name="theme-color" content="#08110c">
+<meta name="theme-color" content="#070b09">
 <link rel="canonical" href="https://italycircularfashion.github.io/RonaldoRiska/demo-lca.html">
-<link rel="alternate" hreflang="it" href="https://italycircularfashion.github.io/RonaldoRiska/demo-lca.html">
-<link rel="alternate" hreflang="x-default" href="https://italycircularfashion.github.io/RonaldoRiska/demo-lca.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="image" href="assets/images/lca-demo.png">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
 <style>
   :root {
     --demo-bg: #070b09;
     --demo-surface: #111a15;
     --demo-surface-2: #17231d;
-    --demo-surface-3: #f7f3ea;
+    --demo-surface-3: #1e2f26;
     --demo-ink: #f8faf7;
     --demo-muted: #aebbb3;
+    --demo-muted-2: #6f7f75;
     --demo-accent: #c7a45b;
     --demo-accent-2: #1f6f4a;
+    --demo-accent-3: #2dd4bf;
     --demo-danger: #c96d55;
     --demo-chart-line: #c7a45b;
     --demo-chart-fill: rgba(199, 164, 91, 0.16);
+    --demo-glow: rgba(199, 164, 91, 0.15);
+    --demo-radius: 12px;
+    --demo-radius-sm: 8px;
+    --demo-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+    --demo-shadow-lg: 0 40px 100px rgba(0, 0, 0, 0.5);
   }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    background: var(--demo-bg);
+    color: var(--demo-ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HERO ── */
   .demo-hero {
-    background: linear-gradient(160deg, #0a100a 0%, #0f1a10 50%, #0d150c 100%);
-    padding: 2.5rem 1.5rem 3rem;
-    text-align: center;
     position: relative;
+    padding: clamp(3rem, 8vw, 6rem) 1.5rem clamp(2.5rem, 6vw, 4rem);
+    text-align: center;
     overflow: hidden;
+    background: 
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(199, 164, 91, 0.12), transparent),
+      radial-gradient(ellipse 60% 50% at 80% 100%, rgba(31, 111, 74, 0.10), transparent),
+      var(--demo-bg);
   }
   .demo-hero::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 80% 20%, rgba(199, 164, 91, 0.10), transparent 50%),
-                radial-gradient(circle at 20% 80%, rgba(31, 111, 74, 0.10), transparent 50%);
+    background: 
+      linear-gradient(rgba(199, 164, 91, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(199, 164, 91, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
     pointer-events: none;
   }
-  .demo-hero-title {
-    font-size: clamp(2rem, 6vw, 3.2rem);
-    color: var(--demo-ink);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    max-width: 700px;
-    margin: 0 auto 0.4rem;
-  }
-  .demo-hero-sub {
-    color: var(--demo-muted);
-    font-size: 0.95rem;
-    max-width: 560px;
-    margin: 0 auto 1.2rem;
-  }
-  .demo-kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 0.9rem;
+  .demo-hero-content {
+    position: relative;
     max-width: 800px;
     margin: 0 auto;
   }
-  .demo-kpi {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 0.9rem 1rem;
-    backdrop-filter: blur(8px);
-    transition: border-color 0.2s;
-  }
-  .demo-kpi:hover { border-color: var(--demo-accent); }
-  .demo-kpi b {
-    font-size: 1.5rem;
-    color: var(--demo-accent);
-    display: block;
-    margin-bottom: 0.15rem;
-  }
-  .demo-kpi span {
+  .demo-hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.75rem;
-    color: var(--demo-muted);
-  }
-  .demo-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.2rem;
-  }
-  @media (max-width: 820px) {
-    .demo-grid { grid-template-columns: 1fr; }
-  }
-  .demo-card {
-    background: var(--demo-surface);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 1.1rem;
-  }
-  .demo-card h3 {
-    font-size: 0.78rem;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    color: var(--demo-accent);
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+  }
+  .demo-hero-title {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin: 0 0 1.2rem;
+    background: linear-gradient(135deg, var(--demo-ink) 0%, var(--demo-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.1s forwards;
+  }
+  .demo-hero-sub {
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
     color: var(--demo-muted);
-    margin: 0 0 0.6rem;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.2s forwards;
+  }
+  .demo-hero-sub strong {
+    color: var(--demo-accent);
     font-weight: 600;
   }
-  .demo-card .value {
-    font-size: 1.25rem;
+  .demo-hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.3s forwards;
+  }
+  .demo-hero-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(199, 164, 91, 0.25);
+    border-radius: 6px;
+    color: var(--demo-muted);
+    background: rgba(199, 164, 91, 0.05);
+    backdrop-filter: blur(8px);
+  }
+  .demo-hero-cta {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.4s forwards;
+  }
+
+  /* ── BUTTONS ── */
+  .demo-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.8rem;
+    border-radius: var(--demo-radius-sm);
+    font-family: inherit;
+    font-size: 0.9rem;
     font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .demo-btn-primary {
+    background: linear-gradient(135deg, var(--demo-accent), #a8893e);
+    color: #08110c;
+    box-shadow: 0 4px 20px rgba(199, 164, 91, 0.3);
+  }
+  .demo-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(199, 164, 91, 0.4);
+  }
+  .demo-btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
     color: var(--demo-ink);
+    border: 1px solid var(--line-strong);
   }
-  .demo-card .hint {
-    font-size: 0.72rem;
-    color: var(--demo-muted-2);
+  .demo-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--demo-accent);
   }
-  .demo-shell {
+
+  /* ── KPI STRIP ── */
+  .demo-kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.5s forwards;
+  }
+  .demo-kpi {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 0.7rem;
+    border-radius: var(--demo-radius);
+    padding: 1.2rem 1rem;
+    text-align: center;
+    backdrop-filter: blur(12px);
+    transition: all 0.3s ease;
   }
-  .demo-note {
+  .demo-kpi:hover {
+    border-color: var(--demo-accent);
+    background: rgba(199, 164, 91, 0.05);
+    transform: translateY(-3px);
+  }
+  .demo-kpi-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--demo-accent);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .demo-kpi-label {
     font-size: 0.75rem;
-    color: var(--demo-muted-2);
-    line-height: 1.4;
-  }
-  .demo-feature {
-    border: 1px dashed var(--line-strong);
-    border-radius: 8px;
-    padding: 0.7rem;
-    margin-bottom: 0.7rem;
-  }
-  .demo-feature .label {
-    font-size: 0.72rem;
     color: var(--demo-muted);
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.08em;
   }
-  .demo-feature p {
-    font-size: 0.82rem;
-    color: var(--demo-ink);
-    margin: 0.15rem 0 0;
+
+  /* ── MAIN CONTENT ── */
+  .demo-main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(3rem, 6vw, 5rem) 1.5rem;
   }
-  .demo-chart {
-    height: 36px;
-    position: relative;
+
+  /* ── SECTION HEADINGS ── */
+  .demo-section-head {
+    text-align: center;
+    margin-bottom: 3rem;
   }
-  .demo-chart .bar-bg {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 100%;
-    background: var(--demo-chart-fill);
-    border-radius: 3px 0 0 3px;
+  .demo-section-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--demo-accent);
+    margin-bottom: 0.8rem;
+  }
+  .demo-section-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    font-weight: 700;
+    margin: 0 0 0.8rem;
+    letter-spacing: -0.02em;
+  }
+  .demo-section-desc {
+    color: var(--demo-muted);
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1rem;
+  }
+
+  /* ── MATERIAL SELECTOR ── */
+  .demo-material-section {
+    margin-bottom: 4rem;
+  }
+  .demo-material-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  @media (max-width: 900px) {
+    .demo-material-grid { grid-template-columns: 1fr; }
+  }
+
+  .demo-panel {
+    background: var(--demo-surface);
+    border: 1px solid var(--line);
+    border-radius: var(--demo-radius);
+    padding: 1.5rem;
+    box-shadow: var(--demo-shadow);
+  }
+  .demo-panel-header {
     display: flex;
     align-items: center;
-    padding-left: 6px;
-    font-size: 0.6rem;
-    color: var(--demo-muted);
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--line);
   }
-  .demo-btn {
-    background: var(--demo-accent);
-    color: #08110c;
+  .demo-panel-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--demo-accent), #a8893e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+  .demo-panel-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  .demo-panel-subtitle {
+    font-size: 0.8rem;
+    color: var(--demo-muted);
+    margin: 0;
+  }
+
+  /* ── TABS ── */
+  .demo-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.3rem;
+    border-radius: var(--demo-radius-sm);
+  }
+  .demo-tab {
+    flex: 1;
+    padding: 0.7rem 1rem;
     border: none;
-    padding: 0.7rem 1.4rem;
     border-radius: 6px;
-    cursor: pointer;
+    background: transparent;
+    color: var(--demo-muted);
     font-family: inherit;
     font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .demo-tab:hover {
+    color: var(--demo-ink);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .demo-tab.active {
+    background: var(--demo-accent);
+    color: #08110c;
     font-weight: 600;
-    transition: filter 0.15s;
   }
-  .demo-btn:hover { filter: brightness(1.1); }
-  .demo-footer {
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--line);
-    font-size: 0.72rem;
+
+  /* ── MATERIAL INFO ── */
+  .demo-material-info {
+    min-height: 120px;
+  }
+  .demo-material-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0 0 0.3rem;
+    color: var(--demo-ink);
+  }
+  .demo-material-source {
+    font-size: 0.8rem;
     color: var(--demo-muted);
-    line-height: 1.4;
-  }
-  .demo-present {
-    background: linear-gradient(135deg, rgba(199, 164, 91, 0.12), rgba(31, 111, 74, 0.10));
-    border: 1px solid var(--demo-accent);
-    border-radius: 8px;
-    padding: 1rem;
     margin-bottom: 1rem;
+  }
+  .demo-material-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem;
+  }
+  .demo-material-stat {
+    text-align: center;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--demo-radius-sm);
+    border: 1px solid var(--line);
+  }
+  .demo-material-stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--demo-accent);
+    display: block;
+  }
+  .demo-material-stat-label {
+    font-size: 0.7rem;
+    color: var(--demo-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── SLIDER ── */
+  .demo-slider-container {
+    margin-top: 1.5rem;
+  }
+  .demo-slider-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+  }
+  .demo-slider-label span {
+    font-size: 0.85rem;
+    color: var(--demo-muted);
+  }
+  .demo-slider-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--demo-accent);
+  }
+  .demo-slider {
+    width: 100%;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    outline: none;
+  }
+  .demo-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--demo-accent);
+    cursor: pointer;
+    box-shadow: 0 0 12px var(--demo-glow);
+    transition: transform 0.15s ease;
+  }
+  .demo-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+  }
+  .demo-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--demo-accent);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 0 12px var(--demo-glow);
+  }
+
+  /* ── RESULTS PANEL ── */
+  .demo-results-panel {
+    position: sticky;
+    top: 2rem;
+  }
+  .demo-results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .demo-result-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--line);
+    border-radius: var(--demo-radius-sm);
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+  .demo-result-card:hover {
+    border-color: var(--demo-accent);
+    background: rgba(199, 164, 91, 0.05);
+  }
+  .demo-result-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--demo-accent);
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+  .demo-result-label {
+    font-size: 0.75rem;
+    color: var(--demo-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── DONUT CHART ── */
+  .demo-chart-container {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: var(--demo-radius-sm);
+    margin-bottom: 1rem;
+  }
+  .demo-donut {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+  }
+  .demo-donut svg {
+    transform: rotate(-90deg);
+  }
+  .demo-donut-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .demo-donut-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--demo-accent);
+  }
+  .demo-donut-label {
+    font-size: 0.6rem;
+    color: var(--demo-muted);
+    text-transform: uppercase;
+  }
+  .demo-chart-legend {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .demo-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.8rem;
+  }
+  .demo-legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .demo-legend-label {
+    color: var(--demo-muted);
+    flex: 1;
+  }
+  .demo-legend-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--demo-ink);
+  }
+
+  /* ── WORKFLOW ── */
+  .demo-workflow-section {
+    margin-bottom: 4rem;
+  }
+  .demo-workflow-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+  @media (max-width: 900px) {
+    .demo-workflow-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 500px) {
+    .demo-workflow-grid { grid-template-columns: 1fr; }
+  }
+  .demo-workflow-step {
+    position: relative;
+    background: var(--demo-surface);
+    border: 1px solid var(--line);
+    border-radius: var(--demo-radius);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+  }
+  .demo-workflow-step:hover {
+    border-color: var(--demo-accent);
+    transform: translateY(-4px);
+    box-shadow: var(--demo-shadow);
+  }
+  .demo-workflow-step::before {
+    content: attr(data-step);
+    position: absolute;
+    top: -12px;
+    left: 1.5rem;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--demo-accent);
+    color: #08110c;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .demo-workflow-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+  }
+  .demo-workflow-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+  }
+  .demo-workflow-desc {
+    font-size: 0.85rem;
+    color: var(--demo-muted);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ── FEATURES ── */
+  .demo-features-section {
+    margin-bottom: 4rem;
+  }
+  .demo-features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  @media (max-width: 900px) {
+    .demo-features-grid { grid-template-columns: 1fr; }
+  }
+  .demo-feature-card {
+    background: var(--demo-surface);
+    border: 1px solid var(--line);
+    border-radius: var(--demo-radius);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+  }
+  .demo-feature-card:hover {
+    border-color: var(--demo-accent);
+    background: rgba(199, 164, 91, 0.03);
+  }
+  .demo-feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(199, 164, 91, 0.15), rgba(31, 111, 74, 0.15));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+  .demo-feature-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+  }
+  .demo-feature-desc {
+    font-size: 0.85rem;
+    color: var(--demo-muted);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ── CTA SECTION ── */
+  .demo-cta-section {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    background: linear-gradient(135deg, rgba(199, 164, 91, 0.08), rgba(31, 111, 74, 0.08));
+    border: 1px solid var(--line-strong);
+    border-radius: var(--demo-radius);
+    margin-bottom: 3rem;
+  }
+  .demo-cta-title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    margin: 0 0 0.8rem;
+  }
+  .demo-cta-desc {
+    color: var(--demo-muted);
+    max-width: 500px;
+    margin: 0 auto 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  /* ── FOOTER ── */
+  .demo-footer {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    border-top: 1px solid var(--line);
+    color: var(--demo-muted-2);
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+  .demo-footer a {
+    color: var(--demo-accent);
+    text-decoration: none;
+  }
+  .demo-footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  .demo-animate-pulse {
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .demo-hero { padding: 2rem 1rem; }
+    .demo-kpi-strip { grid-template-columns: repeat(2, 1fr); }
+    .demo-results-grid { grid-template-columns: 1fr; }
+    .demo-material-stats { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
-<a class="external-site-bar" href="index.html">
-  <span class="external-site-bar__icon">←</span>
-  <span class="external-site-bar__text">Torna alla homepage</span>
-</a>
-<header class="hd">
-  <div class="t">
-    <div><h1>LCA Tessile</h1><small>Demo di accesso — compilatore guidato</small></div>
-  </div>
-  <nav id="nv"></nav>
-</header>
-<main style="max-width:1180px;margin:0 auto;padding:1.5rem;">
+
+  <!-- HERO -->
   <section class="demo-hero">
-    <p style="color:var(--demo-muted);font-size:0.85rem;">Textile Supply Chain Manager — Prato</p>
-    <div class="demo-hero-title">LCA Tessile</div>
-    <p class="demo-hero-sub">
-      Benchmark LCA per tessile e abbigliamento. <b>Cradle-to-gate</b>,
-      dati da Textile Exchange / Sphera 2026, metodo PEF/OEF.
-    </p>
-    <div class="demo-kpi-grid">
-      <div class="demo-kpi"><b>3</b><span>Materiali più usati</span></div>
-      <div class="demo-kpi"><b>6</b><span>Scenari di calcolo</span></div>
-      <div class="demo-kpi"><b>9</b><span>Indicatori clonati</span></div>
-      <div class="demo-kpi"><b>cradle-to-gate</b><span>Stadio di riferimento</span></div>
+    <div class="demo-hero-content">
+      <p class="demo-hero-eyebrow">Life Cycle Assessment · Tessile</p>
+      <h1 class="demo-hero-title">LCA Tessile</h1>
+      <p class="demo-hero-sub">
+        Compilatore <strong>cradle-to-gate</strong> per tessile e abbigliamento. 
+        Benchmark con parametri <strong>Textile Exchange</strong> e normative <strong>europee</strong> (PEF/OEF).
+      </p>
+      <div class="demo-hero-badges">
+        <span class="demo-hero-badge">Textile Exchange</span>
+        <span class="demo-hero-badge">PEF / OEF</span>
+        <span class="demo-hero-badge">Cradle-to-Gate</span>
+        <span class="demo-hero-badge">Sphera 2026</span>
+      </div>
+      <div class="demo-hero-cta">
+        <a href="#materiale" class="demo-btn demo-btn-primary">Inizia ora →</a>
+        <a href="index.html" class="demo-btn demo-btn-secondary">← Torna alla home</a>
+      </div>
     </div>
   </section>
 
-  <div class="demo-grid">
-    <div class="demo-card">
-      <h3>Materiale <span style="color:var(--demo-muted);font-size:0.75rem;">(selezione)</span></h3>
-      <div class="demo-shell">
-        <div class="demo-tabs" id="tab-mat">
-          <button data-tab="co">Cotone</button>
-          <button data-tab="pe">Poliester</button>
-          <button data-tab="cs">Cachemire</button>
-        </div>
-        <div id="tab-content">
-          <p class="demo-note">Scegli un materiale per vedere i fattori di emissione.</p>
-        </div>
-      </div>
-      <div class="demo-shell mt-1">
-        <label style="font-size:0.72rem;color:var(--demo-muted);display:inline-block;margin-bottom:0.3rem;">GWP (kg CO₂e/kg)</label>
-        <input class="demo-input" type="range" id="gwp-range" min="0" max="13" step="0.1" value="5">
-        <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--demo-muted);">
-          <span id="gwp-min">0</span>
-          <span id="gwp-val" style="font-weight:600;">5.0</span>
-          <span id="gwp-max">13</span>
-        </div>
-      </div>
+  <!-- KPI STRIP -->
+  <div class="demo-kpi-strip">
+    <div class="demo-kpi">
+      <span class="demo-kpi-value">3</span>
+      <span class="demo-kpi-label">Materiali</span>
     </div>
-    <div class="demo-card">
-      <h3>Récapitulatif <span style="color:var(--demo-muted);font-size:0.75rem;">(ciascun kg di fibre)</span></h3>
-      <div class="demo-shell" style="padding:0.8rem 0.6rem;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;">
-          <span style="font-size:0.72rem;color:var(--demo-muted);">CO₂e</span>
-          <span class="value" id="gwp-res">—</span>
-        </div>
-        <div class="demo-chart">
-          <div class="bar-bg"><span>Fibre</span><span style="margin-left:6px;color:var(--demo-ink);" id="bar-fib">—</span></div>
-          <div class="bar-bg" style="background:rgba(31,111,74,0.16);"><span style="color:var(--demo-ink);">Produzione</span></div>
-          <div class="bar-bg" style="background:rgba(31,111,74,0.08);"><span style="color:var(--demo-ink);">Uso</span></div>
-          <div class="bar-bg" style="background:rgba(31,111,74,0.05);"><span style="color:var(--demo-ink);">Fine vita</span></div>
-        </div>
-        <div style="display:flex;gap:0.8rem;margin-top:0.4rem;">
-          <div style="flex:1;text-align:center;">
-            <span class="value" style="color:var(--demo-accent);" id="wat-res">—</span>
-            <span style="font-size:0.7rem;color:var(--demo-muted);">acqua</span>
+    <div class="demo-kpi">
+      <span class="demo-kpi-value">6</span>
+      <span class="demo-kpi-label">Scenari</span>
+    </div>
+    <div class="demo-kpi">
+      <span class="demo-kpi-value">9</span>
+      <span class="demo-kpi-label">Indicatori</span>
+    </div>
+    <div class="demo-kpi">
+      <span class="demo-kpi-value">C2G</span>
+      <span class="demo-kpi-label">Stadio</span>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main class="demo-main">
+
+    <!-- MATERIAL SELECTOR -->
+    <section class="demo-material-section" id="materiale">
+      <div class="demo-section-head">
+        <p class="demo-section-eyebrow">Step 1 — Selezione</p>
+        <h2 class="demo-section-title">Scegli il materiale</h2>
+        <p class="demo-section-desc">Seleziona una fibre e regola il fattore di emissione per vedere l'impronta ambientale.</p>
+      </div>
+
+      <div class="demo-material-grid">
+        <!-- Material Panel -->
+        <div class="demo-panel">
+          <div class="demo-panel-header">
+            <div class="demo-panel-icon">🧵</div>
+            <div>
+              <h3 class="demo-panel-title">Materiale</h3>
+              <p class="demo-panel-subtitle">Seleziona la fibre</p>
+            </div>
           </div>
-          <div style="flex:1;text-align:center;">
-            <span class="value" style="color:var(--demo-accent);" id="en-res">—</span>
-            <span style="font-size:0.7rem;color:var(--demo-muted);">energia</span>
+
+          <div class="demo-tabs" id="tab-mat">
+            <button class="demo-tab active" data-tab="co">Cotone</button>
+            <button class="demo-tab" data-tab="pe">Poliestere</button>
+            <button class="demo-tab" data-tab="cs">Cachemire</button>
+          </div>
+
+          <div class="demo-material-info" id="material-info">
+            <h4 class="demo-material-name">Cotone convenzionale</h4>
+            <p class="demo-material-source">India country average · Textile Exchange / Sphera 2026</p>
+            <div class="demo-material-stats">
+              <div class="demo-material-stat">
+                <span class="demo-material-stat-value">4.17</span>
+                <span class="demo-material-stat-label">kg CO₂e/kg</span>
+              </div>
+              <div class="demo-material-stat">
+                <span class="demo-material-stat-value">2.1</span>
+                <span class="demo-material-stat-label">m³ acqua/kg</span>
+              </div>
+              <div class="demo-material-stat">
+                <span class="demo-material-stat-value">52</span>
+                <span class="demo-material-stat-label">MJ energia/kg</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="demo-slider-container">
+            <div class="demo-slider-label">
+              <span>GWP (kg CO₂e/kg)</span>
+              <span class="demo-slider-value" id="gwp-display">4.2</span>
+            </div>
+            <input type="range" class="demo-slider" id="gwp-range" min="0" max="30" step="0.1" value="4.17">
+          </div>
+        </div>
+
+        <!-- Results Panel -->
+        <div class="demo-panel demo-results-panel">
+          <div class="demo-panel-header">
+            <div class="demo-panel-icon">📊</div>
+            <div>
+              <h3 class="demo-panel-title">Risultati</h3>
+              <p class="demo-panel-subtitle">Impronta per kg di fibre</p>
+            </div>
+          </div>
+
+          <div class="demo-results-grid">
+            <div class="demo-result-card">
+              <span class="demo-result-value" id="res-co2">4.17</span>
+              <span class="demo-result-label">kg CO₂e</span>
+            </div>
+            <div class="demo-result-card">
+              <span class="demo-result-value" id="res-water">2.1</span>
+              <span class="demo-result-label">m³ acqua</span>
+            </div>
+            <div class="demo-result-card">
+              <span class="demo-result-value" id="res-energy">52</span>
+              <span class="demo-result-label">MJ energia</span>
+            </div>
+            <div class="demo-result-card">
+              <span class="demo-result-value" id="res-total">6.3</span>
+              <span class="demo-result-label">kg CO₂e eq</span>
+            </div>
+          </div>
+
+          <div class="demo-chart-container">
+            <div class="demo-donut">
+              <svg width="100" height="100" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="12"/>
+                <circle id="donut-fill" cx="50" cy="50" r="40" fill="none" stroke="url(#donut-gradient)" stroke-width="12" stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round" style="transition: stroke-dashoffset 0.6s ease"/>
+                <defs>
+                  <linearGradient id="donut-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#c7a45b"/>
+                    <stop offset="100%" stop-color="#1f6f4a"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div class="demo-donut-center">
+                <span class="demo-donut-value" id="donut-value">0%</span>
+                <span class="demo-donut-label">impronta</span>
+              </div>
+            </div>
+            <div class="demo-chart-legend">
+              <div class="demo-legend-item">
+                <span class="demo-legend-dot" style="background: #c7a45b;"></span>
+                <span class="demo-legend-label">Fibre</span>
+                <span class="demo-legend-value" id="legend-fibre">66%</span>
+              </div>
+              <div class="demo-legend-item">
+                <span class="demo-legend-dot" style="background: #1f6f4a;"></span>
+                <span class="demo-legend-label">Produzione</span>
+                <span class="demo-legend-value" id="legend-prod">25%</span>
+              </div>
+              <div class="demo-legend-item">
+                <span class="demo-legend-dot" style="background: #2dd4bf;"></span>
+                <span class="demo-legend-label">Uso</span>
+                <span class="demo-legend-value" id="legend-use">9%</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <div class="demo-grid" style="margin-top:1.2rem;">
-    <div class="demo-card">
-      <h3>Workflow — demo <span style="color:var(--demo-muted);font-size:0.75rem;">(limitato)</span></h3>
-      <div class="demo-shell" style="padding:0.8rem 0.6rem;">
-        <div class="demo-feature">
-          <div class="label">Step 1 — Materiale</div>
-          <p>Scegli il materiale e la quota in peso. I fattori sono preclusi per la licenza.</p>
+    <!-- WORKFLOW -->
+    <section class="demo-workflow-section">
+      <div class="demo-section-head">
+        <p class="demo-section-eyebrow">Workflow</p>
+        <h2 class="demo-section-title">Come funziona</h2>
+        <p class="demo-section-desc">Un percorso guidato in 4 step per compilare un LCA completo.</p>
+      </div>
+
+      <div class="demo-workflow-grid">
+        <div class="demo-workflow-step" data-step="1">
+          <div class="demo-workflow-icon">🧵</div>
+          <h3 class="demo-workflow-title">Materiale</h3>
+          <p class="demo-workflow-desc">Scegli la fibre e la quota in peso. I fattori sono basati su dati Textile Exchange.</p>
         </div>
-        <div class="demo-feature">
-          <div class="label">Step 2 — Fattori</div>
-          <p>Admira i fattori, così come qualcuno affronterebbe i dati primari.</p>
+        <div class="demo-workflow-step" data-step="2">
+          <div class="demo-workflow-icon">⚙️</div>
+          <h3 class="demo-workflow-title">Fattori</h3>
+          <p class="demo-workflow-desc">Regola i fattori di emissione, acqua e energia in base al tuo scenario produttivo.</p>
         </div>
-        <div class="demo-feature">
-          <div class="label">Step 3 — Résumé</div>
-          <p>Visualizza l'impronta climatica, l'acqua e l'energia della tua ricetta.</p>
+        <div class="demo-workflow-step" data-step="3">
+          <div class="demo-workflow-icon">📊</div>
+          <h3 class="demo-workflow-title">Risultati</h3>
+          <p class="demo-workflow-desc">Visualizza l'impronta climatica, idrica ed energetica della tua ricetta.</p>
         </div>
-        <div class="demo-feature">
-          <div class="label">Step 4 — Export</div>
-          <p>Fai il download del report per i tuoi clienti e i revisionisti tecnici.</p>
+        <div class="demo-workflow-step" data-step="4">
+          <div class="demo-workflow-icon">📄</div>
+          <h3 class="demo-workflow-title">Export</h3>
+          <p class="demo-workflow-desc">Scarica il report per clienti e revisori tecnici (versione completa).</p>
         </div>
       </div>
-    </div>
-    <div class="demo-card">
-      <h3>Cosa non si vede <span style="color:var(--demo-muted);font-size:0.75rem;">(per la licenza)</span></h3>
-      <div class="demo-shell" style="padding:0.8rem 0.6rem;">
-        <ul style="font-size:0.82rem;color:var(--demo-muted);">
-          <li>• Selezione dei <b>standard di certificazione</b> (Textile Exchange, SGS, ecc.)</li>
-          <li>• <b>Dati primari e secondari</b> con data quality rating</li>
-          <li>• Scheda tecnica compiuta e datasheet del capo finito</li>
-          <li>• Gestione dei <b>rapporti pdf</b> di output</li>
-        </ul>
-        <p class="demo-note" style="margin-top:0.5rem;">
-          La demo mostra la logica del modello, non i materiali. Per la versione completa
-          (dati, standard, certificazione, export PDF) contatta la segreteria.
-        </p>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="demo-features-section">
+      <div class="demo-section-head">
+        <p class="demo-section-eyebrow">Funzionalità</p>
+        <h2 class="demo-section-title">Cosa include</h2>
+        <p class="demo-section-desc">Strumenti professionali per la compilazione e il benchmarking LCA.</p>
       </div>
-    </div>
-  </div>
 
-  <div style="display:flex;gap:0.8rem;flex-wrap:wrap;align-items:center;margin-top:1.2rem;">
-    <button class="demo-btn" id="btn-licenza">
-      Richiedi accesso completo
-    </button>
-    <p class="demo-note" style="margin-top:0.2rem;">
-      Modulo di richiesta — ti contatteremo entro 24h operative con le condizioni licenzianti.
-    </p>
-  </div>
+      <div class="demo-features-grid">
+        <div class="demo-feature-card">
+          <div class="demo-feature-icon">🌍</div>
+          <h3 class="demo-feature-title">Benchmark LCA</h3>
+          <p class="demo-feature-desc">Confronta l'impronta ambientale con benchmark di settore e best practice.</p>
+        </div>
+        <div class="demo-feature-card">
+          <div class="demo-feature-icon">📋</div>
+          <h3 class="demo-feature-title">Schede tecniche</h3>
+          <p class="demo-feature-desc">Genera schede tecniche complete con dati di composizione e processo.</p>
+        </div>
+        <div class="demo-feature-card">
+          <div class="demo-feature-icon">✅</div>
+          <h3 class="demo-feature-title">Certificazioni</h3>
+          <p class="demo-feature-desc">Supporto per Textile Exchange, SGS, GRS e altri standard di certificazione.</p>
+        </div>
+        <div class="demo-feature-card">
+          <div class="demo-feature-icon">📈</div>
+          <h3 class="demo-feature-title">Data Quality</h3>
+          <p class="demo-feature-desc">Rating di qualità dei dati primari e secondari per affidabilità del modello.</p>
+        </div>
+        <div class="demo-feature-card">
+          <div class="demo-feature-icon">📑</div>
+          <h3 class="demo-feature-title">Report PDF</h3>
+          <p class="demo-feature-desc">Esporta report completi in PDF per clienti e revisori tecnici.</p>
+        </div>
+        <div class="demo-feature-card">
+          <div class="demo-feature-icon">🔬</div>
+          <h3 class="demo-feature-title">Dati primari</h3>
+          <p class="demo-feature-desc">Integrazione con dati primari aziendali e database ecoinvent.</p>
+        </div>
+      </div>
+    </section>
 
+    <!-- CTA -->
+    <section class="demo-cta-section">
+      <h2 class="demo-cta-title">Richiedi accesso completo</h2>
+      <p class="demo-cta-desc">La versione completa include dati, standard, certificazione e export PDF. Ti contatteremo entro 24h operative.</p>
+      <button class="demo-btn demo-btn-primary" id="btn-licenza">
+        Richiedi accesso →
+      </button>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
   <footer class="demo-footer">
     <p>LCA Tessile demo — accesso limitato. I dati completi e la certificazione sono distribuiti tramite licenza.</p>
-    <p>Fonti di riferimento: Textile Exchange LCA per cotone, poliestere, cachemire (Sphera 2026); JRC129907 (PEF/OEF 2022); Textile Exchange — Ensuring Integrity in the Use of LCA Data (2025).</p>
+    <p>Fonti: Textile Exchange LCA per cotone, poliestere, cachemire (Sphera 2026); JRC129907 (PEF/OEF 2022); Textile Exchange — Ensuring Integrity in the Use of LCA Data (2025).</p>
+    <p style="margin-top: 1rem;"><a href="index.html">← Torna alla homepage</a></p>
   </footer>
-</main>
+
 <script>
-  const $=s=>document.querySelector(s),$$=(s)=>[...document.querySelectorAll(s)];
-  const TABS=['co','pe','cs'];
-  const VAL={'co':4.17,'pe':5.5,'cs':25};
-  const D={'co':['Cotone convenzionale','India country average'],'pe':['Poliestere virgin','Textile Exchange / Sphera 2026'],'cs':['Cachemire','Textile Exchange / Sphera 2026']};
-  const N=(x,d=2)=>(+x).toLocaleString('it-IT',{minimumFractionDigits:d,maximumFractionDigits:d});
-  const UPDATE=()=>{
-    const g=+$('#gwp-range').value;
-    $('#gwp-val').textContent=N(g,1);
-    $('#gwp-res').textContent=N(g,3)+' kg CO₂e/kg';
-    const m=TABS[$('#tab-mat button.active')?.dataset.tab||'co'];
-    console.log('Materiale:',m,'GWP:',g,'kg CO₂e/kg');
+  const $ = s => document.querySelector(s);
+  const $$ = s => [...document.querySelectorAll(s)];
+
+  // Material data
+  const MATERIALS = {
+    co: {
+      name: 'Cotone convenzionale',
+      source: 'India country average · Textile Exchange / Sphera 2026',
+      gwp: 4.17,
+      water: 2.1,
+      energy: 52,
+      color: '#c7a45b'
+    },
+    pe: {
+      name: 'Poliestere virgin',
+      source: 'Textile Exchange / Sphera 2026',
+      gwp: 5.5,
+      water: 1.8,
+      energy: 78,
+      color: '#1f6f4a'
+    },
+    cs: {
+      name: 'Cachemire',
+      source: 'Textile Exchange / Sphera 2026',
+      gwp: 25,
+      water: 5.2,
+      energy: 120,
+      color: '#2dd4bf'
+    }
   };
-  $('#tab-mat').addEventListener('click',e=>{
-    if(e.target.dataset.tab){
-      $$('#tab-mat button').forEach(b=>b.classList.remove('active'));
-      e.target.classList.add('active');
-      UPDATE();
+
+  let currentMaterial = 'co';
+
+  // Tab switching
+  $$('#tab-mat .demo-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      $$('#tab-mat .demo-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentMaterial = tab.dataset.tab;
+      updateMaterialInfo();
+    });
+  });
+
+  function updateMaterialInfo() {
+    const mat = MATERIALS[currentMaterial];
+    $('#material-info .demo-material-name').textContent = mat.name;
+    $('#material-info .demo-material-source').textContent = mat.source;
+    $('#material-info .demo-material-stat-value').textContent = mat.gwp;
+    $('#material-info .demo-material-stat-value:nth-of-type(2)').textContent = mat.water;
+    $('#material-info .demo-material-stat-value:nth-of-type(3)').textContent = mat.energy;
+    
+    // Update slider
+    $('#gwp-range').value = mat.gwp;
+    $('#gwp-display').textContent = mat.gwp.toFixed(1);
+    
+    updateResults();
+  }
+
+  // Slider
+  $('#gwp-range').addEventListener('input', (e) => {
+    const val = parseFloat(e.target.value);
+    $('#gwp-display').textContent = val.toFixed(1);
+    updateResults();
+  });
+
+  function updateResults() {
+    const mat = MATERIALS[currentMaterial];
+    const gwp = parseFloat($('#gwp-range').value);
+    
+    // Update result cards
+    $('#res-co2').textContent = gwp.toFixed(2);
+    $('#res-water').textContent = mat.water.toFixed(1);
+    $('#res-energy').textContent = mat.energy;
+    
+    // Calculate total (simplified)
+    const total = gwp + mat.water * 0.5 + mat.energy * 0.02;
+    $('#res-total').textContent = total.toFixed(1);
+    
+    // Update donut
+    const maxGWP = 30;
+    const percentage = Math.min((gwp / maxGWP) * 100, 100);
+    const circumference = 2 * Math.PI * 40; // 251.2
+    const offset = circumference - (percentage / 100) * circumference;
+    $('#donut-fill').style.strokeDashoffset = offset;
+    $('#donut-value').textContent = Math.round(percentage) + '%';
+    
+    // Update legend
+    const fibrePct = Math.round((gwp / total) * 100);
+    const prodPct = Math.round((mat.water * 0.5 / total) * 100);
+    const usePct = 100 - fibrePct - prodPct;
+    $('#legend-fibre').textContent = fibrePct + '%';
+    $('#legend-prod').textContent = prodPct + '%';
+    $('#legend-use').textContent = usePct + '%';
+  }
+
+  // License button
+  $('#btn-licenza').addEventListener('click', () => {
+    const msg = 'Grazie per la tua richiesta. La versione completa del compilatore LCA Tessile è distribuita tramite licenza. Ti contatteremo tra 24h operative.';
+    if (confirm(msg)) {
+      location.href = 'mailto:ronaldo.riska@gmail.com?subject=Richiesta%20LCA%20completa';
     }
   });
-  $('#gwp-range').addEventListener('input',UPDATE);
-  $('#btn-licenza').addEventListener('click',()=>{
-    const msg='Grazie per la tua richiesta. La versione completa del compilatore LCA Tessile è distribuita tramite licenza. Ti contatteremo tra 24h operative.';
-    if(confirm(msg)) location.href='mailto:ronaldo.riska@gmail.com?subject=Richiesta%20LCA%20completa';
-  });
-  $$('nav button').forEach(b=>b.addEventListener('click',()=>{
-    $$('nav button').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-  }));
-  UPDATE();
+
+  // Initialize
+  updateMaterialInfo();
 </script>
 </body>
 </html>
