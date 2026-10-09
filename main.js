@@ -513,6 +513,19 @@ document.addEventListener("DOMContentLoaded", () => {
   initFooter();
   drawKpiCanvas();
   window.addEventListener("resize", drawKpiCanvas);
+  initHeroVideos();
 });
+
+// Video hero: se l'utente preferisce meno movimento, restano fermi (primo frame) invece di autoplay.
+function initHeroVideos() {
+  const videos = document.querySelectorAll(".hero-video");
+  if (!videos.length) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    videos.forEach((v) => {
+      v.removeAttribute("autoplay");
+      v.pause();
+    });
+  }
+}
 
 

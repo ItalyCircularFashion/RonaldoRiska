@@ -343,6 +343,55 @@ dt {
 
 .hero {
   padding: clamp(4rem, 8vw, 7rem) 0 clamp(4rem, 7vw, 6rem);
+  position: relative;
+}
+
+/* ─── HERO VIDEO (bordi, desktop) ─── */
+.hero-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 1.25rem;
+  border-radius: 10px;
+  border: 1px solid var(--line-strong);
+  object-fit: cover;
+  background: var(--bg-soft);
+  grid-column: 1 / -1; /* occupa tutta la larghezza della griglia, sotto il contenuto */
+}
+
+/* Su desktop i video escono dal flusso e vanno ai bordi della hero */
+@media (min-width: 900px) {
+  .hero-video {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: clamp(180px, 17vw, 300px);
+    height: 100%;
+    margin-top: 0;
+    border-radius: 0;
+    opacity: 0.85;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero-video--left { left: 0; }
+  .hero-video--right { right: 0; }
+  /* contenuto hero sopra i video */
+  .hero .container.hero-grid,
+  .hero-grid {
+    position: relative;
+    z-index: 1;
+  }
+  /* Maschera: sfuma entro il 25% della larghezza, così il bordo verso il centro è trasparente
+     e il contenuto non viene "tagliato" dal video. Il container hero NON viene ristretto
+     (restringendolo il testo andava a capo crescendo l'altezza della hero). */
+  .hero-video--left {
+    -webkit-mask-image: linear-gradient(to right, #000 25%, transparent);
+    mask-image: linear-gradient(to right, #000 25%, transparent);
+  }
+  .hero-video--right {
+    -webkit-mask-image: linear-gradient(to left, #000 25%, transparent);
+    mask-image: linear-gradient(to left, #000 25%, transparent);
+  }
 }
 
 .hero-grid {
@@ -1106,6 +1155,11 @@ dt {
   .reveal {
     opacity: 1;
     transform: none;
+  }
+
+  /* Rispetta prefers-reduced-motion: niente autoplay dei video hero */
+  .hero-video {
+    animation: none !important;
   }
 }
 
