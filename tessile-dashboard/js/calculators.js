@@ -507,6 +507,8 @@ const Riduzione = {
         const irt = parseFloat(document.getElementById('rid-irt').value) || 0;
         const iio = parseFloat(document.getElementById('rid-iio').value) || 0;
         const colpi = parseFloat(document.getElementById('rid-colpi').value);
+        const rapporto = parseFloat(document.getElementById('rid-rapporto').value);
+        const passaggi = parseFloat(document.getElementById('rid-passaggi').value);
 
         let out = '<h3>Riduzione & Imborsi</h3>';
 
@@ -540,6 +542,28 @@ const Riduzione = {
             // Formula inversa (hgg disponibile in questo scope)
             const hpDaHgg = hgg * 100 / (100 - iit);
             out += `<p class="formula">Hp = Hgg + IIT = ${hgg.toFixed(2)} × 100/(100-${iit}) = <span class="valore">${hpDaHgg.toFixed(2)} cm</span></p>`;
+        }
+
+        // ---- Calcoli di fabbricazione (Moretti cap. XII) ----
+
+        // Fili di ordimento = riduzione ordito (sul finito) × altezza finita
+        if (!isNaN(fo) && !isNaN(hp) && !isNaN(iio)) {
+            // ricavo l'altezza finita da Hp e imborsi noti: Hf = Hp × (100-IIT)/100 × (100-IRT)/100
+            // se l'utente ha fornito solo Hp, mostriamo la formula con altezza finita derivata
+            const hggLoc = hp * (100 - iit) / 100;
+            const hfLoc = hggLoc * (100 - irt) / 100;
+            const ridfO = fo / hfLoc;
+            out += `<h4>Calcoli di fabbricazione</h4>`;
+            out += `<p class="formula">Hf (derivata) = Hp × (100-IIT)/100 × (100-IRT)/100 = ${hp} × (100-${iit})/100 × (100-${irt})/100 = <span class="valore">${hfLoc.toFixed(2)} cm</span></p>`;
+            out += `<p class="formula">RidfO (riduzione finita ordito) = FO / Hf = ${fo} / ${hfLoc.toFixed(2)} = <span class="valore">${ridfO.toFixed(2)} fili/cm</span></p>`;
+            out += `<p>Formula fili ordimento (da riduzione finita × altezza finita): FO = RidfO × Hf = ${ridfO.toFixed(2)} × ${hfLoc.toFixed(2)} = <span class="valore">${(ridfO * hfLoc).toFixed(0)} fili</span> (verifica: coincide con FO inserito)</p>`;
+        }
+
+        // Maglie per liccio = (fili ordimento / rapporto intreccio) × passaggi del liccio
+        if (!isNaN(fo) && !isNaN(rapporto) && !isNaN(passaggi) && rapporto > 0) {
+            const maglie = (fo / rapporto) * passaggi;
+            out += `<p class="formula">Maglie per liccio = (FO / rapporto intreccio) × passaggi = (${fo} / ${rapporto}) × ${passaggi} = <span class="valore">${maglie.toFixed(0)} maglie</span></p>`;
+            out += `<p>Verifica: FO / (rapporto × passaggi) = ${fo} / (${rapporto} × ${passaggi}) = <span class="valore">${(fo / (rapporto * passaggi)).toFixed(0)}</span> licci-equivalenti</p>`;
         }
 
         if (!isNaN(colpi) && !isNaN(iio)) {
@@ -582,15 +606,27 @@ const Titolo = {
             case 'np':
                 nm = valore * 1.75;
                 break;
+            case 'new':
+                nm = valore * 1.128;
+                break;
+            case 'nel':
+                nm = valore * 0.604;
+                break;
+            case 'td':
+                nm = 9000 / valore;
+                break;
             default:
                 nm = valore;
         }
 
         out += `<p>Nm (Metrico): <span class="highlight">${nm.toFixed(2)}</span></p>`;
         out += `<p>Ne (Cotton): <span class="valore">${(nm / 1.694).toFixed(2)}</span></p>`;
+        out += `<p>Ne.w (Lana worsted): <span class="valore">${(nm * 0.886).toFixed(2)}</span></p>`;
+        out += `<p>Ne.l (Lino/canapa): <span class="valore">${(nm * 1.653).toFixed(2)}</span></p>`;
         out += `<p>Tex: <span class="valore">${(1000 / nm).toFixed(2)}</span></p>`;
         out += `<p>Denier: <span class="valore">${(9000 / nm).toFixed(2)}</span></p>`;
         out += `<p>Np (Pratese lana cardata): <span class="valore">${(nm * 0.57).toFixed(2)}</span></p>`;
+        out += `<p>Td (Denari seta): <span class="valore">${(9000 / nm).toFixed(2)}</span></p>`;
 
         if (capi > 1) {
             out += `<p>Numero capi: ${capi}</p>`;

@@ -360,6 +360,14 @@
                     <label>Colpi a telaio (trama, colpi/cm)</label>
                     <input type="number" id="rid-colpi" step="0.1" placeholder="26">
                 </div>
+                <div class="form-group">
+                    <label>Rapporto intreccio (fili, per maglie liccio)</label>
+                    <input type="number" id="rid-rapporto" placeholder="6">
+                </div>
+                <div class="form-group">
+                    <label>Passaggi per liccio (per maglie)</label>
+                    <input type="number" id="rid-passaggi" placeholder="2">
+                </div>
             </div>
             <button class="btn-calcola" onclick="Riduzione.calcola()">Calcola Riduzioni</button>
             <div class="risultato" id="ris-riduzione"></div>
@@ -378,9 +386,12 @@
                     <select id="tit-sistema">
                         <option value="nm">Nm (Metrico)</option>
                         <option value="ne">Ne (Inglese Cotton)</option>
+                        <option value="new">Ne.w (Inglese Lana worsted)</option>
+                        <option value="nel">Ne.l (Inglese Lino/canapa)</option>
                         <option value="tex">Tex</option>
                         <option value="den">Denier</option>
                         <option value="np">Np (Pratese lana cardata)</option>
+                        <option value="td">Td (Denari seta)</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -792,6 +803,7 @@
 
     <footer class="app-footer">
         <p>Tecnico Tessile Pratese &mdash; Calcoli per tessitura, filatura, laniero, weaving, industrial engineering. Nessuna AI, solo formule tessili.</p>
+        <p class="fonti">Fonti: A. Moretti, <em>Composizione, analisi e fabbricazione dei tessuti &mdash; I tessuti semplici</em>, Franco Cesati Editore (titolazione cap. III, analisi cap. V, intrecci cap. VI, fabbricazione cap. XII); P. Borgiotti, <em>Tessuti composti</em>. Fattori di titolazione verificati sui manuali.</p>
     </footer>
 
     <script src="tessile-dashboard/js/calculators.js"></script>

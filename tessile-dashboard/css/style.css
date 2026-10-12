@@ -431,6 +431,12 @@ hr {
     font-size: 0.85rem;
 }
 
+.app-footer .fonti {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    opacity: 0.75;
+}
+
 @media (max-width: 768px) {
     .app-header {
         padding: 1rem;
