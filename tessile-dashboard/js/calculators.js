@@ -536,23 +536,15 @@ const Riduzione = {
             const ridfCheck = ridggO * (100 + irt) / 100;
             out += `<p class="formula">Verifica: RidggO = RidtO + IIT = ${ridtO.toFixed(2)} × (100+${iit})/100 = ${ridggCheck.toFixed(2)}</p>`;
             out += `<p class="formula">Verifica: RidfO = RidggO + IRT = ${ridggO.toFixed(2)} × (100+${irt})/100 = ${ridfCheck.toFixed(2)}</p>`;
+
+            // Formula inversa (hgg disponibile in questo scope)
+            const hpDaHgg = hgg * 100 / (100 - iit);
+            out += `<p class="formula">Hp = Hgg + IIT = ${hgg.toFixed(2)} × 100/(100-${iit}) = <span class="valore">${hpDaHgg.toFixed(2)} cm</span></p>`;
         }
 
         if (!isNaN(colpi) && !isNaN(iio)) {
             const colpiGreggio = colpi * (100 - iio) / 100;
             out += `<p class="formula">Colpi in Greggio = Colpi finiti × (100 - IIO)/100 = ${colpi} × (100-${iio})/100 = <span class="valore">${colpiGreggio.toFixed(2)} colpi/cm</span></p>`;
-        }
-        
-        // Formula Colpi Greggio Trama (da esercizi GEFITES)
-        if (!isNaN(ridT) && !isNaN(itt)) {
-            const colpiGreggioT = ridT * (100 - itt) / 100;
-            out += `<p class="formula">Colpi Greggio Trama = RidfT × (100-ITT)/100 = <span class="valore">${colpiGreggioT.toFixed(2)} colpi/cm</span></p>`;
-        }
-
-        // Formula inversa
-        if (!isNaN(hgg) && !isNaN(iit)) {
-            const hpDaHgg = hgg * 100 / (100 - iit);
-            out += `<p class="formula">Hp = Hgg + IIT = ${hgg.toFixed(2)} × 100/(100-${iit}) = <span class="valore">${hpDaHgg.toFixed(2)} cm</span></p>`;
         }
 
         document.getElementById('ris-riduzione').innerHTML = out;
@@ -579,7 +571,7 @@ const Titolo = {
                 nm = valore;
                 break;
             case 'ne':
-                nm = valore * 1.693;
+                nm = valore * 1.694;
                 break;
             case 'tex':
                 nm = 1000 / valore;
@@ -588,17 +580,17 @@ const Titolo = {
                 nm = 9000 / valore;
                 break;
             case 'np':
-                nm = valore * 0.59;
+                nm = valore * 1.75;
                 break;
             default:
                 nm = valore;
         }
 
         out += `<p>Nm (Metrico): <span class="highlight">${nm.toFixed(2)}</span></p>`;
-        out += `<p>Ne (Cotton): <span class="valore">${(nm / 1.693).toFixed(2)}</span></p>`;
+        out += `<p>Ne (Cotton): <span class="valore">${(nm / 1.694).toFixed(2)}</span></p>`;
         out += `<p>Tex: <span class="valore">${(1000 / nm).toFixed(2)}</span></p>`;
         out += `<p>Denier: <span class="valore">${(9000 / nm).toFixed(2)}</span></p>`;
-        out += `<p>Np (Pettinato): <span class="valore">${(nm / 0.59).toFixed(2)}</span></p>`;
+        out += `<p>Np (Pratese lana cardata): <span class="valore">${(nm * 0.57).toFixed(2)}</span></p>`;
 
         if (capi > 1) {
             out += `<p>Numero capi: ${capi}</p>`;
