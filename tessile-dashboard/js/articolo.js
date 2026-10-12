@@ -269,6 +269,11 @@
     function init() {
         load();
 
+        // All'apertura la checklist Stato Articolo (kpi.js) gira prima
+        // di questo load(): la aggiorniamo appena lo stato è pronto.
+        renderBar();
+        if (typeof Kpi !== 'undefined' && Kpi.renderScheda) Kpi.renderScheda();
+
         // Popola il modulo attivo all'apertura
         const active = activeModuleId();
         if (active) populateModule(active);
