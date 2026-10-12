@@ -7,31 +7,51 @@
     <link rel="stylesheet" href="tessile-dashboard/css/style.css">
 </head>
 <body>
-    <header class="app-header">
-        <div class="header-brand">
-            <div class="logo">TtP</div>
-            <div class="title-block">
-                <h1>Tecnico Tessile Pratese</h1>
-                <p class="subtitle">Dashboard di Calcolo &mdash; Tessitura Ortogonale</p>
+    <div class="app-layout">
+        <aside class="app-sidebar">
+            <div class="header-brand">
+                <div class="logo">TtP</div>
+                <div class="title-block">
+                    <h1>Tecnico Tessile Pratese</h1>
+                    <p class="subtitle">Dashboard di Calcolo &mdash; Tessitura Ortogonale</p>
+                </div>
             </div>
-        </div>
-        <nav class="main-nav">
-            <button class="nav-btn active" data-module="scheda">Scheda Tecnica</button>
-            <button class="nav-btn" data-module="pettine">Calcoli Pettine</button>
-            <button class="nav-btn" data-module="colore">Note di Colore</button>
-            <button class="nav-btn" data-module="rincorso">Rincorso &amp; Armatura</button>
-            <button class="nav-btn" data-module="peso">Peso &amp; Divisore</button>
-            <button class="nav-btn" data-module="riduzione">Riduzione &amp; Imborsi</button>
-            <button class="nav-btn" data-module="titolo">Titolo &amp; Conversioni</button>
-            <button class="nav-btn" data-module="gsm">GSM &amp; Peso Tessuto</button>
-            <button class="nav-btn" data-module="lana">Ciclo Laniero</button>
-            <button class="nav-btn" data-module="ie">Industrial Engineering</button>
-            <button class="nav-btn" data-module="weaving">Weaving Tech</button>
-            <button class="nav-btn" data-module="yarn">Yarn Mfg</button>
-        </nav>
-    </header>
+            <nav class="main-nav" aria-label="Moduli di calcolo">
+                <button class="nav-btn active" data-module="scheda">📋 Scheda Tecnica</button>
+                <button class="nav-btn" data-module="pettine">🔧 Calcoli Pettine</button>
+                <button class="nav-btn" data-module="colore">🎨 Note di Colore</button>
+                <button class="nav-btn" data-module="rincorso">🧵 Rincorso &amp; Armatura</button>
+                <button class="nav-btn" data-module="peso">⚖️ Peso &amp; Divisore</button>
+                <button class="nav-btn" data-module="riduzione">📐 Riduzione &amp; Imborsi</button>
+                <button class="nav-btn" data-module="titolo">🔢 Titolo &amp; Conversioni</button>
+                <button class="nav-btn" data-module="gsm">📊 GSM &amp; Peso Tessuto</button>
+                <button class="nav-btn" data-module="lana">🐑 Ciclo Laniero</button>
+                <button class="nav-btn" data-module="ie">🏭 Industrial Engineering</button>
+                <button class="nav-btn" data-module="weaving">🪡 Weaving Tech</button>
+                <button class="nav-btn" data-module="yarn">🧶 Yarn Mfg</button>
+            </nav>
+            <div class="kpi-panel" id="kpi-panel">
+                <div class="kpi-header">
+                    <span>Avanzamento</span>
+                    <button class="kpi-reset" id="kpi-reset" title="Azzera avanzamento">↺</button>
+                </div>
+                <div class="kpi-progress">
+                    <div class="kpi-progress-bar" id="kpi-bar"></div>
+                </div>
+                <div class="kpi-count"><span id="kpi-done">0</span>/<span id="kpi-total">12</span> moduli</div>
+                <ul class="kpi-list" id="kpi-list"></ul>
+            </div>
+        </aside>
 
-    <main class="app-main">
+        <div class="app-content">
+            <header class="app-header">
+                <div class="header-current">
+                    <h2 id="current-module-title">Scheda Tecnica</h2>
+                    <p class="subtitle" id="current-module-sub">Dati generali, composizione filati, imborsi</p>
+                </div>
+            </header>
+
+            <main class="app-main">
         <!-- MODULO SCHEDA TECNICA -->
         <section class="module active" id="mod-scheda">
             <h2>Scheda Tecnica</h2>
@@ -805,9 +825,12 @@
         <p>Tecnico Tessile Pratese &mdash; Calcoli per tessitura, filatura, laniero, weaving, industrial engineering. Nessuna AI, solo formule tessili.</p>
         <p class="fonti">Fonti: A. Moretti, <em>Composizione, analisi e fabbricazione dei tessuti &mdash; I tessuti semplici</em>, Franco Cesati Editore (titolazione cap. III, analisi cap. V, intrecci cap. VI, fabbricazione cap. XII); P. Borgiotti, <em>Tessuti composti</em>. Fattori di titolazione verificati sui manuali.</p>
     </footer>
+        </div>
+    </div>
 
     <script src="tessile-dashboard/js/calculators.js"></script>
     <script src="tessile-dashboard/js/app.js"></script>
+    <script src="tessile-dashboard/js/kpi.js"></script>
     <script src="tessile-dashboard/js/lana.js"></script>
     <script src="tessile-dashboard/js/ie.js"></script>
     <script src="tessile-dashboard/js/weaving.js"></script>
