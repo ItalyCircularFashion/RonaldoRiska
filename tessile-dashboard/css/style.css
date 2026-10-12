@@ -385,6 +385,12 @@ body {
     border-radius: 8px;
 }
 
+.kpi-section + .kpi-section {
+    margin-top: 0.9rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--border-color);
+}
+
 .kpi-header {
     display: flex;
     justify-content: space-between;
@@ -429,6 +435,14 @@ body {
     transition: width 0.4s ease;
 }
 
+.kpi-progress-bar.scheda-completa {
+    background: linear-gradient(90deg, var(--success), #7ee8e0);
+}
+
+.kpi-progress-slim {
+    height: 5px;
+}
+
 .kpi-count {
     font-size: 0.85rem;
     color: var(--text-primary);
@@ -436,8 +450,33 @@ body {
     margin-bottom: 0.5rem;
 }
 
-.kpi-count #kpi-done {
+.kpi-count #kpi-done,
+.kpi-count #kpi-scheda-done {
     color: var(--accent-primary);
+}
+
+.kpi-list-scheda {
+    max-height: none;
+}
+
+.kpi-list li.missing {
+    color: var(--text-secondary);
+    opacity: 0.75;
+}
+
+.kpi-list li.missing .kpi-mark {
+    color: var(--warning);
+}
+
+.kpi-val {
+    margin-left: auto;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+
+.kpi-list-compact {
+    max-height: 150px;
 }
 
 .kpi-list {

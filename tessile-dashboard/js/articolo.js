@@ -148,6 +148,7 @@
         const active = activeModuleId();
         if (active) populateModule(active);
         renderBar();
+        if (typeof Kpi !== 'undefined' && Kpi.renderScheda) Kpi.renderScheda();
     }
 
     function reset() {
@@ -326,6 +327,8 @@
                 });
                 // azzera l'avanzamento moduli (KPI) — nuovo articolo = contatore pulito
                 if (typeof Kpi !== 'undefined' && Kpi.reset) Kpi.reset();
+                // aggiorna la checklist Stato Articolo
+                if (typeof Kpi !== 'undefined' && Kpi.renderScheda) Kpi.renderScheda();
             });
         }
 

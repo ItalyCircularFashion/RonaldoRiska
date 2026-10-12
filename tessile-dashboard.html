@@ -31,15 +31,27 @@
                 <button class="nav-btn" data-module="yarn">🧶 Yarn Mfg</button>
             </nav>
             <div class="kpi-panel" id="kpi-panel">
-                <div class="kpi-header">
-                    <span>Avanzamento</span>
-                    <button class="kpi-reset" id="kpi-reset" title="Azzera avanzamento">↺</button>
+                <div class="kpi-section kpi-scheda">
+                    <div class="kpi-header">
+                        <span>Stato Articolo</span>
+                    </div>
+                    <div class="kpi-progress">
+                        <div class="kpi-progress-bar" id="kpi-scheda-bar"></div>
+                    </div>
+                    <div class="kpi-count"><span id="kpi-scheda-done">0</span>/<span id="kpi-scheda-total">11</span> campi scheda</div>
+                    <ul class="kpi-list kpi-list-scheda" id="kpi-scheda-list"></ul>
                 </div>
-                <div class="kpi-progress">
-                    <div class="kpi-progress-bar" id="kpi-bar"></div>
+                <div class="kpi-section kpi-calcoli">
+                    <div class="kpi-header">
+                        <span>Calcoli eseguiti</span>
+                        <button class="kpi-reset" id="kpi-reset" title="Azzera avanzamento">↺</button>
+                    </div>
+                    <div class="kpi-progress kpi-progress-slim">
+                        <div class="kpi-progress-bar" id="kpi-bar"></div>
+                    </div>
+                    <div class="kpi-count"><span id="kpi-done">0</span>/<span id="kpi-total">12</span> moduli</div>
+                    <ul class="kpi-list kpi-list-compact" id="kpi-list"></ul>
                 </div>
-                <div class="kpi-count"><span id="kpi-done">0</span>/<span id="kpi-total">12</span> moduli</div>
-                <ul class="kpi-list" id="kpi-list"></ul>
             </div>
         </aside>
 

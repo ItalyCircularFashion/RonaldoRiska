@@ -128,6 +128,59 @@
         if (subEl) subEl.textContent = SUBTITLES[moduleId] || '';
     }
 
+    // ---- Stato Articolo: checklist campi essenziali ----
+    // Si aggiorna a ogni cambiamento dell'articolo (via subscribe di
+    // articolo.js). Mostra quali campi mancano per completare la scheda.
+    function renderScheda() {
+        const bar = document.getElementById('kpi-scheda-bar');
+        const doneEl = document.getElementById('kpi-scheda-done');
+        const totalEl = document.getElementById('kpi-scheda-total');
+        const list = document.getElementById('kpi-scheda-list');
+        if (!list) return;
+
+        const articolo = (typeof Articolo !== 'undefined' && Articolo.state) ? Articolo.state() : null;
+        const essenziali = (typeof Articolo !== 'undefined' && Articolo.ESSENZIALI) ? Articolo.ESSENZIALI : [];
+        const fields = (typeof Articolo !== 'undefined' && Articolo.FIELDS) ? Articolo.FIELDS : {};
+
+        const fatti = articolo ? essenziali.filter(p => getPath(articolo, p) !== null && getPath(articolo, p) !== undefined).length : 0;
+        const totale = essenziali.length || 11;
+        const pct = totale ? Math.round(fatti / totale * 100) : 0;
+
+        if (bar) {
+            bar.style.width = pct + '%';
+            bar.className = 'kpi-progress-bar' + (pct >= 100 ? ' scheda-completa' : '');
+        }
+        if (doneEl) doneEl.textContent = fatti;
+        if (totalEl) totalEl.textContent = totale;
+
+        list.innerHTML = '';
+        for (const path of essenziali) {
+            const val = articolo ? getPath(articolo, path) : null;
+            const presente = val !== null && val !== undefined;
+            const label = (fields[path] || path).split('.').pop();
+            const li = document.createElement('li');
+            li.className = presente ? 'done' : 'missing';
+            const mark = document.createElement('span');
+            mark.className = 'kpi-mark';
+            mark.textContent = presente ? '✓' : '○';
+            const nome = document.createElement('span');
+            nome.textContent = label;
+            li.appendChild(mark);
+            li.appendChild(nome);
+            if (presente) {
+                const valore = document.createElement('span');
+                valore.className = 'kpi-val';
+                valore.textContent = String(val);
+                li.appendChild(valore);
+            }
+            list.appendChild(li);
+        }
+    }
+
+    function getPath(obj, path) {
+        return path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), obj);
+    }
+
     function init() {
         load();
 
@@ -141,7 +194,7 @@
             });
         });
 
-        // Reset
+        // Reset avanzamento moduli (NON tocca l'articolo)
         const resetBtn = document.getElementById('kpi-reset');
         if (resetBtn) resetBtn.addEventListener('click', reset);
 
@@ -156,11 +209,21 @@
         const activeNav = document.querySelector('.nav-btn.active');
         if (activeNav) updateHeader(activeNav.dataset.module);
 
+        // Checklist Stato Articolo: si aggiorna dopo ogni calcolo
+        // (articolo.js raccoglie i risultati con setTimeout(0): allineo
+        // il render sullo stesso tick)
+        document.querySelectorAll('.btn-calcola').forEach(btn => {
+            btn.addEventListener('click', function () {
+                setTimeout(renderScheda, 10);
+            });
+        });
+
         render();
+        renderScheda();
     }
 
     // API per l'archivio e i test
-    const api = { reset, setDone, getDone };
+    const api = { reset, setDone, getDone, renderScheda };
     try { window.Kpi = api; } catch (e) {}
     try { globalThis.Kpi = api; } catch (e) {}
 
