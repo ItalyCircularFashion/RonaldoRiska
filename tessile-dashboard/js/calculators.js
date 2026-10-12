@@ -136,20 +136,20 @@ const Pettine = {
             }
         }
 
-        // Calcolo da Hf e ITT
+        // Calcolo da Hf e restringimento totale (IIT + IRT)
         if (!isNaN(hf) && !isNaN(itt) && !isNaN(imp)) {
             const hpCalc = hf * 100 / (100 - itt);
             const hggCalc = hpCalc * (100 - iit) / 100;
             const foCalc = !isNaN(fo) ? fo : null;
 
-            out += `<p class="formula">Hp = Hf + ITT = ${hf} × 100/(100-${itt}) = <span class="valore">${hpCalc.toFixed(2)} cm</span></p>`;
+            out += `<p class="formula">Hp = Hf + (IIT+IRT) = ${hf} × 100/(100-${itt}) = <span class="valore">${hpCalc.toFixed(2)} cm</span></p>`;
             out += `<p class="formula">Hgg = Hp - IIT = ${hpCalc.toFixed(2)} × (100-${iit})/100 = <span class="valore">${hggCalc.toFixed(2)} cm</span></p>`;
 
             if (foCalc) {
                 const ridfO = foCalc / hf;
                 const ridtO2 = ridfO * (100 - itt) / 100;
                 out += `<p class="formula">RidfO = FO / Hf = ${foCalc} / ${hf} = ${ridfO.toFixed(2)} fili/cm</p>`;
-                out += `<p class="formula">RidtO = RidfO - ITT = ${ridfO.toFixed(2)} × (100-${itt})/100 = ${ridtO2.toFixed(2)} fili/cm</p>`;
+                out += `<p class="formula">RidtO = RidfO - (IIT+IRT) = ${ridfO.toFixed(2)} × (100-${itt})/100 = ${ridtO2.toFixed(2)} fili/cm</p>`;
 
                 const dentiCm2 = ridtO2 / imp;
                 out += `<p class="formula">Pettine Decimale = ${dentiCm2.toFixed(1)} × 10 = <span class="valore">${(dentiCm2 * 10).toFixed(0)}</span>/10/${imp}</p>`;
