@@ -111,6 +111,15 @@
         render();
     }
 
+    // Ripristina uno stato KPI salvato (usato dall'archivio)
+    function setDone(nuovoDone) {
+        done = (nuovoDone && typeof nuovoDone === 'object') ? nuovoDone : {};
+        save();
+        render();
+    }
+
+    function getDone() { return Object.assign({}, done); }
+
     function updateHeader(moduleId) {
         const titleEl = document.getElementById('current-module-title');
         const subEl = document.getElementById('current-module-sub');
@@ -149,6 +158,11 @@
 
         render();
     }
+
+    // API per l'archivio e i test
+    const api = { reset, setDone, getDone };
+    try { window.Kpi = api; } catch (e) {}
+    try { globalThis.Kpi = api; } catch (e) {}
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);

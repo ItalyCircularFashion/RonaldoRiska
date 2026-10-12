@@ -53,6 +53,7 @@
                     <span class="articolo-chip" id="articolo-chip">📄 Nessun articolo</span>
                     <span class="articolo-complete empty" id="articolo-complete">0/11 campi</span>
                     <button type="button" class="articolo-reset" id="articolo-reset" title="Azzera l'articolo corrente e ricomincia">＋ Nuovo</button>
+                    <button type="button" class="articolo-archivio" id="archivio-open" title="Archivio articoli salvati">🗂️ Archivio</button>
                 </div>
             </header>
 
@@ -831,12 +832,33 @@
         <p class="fonti">Fonti: A. Moretti, <em>Composizione, analisi e fabbricazione dei tessuti &mdash; I tessuti semplici</em>, Franco Cesati Editore (titolazione cap. III, analisi cap. V, intrecci cap. VI, fabbricazione cap. XII); P. Borgiotti, <em>Tessuti composti</em>. Fattori di titolazione verificati sui manuali.</p>
     </footer>
         </div>
+
+    <!-- Modale Archivio Articoli -->
+    <div class="archivio-overlay" id="archivio-overlay" hidden>
+        <div class="archivio-modal" role="dialog" aria-modal="true" aria-labelledby="archivio-titolo">
+            <div class="archivio-header">
+                <h3 id="archivio-titolo">🗂️ Archivio Articoli</h3>
+                <button type="button" class="archivio-close" id="archivio-close" title="Chiudi">&times;</button>
+            </div>
+            <div class="archivio-body">
+                <div class="archivio-azioni">
+                    <button type="button" class="btn-archivio" id="archivio-salva">💾 Salva articolo corrente</button>
+                    <span class="archivio-conta" id="archivio-conta">0 articoli</span>
+                </div>
+                <ul class="archivio-lista" id="archivio-lista">
+                    <li class="archivio-vuoto">Nessun articolo in archivio. Compila una scheda tecnica e premi "Salva articolo corrente".</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     </div>
 
     <script src="tessile-dashboard/js/calculators.js"></script>
     <script src="tessile-dashboard/js/app.js"></script>
     <script src="tessile-dashboard/js/kpi.js"></script>
     <script src="tessile-dashboard/js/articolo.js"></script>
+    <script src="tessile-dashboard/js/archivio.js"></script>
     <script src="tessile-dashboard/js/lana.js"></script>
     <script src="tessile-dashboard/js/ie.js"></script>
     <script src="tessile-dashboard/js/weaving.js"></script>

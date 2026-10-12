@@ -136,6 +136,20 @@
 
     function state() { return JSON.parse(JSON.stringify(article)); }
 
+    // Sostituisce completamente lo stato articolo (usato dall'archivio
+    // per caricare un articolo salvato). Normalizza e salva.
+    function replace(nuovoStato) {
+        article = mergeDeep(emptyArticle(), nuovoStato || {});
+        save();
+    }
+
+    // Ripopola i campi del modulo attivo dall'articolo (dopo replace)
+    function refresh() {
+        const active = activeModuleId();
+        if (active) populateModule(active);
+        renderBar();
+    }
+
     function reset() {
         article = emptyArticle();
         save();
@@ -294,17 +308,24 @@
             });
         });
 
-        // Reset
+        // Reset ("Nuovo Articolo"): azzera articolo, campi E avanzamento KPI.
+        // Se ci sono dati non salvati, avvisa prima di procedere.
         const resetBtn = document.getElementById('articolo-reset');
         if (resetBtn) {
             resetBtn.addEventListener('click', function () {
-                if (confirm('Azzerare l\'articolo corrente? I dati nei campi restano.')) {
-                    reset();
-                    // ripulisci anche i campi visivi
-                    document.querySelectorAll('input, select').forEach(inp => {
-                        if (INPUT_MAP[inp.id]) inp.value = '';
-                    });
-                }
+                const c = completezza();
+                const haDati = c.fatti > 0;
+                const msg = haDati
+                    ? 'Creare un nuovo articolo? L\'articolo corrente (' + c.fatti + '/' + c.totale + ' campi) verrà azzerato. Salvarlo prima in Archivio se vuoi conservarlo.'
+                    : 'Creare un nuovo articolo vuoto?';
+                if (!confirm(msg)) return;
+                reset();
+                // ripulisci anche i campi visivi
+                document.querySelectorAll('input, select').forEach(inp => {
+                    if (INPUT_MAP[inp.id]) inp.value = '';
+                });
+                // azzera l'avanzamento moduli (KPI) — nuovo articolo = contatore pulito
+                if (typeof Kpi !== 'undefined' && Kpi.reset) Kpi.reset();
             });
         }
 
@@ -317,6 +338,8 @@
         get: get,
         set: set,
         state: state,
+        replace: replace,
+        refresh: refresh,
         reset: reset,
         completezza: completezza,
         FIELDS: FIELDS,

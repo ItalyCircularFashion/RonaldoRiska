@@ -124,6 +124,192 @@ body {
     color: var(--accent-primary);
 }
 
+.articolo-archivio {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.35rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+}
+
+.articolo-archivio:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+/* ---- Modale Archivio Articoli ---- */
+.archivio-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 25, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.archivio-overlay[hidden] { display: none; }
+
+.archivio-modal {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 560px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.archivio-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.archivio-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+}
+
+.archivio-close {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 0.3rem;
+}
+
+.archivio-close:hover { color: var(--accent-primary); }
+
+.archivio-body {
+    padding: 1rem 1.2rem 1.2rem;
+    overflow-y: auto;
+}
+
+.archivio-azioni {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.archivio-conta {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-left: auto;
+}
+
+.btn-archivio {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.45rem 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.btn-archivio:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+#archivio-salva {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: #fff;
+    font-weight: 600;
+}
+
+#archivio-salva:hover {
+    filter: brightness(1.12);
+    color: #fff;
+}
+
+.archivio-lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.archivio-vuoto {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 2rem 1rem;
+    border: 1px dashed var(--border-color);
+    border-radius: 8px;
+}
+
+.archivio-voce {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    padding: 0.7rem 0.9rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.archivio-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.archivio-nome {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.archivio-meta {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.archivio-azioni-voce {
+    display: flex;
+    gap: 0.4rem;
+    flex-shrink: 0;
+}
+
+.btn-elimina:hover {
+    border-color: #ff6b6b;
+    color: #ff6b6b;
+}
+
+@media (max-width: 768px) {
+    .archivio-bar {
+        margin-top: 0.5rem;
+    }
+
+    .archivio-voce {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
 .logo {
     width: 50px;
     height: 50px;
