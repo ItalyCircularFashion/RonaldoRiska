@@ -452,44 +452,75 @@ const Peso = {
         const hp = parseFloat(document.getElementById('peso-hp').value);
         const iio = parseFloat(document.getElementById('peso-iio').value) || 0;
         const iro = parseFloat(document.getElementById('peso-iro').value) || 0;
+        const iit = parseFloat(document.getElementById('peso-iit').value) || 0;
+        const irt = parseFloat(document.getElementById('peso-irt').value) || 0;
         const pot = parseFloat(document.getElementById('peso-pot').value) || 0;
 
         let out = '<h3>Calcolo Peso & Divisore</h3>';
 
-        // Peso Teorico Ordito
-        if (!isNaN(fo) && !isNaN(nmo)) {
-            const ptO = fo / nmo;
-            out += `<p class="formula">Peso Teorico Ordito = FO / NmO = ${fo} / ${nmo} = <span class="valore">${ptO.toFixed(2)} g/ml</span></p>`;
+        // ---- Metri di filato per metro lineare di tessuto (Moretti cap. XII) ----
+        // Ordito: FO fili, ognuno allungato dall'imborso intreccio ordito
+        //   mt ordito grezzo = FO x 100/(100-IIO)
+        // Trama: colpi a metro (il campo e in colpi/dm: x10), allungati da IIT,
+        //   moltiplicati per l'altezza in pettine (cm -> m)
+        //   mt trama grezzo = colpi/m x 100/(100-IIT) x Hp(m)
+        let mtO = null, mtT = null;
+
+        if (!isNaN(fo)) {
+            mtO = fo * 100 / (100 - iio);
+            out += `<p class="formula">Metri ordito grezzo = FO × 100/(100−IIO) = ${fo} × 100/${100 - iio} = <span class="valore">${mtO.toFixed(1)} m</span></p>`;
         }
 
-        // Peso Teorico Trama
-        if (!isNaN(colpi) && !isNaN(hp) && !isNaN(nmt)) {
-            const ptT = (colpi * hp) / nmt;
-            out += `<p class="formula">Peso Teorico Trama = (Colpi × Hp) / NmT = (${colpi} × ${hp}) / ${nmt} = <span class="valore">${ptT.toFixed(2)} g/ml</span></p>`;
+        if (!isNaN(colpi) && !isNaN(hp)) {
+            const colpiM = colpi * 10;               // da colpi/dm a colpi/m
+            mtT = colpiM * 100 / (100 - iit) * (hp / 100);   // da cm a m
+            out += `<p class="formula">Metri trama grezzi = (Colpi/dm × 10) × 100/(100−IIT) × Hp(m) = (${colpi}×10) × 100/${100 - iit} × ${(hp/100).toFixed(3)} = <span class="valore">${mtT.toFixed(1)} m</span></p>`;
         }
 
-        // Peso Teorico Totale
-        if (!isNaN(fo) && !isNaN(nmo) && !isNaN(colpi) && !isNaN(hp) && !isNaN(nmt)) {
-            const ptO = fo / nmo;
-            const ptT = (colpi * hp) / nmt;
-            const ptTot = ptO + ptT;
-            out += `<p class="formula">Peso Teorico Totale = ptO + ptT = ${ptO.toFixed(2)} + ${ptT.toFixed(2)} = <span class="highlight">${ptTot.toFixed(2)} g/ml</span></p>`;
+        // ---- Peso per metro lineare (g/ml) ----
+        let ptO = null, ptT = null;
 
-            // Peso Greggio
-            const pGreggio = ptTot * (1 + iio / 100);
-            out += `<p class="formula">Peso Greggio = PTeorico × (1 + IIO/100) = ${ptTot.toFixed(2)} × ${(1 + iio/100).toFixed(3)} = <span class="valore">${pGreggio.toFixed(2)} g/ml</span></p>`;
+        if (mtO !== null && !isNaN(nmo)) {
+            ptO = mtO / nmo;
+            out += `<p class="formula">Peso ordito grezzo = mt ordito / NmO = ${mtO.toFixed(1)} / ${nmo} = <span class="valore">${ptO.toFixed(2)} g/ml</span></p>`;
+        } else if (!isNaN(fo) && !isNaN(nmo)) {
+            // senza IIO noto: peso teorico semplice
+            ptO = fo / nmo;
+            out += `<p class="formula">Peso ordito teorico = FO / NmO = ${fo} / ${nmo} = <span class="valore">${ptO.toFixed(2)} g/ml</span></p>`;
+        }
 
-            // Peso Finito
-            const pFinito = pGreggio * (1 + iro / 100);
-            out += `<p class="formula">Peso Finito = PGreggio × (1 + IRO/100) = ${pGreggio.toFixed(2)} × ${(1 + iro/100).toFixed(3)} = <span class="valore">${pFinito.toFixed(2)} g/ml</span></p>`;
+        if (mtT !== null && !isNaN(nmt)) {
+            ptT = mtT / nmt;
+            out += `<p class="formula">Peso trama grezzo = mt trama / NmT = ${mtT.toFixed(1)} / ${nmt} = <span class="valore">${ptT.toFixed(2)} g/ml</span></p>`;
+        } else if (!isNaN(colpi) && !isNaN(hp) && !isNaN(nmt)) {
+            // senza IIT noto: peso teorico semplice
+            ptT = (colpi * 10 * hp / 100) / nmt;
+            out += `<p class="formula">Peso trama teorico = (Colpi/dm × 10 × Hp/100) / NmT = (${colpi}×10×${(hp/100).toFixed(2)}) / ${nmt} = <span class="valore">${ptT.toFixed(2)} g/ml</span></p>`;
+        }
 
-            // Divisore
-            const divTeorico = ptTot;
-            const divEffettivo = ptTot * (1 + iio / 100) * (1 + pot / 100);
-            out += `<p class="formula">Divisore Teorico = ${divTeorico.toFixed(2)} g/ml</p>`;
-            out += `<p class="formula">Divisore Effettivo = ptO × (1 + IIO/100) × (1 + POT/100) = <span class="highlight">${divEffettivo.toFixed(2)} g/ml</span></p>`;
-            
-            // Fabbisogno Materiali (da GEFITES)
+        // ---- Peso greggio (a telaio) ----
+        if (ptO !== null && ptT !== null) {
+            const pGreggio = ptO + ptT;
+            out += `<p class="formula">Peso greggio = peso ordito + peso trama = ${ptO.toFixed(2)} + ${ptT.toFixed(2)} = <span class="highlight">${pGreggio.toFixed(2)} g/ml</span></p>`;
+
+            // ---- Peso finito (Moretti: raccorciamento rifinizione vs perdite) ----
+            //   peso finito = peso greggio x (100-perdite)/(100-raccorc.rif.)
+            // IRO e' il raccorciamento rifinizione ordito, PR le perdite ponderali.
+            // Qui: peso finito = greggio x (100-PR)/(100-IRO)
+            const pr = parseFloat(document.getElementById('peso-pr').value) || 0;
+            const raccRif = iro;   // imborso rifinizione ordito = raccorciamento
+            const pFinito = pr > 0
+                ? pGreggio * (100 - pr) / (100 - raccRif)
+                : pGreggio * 100 / (100 - raccRif);
+            out += `<p class="formula">Peso finito = greggio × (100−PR)/(100−IRO) = ${pGreggio.toFixed(2)} × ${(100-pr).toFixed(0)}/${(100-raccRif).toFixed(0)} = <span class="valore">${pFinito.toFixed(2)} g/ml</span></p>`;
+
+            // ---- Divisore ----
+            // Peso divisore = filato grezzo necessario per 1 m di tessuto finito
+            //   = peso greggio / (1 - IRT) + perdite orditura/tessitura
+            const divEffettivo = (pGreggio / (100 - raccRif) * 100) * (1 + pot / 100);
+            out += `<p class="formula">Divisore effettivo = (greggio × 100/(100−IRO)) × (1+POT/100) = <span class="highlight">${divEffettivo.toFixed(2)} g/ml</span></p>`;
+
+            // ---- Fabbisogno ----
             const metriProd = 1000; // placeholder, in futuro input
             const fabbisogno = divEffettivo * metriProd / 1000; // kg per 1000m
             out += `<p class="formula">Fabbisogno (${metriProd}m) = ${divEffettivo.toFixed(2)} × ${metriProd}/1000 = <span class="highlight">${fabbisogno.toFixed(2)} kg</span></p>`;
