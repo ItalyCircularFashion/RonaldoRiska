@@ -928,13 +928,172 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Composizione - righe iniziali (solo se esistono)
+    // Composizione Filati — titolo strutturato: il peso divisore (g/m)
+    // si calcola dal sistema di titolazione. Fattori verificati sui
+    // manuali (Moretti cap. III):
+    //   Nm (metrico):        peso = 1/Nm
+    //   Ne (cotone):         Nm = Ne x 1,694
+    //   Ne.w (lana worsted): Nm = Ne.w x 1,128
+    //   Ne.l (lino/canapa):  Nm = Ne.l x 0,604
+    //   Np (pratese cardata):Nm = Np x 1,75
+    //   Tex:                 peso = tex/1000
+    //   Td (denari seta):    Nm = 9000/Td
+    // Titoli composti N/capi: Nm_equivalente = (N/capi) x fattore.
+    const SISTEMI = ['Nm', 'Ne', 'Ne.w', 'Ne.l', 'Np', 'Tex', 'Td'];
+    const FATTORI_NM = { 'Ne': 1.694, 'Ne.w': 1.128, 'Ne.l': 0.604, 'Np': 1.75 };
+
+    function pesoDaTitolo(sistema, valore, capi) {
+        if (!valore || isNaN(valore) || valore <= 0) return null;
+        const nCapi = (capi && capi > 0) ? capi : 1;
+        const nmEquiv = valore / nCapi;
+        if (sistema === 'Nm') return 1 / nmEquiv;
+        if (sistema === 'Tex') return (valore / 1000) / nCapi;
+        if (sistema === 'Td') return nCapi / (9000 / valore);
+        const f = FATTORI_NM[sistema];
+        if (!f) return null;
+        return 1 / (nmEquiv * f);
+    }
+
+    function nmDaTitolo(sistema, valore, capi) {
+        if (!valore || isNaN(valore) || valore <= 0) return null;
+        const nCapi = (capi && capi > 0) ? capi : 1;
+        const nmEquiv = valore / nCapi;
+        if (sistema === 'Nm') return nmEquiv;
+        if (sistema === 'Tex') return 1000 / (valore / nCapi);
+        if (sistema === 'Td') return 9000 * nCapi / valore;
+        const f = FATTORI_NM[sistema];
+        if (!f) return null;
+        return nmEquiv * f;
+    }
+
+    function sistemaSelectHtml(nome) {
+        let opts = '';
+        for (const s of SISTEMI) {
+            opts += '<option value="' + s + '">' + s + '</option>';
+        }
+        return '<select class="comp-sistema" data-campo="sistema">' + opts + '</select>';
+    }
+
+    function rigaComposizioneHtml(pos) {
+        return '<tr>' +
+            '<td>' + pos + '</td>' +
+            '<td><input type="text" class="comp-tipo" placeholder="Cotone"></td>' +
+            '<td>' + sistemaSelectHtml() + '</td>' +
+            '<td><input type="number" class="comp-valore" step="0.1" min="0" placeholder="20"></td>' +
+            '<td><input type="number" class="comp-capi" step="1" min="1" placeholder="1"></td>' +
+            '<td><input type="text" class="comp-colore"></td>' +
+            '<td><input type="text" class="comp-peso" readonly tabindex="-1" placeholder="—"></td>' +
+            '<td><input type="number" class="comp-occ" step="1" min="0" placeholder="1"></td>' +
+            '</tr>';
+    }
+
+    // Ricalcola il peso di una riga e il totale della tabella
+    function aggiornaComposizione(tableId, totaleId) {
+        const table = document.getElementById(tableId);
+        const totaleEl = document.getElementById(totaleId);
+        if (!table) return;
+        const body = table.querySelector('tbody');
+        let somma = 0, righeValide = 0;
+
+        body.querySelectorAll('tr').forEach(tr => {
+            const sel = tr.querySelector('.comp-sistema');
+            const val = parseFloat(tr.querySelector('.comp-valore').value);
+            const capi = parseFloat(tr.querySelector('.comp-capi').value);
+            const occ = parseFloat(tr.querySelector('.comp-occ').value) || 0;
+            const pesoInput = tr.querySelector('.comp-peso');
+            const peso = (sel && !isNaN(val)) ? pesoDaTitolo(sel.value, val, capi) : null;
+            if (peso !== null) {
+                pesoInput.value = peso.toFixed(4);
+                pesoInput.classList.remove('comp-errore');
+            } else {
+                pesoInput.value = (!isNaN(val)) ? 'titolo non valido' : '';
+                if (!isNaN(val)) pesoInput.classList.add('comp-errore');
+                else pesoInput.classList.remove('comp-errore');
+            }
+            if (peso !== null && occ > 0) {
+                somma += peso * occ;
+                righeValide++;
+            }
+        });
+
+        if (totaleEl) {
+            if (righeValide > 0) {
+                totaleEl.textContent = 'Peso riporto: ' + somma.toFixed(4) + ' g per riporto (' + righeValide + ' filati)';
+            } else {
+                totaleEl.textContent = '';
+            }
+        }
+        return somma;
+    }
+
+    // Riga iniziale + listener: ogni modifica del titolo ricalcola il peso
     const compOrdBody = document.querySelector('#comp-ordito tbody');
     const compTramaBody = document.querySelector('#comp-trama tbody');
     if (compOrdBody && compTramaBody) {
         for (let i = 0; i < 4; i++) {
-            compOrdBody.insertAdjacentHTML('beforeend', `<tr><td>${i+1}</td><td><input type="text" placeholder="Cotone"></td><td><input type="text" placeholder="Nm 20"></td><td><input type="text"></td><td><input type="number" step="0.1"></td><td><input type="number"></td></tr>`);
-            compTramaBody.insertAdjacentHTML('beforeend', `<tr><td>${i+1}</td><td><input type="text" placeholder="Cotone"></td><td><input type="text" placeholder="Nm 20"></td><td><input type="text"></td><td><input type="number" step="0.1"></td><td><input type="number"></td></tr>`);
+            compOrdBody.insertAdjacentHTML('beforeend', rigaComposizioneHtml(i + 1));
+            compTramaBody.insertAdjacentHTML('beforeend', rigaComposizioneHtml(i + 1));
         }
+        [['comp-ordito', 'tot-ordito'], ['comp-trama', 'tot-trama']].forEach(([tid, toid]) => {
+            const body = document.querySelector('#' + tid + ' tbody');
+            body.addEventListener('input', () => aggiornaComposizione(tid, toid));
+            body.addEventListener('change', () => aggiornaComposizione(tid, toid));
+            aggiornaComposizione(tid, toid);
+        });
     }
+
+    // Calcola peso e fili del riporto da una tabella composizione
+    function calcolaPesoDaComposizione(tableId) {
+        const table = document.getElementById(tableId);
+        if (!table) return null;
+        const body = table.querySelector('tbody');
+        let peso = 0, fili = 0;
+        body.querySelectorAll('tr').forEach(tr => {
+            const sel = tr.querySelector('.comp-sistema');
+            const val = parseFloat(tr.querySelector('.comp-valore').value);
+            const capi = parseFloat(tr.querySelector('.comp-capi').value);
+            const occ = parseFloat(tr.querySelector('.comp-occ').value) || 0;
+            if (!sel || isNaN(val) || occ <= 0) return;
+            const p = pesoDaTitolo(sel.value, val, capi);
+            if (p === null) return;
+            peso += p * occ;
+            fili += occ;
+        });
+        if (fili === 0) return null;
+        return { peso, fili };
+    }
+
+    // Scheda.calcola: se la composizione e' compilata, calcola il peso
+    // teorico ordito/trama (g/ml) dalla somma dei titoli della tabella.
+    // Peso ordito = (peso riporto / fili riporto) x FO
+    const _calcolaScheda = Scheda.calcola;
+    Scheda.calcola = function () {
+        _calcolaScheda();
+        try {
+            const fo = parseFloat(document.getElementById('st-fili').value);
+            const compO = calcolaPesoDaComposizione('comp-ordito');
+            const compT = calcolaPesoDaComposizione('comp-trama');
+            if (!compO && !compT) return;
+            const out = document.getElementById('ris-scheda');
+            let html = '<hr><h3>Peso da Composizione Filati</h3>';
+            let ptO = null, ptT = null;
+            if (compO && !isNaN(fo)) {
+                const media = compO.peso / compO.fili;      // g/m per filo
+                ptO = media * fo;
+                html += `<p class="formula">Peso ordito teorico = (riporto ${compO.peso.toFixed(4)} g / ${compO.fili} fili) × FO ${fo} = <span class="valore">${ptO.toFixed(2)} g/ml</span></p>`;
+            } else if (compO) {
+                html += `<p class="formula">Peso riporto ordito = ${compO.peso.toFixed(4)} g su ${compO.fili} fili (${(compO.peso/compO.fili).toFixed(4)} g/m per filo) — inserisci Fili Totali per il peso totale</p>`;
+            }
+            if (compT) {
+                // trama: peso per riporto di trama; senza colpi non scalabile
+                html += `<p class="formula">Peso trama = riporto ${compT.peso.toFixed(4)} g su ${compT.fili} fili (${(compT.peso/compT.fili).toFixed(4)} g/m per filo) — usa il modulo Peso per il peso a metro lineare</p>`;
+            }
+            out.innerHTML += html;
+        } catch (e) { /* la scheda base resta valida anche se la composizione ha dati incompleti */ }
+    };
+
+    // API per i test
+    const Composizione = { pesoDaTitolo, nmDaTitolo, aggiornaComposizione, calcolaPesoDaComposizione };
+    try { window.Composizione = Composizione; } catch (e) {}
+    try { globalThis.Composizione = Composizione; } catch (e) {}
 });

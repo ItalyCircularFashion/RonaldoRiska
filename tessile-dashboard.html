@@ -145,15 +145,19 @@
             </div>
             <div class="composizione-grid">
                 <h3>Composizione Filati Ordito</h3>
-                <table id="comp-ordito">
-                    <thead><tr><th>Pos.</th><th>Tipo</th><th>Titolo</th><th>Colore</th><th>Peso Div. (g/m)</th><th>Occorrenze</th></tr></thead>
+                <table class="comp-table" id="comp-ordito">
+                    <thead><tr><th>Pos.</th><th>Tipo</th><th>Sistema</th><th>Titolo</th><th>Capi</th><th>Colore</th><th>Peso Div. (g/m)</th><th>Occ.</th></tr></thead>
                     <tbody></tbody>
+                    <tfoot></tfoot>
                 </table>
+                <div class="comp-totale" id="tot-ordito"></div>
                 <h3>Composizione Filati Trama</h3>
-                <table id="comp-trama">
-                    <thead><tr><th>Pos.</th><th>Tipo</th><th>Titolo</th><th>Colore</th><th>Peso Div. (g/m)</th><th>Occorrenze</th></tr></thead>
+                <table class="comp-table" id="comp-trama">
+                    <thead><tr><th>Pos.</th><th>Tipo</th><th>Sistema</th><th>Titolo</th><th>Capi</th><th>Colore</th><th>Peso Div. (g/m)</th><th>Occ.</th></tr></thead>
                     <tbody></tbody>
+                    <tfoot></tfoot>
                 </table>
+                <div class="comp-totale" id="tot-trama"></div>
             </div>
             <button class="btn-calcola" onclick="Scheda.calcola()">Calcola Scheda</button>
             <div class="risultato" id="ris-scheda"></div>

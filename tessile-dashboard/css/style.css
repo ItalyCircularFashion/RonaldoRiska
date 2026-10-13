@@ -770,6 +770,45 @@ body {
     text-align: center;
 }
 
+.composizione-grid select {
+    width: 100%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.3rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+/* Peso divisore: campo calcolato, mai editabile a mano */
+.comp-peso {
+    background: var(--bg-primary) !important;
+    color: var(--success) !important;
+    font-weight: 600;
+    cursor: default;
+}
+
+.comp-peso.comp-errore {
+    color: var(--warning) !important;
+    font-size: 0.7rem;
+    font-weight: 400;
+}
+
+.comp-totale {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: -0.5rem 0 1.2rem;
+    padding: 0.3rem 0.5rem;
+}
+
+.comp-table th {
+    white-space: nowrap;
+}
+
+.comp-valore, .comp-capi, .comp-occ {
+    max-width: 70px;
+}
+
 .btn-add-row {
     background: transparent;
     border: 1px dashed var(--border-color);
