@@ -382,6 +382,29 @@
                     <input type="number" id="peso-pot" step="0.1" placeholder="0">
                 </div>
             </div>
+            <div class="form-group fonte-imborsi">
+                <label>Fonte imborsi intreccio:</label>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="peso-fonte-imborsi" value="misurati" checked>
+                        Misurati in produzione (IIO/IIT)
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="peso-fonte-imborsi" value="ondulazione">
+                        Ondulazione teorica del filato
+                    </label>
+                </div>
+            </div>
+            <div class="form-grid ondulazione-grid" id="ondulazione-grid" hidden>
+                <div class="form-group">
+                    <label>Ondulazione Ordito (%)</label>
+                    <input type="number" id="peso-ond-o" step="0.1" placeholder="7">
+                </div>
+                <div class="form-group">
+                    <label>Ondulazione Trama (%)</label>
+                    <input type="number" id="peso-ond-t" step="0.1" placeholder="7">
+                </div>
+            </div>
             <button class="btn-calcola" onclick="Peso.calcola()">Calcola Peso</button>
             <div class="risultato" id="ris-peso"></div>
         </section>
