@@ -70,6 +70,9 @@ input,textarea,select{background:rgba(0,240,255,.03);border:1px solid rgba(0,240
 input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 15px rgba(0,240,255,.2)}
 .feed-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media (max-width:900px){.feed-grid{grid-template-columns:1fr}}
+.filter-bar{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.filter-bar button{background:rgba(0,240,255,.03);border:1px solid rgba(0,240,255,.15);color:var(--muted);border-radius:4px;padding:5px 12px;cursor:pointer;font-family:"Orbitron",sans-serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;transition:all .3s}
+.filter-bar button:hover,.filter-bar button.active{border-color:var(--accent2);color:var(--accent2);box-shadow:0 0 10px rgba(0,240,255,.2)}
 </style>
 .topbar{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:14px;padding:12px 20px;background:rgba(5,5,10,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,240,255,.2);box-shadow:0 0 30px rgba(0,240,255,.05)}
 .brand{display:flex;align-items:center;gap:12px;white-space:nowrap}
@@ -144,7 +147,7 @@ button.danger{background:#ef4444}
   <aside class="left"><div class="card profile" id="profileCard"></div></aside>
   <main>
     <div class="card" style="padding:10px 14px;margin-bottom:12px"><div class="ticker" id="ticker"></div></div>
-    <section class="card" id="viewFeed"><div class="feed-head"><h2>Feed</h2><button class="button small" id="newPostBtn">Nuovo post</button></div><div class="compose" id="composer" style="display:none"><textarea id="postText" placeholder="Condividi qualcosa con la rete..."></textarea><div style="display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap"><input type="url" id="postImage" placeholder="URL immagine (facoltativo)" style="flex:1;min-width:180px;padding:8px;border-radius:99px;background:#08111d;border:1px solid var(--line);color:var(--text)"><button class="button small" id="publishPost">Pubblica</button><button class="ghost small" id="cancelPost">Annulla</button></div></div><div id="feedList"></div></section><section id="viewExplore" style="display:none" class="card"><h2>Esplora Persone</h2><input class="search" id="searchInput" placeholder="Cerca per nome o handle..." style="margin:10px 0"><div id="exploreList"></div></section><section id="viewProfile" style="display:none" class="card"><div id="profileView"></div></section><section id="viewMessages" style="display:none" class="card"><h2>Messaggi</h2><div class="layout" style="grid-template-columns:240px 1fr;padding:0;max-width:none"><div id="convList" class="card"></div><div id="convThread" class="card"></div></div></section><section id="viewNotifications" style="display:none" class="card"><h2>Notifiche</h2><div id="notifList"></div></section>
+    <section class="card" id="viewFeed"><div class="feed-head"><h2>Feed</h2><button class="button small" id="newPostBtn">Nuovo post</button></div><div class="filter-bar" id="filterBar"></div><div class="compose" id="composer" style="display:none"><textarea id="postText" placeholder="Condividi qualcosa con la rete..."></textarea><div style="display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap"><input type="url" id="postImage" placeholder="URL immagine (facoltativo)" style="flex:1;min-width:180px;padding:8px;border-radius:99px;background:#08111d;border:1px solid var(--line);color:var(--text)"><button class="button small" id="publishPost">Pubblica</button><button class="ghost small" id="cancelPost">Annulla</button></div></div><div id="feedList"></div></section><section id="viewExplore" style="display:none" class="card"><h2>Esplora Persone</h2><input class="search" id="searchInput" placeholder="Cerca per nome o handle..." style="margin:10px 0"><div id="exploreList"></div></section><section id="viewProfile" style="display:none" class="card"><div id="profileView"></div></section><section id="viewMessages" style="display:none" class="card"><h2>Messaggi</h2><div class="layout" style="grid-template-columns:240px 1fr;padding:0;max-width:none"><div id="convList" class="card"></div><div id="convThread" class="card"></div></div></section><section id="viewNotifications" style="display:none" class="card"><h2>Notifiche</h2><div id="notifList"></div></section>
   </main>
   <aside class="rightcol"><div class="card" id="kpiCard"></div><div class="card" id="requestCard" style="margin-top:12px"></div><div class="card" id="timelineCard" style="margin-top:12px"></div><div class="card" id="trendingCard" style="margin-top:12px"></div></aside>
 </div>
@@ -288,7 +291,7 @@ function timeAgo(ts){ const s=Math.floor((Date.now()-ts)/1000); if(s<60)return '
 let selectedProfileId=null;
 let selectedConversation=null;
 const FASES=['Ritorcitura','Orditura','Imbozzimatura','Tessitura','Controllo Greggio','Rifinizione','Controllo Finito'];
-function renderAll(){ renderSession(); renderProfileCard(); renderFeed(); renderExplore(); renderProfileView(); renderMessages(); renderNotifications(); renderTrending(); renderKPI(); renderTicker(); renderRequestCard(); renderRequests(); renderTimeline(); }
+function renderAll(){ renderSession(); renderProfileCard(); renderFilterBar(); renderFeed(); renderExplore(); renderProfileView(); renderMessages(); renderNotifications(); renderTrending(); renderKPI(); renderTicker(); renderRequestCard(); renderTimeline(); }
 function renderTimeline(){
   const el=document.getElementById('timelineCard'); if(!el) return;
   const fasi=[
@@ -364,14 +367,63 @@ function renderRequests(){
   const postsHtml=posts.length?posts.map(postHtml).join(''):'<div class="empty">Nessun post.</div>';
   const reqsHtml=reqs.length?reqs.slice(0,5).map(r=>{
     const a=S.users.find(x=>x.id===r.authorId)||{name:'?',handle:'?',color:'#666'};
+    const statoColor=r.stato==='aperta'?'var(--good)':r.stato==='in lavorazione'?'var(--accent2)':'var(--accent3)';
+    const prenotaBtn=u&&u.id!==r.authorId?`<button class="button small" onclick="prenotaRequest('${r.id}')" style="margin-left:auto">Prenota</button>`:'';
     return `<div class="post" data-request-id="${r.id}">
-      <div class="post-head">${avatarHtml(a,40)}<div><strong>${escapeHtml(r.name)}</strong> <span class="handle">@${escapeHtml(a.handle)}</span><div class="handle">${timeAgo(r.createdAt)}</div></div></div>
+      <div class="post-head">${avatarHtml(a,40)}<div><strong>${escapeHtml(r.name)}</strong> <span class="handle">@${escapeHtml(a.handle)}</span><div class="handle">${timeAgo(r.createdAt)}</div></div>${prenotaBtn}</div>
       <div style="margin:6px 0"><span class="badge lav">Richiesta</span></div>
       <div class="post-text" style="font-size:12px">${escapeHtml(r.comp)} • ${r.weight}g/mq • ${r.width}cm • ${r.meters}m • Colore: ${escapeHtml(r.color)}</div>
       <div style="margin:8px 0;display:flex;flex-wrap:wrap;gap:4px">${r.fasi.map(f=>`<span class="badge" style="font-size:10px">${escapeHtml(f)}</span>`).join('')}</div>
-      <div class="stats-line">Stato: <b style="color:var(--good)">${r.stato}</b></div>
+      <div class="stats-line">Stato: <b style="color:${statoColor}">${r.stato}</b></div>
     </div>`;
   }).join(''):'';
+  list.innerHTML=reqsHtml?`<div style="margin-bottom:14px"><h3 style="margin-bottom:10px;font-family:Orbitron,sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--accent2)">Richieste Cliente</h3><div class="feed-grid">${reqsHtml}</div></div>`+postsHtml:postsHtml;
+}
+function prenotaRequest(reqId){
+  const u=currentUser(); if(!u) return showAuth('register');
+  const r=S.requests.find(x=>x.id===reqId); if(!r) return;
+  if(r.stato!=='aperta') return toast('Richiesta gia assegnata.');
+  r.stato='in lavorazione';
+  if(!r.prenotazioni) r.prenotazioni=[];
+  r.prenotazioni.push({userId:u.id,createdAt:Date.now()});
+  pNotification(r.authorId,'prenotazione',u.id,null,`${u.name} ha prenotato la richiesta "${r.name}".`);
+  saveState(S); toast('Richiesta prenotata.'); renderAll();
+}
+let currentFilter='all';
+function renderFilterBar(){
+  const el=document.getElementById('filterBar'); if(!el) return;
+  const filters=[{k:'all',l:'Tutti'},{k:'eco',l:'Economia'},{k:'tech',l:'Tecnologia'},{k:'amb',l:'Ambiente'},{k:'lav',l:'Lavoro'},{k:'richieste',l:'Richieste'}];
+  el.innerHTML=filters.map(f=>`<button class="${currentFilter===f.k?'active':''}" data-filter="${f.k}">${f.l}</button>`).join('');
+  el.querySelectorAll('button').forEach(b=>b.onclick=()=>{currentFilter=b.dataset.filter;renderFilterBar();renderFeed();});
+}
+function renderFeed(){
+  const list=document.getElementById('feedList'); const composer=document.getElementById('composer');
+  const newBtn=document.getElementById('newPostBtn');
+  if(currentUser()){ newBtn.style.display=''; composer.style.display=composer.style.display; newBtn.onclick=()=>{ composer.style.display=composer.style.display==='none'?'block':'none'; }; }
+  else { newBtn.style.display='none'; composer.style.display='none'; }
+  document.getElementById('publishPost').onclick=addPost; document.getElementById('cancelPost').onclick=()=>{ composer.style.display='none'; };
+  const u=currentUser(); let posts=[];
+  if(u && u.following.length){ const ids=[u.id,...u.following]; posts=S.posts.filter(p=>ids.includes(p.authorId)); } else { posts=[...S.posts]; }
+  if(!posts.length) posts=[...S.posts].slice(0,20);
+  if(currentFilter!=='all'&&currentFilter!=='richieste') posts=posts.filter(p=>p.cat===currentFilter);
+  posts.sort((a,b)=>b.createdAt-a.createdAt);
+  const reqs=S.requests||[];
+  let reqsHtml='';
+  if(currentFilter==='all'||currentFilter==='richieste'){
+    reqsHtml=reqs.length?reqs.slice(0,5).map(r=>{
+      const a=S.users.find(x=>x.id===r.authorId)||{name:'?',handle:'?',color:'#666'};
+      const statoColor=r.stato==='aperta'?'var(--good)':r.stato==='in lavorazione'?'var(--accent2)':'var(--accent3)';
+      const prenotaBtn=u&&u.id!==r.authorId?`<button class="button small" onclick="prenotaRequest('${r.id}')" style="margin-left:auto">Prenota</button>`:'';
+      return `<div class="post" data-request-id="${r.id}">
+        <div class="post-head">${avatarHtml(a,40)}<div><strong>${escapeHtml(r.name)}</strong> <span class="handle">@${escapeHtml(a.handle)}</span><div class="handle">${timeAgo(r.createdAt)}</div></div>${prenotaBtn}</div>
+        <div style="margin:6px 0"><span class="badge lav">Richiesta</span></div>
+        <div class="post-text" style="font-size:12px">${escapeHtml(r.comp)} • ${r.weight}g/mq • ${r.width}cm • ${r.meters}m • Colore: ${escapeHtml(r.color)}</div>
+        <div style="margin:8px 0;display:flex;flex-wrap:wrap;gap:4px">${r.fasi.map(f=>`<span class="badge" style="font-size:10px">${escapeHtml(f)}</span>`).join('')}</div>
+        <div class="stats-line">Stato: <b style="color:${statoColor}">${r.stato}</b></div>
+      </div>`;
+    }).join(''):'';
+  }
+  const postsHtml=posts.length?`<div class="feed-grid">${posts.map(postHtml).join('')}</div>`:'<div class="empty">Nessun post.</div>';
   list.innerHTML=reqsHtml?`<div style="margin-bottom:14px"><h3 style="margin-bottom:10px;font-family:Orbitron,sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--accent2)">Richieste Cliente</h3><div class="feed-grid">${reqsHtml}</div></div>`+postsHtml:postsHtml;
 }
 function renderKPI(){
