@@ -189,7 +189,8 @@ function rspr(P,mp,lu,tw,vert,cw,ch,f,dv,k){
   d[i+3]=255}
  x.putImageData(im,0,0);return c}
 const RS={k0:'',k1:'',k2:'',c0:document.createElement('canvas'),c1:document.createElement('canvas'),t:document.createElement('canvas')};
-function drawReal(lo){
+async function drawReal(lo){
+ const yieldToMain = () => (globalThis.scheduler && typeof globalThis.scheduler.yield === "function") ? globalThis.scheduler.yield() : new Promise(resolve => setTimeout(resolve, 0));
  const T=ST,A=SA(),B=SB(),M=T.M,h=M.length,w=M[0].length;let N=T.n,R=T.m;if(T.one){N=Math.min(400,lcm(w,A.length));R=Math.min(400,lcm(h,B.length))}
  const px=37.8*T.zoom/100,cw=Math.max(8,Math.round(px/T.ends)),ch=Math.max(8,Math.round(px/T.picks));while(N*cw*R*ch>5e6&&R>4)R=Math.floor(R*.8);
  const W=N*cw,Hh=R*ch,YS={};for(const l of new Set([...A,...B])){const y=yd(l);YS[l]={y,cols:plyCols(y),rgb:plyRGB(y),dia:dia(y)}}
@@ -200,17 +201,17 @@ function drawReal(lo){
  const grid=()=>UPG||(UPG=(()=>{const g=new Uint8Array(S2*(R+2));for(let j=-1;j<=R;j++){const b=B[((j%B.length)+B.length)%B.length],row=M[((j%h)+h)%h];for(let i=-1;i<=N;i++)g[(j+1)*S2+i+1]=(b==='y'||row[((i%w)+w)%w])?1:0}return g})());
  const sprite=(S,v,f,dv,k)=>{const y=S.y,key=[v,f,dv,k,cw,ch,S.cols.join(),y.mp,y.lu,y.tw].join('|');let c=RC.get(key);if(!c){c=rspr(S.rgb,y.mp/100,y.lu,y.tw,v,cw,ch,f,dv,k);RC.set(key,c)}return c};
  // livello 0: fili (con ondulazione, torsione, melange, fiammato)
- const base=x=>{x.fillStyle=T.bg;x.fillRect(0,0,W,Hh);x.imageSmoothingEnabled=false;const UP=grid(),sl=[];
+ const base=async x=>{x.fillStyle=T.bg;x.fillRect(0,0,W,Hh);x.imageSmoothingEnabled=false;const UP=grid(),sl=[];
   for(let j=0;j<R;j++)for(let i=0;i<N;i++){
    const v=UP[(j+1)*S2+i+1]===1,l=v?A[i%A.length]:B[j%B.length],S=YS[l],y=S.y,th=v?i:j,t=v?j:i,sd=th+(v?0:500),sp=10/(v?T.ends:T.picks);
    let fw=S.dia/sp*(1+(hs(th,v?1:2,11)-.5)*2*y.va/100);
    if(y.fl){const g=Math.max(0,(vn(t*.16,sd)-.5)/.5),n2=Math.max(0,(.28-vn(t*.16+19,sd))/.28);fw*=1+y.fl/100*(1.6*g*g-.4*n2)}
    const f=Math.round(cl(Math.min(fw,1),.3,1)*20)/20,dv=v?((UP[(j+2)*S2+i+1]?0:1)|(UP[j*S2+i+1]?0:2)):((UP[(j+1)*S2+i]?1:0)|(UP[(j+1)*S2+i+2]?2:0)),k=(hs(i,j,13)*3)|0,X=i*cw,Y=(R-1-j)*ch;
-   x.drawImage(sprite(S,v,f,dv,k),X,Y);if(fw>1.04)sl.push(l,v,Math.min(fw,2.4),dv,k,X,Y)}
+   x.drawImage(sprite(S,v,f,dv,k),X,Y);if(fw>1.04)sl.push(l,v,Math.min(fw,2.4),dv,k,X,Y);if(((j*N+i)&1023)===1023) await yieldToMain();}
   x.imageSmoothingEnabled=true;
   for(let q=0;q<sl.length;q+=7){const S=YS[sl[q]],v=sl[q+1],s=sl[q+2],im=sprite(S,v,1,sl[q+3],sl[q+4]),X=sl[q+5],Y=sl[q+6];if(v)x.drawImage(im,X-(s-1)*cw/2,Y,cw*s,ch);else x.drawImage(im,X,Y-(s-1)*ch/2,cw,ch*s)}};
  // livello 1: nodini (bottonato) e anellini (bouclé)
- const effects=x=>{const UP=grid();
+ const effects=async x=>{const UP=grid();
   const nub=(cx,cy,r,col)=>{const g=x.createRadialGradient(cx-r*.3,cy-r*.3,r*.1,cx,cy,r);g.addColorStop(0,sh(col,1.25));g.addColorStop(1,sh(col,.55));x.fillStyle='rgba(0,0,0,.25)';x.beginPath();x.ellipse(cx+r*.2,cy+r*.3,r,r*.8,0,0,6.283);x.fill();x.fillStyle=g;x.beginPath();x.arc(cx,cy,r,0,6.283);x.fill()};
   const loop=(cx,cy,r,col,a0)=>{x.lineCap='round';x.strokeStyle='rgba(0,0,0,.3)';x.lineWidth=r*.55;x.beginPath();x.arc(cx+r*.12,cy+r*.18,r,a0,a0+4.4);x.stroke();x.strokeStyle=sh(col,.9);x.lineWidth=r*.42;x.beginPath();x.arc(cx,cy,r,a0,a0+4.4);x.stroke();x.strokeStyle=sh(col,1.3);x.lineWidth=r*.16;x.beginPath();x.arc(cx-r*.06,cy-r*.08,r,a0+.3,a0+3.1);x.stroke()};
   for(let j=0;j<R;j++)for(let i=0;i<N;i++){const v=UP[(j+1)*S2+i+1]===1,S=YS[v?A[i%A.length]:B[j%B.length]],y=S.y;if(!(y.bt||y.bo))continue;
@@ -219,13 +220,13 @@ function drawReal(lo){
    if(y.bo&&hs(i,j,4)<y.bo/100*.75){const m=1+(y.bo>60&&hs(i,j,9)>.5?1:0);for(let q=0;q<m;q++){const r=tw_*(.28+.3*hs(i,j,10+q)),sgn=hs(i,j,12+q)<.5?-1:1,c=cols[(hs(i,j,14+q)*cols.length)|0],off=tw_*(.35+.25*hs(i,j,16+q))*sgn,al=(hs(i,j,18+q)-.5)*.6;
     loop(X+(v?off:al*cw),Y+(v?al*ch:off),r,c,hs(i,j,20+q)*6.283)}}}};
  const C0=RS.c0,C1=RS.c1;
- if(RS.k0!==k0){C0.width=W;C0.height=Hh;base(C0.getContext('2d'));RS.k0=k0;RS.k1='';RS.k2=''}
+ if(RS.k0!==k0){C0.width=W;C0.height=Hh;await yieldToMain();await base(C0.getContext('2d'));RS.k0=k0;RS.k1='';RS.k2=''}
  let src=C0;
- if(fx){if(RS.k1!==k1){C1.width=W;C1.height=Hh;const x1=C1.getContext('2d');x1.drawImage(C0,0,0);effects(x1);RS.k1=k1;RS.k2=''}src=C1}
+ if(fx){if(RS.k1!==k1){C1.width=W;C1.height=Hh;const x1=C1.getContext('2d');x1.drawImage(C0,0,0);await yieldToMain();await effects(x1);RS.k1=k1;RS.k2=''}src=C1}
  const cv=$('#fab'),x=cv.getContext('2d');if(cv.width!==W||cv.height!==Hh){cv.width=W;cv.height=Hh}
  x.globalAlpha=1;x.drawImage(src,0,0);
  const pl=(T.pelo||0)/100;
- if(pl>0){   // livello 2: pelo = alone morbido + fibre sporgenti (a qualità ridotta mentre si trascina)
+ if(pl>0){ await yieldToMain();   // livello 2: pelo = alone morbido + fibre sporgenti (a qualità ridotta mentre si trascina)
   const tw=Math.max(1,W>>1),th=Math.max(1,Hh>>1),key=fx?k1:k0;
   if(RS.k2!==key){RS.t.width=tw;RS.t.height=th;RS.t.getContext('2d').drawImage(src,0,0,tw,th);RS.k2=key}
   x.globalAlpha=pl*.55;x.drawImage(RS.t,0,0,W,Hh);x.globalAlpha=1;
@@ -233,7 +234,7 @@ function drawReal(lo){
   for(let q=0;q<cnt;q++){const i=(hs(q,1,7)*N)|0,j=(hs(q,2,7)*R)|0,v=UP[(j+1)*S2+i+1]===1,S=YS[v?A[i%A.length]:B[j%B.length]],col=S.cols[(hs(q,3,7)*S.cols.length)|0],lt=hs(q,9,7)<.5?0:1,al=(hs(q,10,7)*3)|0,kk=col+lt+al;
    let b=bk.get(kk);if(!b){b={path:new Path2D(),col,lt,al};bk.set(kk,b)}
    const X=i*cw+hs(q,4,7)*cw,Y=(R-1-j)*ch+hs(q,5,7)*ch,an=(v?1.5708:0)+(hs(q,6,7)-.5)*2.2+(hs(q,7,7)<.5?0:3.1416),len=Lm*(.35+hs(q,8,7)*.9);
-   b.path.moveTo(X,Y);b.path.quadraticCurveTo(X+Math.cos(an+.5)*len*.5,Y+Math.sin(an+.5)*len*.5,X+Math.cos(an)*len,Y+Math.sin(an)*len)}
+   b.path.moveTo(X,Y);b.path.quadraticCurveTo(X+Math.cos(an+.5)*len*.5,Y+Math.sin(an+.5)*len*.5,X+Math.cos(an)*len,Y+Math.sin(an)*len); if((q&1023)===1023) await yieldToMain(); }
   x.lineCap='round';x.lineWidth=Math.max(.6,Math.min(cw,ch)*.05);
   for(const b of bk.values()){x.strokeStyle=shA(b.col,b.lt?1.3:.95,.22+b.al*.14);x.stroke(b.path)}}
  G={cw,ch,N,R,A,B,h,w};
