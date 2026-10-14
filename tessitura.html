@@ -807,6 +807,7 @@
   </div>
 
   <script>
+const yieldToMain = () => (globalThis.scheduler && typeof globalThis.scheduler.yield === "function") ? globalThis.scheduler.yield() : new Promise(resolve => setTimeout(resolve, 0));
     (() => {
       "use strict";
 
@@ -881,14 +882,16 @@
         });
       }
 
-      function renderAll() {
+      async function renderAll() {
+        await yieldToMain();
         document.documentElement.style.setProperty("--cell-size", `${state.zoom}px`);
         syncControls();
         renderGrid("tieup");
         renderGrid("threading");
         renderGrid("treadling");
         renderGrid("drawdown");
-        renderFabric();
+        await yieldToMain();
+        await renderFabric();
         renderMeta();
         renderStats();
         renderSavedPatterns();
@@ -1209,7 +1212,8 @@
         renderAll();
       }
 
-      function renderFabric() {
+      async function renderFabric() {
+        await yieldToMain();
         const canvas = els.fabricCanvas;
         const ctx = canvas.getContext("2d");
         const maxCols = Math.min(state.warpThreads, 96);
@@ -1237,6 +1241,7 @@
             const warpUp = getDrawCell(row, col);
             drawYarnCell(ctx, x, y, cell, warpUp, warp, weft);
           }
+          if ((row & 7) === 7) await yieldToMain();
         }
 
         ctx.strokeStyle = "rgba(255,255,255,0.12)";
