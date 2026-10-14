@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FRACTAL CITY</title>
+<script src="https://unpkg.com/three@0.160.1/build/three.min.js"></script>
+<style>
+:root{--ink:#05070c;--panel:rgba(5,10,20,.72);--neon:#6ee7ff;--amb:#ffb347;--mag:#ff4fa3;--steel:#8fa2bf}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;overflow:hidden;background:#02040a;color:#d7eafe;font:11px/1.45 Consolas,monospace}
+#app{display:grid;grid-template-rows:auto 1fr;grid-template-columns:1fr 360px;height:100vh}
+header{grid-column:1/3;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#030a13;border-bottom:1px solid #14303b}
+h1{letter-spacing:4px;color:var(--neon);text-shadow:0 0 14px #6ee7ff33;font-size:18px}
+#viewport{position:relative;overflow:hidden;background:#000}
+canvas{display:block;width:100%;height:100%}
+#panel{padding:12px;background:#030a13;border-left:1px solid #14303b;overflow:auto}
+.panelTitle{color:var(--neon);margin:10px 0 6px;font-size:12px;letter-spacing:2px}
+.row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin:6px 0}
+label{color:#9bb6d8}
+input[type=range]{width:140px}
+input,select,button{font:inherit;background:#081321;color:#d7eafe;border:1px solid #1d3947;border-radius:4px;padding:6px}
+button{cursor:pointer}
+button:hover{background:#12304a}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}
+.stat{background:#07131f;border:1px solid #1d3947;border-radius:4px;padding:6px}
+.stat b{display:block;color:var(--neon);font-size:13px}
+.info{background:#07131f;border:1px solid #1d3947;border-radius:4px;padding:8px;margin-top:8px;min-height:80px}
+.controlsGuide{font-size:9px;color:#9bb6d8;margin-top:8px;line-height:1.5}
+.err{color:#ff6b81}
+#loading{position:absolute;inset:0;display:none;place-items:center;background:#0008;color:#6ee7ff;font-size:14px;pointer-events:none}
+@media (max-width:900px){#app{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}#panel{grid-row:3;max-height:42vh;border-left:none;border-top:1px solid #14303b}}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+ <h1>FRACTAL CITY</h1>
+ <div id="status">Preparing renderer...</div>
+</header>
+<div id="viewport">
+ <div id="loading">Generating city...</div>
+</div>
+<aside id="panel">
+ <div class="panelTitle">WORLD PARAMETERS</div>
+ <div class="row"><label>Seed</label><input id="seed" value="neon-1984" style="width:140px"></div>
+ <div class="row"><label>City Scale</label><input id="scale" type="range" min="0.7" max="1.6" step="0.05" value="1"><span id="scaleV">1.00</span></div>
+ <div class="row"><label>Density</label><input id="density" type="range" min="0.2" max="1" step="0.05" value="0.65"><span id="densityV">0.65</span></div>
+ <div class="row"><label>Max Height</label><input id="maxh" type="range" min="40" max="180" step="5" value="110"><span id="maxhV">110</span></div>
+ <div class="row"><label>Fractal Depth</label><input id="depth" type="range" min="0" max="4" step="1" value="2"><span id="depthV">2</span></div>
+ <div class="row"><label>Variation</label><input id="variation" type="range" min="0" max="1" step="0.05" value="0.5"><span id="variationV">0.50</span></div>
+ <div class="row"><label>Lighting</label><input id="light" type="range" min="0.2" max="1.5" step="0.05" value="1"><span id="lightV">1.00</span></div>
+ <div class="row"><label>Fog</label><input id="fog" type="range" min="0" max="1" step="0.05" value="0.45"><span id="fogV">0.45</span></div>
+ <div class="row"><label>Quality</label><select id="quality"><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></div>
+ <div class="row"><label>Lighting Preset</label><select id="preset"><option value="night">Night</option><option value="dusk">Dusk</option><option value="storm">Storm</option></select></div>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px">
+  <button id="generate">Generate</button>
+  <button id="resetCam">Reset Camera</button>
+ </div>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">
+  <button id="exportCfg">Export JSON</button>
+  <button id="importCfg">Import JSON</button>
+ </div>
+ <div class="panelTitle">WORLD STATISTICS</div>
+ <div class="stats">
+  <div class="stat">Seed<b id="sSeed">-</b></div>
+  <div class="stat">Districts<b id="sDistricts">0</b></div>
+  <div class="stat">Buildings<b id="sBuildings">0</b></div>
+  <div class="stat">Landmarks<b id="sLandmarks">0</b></div>
+  <div class="stat">Max Height<b id="sHeight">0</b></div>
+  <div class="stat">Generate Time<b id="sGen">0</b>ms</div>
+  <div class="stat">Draw Calls<b id="sDraw">0</b></div>
+  <div class="stat">Instances<b id="sInst">0</b></div>
+ </div>
+ <div class="info" id="landmarkInfo">Select a landmark or hover over the skyline. Click Generate to create a deterministic world.</div>
+ <div class="controlsGuide">
+  Mouse drag: rotate view | Wheel: zoom | WASD/arrows: move | Shift: faster | M: toggle orbit/explore | Landmark labels appear on hover.
+  Keys do not interfere with inputs.
+ </div>
+</aside>
+<script>
+const viewport=document.getElementById('viewport');
+const loading=document.getElementById('loading');
+const statusEl=document.getElementById('status');
+const landmarkInfo=document.getElementById('landmarkInfo');
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
+renderer.setSize(viewport.clientWidth,viewport.clientHeight,false);
+renderer.setPixelRatio(Math.min(devicePixelRatio||1, qualityPR()));
+viewport.appendChild(renderer.domElement);
+const scene=new THREE.Scene();
+const fog=new THREE.FogExp2(0x03060d,0.0035);
+scene.fog=fog;
+const camera=new THREE.PerspectiveCamera(62,viewport.clientWidth/viewport.clientHeight,1,4000);
+camera.position.set(0,260,420);
+const controls={mode:'orbit',target:new THREE.Vector3(0,0,0),radius:480,theta:Math.PI/4,phi:0.48,vx:0,vz:0,yaw:0,pitch:0.35,keys:{}};
+const ambient=new THREE.AmbientLight(0x9bb7ff,0.42);
+const hemi=new THREE.HemisphereLight(0x6ee7ff,0x050913,0.55);
+const dir=new THREE.DirectionalLight(0xffd39a,1.05);
+dir.position.set(280,500,120);
+dir.castShadow=true;
+dir.shadow.mapSize.set(1024,1024);
+const rim=new THREE.DirectionalLight(0xff4fa3,0.35);
+rim.position.set(-400,320,-200);
+scene.add(ambient,hemi,dir,rim);
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(4000,4000,40,40),new THREE.MeshStandardMaterial({color:0x060a12,roughness:0.95,metalness:0.15}));
+ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; scene.add(ground);
+const grid=new THREE.GridHelper(4000,80,0x12304a,0x09141e); grid.position.y=0.5; scene.add(grid);
+const sky=new THREE.Mesh(new THREE.SphereGeometry(3000,24,12),new THREE.MeshBasicMaterial({color:0x02040a,side:THREE.BackSide}));
+scene.add(sky);
+let city=new THREE.Group(); scene.add(city);
+const landmarks=[], buildings=[], districts=[];
+let cityStats={districts:0,buildings:0,landmarks:0,maxHeight:0,genTime:0,drawCalls:0,instances:0};
+let selectedLandmark=null;
+const raycaster=new THREE.Raycaster();
+const mouse=new THREE.Vector2();
+const matLib={};
+function mat(name,color,emissive=0,metal=0.45,rough=0.65){
+ const key=name+'-'+color.toString(16)+'-'+emissive.toString(16);
+ if(matLib[key]) return matLib[key];
+ const m=new THREE.MeshStandardMaterial({color,emissive,metalness:metal,roughness:rough});
+ matLib[key]=m; return m;
+}
+function geometryFor(type,size,depth){
+ return new THREE.BoxGeometry(size.x,size.y,size.z);
+}
+function qualityPR(){ const q=document.getElementById('quality').value; return q==='low'?1:(q==='medium'?1.2:Math.min(devicePixelRatio||1,2)); }
+function cyrb53(str){ let h=0x9e3779b9; for(let i=0;i<str.length;i++){h^=str.charCodeAt(i)+0x9e3779b9+(h<<6)+(h>>>2);} return Math.abs(h>>>0); }
+function makeRng(seed){
+ let x=cyrb53(seed)||123456789; let y=362436069; let z=521288629;
+ return function(){ const t=(x^=x<<11)>>>0; x=y; y=z; z=(z^(z>>>19)^(t^(t>>>8)))>>>0; return z/4294967296; };
+}
+function seededHex(r,a,b){return a+Math.floor(r()*(b-a+1));}
+function applyParams(){ document.getElementById('scaleV').textContent=Number(document.getElementById('scale').value).toFixed(2); document.getElementById('densityV').textContent=Number(document.getElementById('density').value).toFixed(2); document.getElementById('maxhV').textContent=document.getElementById('maxh').value; document.getElementById('depthV').textContent=document.getElementById('depth').value; document.getElementById('variationV').textContent=Number(document.getElementById('variation').value).toFixed(2); document.getElementById('lightV').textContent=Number(document.getElementById('light').value).toFixed(2); document.getElementById('fogV').textContent=Number(document.getElementById('fog').value).toFixed(2);}
+function currentConfig(){return{seed:document.getElementById('seed').value,scale:+document.getElementById('scale').value,density:+document.getElementById('density').value,maxHeight:+document.getElementById('maxh').value,depth:+document.getElementById('depth').value,variation:+document.getElementById('variation').value,lighting:+document.getElementById('light').value,fog:+document.getElementById('fog').value,quality:document.getElementById('quality').value,preset:document.getElementById('preset').value};}
+function clearCity(){ while(city.children.length) city.remove(city.children[0]); landmarks.length=0; buildings.length=0; districts.length=0; ground.position.y=0; }
+function generateCity(){
+ const t0=performance.now(); loading.style.display='grid'; statusEl.textContent='Generating...';
+ const cfg=currentConfig(); const r=makeRng(cfg.seed); const scale=cfg.scale;
+ const R=750*scale; const block=80; const half=Math.floor(R/block);
+ // districts
+ const districtDefs=['Core','Commercial','Industrial','Residential','Civic'];
+ const nDist=5;
+ for(let i=0;i<nDist;i++){ districts.push({id:i,name:districtDefs[i],cx:(r()*2-1)*R*0.35,cy:(r()*2-1)*R*0.35,r:R*0.18*(0.8+r()*0.4),palette:districtDefs[i]}); }
+ // road rings
+ const roads=[]; for(let gx=-half;gx<=half;gx++){ roads.push({x:gx*block,z:-R,y:0}); } // placeholder
+ // buildings
+ const familyPool=['fractal','pyramid','brutalist','residential','civic'];
+ let bCount=0; let maxH=0;
+ const candidatePositions=[];
+ for(let x=-half;x<=half;x++){
+  for(let z=-half;z<=half;z++){
+   const wx=x*block, wz=z*block; const d=Math.hypot(wx,wz);
+   if(d>R) continue; if(Math.abs(x)%3===0 || Math.abs(z)%3===0) continue; // road channels
+   candidatePositions.push({x:wx,z:wz,d});
+  }
+ }
+ const density=cfg.density; const variation=cfg.variation;
+ const landmarkSlots=[];
+ for(const p of candidatePositions){
+  if(r()>density) continue;
+  // find district
+  const dist=districts.reduce((best,dd)=>{const d2=Math.hypot(p.x-dd.cx,p.z-dd.cy); return d2<best.d?{d:d2,dd}:best;},{d:1e9,dd:districts[0]}).dd;
+  const familyIndex=seededHex(r,0,familyPool.length-1);
+  let family=familyPool[familyIndex];
+  if(dist.name==='Core' && r()<0.15){ family='landmark'; p.landmark=true; landmarkSlots.push(p); }
+  const baseH=30+seededHex(r,0,cfg.maxHeight-30);
+  const height=baseH*(dist.name==='Core'?1.45:(dist.name==='Industrial'?0.9:1.0))*(0.7+r()*0.6*cfg.variation);
+  const h=Math.min(cfg.maxHeight,height*scale);
+  constructBuilding(p.x,p.z,h,family,r,dist,cfg.depth,variation);
+  buildings.push({x:p.x,z:p.z,h,family,district:dist.name});
+  bCount++; maxH=Math.max(maxH,h);
+ }
+ // landmarks from landmark slots
+ const landmarkDefs=['Fractal Spire','Recursive Megastructure','Civic Axis','Tower Cluster','Transit Hub'];
+ let li=0;
+ for(const p of landmarkSlots.slice(0,5)){ createLandmark(p.x,p.z, seededHex(r,cfg.maxHeight*0.8,cfg.maxHeight*1.2), landmarkDefs[li%landmarkDefs.length], li); li++; }
+ if(li===0){ createLandmark(0,0,cfg.maxHeight*1.2,'Fractal Spire',0); }
+ cityStats={districts:nDist,buildings:bCount,landmarks:landmarkSlots.length||1,maxHeight:Math.round(maxH),genTime:Math.round(performance.now()-t0),drawCalls:0,instances:0};
+ applyLightingPreset(cfg.preset,cfg.lighting);
+ updateStats(); landmarkInfo.textContent='Generazione completata. Click su un landmark per focus.'; loading.style.display='none'; statusEl.textContent='Ready — seed: '+cfg.seed;
+ setCameraDefault();
+}
+function constructBuilding(x,z,h,family,r,depthVar,d,cfgDepth){
+ const rootX=x, rootZ=z;
+ if(family==='fractal'){
+  let levelH=h*0.22; let curY=0; let segments=2+Math.floor(r()*2); let s=40+r()*20;
+  for(let i=0;i<segments;i++){ const seg=new THREE.Mesh(new THREE.BoxGeometry(s,levelH,s), mat('fractal',0x1d4ed8+(i<<16), i===0?0x0a1f44:0)); seg.position.set(x,curY+levelH/2,z); seg.castShadow=true; city.add(seg); curY+=levelH; levelH*=0.72; s*=0.74; x+= (r()-0.5)*8; z+=(r()-0.5)*8; }
+  recursiveSetback(city,x,z,curY,h-curY,Math.min(cfgDepth,3),r,0x38bdf8);
+ } else if(family==='pyramid'){
+  recursivePyramid(city,x,z,h,Math.min(cfgDepth+1,4),r,0x22d3ee);
+ } else if(family==='brutalist'){
+  const w=28+r()*24; const d2=24+r()*18; const b=new THREE.Mesh(new THREE.BoxGeometry(w,h,d2), mat('brutal',0x334155,0,0.2,0.88)); b.position.set(x,h/2,z); b.castShadow=true; city.add(b);
+  for(let i=0;i<3;i++){ const rib=new THREE.Mesh(new THREE.BoxGeometry(w+4,4,d2+4), mat('rib',0x0ea5e9,0x062a36,0.35,0.7)); rib.position.set(x, (i+1)*h/4, z); city.add(rib);}
+ } else if(family==='residential'){
+  const w=24+r()*16, d=20+r()*14; const b=new THREE.Mesh(new THREE.BoxGeometry(w,h,d), mat('res',0x475569,0,0.2,0.9)); b.position.set(x,h/2,z); city.add(b);
+  for(let yy=6; yy<h-4; yy+=8){ const band=new THREE.Mesh(new THREE.BoxGeometry(w+0.5,1.5,d+0.5), mat('resband',0x06b6d4,0x032028,0.3,0.7)); band.position.set(x,yy,z); city.add(band);}
+ } else if(family==='civic'){
+  const r1=16+r()*18; const cyl=new THREE.Mesh(new THREE.CylinderGeometry(r1,r1*0.85,h,12), mat('civic',0x64748b,0x1e3a5f,0.25,0.75)); cyl.position.set(x,h/2,z); city.add(cyl);
+ } else {
+  const b=new THREE.Mesh(new THREE.BoxGeometry(30, h,30), mat('blk',0x1f2937)); b.position.set(x,h/2,z); city.add(b);
+ }
+}
+function recursiveSetback(group,x,z,startY,remaining,depth,r,color){
+ if(depth<=0||remaining<12) return;
+ const w=26+Math.floor(r()*18); const segH=remaining*Math.max(0.25, r()*0.5); const box=new THREE.Mesh(new THREE.BoxGeometry(w,segH,w), mat('fract',color,0x071a2a,0.5,0.6)); box.position.set(x,startY+segH/2,z); box.castShadow=true; group.add(box);
+ recursiveSetback(group, x+(r()-0.5)*10, z+(r()-0.5)*10, startY+segH, remaining-segH, depth-1, r, color-0x050511);
+}
+function recursivePyramid(group,x,z,h,depth,r,color){
+ if(depth<=0||h<4) return;
+ const s=36+depth*10; const segH=h/(depth+1); const box=new THREE.Mesh(new THREE.BoxGeometry(s,segH,s), mat('pyr',0x0f766e,depth>1?0x0f3f3a:0,0.4,0.7)); box.position.set(x, ( (4-depth)*segH)+segH/2, z); box.castShadow=true; group.add(box);
+ recursivePyramid(group, x, z, h, depth-1, r, color);
+}
+function createLandmark(x,z,h,name,id){
+ const g=new THREE.Group(); g.position.set(x,0,z);
+ const base=new THREE.Mesh(new THREE.CylinderGeometry(12,18,h,8), mat('lmk',0x6ee7ff,0x033847,0.7,0.35)); base.position.y=h/2; base.castShadow=true; g.add(base);
+ const core=new THREE.Mesh(new THREE.SphereGeometry(8,12,8), mat('lmkcore',0xff4fa3,0x4a0022,0.6,0.3)); core.position.y=h+8; g.add(core);
+ g.userData={landmark:true,name,id};
+ g.name='landmark-'+id;
+ landmarks.push({id,name,x,z,h,mesh:g});
+ g.traverse(o=>o.userData={landmark:true,name,id});
+ city.add(g);
+}
+function applyLightingPreset(preset,intensity){
+ dir.intensity=intensity; hemi.intensity=0.35+intensity*0.35; rim.intensity=0.2+intensity*0.25;
+ let fogC=0x03060d, fogD=0.003+(1-intensity)*0.002;
+ if(preset==='dusk'){ scene.background=new THREE.Color(0x1a1020); fogC=0x1a1020; dir.color.set(0xff9a5a); hemi.color.set(0xff7aa2);}
+ else if(preset==='storm'){ scene.background=new THREE.Color(0x071018); fogC=0x071018; fogD+=0.003; dir.color.set(0xbfdfff); rim.color.set(0x6ee7ff);}
+ else { scene.background=new THREE.Color(0x02040a); fogC=0x02040a; dir.color.set(0xffd39a); rim.color.set(0xff4fa3);}
+ sky.material.color.set(fogC); fog.color.set(fogC); fog.density=fogD+document.getElementById('fog').value*0.004;
+ dir.intensity*=document.getElementById('light').value;
+}
+function setCameraDefault(){ controls.mode='orbit'; controls.radius=480; controls.target.set(0,60,0); controls.theta=0.7; controls.phi=0.45; updateCameraFromOrbit(); }
+function updateCameraFromOrbit(){ const r=controls.radius; const x=controls.target.x+r*Math.sin(controls.theta)*Math.cos(controls.phi); const y=controls.target.y+r*Math.sin(controls.phi)+40; const z=controls.target.z+r*Math.cos(controls.theta)*Math.cos(controls.phi); camera.position.set(x,y,z); camera.lookAt(controls.target); }
+function updateCameraExplore(dt){ if(!controls.keys.ArrowLeft && !controls.keys.a) {} const speed=(controls.keys.ShiftLeft||controls.keys.Shift)?900:320; let dx=0,dz=0; if(controls.keys.w||controls.keys.ArrowUp) {dx+=Math.sin(controls.yaw);dz+=Math.cos(controls.yaw);} if(controls.keys.s||controls.keys.ArrowDown){dx-=Math.sin(controls.yaw);dz-=Math.cos(controls.yaw);} if(controls.keys.a||controls.keys.ArrowLeft){dx-=Math.cos(controls.yaw);dz+=Math.sin(controls.yaw);} if(controls.keys.d||controls.keys.ArrowRight){dx+=Math.cos(controls.yaw);dz-=Math.sin(controls.yaw);} camera.position.x=THREE.MathUtils.clamp(camera.position.x+dx*speed*dt,-1800,1800); camera.position.z=THREE.MathUtils.clamp(camera.position.z+dz*speed*dt,-1800,1800); camera.position.y=THREE.MathUtils.clamp(camera.position.y,20,900); camera.rotation.order='YXZ'; camera.rotation.y=controls.yaw; camera.rotation.x=controls.pitch; }
+function updateStats(){ document.getElementById('sSeed').textContent=currentConfig().seed; document.getElementById('sDistricts').textContent=cityStats.districts; document.getElementById('sBuildings').textContent=cityStats.buildings; document.getElementById('sLandmarks').textContent=cityStats.landmarks; document.getElementById('sHeight').textContent=cityStats.maxHeight; document.getElementById('sGen').textContent=cityStats.genTime; const info=renderer.info.render; document.getElementById('sDraw').textContent=info.calls; document.getElementById('sInst').textContent=buildings.length; }
+function landmarkAt(clientX,clientY){ const rect=renderer.domElement.getBoundingClientRect(); mouse.x=((clientX-rect.left)/rect.width)*2-1; mouse.y=-((clientY-rect.top)/rect.height)*2+1; raycaster.setFromCamera(mouse,camera); const meshes=[]; landmarks.forEach(l=>l.mesh.traverse(o=>{if(o.isMesh) meshes.push(o);})); const hits=raycaster.intersectObjects(meshes,false); if(hits.length){ const lm=landmarks.find(l=>l.mesh===hits[0].object.parent || l.mesh===hits[0].object); return lm; } return null; }
+function focusLandmark(lm){ if(!lm) return; controls.mode='orbit'; controls.target.set(lm.x,lm.h*0.45,lm.z); controls.radius=180; controls.theta=0.8; controls.phi=0.35; updateCameraFromOrbit(); selectedLandmark=lm; landmarkInfo.innerHTML='<b>'+lm.name+'</b><br>Landmark #'+lm.id+'<br>Height '+Math.round(lm.h)+'<br>World coordinates '+Math.round(lm.x)+', '+Math.round(lm.z)+'<br><button onclick="setCameraDefault()">Back to overview</button>'; }
+renderer.domElement.addEventListener('pointerdown',e=>{ if(e.button===0){ const lm=landmarkAt(e.clientX,e.clientY); if(lm){ focusLandmark(lm); return; } // orbit drag start
+  controls.drag={x:e.clientX,y:e.clientY,theta:controls.theta,phi:controls.phi}; }
+});
+renderer.domElement.addEventListener('pointermove',e=>{ if(controls.drag){ const dx=e.clientX-controls.drag.x, dy=e.clientY-controls.drag.y; controls.theta=controls.drag.theta-dx*0.005; controls.phi=THREE.MathUtils.clamp(controls.drag.phi+dy*0.004,0.12,1.35); updateCameraFromOrbit(); } else { const lm=landmarkAt(e.clientX,e.clientY); if(lm) landmarkInfo.innerHTML='<b>'+lm.name+'</b><br>Click to focus'; } });
+window.addEventListener('pointerup',()=>{delete controls.drag;});
+renderer.domElement.addEventListener('wheel',e=>{ e.preventDefault(); controls.radius=THREE.MathUtils.clamp(controls.radius+e.deltaY*0.5,80,1200); updateCameraFromOrbit(); },{passive:false});
+window.addEventListener('keydown',e=>{
+ if(e.target && (e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT')) return;
+ if(e.key==='m'||e.key==='M'){ controls.mode = controls.mode==='orbit'?'explore':'orbit'; const el=document.getElementById('status'); el.textContent='Mode: '+controls.mode; if(controls.mode==='explore'){ controls.yaw=camera.rotation.y; controls.pitch=camera.rotation.x; } else { setCameraDefault(); } }
+ controls.keys[e.key]=true;
+ if(e.key===' ') { e.preventDefault(); }
+});
+window.addEventListener('keyup',e=>{ controls.keys[e.key]=false; });
+function handleSliders(){
+ ['scale','density','maxh','depth','variation','light','fog'].forEach(id=>{ const el=document.getElementById(id); el.addEventListener('input',()=>{ applyParams(); if(id==='light'||id==='fog') applyLightingPreset(currentConfig().preset,+document.getElementById('light').value); });});
+ document.getElementById('quality').addEventListener('change',()=>{ renderer.setPixelRatio(qualityPR()); renderer.setSize(viewport.clientWidth,viewport.clientHeight,false); });
+ document.getElementById('preset').addEventListener('change',()=>applyLightingPreset(document.getElementById('preset').value,+document.getElementById('light').value));
+}
+function wireButtons(){ document.getElementById('generate').addEventListener('click',generateCity); document.getElementById('resetCam').addEventListener('click',setCameraDefault); document.getElementById('exportCfg').addEventListener('click',exportConfig); document.getElementById('importCfg').addEventListener('click',importConfig); }
+function exportConfig(){ const blob=new Blob([JSON.stringify(currentConfig(),null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='fractal-city-config.json'; a.click(); }
+function importConfig(){ const i=document.createElement('input'); i.type='file'; i.accept='application/json'; i.onchange=async()=>{ try{ const d=JSON.parse(await i.files[0].text()); if(!d||typeof d!=='object') throw 0; document.getElementById('seed').value=d.seed??'city'; document.getElementById('scale').value=d.scale??1; document.getElementById('density').value=d.density??0.65; document.getElementById('maxh').value=d.maxHeight??110; document.getElementById('depth').value=d.depth??2; document.getElementById('variation').value=d.variation??0.5; document.getElementById('light').value=d.lighting??1; document.getElementById('fog').value=d.fog??0.45; document.getElementById('quality').value=d.quality??'high'; document.getElementById('preset').value=d.preset??'night'; applyParams(); generateCity(); } catch(e){ alert('Configurazione non valida.'); } }; i.click(); }
+let last=performance.now();
+function animate(ts){ const dt=Math.min(0.033,(ts-last)/1000); last=ts;
+ if(controls.mode==='explore') updateCameraExplore(dt); else updateCameraFromOrbit();
+ renderer.render(scene,camera); updateStats();
+ requestAnimationFrame(animate);
+}
+window.addEventListener('resize',()=>{ const w=viewport.clientWidth,h=viewport.clientHeight; camera.aspect=w/h; camera.updateProjectionMatrix(); renderer.setSize(w,h,false); renderer.setPixelRatio(qualityPR()); });
+handleSliders(); wireButtons(); applyParams();
+statusEl.textContent='Ready';
+generateCity(); requestAnimationFrame(ts=>{last=ts;animate(ts);});
+</script>
+</body>
+</html>
