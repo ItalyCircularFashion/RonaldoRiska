@@ -80,7 +80,7 @@ button.danger{background:#ef4444}
 <div id="modal" class="modal"><div class="modal-body" id="modalBody"></div></div>
 <div id="toast" class="toast"></div>
 <script>
-const KEY='trn:data:v1', SESSION='trn:session:v1';
+const KEY='trn:data:v2', SESSION='trn:session:v2';
 function uid(prefix='x'){ return prefix+'_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,8); }
 function loadState(){ try{ return JSON.parse(localStorage.getItem(KEY)) || null; }catch(e){ return null; } }
 function saveState(s){ localStorage.setItem(KEY,JSON.stringify(s)); }
@@ -89,15 +89,36 @@ function saveSession(s){ if(s) localStorage.setItem(SESSION,JSON.stringify(s)); 
 let S=loadState();
 if(!S){ S={users:[],posts:[],comments:[],messages:[],notifications:[]}; seedDemo(); saveState(S); }
 function seedDemo(){
-  const demo=[['realnetwork','The Real Network','Profilo ufficiale di The Real Network'],['alice','Alice Bianchi','Designer di esperienze digitali. AMO il magenta morbido.'],['marco','Marco Torriani','Founder di startup hardware. Corro maratone.'],['luna','Luna Verdi','Fotografia urbana e street food a Milano.']];
+  const demo=[['realnetwork','The Real Network','Profilo ufficiale di The Real Network'],['pratoinforma','Prato Informa','Agenda economica, imprese e lavoro del distretto.'],['tessilelab','Tessile Lab','Tecnica, filati, tintura e innovazione tessile.'],['supplychain','Supply Chain','Logistica, materiali e processi.']];
   demo.forEach(([handle,name,bio],i)=>{
-    const u={id:'u'+(i+1),handle,name,bio,avatar:'',color:['#ff2d6f','#6ee7ff','#38d39f','#ffb347'][i%4],password:'demo123',createdAt:Date.now()-86400000*(4-i),following:[],followers:[]};
+    const u={id:'u'+(i+1),handle,name,bio,avatar:'',color:['#ff2d6f','#6ee7ff','#38d39f','#ffb347'][i%4],password:null,createdAt:Date.now()-86400000*(4-i),following:[],followers:[]};
     S.users.push(u);
   });
-  const p1=addPostSeed('u2','Buongiorno Real Network! Oggi ho fatto il login su una nuova rete locale: tutto funziona smooth.',null);
-  addPostSeed('u1','The Real Network è live. Condividi idee, costruisci connessioni, lascia tracce reali.',null);
-  addPostSeed('u3','Pitch in arrivo: una piattaforma tessile collaborativa. Chi vuole farsi beta tester?',null);
-  addCommentSeed('u3',p1,'Anche io! Ho un MVP in SwiftUI se vuoi provare.');
+  const posts=[
+ "Prato riparte dalla supply chain: il distretto tessile taglia i tempi di delivery del 18% con una piattaforma condivisa.",
+ "Nuova linea per filati riciclati a Montemurlo: 1.200 tonnellate annuali in arrivo entro il 2026.",
+ "Il municipio estende gli incentivi per digitalizzare PMI tessili: voucher fino a 25.000 euro per ERP e tracciabilità.",
+ "Accordo tra consorzio lanifici e università: laboratorio 4.0 per testare nuovi blend lana-sintetico.",
+ "Prato export +7% nel primo trimestre. Crescono audens e buyers europei su campioni sostenibili.",
+ "Mercato tessile rigenerato: costi della materia prima riciclata scendono sotto il 15% del virgin market.",
+ "Nuovo hub logistico a Calenzano: cross-docking per filati e tessuti con tempi di throughput ridotti a 48 ore.",
+ "Digitale in fabbrica: MES e sensori su telai hanno ridotto le fermate non pianificate del 32%.",
+ "Startup pratese lancia software per tracciabilità della filiera: da fibra a prodotto finito in blockchain privata.",
+ "Fotovoltaico industriale: 14 capannoni in solare, cash flow positivo dopo 3 anni.",
+ "Formazione tecnica: 200 giovani in apprendistato tessile quest'anno, con docenti in fabbrica.",
+ "Pronto moda pratese all'estero: ordini B2B da Germania e Nord Europa in crescita del 21%.",
+ "Tintoria riduce consumo acqua del 40% con impianti closed-loop a recupero in stabilimento.",
+ "Nova business: servizio di certificazione anagrafiche materiali per brand luxury e fast fashion.",
+ "Prato Fashion Week locale: 80 stand di tessuti innovativi, focus su riciclo e upcycling.",
+ "Costo energia: consorzio imprese contratta fornitura green a lungo termine scontato 12%.",
+ "Reti di impresa per export: 15 PMI con dividono agenti e packaging per abbattere i costi.",
+ "Politici locali annunciano piano 2026 per incubatore tessile e laboratorio test materiali.",
+ "Dati economici: occupazione manifatturiera Prato +3,1% su base annua, 1.700 nuovi posti.",
+ "Economia circolare e tessile: eccellenza pratese riconosciuta a Bruxelles per il progetto distretto verde."
+  ];
+  const authors=['u1','u2','u3','u4'];
+  posts.forEach((text,i)=>{ addPostSeed(authors[i % authors.length], text, null); });
+
 }
 function addPostSeed(authorId,text,image){ const p={id:uid('p'),authorId,text,image:image||null,createdAt:Date.now()-Math.random()*86400000,likes:[],commentIds:[]}; S.posts.push(p); return p.id; }
 function addCommentSeed(authorId,postId,text){ const c={id:uid('c'),postId,authorId,text,createdAt:Date.now()-Math.random()*86400000}; S.comments.push(c); const p=S.posts.find(x=>x.id===postId); if(p) p.commentIds.push(c.id); return c.id; }
@@ -109,16 +130,16 @@ function fmtDate(ts){ const d=new Date(ts); return d.toLocaleDateString('it-IT',
 function escapeHtml(s){ return String(s||'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function initials(u){ return (u.name||u.handle).split(/\s/).map(x=>x?.[0]||'').join('').slice(0,2).toUpperCase(); }
 function avatarHtml(u,size=38){ if(u.avatar){ return `<div class="avatar" style="width:${size}px;height:${size}px"><img src="${escapeHtml(u.avatar)}" alt="${escapeHtml(u.name)}" onerror="this.style.display='none'"></div>`; } return `<div class="avatar" style="width:${size}px;height:${size}px;background:${escapeHtml(u.color)}">${escapeHtml(initials(u))}</div>`; }
-function renderSession(){ const c=document.getElementById('session'); const u=currentUser(); if(u){ c.innerHTML=`<div class="user-chip">${avatarHtml(u,28)}<span>@${escapeHtml(u.handle)}</span><button class="ghost small" id="logoutBtn">Logout</button></div>`; document.getElementById('logoutBtn').onclick=logout; } else { c.innerHTML=`<button class="button small" id="loginBtn">Accedi</button><button class="ghost small" id="registerBtn">Registrati</button>`; document.getElementById('loginBtn').onclick=()=>showAuth('login'); document.getElementById('registerBtn').onclick=()=>showAuth('register'); } }
+function renderSession(){   const c=document.getElementById('session'); const u=currentUser(); if(u){ c.innerHTML=`<div class="user-chip">${avatarHtml(u,28)}<span>@${escapeHtml(u.handle)}</span><button class="ghost small" id="logoutBtn">Esci</button></div>`; document.getElementById('logoutBtn').onclick=logout; } else { c.innerHTML=`<button class="button small" id="createUserBtn">Crea nome utente</button>`; document.getElementById('createUserBtn').onclick=()=>showAuth('register'); } }
 function showAuth(mode){
   const body=document.getElementById('modalBody');
-  body.innerHTML=`<h2>${mode==='login'?'Accedi':'Registrati'}</h2>
-  <div class="field"><label>Handle</label><input id="authHandle" placeholder="es. realnetwork"></div>
-  ${mode==='register'?'<div class="field"><label>Nome</label><input id="authName" placeholder="Nome Cognome"></div>':''}
-  <div class="field"><label>Password</label><input type="password" id="authPass"></div>
-  ${mode==='register'?'<div class="field"><label>Bio (opzionale)</label><textarea id="authBio"></textarea></div><div class="field"><label>Avatar URL (opzionale)</label><input id="authAvatar" type="url"></div>':''}
-  <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px"><button class="ghost small" id="authCancel">Annulla</button><button class="button small" id="authSubmit">${mode==='login'?'Accedi':'Crea account'}</button></div>
-  <p class="notice" style="margin-top:12px;font-size:11px">Demo locale: le password sono salvate in chiaro nel localStorage del browser. Non usarlo per dati reali.</p>`;
+  body.innerHTML=`<h2>Crea nome utente</h2>
+  <div class="field"><label>Handle</label><input id="authHandle" placeholder="es. prato-user"></div>
+  <div class="field"><label>Nome (opzionale)</label><input id="authName" placeholder="Nome Cognome"></div>
+  <div class="field"><label>Bio (opzionale)</label><textarea id="authBio"></textarea></div>
+  <div class="field"><label>Avatar URL (opzionale)</label><input id="authAvatar" type="url"></div>
+  <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px"><button class="ghost small" id="authCancel">Annulla</button><button class="button small" id="authSubmit">Crea</button></div>
+  <p class="notice" style="margin-top:12px;font-size:11px">Il profilo è locale del browser. Nessuna password o server.</p>`;
   document.getElementById('modal').classList.add('show');
   document.getElementById('authCancel').onclick=closeModal;
   document.getElementById('authSubmit').onclick=()=>submitAuth(mode);
@@ -126,21 +147,17 @@ function showAuth(mode){
 function closeModal(){ document.getElementById('modal').classList.remove('show'); }
 function submitAuth(mode){
   const handle=(document.getElementById('authHandle').value||'').trim().toLowerCase().replace(/^@/,'');
-  const pass=document.getElementById('authPass').value||'';
   if(!/^[a-z0-9_.-]{3,24}$/.test(handle)) return toast('Handle non valido (3-24 caratteri, alfanumerico/_ . -).');
-  if(pass.length<4) return toast('Password minimo 4 caratteri.');
-  if(mode==='login'){
-    const u=S.users.find(x=>x.handle===handle); if(!u||u.password!==pass) return toast('Credenziali non valide.');
-    saveSession({userId:u.id}); toast('Bentornato, @'+u.handle); closeModal(); renderAll();
-  } else {
-    const name=(document.getElementById('authName').value||'').trim() || handle;
-    if(S.users.some(x=>x.handle===handle)) return toast('Handle già preso.');
-    const colors=['#ff2d6f','#6ee7ff','#38d39f','#ffb347','#a78bfa','#f472b6'];
-    const u={id:uid('u'),handle,name,bio:(document.getElementById('authBio').value||'').trim(),avatar:(document.getElementById('authAvatar').value||'').trim(),color:colors[Math.floor(Math.random()*colors.length)],password:pass,createdAt:Date.now(),following:[],followers:[]};
-    S.users.push(u); saveState(S); saveSession({userId:u.id});
-    pNotification(u.id,'welcome','u1',null,'Benvenuto su The Real Network. Completa il tuo profilo e inizia a seguire persone.');
-    toast('Account creato, benvenuto!'); closeModal(); renderAll();
-  }
+  const existing=S.users.find(x=>x.handle===handle);
+  const name=(document.getElementById('authName').value||'').trim() || handle;
+  const bio=(document.getElementById('authBio').value||'').trim();
+  const avatar=(document.getElementById('authAvatar').value||'').trim();
+  let u=existing;
+  if(!u){ const colors=['#ff2d6f','#6ee7ff','#38d39f','#ffb347','#a78bfa','#f472b6']; u={id:uid('u'),handle,name,bio,avatar,color:colors[Math.floor(Math.random()*colors.length)],password:null,createdAt:Date.now(),following:[],followers:[]}; S.users.push(u); }
+  else { u.name=name; u.bio=bio; if(avatar) u.avatar=avatar; }
+  saveState(S); saveSession({userId:u.id});
+  pNotification(u.id,'welcome','u1',null,'Benvenuto su The Real Network. Esplora i 20 articoli su economia e tessile di Prato e crea il tuo profilo.');
+  toast('Profilo pronto, @'+u.handle); closeModal(); renderAll();
 }
 function logout(){ saveSession(null); view('feed'); toast('Logout effettuato.'); }
 function pNotification(userId,type,actorId,refId,text){ const n={id:uid('n'),userId,type,actorId,refId,text,read:false,createdAt:Date.now()}; S.notifications.push(n); saveState(S); }
@@ -181,7 +198,7 @@ let selectedConversation=null;
 function renderAll(){ renderSession(); renderProfileCard(); renderFeed(); renderExplore(); renderProfileView(); renderMessages(); renderNotifications(); renderTrending(); }
 function renderProfileCard(){
   const el=document.getElementById('profileCard'); const u=currentUser();
-  if(!u){ el.innerHTML='<h3>Accedi o registrati</h3><p class="empty">Crea un account locale e inizia a pubblicare.</p><button class="button" onclick="showAuth(\'register\')" style="width:100%;margin-top:8px">Registrati</button>'; return; }
+  if(!u){ el.innerHTML='<h3>Crea nome utente</h3><p class="empty">Crea un profilo locale e inizia a pubblicare.</p><button class="button" onclick="showAuth(\'register\')" style="width:100%;margin-top:8px">Crea nome utente</button>'; return; }
   el.innerHTML=`<div style="display:flex;gap:12px;align-items:center">${avatarHtml(u,52)}<div><strong>${escapeHtml(u.name)}</strong><div class="handle">@${escapeHtml(u.handle)}</div></div></div>
   <p style="margin:10px 0">${escapeHtml(u.bio||'Profilo nuovo su The Real Network.')}</p>
   <div class="stats-line">Seguiti ${u.following.length} • Follower ${u.followers.length} • Post ${S.posts.filter(p=>p.authorId===u.id).length}</div>
@@ -248,7 +265,7 @@ function renderExplore(){
   if(!users.length){ rec.innerHTML='<div class="empty">Nessun utente trovato.</div>'; return; }
   rec.innerHTML=users.map(x=>{
     const rel = u && u.following.includes(x.id) ? 'Seguito' : (u?'Segui':'');
-    return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)">${avatarHtml(x,40)}<div style="flex:1"><strong>${escapeHtml(x.name)}</strong><div class="handle">@${escapeHtml(x.handle)}</div><div class="stats-line">${escapeHtml(x.bio||'Profilo in costruzione')}</div><div class="stats-line">Seguiti ${x.following.length} • Follower ${x.followers.length}</div></div><div style="display:flex;gap:6px">${u?`<button class="${u.following.includes(x.id)?'ghost':'button'} small" onclick="toggleFollow('${x.id}')">${u.following.includes(x.id)?'Seguito':'Segui'}</button>`:'<button class="button small" onclick="showAuth(\'login\')">Accedi</button>'}<button class="ghost small" onclick="viewProfile('${x.id}')">Profilo</button></div></div>`;
+    return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)">${avatarHtml(x,40)}<div style="flex:1"><strong>${escapeHtml(x.name)}</strong><div class="handle">@${escapeHtml(x.handle)}</div><div class="stats-line">${escapeHtml(x.bio||'Profilo in costruzione')}</div><div class="stats-line">Seguiti ${x.following.length} • Follower ${x.followers.length}</div></div><div style="display:flex;gap:6px">${u?`<button class="${u.following.includes(x.id)?'ghost':'button'} small" onclick="toggleFollow('${x.id}')">${u.following.includes(x.id)?'Seguito':'Segui'}</button>`:'<button class="button small" onclick="showAuth(\'register\')">Crea nome utente</button>'}<button class="ghost small" onclick="viewProfile('${x.id}')">Profilo</button></div></div>`;
   }).join('');
   document.getElementById('searchInput').oninput=()=>renderExplore();
 }
