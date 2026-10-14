@@ -97,7 +97,7 @@ button.danger{background:#ef4444}
     <div class="card" style="padding:10px 14px;margin-bottom:12px"><div class="ticker" id="ticker"></div></div>
     <section class="card" id="viewFeed"><div class="feed-head"><h2>Feed</h2><button class="button small" id="newPostBtn">Nuovo post</button></div><div class="compose" id="composer" style="display:none"><textarea id="postText" placeholder="Condividi qualcosa con la rete..."></textarea><div style="display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap"><input type="url" id="postImage" placeholder="URL immagine (facoltativo)" style="flex:1;min-width:180px;padding:8px;border-radius:99px;background:#08111d;border:1px solid var(--line);color:var(--text)"><button class="button small" id="publishPost">Pubblica</button><button class="ghost small" id="cancelPost">Annulla</button></div></div><div id="feedList"></div></section><section id="viewExplore" style="display:none" class="card"><h2>Esplora Persone</h2><input class="search" id="searchInput" placeholder="Cerca per nome o handle..." style="margin:10px 0"><div id="exploreList"></div></section><section id="viewProfile" style="display:none" class="card"><div id="profileView"></div></section><section id="viewMessages" style="display:none" class="card"><h2>Messaggi</h2><div class="layout" style="grid-template-columns:240px 1fr;padding:0;max-width:none"><div id="convList" class="card"></div><div id="convThread" class="card"></div></div></section><section id="viewNotifications" style="display:none" class="card"><h2>Notifiche</h2><div id="notifList"></div></section>
   </main>
-  <aside class="rightcol"><div class="card" id="kpiCard"></div><div class="card" id="trendingCard" style="margin-top:12px"></div></aside>
+  <aside class="rightcol"><div class="card" id="kpiCard"></div><div class="card" id="requestCard" style="margin-top:12px"></div><div class="card" id="trendingCard" style="margin-top:12px"></div></aside>
 </div>
 <div id="modal" class="modal"><div class="modal-body" id="modalBody"></div></div>
 <div id="toast" class="toast"></div>
@@ -140,7 +140,15 @@ function seedDemo(){
   ];
   const authors=['u1'];
   posts.forEach((p,i)=>{ addPostSeed(authors[i % authors.length], p.t, null, p.c); });
-
+  const reqs=[
+    {name:'Jersey Cotone Bio',comp:'100% Cotone',weight:180,width:150,meters:500,color:'Navy',fasi:['Ritorcitura','Tessitura','Controllo Finito']},
+    {name:'Satin Viscosa',comp:'80% Viscosa 20% Lino',weight:120,width:140,meters:300,color:'Bordeaux',fasi:['Orditura','Tessitura','Controllo Greggio','Rifinizione']},
+    {name:'Denim Rigenerato',comp:'98% Cotone 2% Elastan',weight:340,width:160,meters:800,color:'Indigo',fasi:['Ritorcitura','Orditura','Imbozzimatura','Tessitura','Controllo Finito']}
+  ];
+  reqs.forEach((r,i)=>{
+    S.requests=S.requests||[];
+    S.requests.push({id:uid('r'),authorId:'u1',...r,createdAt:Date.now()-86400000*(3-i),stato:'aperta'});
+  });
 }
 const KPI_DATA=[
   {label:'Export',val:'+7,1%',spark:[3,5,4,6,7,6,8,7,9,8,10,11],cls:'up'},
@@ -230,7 +238,77 @@ function toggleFollow(userId){
 function timeAgo(ts){ const s=Math.floor((Date.now()-ts)/1000); if(s<60)return 'ora'; if(s<3600)return Math.floor(s/60)+' min'; if(s<86400)return Math.floor(s/3600)+' h'; return Math.floor(s/86400)+' g'; }
 let selectedProfileId=null;
 let selectedConversation=null;
-function renderAll(){ renderSession(); renderProfileCard(); renderFeed(); renderExplore(); renderProfileView(); renderMessages(); renderNotifications(); renderTrending(); renderKPI(); renderTicker(); }
+const FASES=['Ritorcitura','Orditura','Imbozzimatura','Tessitura','Controllo Greggio','Rifinizione','Controllo Finito'];
+function renderAll(){ renderSession(); renderProfileCard(); renderFeed(); renderExplore(); renderProfileView(); renderMessages(); renderNotifications(); renderTrending(); renderKPI(); renderTicker(); renderRequestCard(); renderRequests(); }
+function renderRequestCard(){
+  const el=document.getElementById('requestCard'); if(!el) return;
+  const u=currentUser();
+  if(!u){ el.innerHTML='<h3>Richiesta Cliente</h3><p class="empty">Accedi per creare una richiesta.</p>'; return; }
+  el.innerHTML=`<h3 style="margin-bottom:10px">Richiesta Cliente</h3>
+    <p class="stats-line" style="margin-bottom:10px">Crea una richiesta di lavorazione tessile con dati tecnici e fasi richieste.</p>
+    <button class="button small" id="newRequestBtn" style="width:100%">+ Nuova Richiesta</button>`;
+  document.getElementById('newRequestBtn').onclick=()=>showRequestModal();
+}
+function showRequestModal(){
+  const u=currentUser(); if(!u) return showAuth('register');
+  const body=document.getElementById('modalBody');
+  body.innerHTML=`<h2>Nuova Richiesta Cliente</h2>
+    <div class="field"><label>Nome tessuto</label><input id="reqName" placeholder="es. Jersey Cotone Bio"></div>
+    <div class="field"><label>Composizione</label><input id="reqComp" placeholder="es. 100% Cotone"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="field"><label>Peso (g/mq)</label><input id="reqWeight" type="number" placeholder="180"></div>
+      <div class="field"><label>Larghezza (cm)</label><input id="reqWidth" type="number" placeholder="150"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="field"><label>Metraggio (m)</label><input id="reqMeters" type="number" placeholder="500"></div>
+      <div class="field"><label>Colore</label><input id="reqColor" placeholder="es. Navy"></div>
+    </div>
+    <div class="field"><label>Fasi di lavorazione richieste</label>
+      <div id="faseList" style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:6px"></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px"><button class="ghost small" onclick="closeModal()">Annulla</button><button class="button small" id="submitRequest">Crea Richiesta</button></div>`;
+  const faseList=document.getElementById('faseList');
+  faseList.innerHTML=FASES.map(f=>`<label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><input type="checkbox" value="${f}" checked style="accent-color:var(--accent)"> ${f}</label>`).join('');
+  document.getElementById('modal').classList.add('show');
+  document.getElementById('submitRequest').onclick=submitRequest;
+}
+function submitRequest(){
+  const u=currentUser(); if(!u) return;
+  const name=document.getElementById('reqName').value.trim();
+  if(!name) return toast('Inserisci nome tessuto.');
+  const comp=document.getElementById('reqComp').value.trim()||'Da definire';
+  const weight=parseInt(document.getElementById('reqWeight').value)||0;
+  const width=parseInt(document.getElementById('reqWidth').value)||0;
+  const meters=parseInt(document.getElementById('reqMeters').value)||0;
+  const color=document.getElementById('reqColor').value.trim()||'Da definire';
+  const fasi=[...document.querySelectorAll('#faseList input:checked')].map(x=>x.value);
+  if(!fasi.length) return toast('Seleziona almeno una fase.');
+  const r={id:uid('r'),authorId:u.id,name,comp,weight,width,meters,color,fasi,createdAt:Date.now(),stato:'aperta'};
+  if(!S.requests) S.requests=[];
+  S.requests.unshift(r); saveState(S);
+  closeModal(); toast('Richiesta creata.'); renderAll();
+}
+function renderRequests(){
+  const list=document.getElementById('feedList'); if(!list) return;
+  const reqs=S.requests||[];
+  const u=currentUser();
+  let posts=[...S.posts];
+  if(u && u.following.length){ const ids=[u.id,...u.following]; posts=posts.filter(p=>ids.includes(p.authorId)); }
+  if(!posts.length) posts=[...S.posts].slice(0,20);
+  posts.sort((a,b)=>b.createdAt-a.createdAt);
+  const postsHtml=posts.length?posts.map(postHtml).join(''):'<div class="empty">Nessun post.</div>';
+  const reqsHtml=reqs.length?reqs.slice(0,5).map(r=>{
+    const a=S.users.find(x=>x.id===r.authorId)||{name:'?',handle:'?',color:'#666'};
+    return `<div class="post" data-request-id="${r.id}" style="border-left:3px solid var(--accent)">
+      <div class="post-head">${avatarHtml(a,40)}<div><strong>${escapeHtml(r.name)}</strong> <span class="handle">@${escapeHtml(a.handle)}</span><div class="handle">${timeAgo(r.createdAt)}</div></div></div>
+      <div style="margin:6px 0"><span class="badge lav">Richiesta</span></div>
+      <div class="post-text" style="font-size:12px">${escapeHtml(r.comp)} • ${r.weight}g/mq • ${r.width}cm • ${r.meters}m • Colore: ${escapeHtml(r.color)}</div>
+      <div style="margin:8px 0;display:flex;flex-wrap:wrap;gap:4px">${r.fasi.map(f=>`<span class="badge" style="font-size:10px">${escapeHtml(f)}</span>`).join('')}</div>
+      <div class="stats-line">Stato: <b style="color:var(--good)">${r.stato}</b></div>
+    </div>`;
+  }).join(''):'';
+  list.innerHTML=reqsHtml?`<div style="margin-bottom:12px"><h3 style="margin-bottom:8px">Richieste Cliente</h3>${reqsHtml}</div>`+postsHtml:postsHtml;
+}
 function renderKPI(){
   const el=document.getElementById('kpiCard'); if(!el) return;
   el.innerHTML='<h3 style="margin-bottom:10px">KPI Distretto</h3><table class="kpi-table"><thead><tr><th>Metrica</th><th>Valore</th></tr></thead><tbody>'+
