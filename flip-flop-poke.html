@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Flip Flop Pokè · Modalità semplice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{--ok:#3ecf6e;--mid:#f5c542;--low:#ef4b4b;--ink:#1b2340;--paper:#eef3fb;--red:#e63946;--blu:#3b8cff}
+*{box-sizing:border-box;margin:0}
+body{min-height:100vh;display:grid;place-items:center;padding:14px;background:radial-gradient(900px 500px at 50% -10%,#3a58a8,#0e1430 70%);font:11px/1.7 "Press Start 2P",ui-monospace,"Courier New",monospace;color:var(--ink)}
+#game{width:min(500px,100%);background:var(--paper);border:4px solid var(--ink);border-radius:18px;box-shadow:0 0 0 6px var(--red),0 24px 60px #000a;padding:16px}
+h1{font-size:24px;text-align:center;color:var(--red);text-shadow:3px 3px 0 var(--ink);letter-spacing:2px;margin:6px 0 10px}
+.sub{text-align:center;margin-bottom:14px}
+.lead{text-align:center;margin:14px 0 12px}
+.pb{display:inline-block;width:20px;height:20px;border-radius:50%;border:3px solid var(--ink);background:linear-gradient(var(--red) 42%,var(--ink) 42% 58%,#fff 58%);vertical-align:-3px;margin-right:8px}
+button{font:inherit;font-size:10px;padding:12px 8px;border:3px solid var(--ink);border-radius:10px;background:#fff;color:var(--ink);cursor:pointer;box-shadow:0 4px 0 var(--ink)}
+button:hover{background:#dbe8ff}
+button:active{translate:0 3px;box-shadow:0 1px 0 var(--ink)}
+button:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.big{background:var(--red);color:#fff}.big:hover{background:#ff5561}
+.ghost{background:transparent;box-shadow:none;border-style:dashed}
+.off{opacity:.4;pointer-events:none}
+.span2{grid-column:span 2}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.starters{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.card{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px}
+.card b{font-size:8px}
+.ico{display:inline-block;width:44px;height:44px;line-height:1}
+.ico svg{width:100%;height:100%}
+.dexico{display:inline-block;width:26px;height:26px;vertical-align:middle}
+.dexico svg{width:100%;height:100%}
+.tp{display:inline-block;color:#fff;border-radius:6px;padding:0 6px;font-size:8px;margin-left:4px;text-shadow:1px 1px 0 #0006}
+.top{display:flex;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:4px}
+.row{display:flex;gap:12px;align-items:center;padding:8px 10px;border:3px solid var(--ink);border-radius:10px;background:#fff;margin-bottom:8px}
+.row>div{flex:1}.row .ico{width:40px;height:40px}
+small{font-size:8px;display:block;margin-top:4px}
+.dex{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;font-size:20px;margin:12px 0 4px}
+.hp{height:9px;background:#d5dbe8;border:2px solid var(--ink);border-radius:6px;margin-top:5px;overflow:hidden}
+.hp i{display:block;height:100%;width:100%;transition:width .6s,background .6s}
+.arena{position:relative;height:300px;border:3px solid var(--ink);border-radius:12px;overflow:hidden;background:linear-gradient(#8fd3ff 0 52%,#6fcf6a 52%)}
+.arena:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 72px 12px at 85% 38%,#0003 96%,#0000),radial-gradient(ellipse 96px 14px at 21% 89%,#0003 96%,#0000)}
+.box{position:absolute;background:#fff;border:3px solid var(--ink);border-radius:10px;padding:6px 9px;width:172px;font-size:9px}
+.box span{float:right}
+.fb{top:10px;left:10px}.mb{bottom:10px;right:10px}
+.spr{position:absolute;line-height:1;animation:bob 2.2s ease-in-out infinite;display:flex;align-items:center;justify-content:center}
+.spr svg{width:100%;height:100%}
+.fs{top:24px;right:24px;width:76px;height:76px}.ms{bottom:30px;left:24px;width:96px;height:96px;animation-delay:-1s}
+.msg{margin:12px 0;min-height:56px;background:var(--ink);color:#fff;border-radius:10px;padding:10px 12px;font-size:10px}
+@keyframes bob{50%{translate:0 -6px}}
+@keyframes hit{20%{translate:-12px 0;filter:brightness(3)}45%{translate:10px 0}70%{translate:-6px 0}}
+@keyframes faint{to{translate:0 50px;opacity:0}}
+@keyframes shake{25%{rotate:-18deg}75%{rotate:18deg}}
+@keyframes evolve{0%{transform:scale(1)}50%{transform:scale(1.35);filter:brightness(2)}100%{transform:scale(1)}}
+.faint{animation:faint .7s forwards}.hit{animation:hit .4s}.shake{animation:shake .5s 2}.evo{animation:evolve .9s}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.faint{opacity:0}}
+</style>
+</head>
+<body>
+<main id="game"></main>
+<script>
+const $=s=>document.querySelector(s),sl=ms=>new Promise(r=>setTimeout(r,ms)),R=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),KEY='creature-rangers-v1',scr=$('#game');
+const TY={
+fuoco:{c:'#f0643a',e:{erba:2,acqua:.5,fuoco:.5,roccia:.5}},
+acqua:{c:'#3b8cff',e:{fuoco:2,roccia:2,acqua:.5,erba:.5}},
+erba:{c:'#3fb54f',e:{acqua:2,roccia:2,fuoco:.5,erba:.5}},
+elettro:{c:'#d9a800',e:{acqua:2,erba:.5,elettro:.5}},
+normale:{c:'#8b929c',e:{roccia:.5}},
+roccia:{c:'#a0804f',e:{fuoco:2}}};
+const MV={Placcaggio:['normale',40],Graffio:['normale',40],Beccata:['normale',45],Braciere:['fuoco',50],Pistolacqua:['acqua',50],Foglielama:['erba',50],Scintilla:['elettro',50],Sassata:['roccia',55]};
+const CR=[
+{n:'Dinosauro-pericolo',e:'🦕',t:'fuoco',h:46,a:54,d:45,m:['Graffio','Braciere'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="52" cy="70" rx="30" ry="22" fill="#e63946" stroke="#1b2340" stroke-width="3"/><circle cx="72" cy="46" r="20" fill="#e63946" stroke="#1b2340" stroke-width="3"/><polygon points="58,32 66,18 74,32" fill="#f5c542" stroke="#1b2340" stroke-width="2"/><polygon points="74,30 82,16 90,30" fill="#f5c542" stroke="#1b2340" stroke-width="2"/><circle cx="80" cy="44" r="4" fill="#1b2340"/><path d="M68 54 Q78 58 72 62" stroke="#1b2340" stroke-width="3" fill="none"/><rect x="30" y="80" width="8" height="16" rx="3" fill="#1b2340"/><rect x="56" y="82" width="8" height="14" rx="3" fill="#1b2340"/><path d="M84 62 Q98 70 92 80" stroke="#e63946" stroke-width="6" fill="none" stroke-linecap="round"/></svg>`,evo:{at:10,to:12}},
+{n:'Pipistrello arrabbiato',e:'🦇',t:'elettro',h:38,a:56,d:40,m:['Beccata','Scintilla'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 32 Q20 12 10 46 Q22 56 36 50 L50 66 L64 50 Q78 56 90 46 Q80 12 50 32Z" fill="#6b4fa0" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="60" r="22" fill="#6b4fa0" stroke="#1b2340" stroke-width="3"/><polygon points="33,34 39,20 45,34" fill="#6b4fa0" stroke="#1b2340" stroke-width="2"/><polygon points="55,34 61,20 67,34" fill="#6b4fa0" stroke="#1b2340" stroke-width="2"/><polygon points="38,48 46,40 54,48" fill="#fff"/><polygon points="46,48 54,40 62,48" fill="#fff"/><circle cx="46" cy="60" r="4" fill="#1b2340"/><circle cx="58" cy="60" r="4" fill="#1b2340"/><path d="M44 70 L50 64 L56 70" stroke="#1b2340" stroke-width="3" fill="none"/></svg>`,evo:{at:10,to:13}},
+{n:'Cane rosa',e:'🐶',t:'normale',h:42,a:48,d:46,m:['Placcaggio','Graffio'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="64" rx="34" ry="26" fill="#ff9ecb" stroke="#1b2340" stroke-width="3"/><circle cx="38" cy="44" r="12" fill="#ff9ecb" stroke="#1b2340" stroke-width="3"/><circle cx="62" cy="44" r="12" fill="#ff9ecb" stroke="#1b2340" stroke-width="3"/><circle cx="40" cy="60" r="3" fill="#1b2340"/><circle cx="60" cy="60" r="3" fill="#1b2340"/><ellipse cx="50" cy="70" rx="6" ry="4" fill="#1b2340"/><path d="M18 36 Q8 20 26 24" stroke="#1b2340" stroke-width="3" fill="none"/><path d="M82 36 Q92 20 74 24" stroke="#1b2340" stroke-width="3" fill="none"/><path d="M40 76 Q50 82 60 76" stroke="#b3477a" stroke-width="2" fill="none"/></svg>`,evo:{at:10,to:14}},
+{n:'Lupo con occhiali',e:'🐺',t:'roccia',h:44,a:52,d:58,m:['Graffio','Sassata'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="66" rx="32" ry="24" fill="#8b929c" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="44" r="20" fill="#8b929c" stroke="#1b2340" stroke-width="3"/><polygon points="34,30 40,12 48,28" fill="#8b929c" stroke="#1b2340" stroke-width="2"/><polygon points="52,28 60,12 66,30" fill="#8b929c" stroke="#1b2340" stroke-width="2"/><circle cx="43" cy="42" r="6" fill="#fff" stroke="#1b2340" stroke-width="2"/><circle cx="57" cy="42" r="6" fill="#fff" stroke="#1b2340" stroke-width="2"/><circle cx="43" cy="42" r="3" fill="#1b2340"/><circle cx="57" cy="42" r="3" fill="#1b2340"/><rect x="37" y="40" width="12" height="4" rx="2" fill="none" stroke="#1b2340" stroke-width="2"/><rect x="51" y="40" width="12" height="4" rx="2" fill="none" stroke="#1b2340" stroke-width="2"/><line x1="49" y1="42" x2="51" y2="42" stroke="#1b2340" stroke-width="2"/><path d="M46 54 Q50 60 56 54" stroke="#1b2340" stroke-width="3" fill="none"/></svg>`},
+{n:'Pollo turbo',e:'🐔',t:'fuoco',h:36,a:58,d:38,m:['Graffio','Braciere'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="62" rx="26" ry="28" fill="#f5c542" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="34" r="18" fill="#f5c542" stroke="#1b2340" stroke-width="3"/><polygon points="42,20 50,8 58,20" fill="#e63946" stroke="#1b2340" stroke-width="2"/><circle cx="44" cy="32" r="3" fill="#1b2340"/><circle cx="56" cy="32" r="3" fill="#1b2340"/><path d="M44 40 Q50 46 56 40" stroke="#1b2340" stroke-width="3" fill="none"/><rect x="30" y="80" width="7" height="12" rx="3" fill="#e63946"/><rect x="46" y="82" width="7" height="12" rx="3" fill="#e63946"/><rect x="63" y="80" width="7" height="12" rx="3" fill="#e63946"/><rect x="44" y="14" width="12" height="4" rx="2" fill="#3b8cff" stroke="#1b2340" stroke-width="2"/><circle cx="50" cy="8" r="4" fill="#3b8cff" stroke="#1b2340" stroke-width="2"/></svg>`},
+{n:'Pecora nuvola',e:'🐑',t:'erba',h:48,a:44,d:54,m:['Placcaggio','Foglielama'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="34" r="16" fill="#fff" stroke="#1b2340" stroke-width="3"/><circle cx="60" cy="34" r="16" fill="#fff" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="48" r="18" fill="#fff" stroke="#1b2340" stroke-width="3"/><ellipse cx="50" cy="72" rx="28" ry="20" fill="#fff" stroke="#1b2340" stroke-width="3"/><circle cx="42" cy="58" r="3" fill="#1b2340"/><circle cx="58" cy="58" r="3" fill="#1b2340"/><ellipse cx="50" cy="66" rx="6" ry="4" fill="#1b2340"/><rect x="34" y="84" width="6" height="10" rx="3" fill="#4d4d4d"/><rect x="60" y="84" width="6" height="10" rx="3" fill="#4d4d4d"/></svg>`,evo:{at:12,to:15}},
+{n:'Pesce bollitore',e:'🐟',t:'acqua',h:40,a:50,d:46,m:['Pistolacqua','Placcaggio'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="46" cy="58" rx="30" ry="20" fill="#3b8cff" stroke="#1b2340" stroke-width="3"/><polygon points="70,58 92,42 92,74" fill="#3b8cff" stroke="#1b2340" stroke-width="3"/><circle cx="32" cy="52" r="4" fill="#1b2340"/><path d="M26 62 Q16 68 22 74" stroke="#1b2340" stroke-width="3" fill="none"/><path d="M36 40 Q30 28 44 32" stroke="#fff" stroke-width="2" fill="none"/><circle cx="44" cy="30" r="3" fill="#fff"/><circle cx="52" cy="26" r="2" fill="#fff"/><circle cx="60" cy="30" r="3" fill="#fff"/></svg>`},
+{n:'Scarabeo neon',e:' insect'.trim(),t:'elettro',h:34,a:60,d:52,m:['Scintilla','Graffio'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="64" rx="26" ry="18" fill="#3fb54f" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="40" r="16" fill="#3fb54f" stroke="#1b2340" stroke-width="3"/><line x1="36" y1="30" x2="24" y2="18" stroke="#1b2340" stroke-width="3"/><line x1="64" y1="30" x2="76" y2="18" stroke="#1b2340" stroke-width="3"/><circle cx="44" cy="38" r="3" fill="#1b2340"/><circle cx="56" cy="38" r="3" fill="#1b2340"/><path d="M46 46 Q50 50 54 46" stroke="#1b2340" stroke-width="2" fill="none"/><path d="M24 60 Q12 54 18 70" stroke="#d9a800" stroke-width="3" fill="none"/><path d="M76 60 Q88 54 82 70" stroke="#d9a800" stroke-width="3" fill="none"/><circle cx="50" cy="52" r="4" fill="#d9a800"/></svg>`},
+{n:'Lumaca punk',e:'🐌',t:'erba',h:42,a:42,d:60,m:['Placcaggio','Foglielama'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="36" cy="74" rx="20" ry="12" fill="#b6f0c3" stroke="#1b2340" stroke-width="3"/><circle cx="36" cy="62" r="10" fill="#b6f0c3" stroke="#1b2340" stroke-width="3"/><line x1="30" y1="54" x2="26" y2="44" stroke="#1b2340" stroke-width="3"/><line x1="42" y1="54" x2="46" y2="44" stroke="#1b2340" stroke-width="3"/><circle cx="26" cy="42" r="3" fill="#1b2340"/><circle cx="46" cy="42" r="3" fill="#1b2340"/><path d="M70 46 a18 18 0 1 1 -4 28" fill="none" stroke="#e63946" stroke-width="6"/><path d="M60 36 L64 24 L70 36" fill="#1b2340" stroke="#1b2340" stroke-width="2"/><rect x="54" y="30" width="14" height="3" rx="1" fill="#1b2340"/></svg>`},
+{n:'Gatto boss',e:'🐱',t:'normale',h:38,a:54,d:42,m:['Graffio','Placcaggio'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="66" rx="28" ry="22" fill="#1b2340" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="44" r="20" fill="#1b2340" stroke="#1b2340" stroke-width="3"/><polygon points="32,30 38,12 46,28" fill="#1b2340" stroke="#1b2340" stroke-width="2"/><polygon points="54,28 62,12 68,30" fill="#1b2340" stroke="#1b2340" stroke-width="2"/><circle cx="43" cy="42" r="4" fill="#f5c542"/><circle cx="57" cy="42" r="4" fill="#f5c542"/><path d="M46 52 Q50 56 54 52" stroke="#fff" stroke-width="2" fill="none"/><rect x="42" y="60" width="16" height="12" rx="2" fill="#e63946"/><path d="M42 66 L58 66" stroke="#fff" stroke-width="2"/></svg>`},
+{n:'Rana cappuccio',e:'🐸',t:'acqua',h:38,a:50,d:50,m:['Pistolacqua','Placcaggio'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="68" rx="30" ry="20" fill="#3fb54f" stroke="#1b2340" stroke-width="3"/><circle cx="36" cy="50" r="12" fill="#3fb54f" stroke="#1b2340" stroke-width="3"/><circle cx="64" cy="50" r="12" fill="#3fb54f" stroke="#1b2340" stroke-width="3"/><path d="M24 40 Q36 26 48 40" fill="#3b8cff" stroke="#1b2340" stroke-width="3"/><path d="M52 40 Q64 26 76 40" fill="#3b8cff" stroke="#1b2340" stroke-width="3"/><circle cx="38" cy="46" r="4" fill="#1b2340"/><circle cx="62" cy="46" r="4" fill="#1b2340"/><path d="M44 62 Q50 68 56 62" stroke="#1b2340" stroke-width="3" fill="none"/></svg>`},
+{n:'Aquila sindaco',e:'🦅',t:'normale',h:36,a:58,d:40,m:['Beccata','Placcaggio'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 22 Q20 34 12 70 Q30 82 50 74 Q70 82 88 70 Q80 34 50 22Z" fill="#a0804f" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="32" r="14" fill="#a0804f" stroke="#1b2340" stroke-width="3"/><polygon points="44,26 50,10 56,26" fill="#f5c542" stroke="#1b2340" stroke-width="2"/><polygon points="46,34 38,40 46,46" fill="#f5c542" stroke="#1b2340" stroke-width="2"/><circle cx="46" cy="30" r="3" fill="#1b2340"/><circle cx="54" cy="30" r="3" fill="#1b2340"/><path d="M44 38 L56 38" stroke="#1b2340" stroke-width="2"/><rect x="40" y="54" width="20" height="8" rx="4" fill="#e63946" stroke="#1b2340" stroke-width="2"/></svg>`},
+{n:'Dinosauro-apocalisse',e:'🦖',t:'fuoco',h:62,a:72,d:58,m:['Graffio','Braciere'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="70" rx="32" ry="22" fill="#8b1a1a" stroke="#1b2340" stroke-width="3"/><circle cx="70" cy="44" r="22" fill="#8b1a1a" stroke="#1b2340" stroke-width="3"/><polygon points="56,30 62,12 68,30" fill="#f5c542" stroke="#1b2340" stroke-width="2"/><polygon points="66,26 74,8 82,26" fill="#f5c542" stroke="#1b2340" stroke-width="2"/><polygon points="76,28 84,10 92,28" fill="#f5c542" stroke="#1b2340" stroke-width="2"/><circle cx="78" cy="42" r="4" fill="#f5c542"/><path d="M66 52 Q76 58 70 62" stroke="#1b2340" stroke-width="3" fill="none"/><rect x="26" y="80" width="9" height="16" rx="3" fill="#1b2340"/><rect x="54" y="82" width="9" height="14" rx="3" fill="#1b2340"/><path d="M82 60 Q98 70 92 82" stroke="#8b1a1a" stroke-width="7" fill="none" stroke-linecap="round"/></svg>`},
+{n:'Pipistrello furioso',e:'🦇',t:'elettro',h:50,a:74,d:48,m:['Beccata','Scintilla'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 28 Q16 8 6 48 Q20 60 34 52 L50 70 L66 52 Q80 60 94 48 Q84 8 50 28Z" fill="#4a2f7a" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="60" r="24" fill="#4a2f7a" stroke="#1b2340" stroke-width="3"/><polygon points="30,32 36,16 42,32" fill="#4a2f7a" stroke="#1b2340" stroke-width="2"/><polygon points="58,32 64,16 70,32" fill="#4a2f7a" stroke="#1b2340" stroke-width="2"/><circle cx="42" cy="56" r="5" fill="#ef4b4b"/><circle cx="58" cy="56" r="5" fill="#ef4b4b"/><path d="M44 68 L50 62 L56 68" stroke="#ef4b4b" stroke-width="3" fill="none"/><path d="M40 74 Q50 82 60 74" stroke="#ff5561" stroke-width="3" fill="none"/></svg>`},
+{n:'Cane rosa gigante',e:'🐕',t:'normale',h:58,a:62,d:60,m:['Placcaggio','Graffio'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="64" rx="36" ry="28" fill="#ffb3d6" stroke="#1b2340" stroke-width="3"/><circle cx="36" cy="42" r="14" fill="#ffb3d6" stroke="#1b2340" stroke-width="3"/><circle cx="64" cy="42" r="14" fill="#ffb3d6" stroke="#1b2340" stroke-width="3"/><circle cx="40" cy="60" r="4" fill="#1b2340"/><circle cx="60" cy="60" r="4" fill="#1b2340"/><ellipse cx="50" cy="72" rx="8" ry="5" fill="#1b2340"/><path d="M16 34 Q4 16 26 22" stroke="#1b2340" stroke-width="4" fill="none"/><path d="M84 34 Q96 16 74 22" stroke="#1b2340" stroke-width="4" fill="none"/><polygon points="44,16 50,4 56,16" fill="#f5c542" stroke="#1b2340" stroke-width="2"/></svg>`},
+{n:'Pecora tempesta',e:'🐏',t:'erba',h:62,a:58,d:70,m:['Foglielama','Placcaggio'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="34" r="16" fill="#d5dbe8" stroke="#1b2340" stroke-width="3"/><circle cx="60" cy="34" r="16" fill="#d5dbe8" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="48" r="18" fill="#d5dbe8" stroke="#1b2340" stroke-width="3"/><ellipse cx="50" cy="72" rx="28" ry="20" fill="#d5dbe8" stroke="#1b2340" stroke-width="3"/><circle cx="42" cy="58" r="3" fill="#1b2340"/><circle cx="58" cy="58" r="3" fill="#1b2340"/><ellipse cx="50" cy="66" rx="6" ry="4" fill="#1b2340"/><rect x="34" y="84" width="6" height="10" rx="3" fill="#4d4d4d"/><rect x="60" y="84" width="6" height="10" rx="3" fill="#4d4d4d"/><polygon points="50,8 56,22 44,22" fill="#d9a800" stroke="#1b2340" stroke-width="2"/><path d="M82 24 L78 40" stroke="#d9a800" stroke-width="3"/></svg>`}
+];
+let G=null,B=null,note='Pronto per una nuova avventura?';
+const badge=t=>`<span class="tp" style="background:${TY[t].c}">${t}</span>`;
+const hbar=m=>{const r=m.hp/m.mh;return`<div class="hp"><i style="width:${r*100}%;background:${r>.5?'var(--ok)':r>.2?'var(--mid)':'var(--low)'}"></i></div>`};
+const cur=()=>G.team[B.me];
+const txt=t=>{$('#msg').textContent=t},say=async t=>{txt(t);await sl(950)};
+const btns=a=>{$('#menu').innerHTML=a.map(([t,f,c])=>`<button class="${c||''}" onclick="${f}">${t}</button>`).join('')};
+function load(){try{G=JSON.parse(localStorage.getItem(KEY))}catch(e){G=null}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(G))}catch(e){}}
+function calc(m){const s=CR[m.i],f=b=>Math.floor(b*2*m.L/100)+5,o=m.mh||0;m.mh=Math.floor(s.h*2*m.L/100)+m.L+10;m.a=f(s.a);m.d=f(s.d);return m.mh-o}
+function mk(i,L){const m={i,L,xp:0};calc(m);m.hp=m.mh;return m}
+function dmg(a,k,d){const[t,p]=MV[k],e=TY[t].e[CR[d.i].t]??1,s=t===CR[a.i].t?1.5:1;return[Math.max(1,Math.floor(((2*a.L/5+2)*p*a.a/d.d/50+2)*e*s*(.85+Math.random()*.15))),e]}
+
+function title(){scr.innerHTML=`<h1><span class="pb"></span>Flip Flop Pokè</h1><p class="sub">Modalità semplice</p><p class="lead">Scegli il tuo compagno</p><div class="starters">${[0,1,2].map(i=>`<button class="card" onclick="start(${i})"><span class="ico">${CR[i].svg}</span><b>${CR[i].n}</b>${badge(CR[i].t)}</button>`).join('')}</div>`}
+function start(i){G={team:[mk(i,5)],balls:10,pots:3,wins:0,caught:[i]};note="Esplora l'erba alta per incontrare nuove Creature!";save();home()}
+function home(){scr.innerHTML=`<h1><span class="pb"></span>Flip Flop Pokè</h1>
+<div class="top"><span>🔴 ${G.balls}</span><span>🧪 ${G.pots}</span><span>🏆 ${G.wins}</span></div>
+${G.team.map(m=>`<div class="row"><span class="ico">${CR[m.i].svg}</span><div><b>${CR[m.i].n}</b> Lv${m.L}${badge(CR[m.i].t)}${hbar(m)}<small>${m.hp}/${m.mh} PS</small></div></div>`).join('')}
+<div class="dex" title="Creature dex">${CR.map((s,i)=>`<span class="dexico" title="${s.n}">${G.caught.includes(i)?s.svg:'❔'}</span>`).join('')}</div>
+<p class="msg" id="msg">${note}</p>
+<div class="menu"><button class="big span2" onclick="battle()">🌾 Esplora l'erba alta</button><button onclick="heal()">🏥 Centro cura</button><button class="ghost" onclick="reset()">↺ Nuova partita</button></div>`}
+function heal(){G.team.forEach(m=>m.hp=m.mh);G.pots=Math.max(G.pots,3);note='Squadra curata e pozioni rifornite! 💖';save();home()}
+function reset(){if(confirm('Cancellare i progressi e ricominciare?')){try{localStorage.removeItem(KEY)}catch(e){}G=null;title()}}
+
+async function battle(){
+const al=G.team.findIndex(m=>m.hp>0);
+if(al<0){note='Tutta la squadra è esausta: passa dal Centro cura!';return home()}
+const avg=Math.round(G.team.reduce((s,m)=>s+m.L,0)/G.team.length);
+B={foe:mk(R(0,CR.length-1),Math.max(2,avg+R(-1,1))),me:al,busy:true};
+scr.innerHTML=`<div class="arena"><div class="box fb"><b id="fnm"></b><span id="flv"></span><div class="hp"><i id="fhp"></i></div></div><div class="spr fs" id="fsp"></div><div class="spr ms" id="msp"></div><div class="box mb"><b id="mnm"></b><span id="mlv"></span><div class="hp"><i id="mhp"></i></div><small id="mtx"></small></div></div><p class="msg" id="msg"></p><div class="menu" id="menu"></div>`;
+upd();await say(`Un ${CR[B.foe.i].n} selvatico appare!`);mainMenu()}
+function bar(s,m){const r=m.hp/m.mh,e=$(s);e.style.width=r*100+'%';e.style.background=r>.5?'var(--ok)':r>.2?'var(--mid)':'var(--low)'}
+function upd(){const m=cur(),f=B.foe,S=CR[m.i],F=CR[f.i];
+$('#fnm').textContent=F.n;$('#flv').textContent='Lv'+f.L;$('#fsp').innerHTML=F.svg;
+$('#mnm').textContent=S.n;$('#mlv').textContent='Lv'+m.L;$('#msp').innerHTML=S.svg;$('#mtx').textContent=`${m.hp}/${m.mh} PS`;
+bar('#fhp',f);bar('#mhp',m);
+$('#fsp').classList.toggle('faint',f.hp<=0);$('#msp').classList.toggle('faint',m.hp<=0)}
+
+function mainMenu(){B.busy=false;txt(`Cosa farà ${CR[cur().i].n}?`);btns([['⚔️ Lotta','moves()'],['🔄 Squadra','teamMenu()'],[`🔴 Sfera ×${G.balls}`,'ball()'],[`🧪 Pozione ×${G.pots}`,'pot()'],['🏃 Fuga','run()','ghost span2']])}
+function moves(){btns([...CR[cur().i].m.map(k=>[`${k}<small>${MV[k][0]} · ${MV[k][1]}</small>`,`turn(()=>hit(cur(),B.foe,'${k}',true))`]),['↩ Indietro','mainMenu()','ghost span2']])}
+function teamMenu(forced){btns([...G.team.map((m,i)=>[`${CR[m.i].svg} ${CR[m.i].n} Lv${m.L}<small>${m.hp}/${m.mh} PS</small>`,`swap(${i},${!!forced})`,m.hp<=0||i===B.me?'off':'']),...(forced?[]:[['↩ Indietro','mainMenu()','ghost span2']])])}
+async function swap(i,forced){const go=async()=>{B.me=i;upd();await say(`Vai, ${CR[cur().i].n}!`)};if(forced){await go();mainMenu()}else turn(go)}
+
+async function hit(a,d,k,mine){
+await say(`${CR[a.i].n}${mine?'':' selvatico'} usa ${k}!`);
+const[x,e]=dmg(a,k,d),el=$(mine?'#fsp':'#msp');
+el.classList.add('hit');d.hp=Math.max(0,d.hp-x);upd();await sl(450);el.classList.remove('hit');
+if(e>1)await say('È superefficace!');else if(e<1)await say('Non è molto efficace...')}
+
+async function turn(act){
+if(B.busy)return;B.busy=true;btns([]);
+if(await act()==='end')return;
+if(B.foe.hp<=0)return win();
+const f=B.foe;await hit(f,cur(),CR[f.i].m[R(0,1)],false);
+if(cur().hp<=0)return lose();
+mainMenu()}
+
+function ball(){if(G.balls<1)return txt('Non hai più Sfere!');turn(async()=>{
+G.balls--;const f=B.foe,el=$('#fsp');await say('Lanci una Sfera! 🔴');el.classList.add('shake');await sl(1100);el.classList.remove('shake');
+if(Math.random()<Math.min(.95,.2+.7*(1-f.hp/f.mh))){
+await say(`Preso! ${CR[f.i].n} è stato catturato!`);
+if(!G.caught.includes(f.i))G.caught.push(f.i);
+if(G.team.length<6)G.team.push(f);else await say('Squadra al completo: va al laboratorio.');
+note=`${CR[f.i].n} catturato! 🎉`;save();home();return'end'}
+await say(`${CR[f.i].n} si è liberato!`)})}
+
+function pot(){const m=cur();if(G.pots<1||m.hp>=m.mh)return txt(G.pots<1?'Non hai più Pozioni!':`${CR[m.i].n} è già in forze!`);turn(async()=>{G.pots--;m.hp=Math.min(m.mh,m.hp+30);upd();await say(`${CR[m.i].n} recupera PS!`)})}
+
+function run(){turn(async()=>{if(Math.random()<.75){await say('Sei fuggito senza problemi!');note='Sei scappato dall\'erba alta.';home();return'end'}await say('Non riesci a scappare!')})}
+
+async function win(){const f=B.foe,m=cur(),x=f.L*9;
+await say(`${CR[f.i].n} è esausto!`);await say(`${CR[m.i].n} guadagna ${x} PE!`);m.xp+=x;
+while(m.xp>=m.L*15){m.xp-=m.L*15;m.L++;m.hp+=calc(m);upd();await say(`${CR[m.i].n} sale al livello ${m.L}!`);
+const sp=CR[m.i];
+if(sp.evo&&m.L>=sp.evo.at&&m.i!==sp.evo.to){const old=sp.n;m.i=sp.evo.to;calc(m);m.hp=Math.min(m.mh,m.hp+Math.floor(m.mh*0.2));if(!G.caught.includes(m.i))G.caught.push(m.i);const el=$('#msp');if(el)el.classList.add('evo');await say(`${old} si evolve in ${CR[m.i].n}! ✨`);await sl(900);if(el)el.classList.remove('evo');upd();save()}}
+G.balls++;G.wins++;note='Vittoria! Hai trovato 1 Sfera. 🔴';save();await say('Hai trovato 1 Sfera! 🔴');home()}
+
+async function lose(){await say(`${CR[cur().i].n} è esausto!`);
+if(G.team.some(m=>m.hp>0)){txt('Scegli il prossimo compagno!');teamMenu(true)}
+else{await say('Non hai più Creature in forze... Corri al Centro cura!');G.team.forEach(m=>m.hp=m.mh);note='Sei stato curato. Riprova!';save();home()}}
+
+load();G&&G.team&&G.team.length?home():title();
+</script>
+</body>
+</html>
