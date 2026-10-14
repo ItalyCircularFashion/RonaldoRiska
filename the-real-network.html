@@ -312,6 +312,70 @@ function prenotaRequest(reqId){
   pNotification(r.authorId,'prenotazione',u.id,null,`${u.name} ha prenotato la richiesta "${r.name}".`);
   saveState(S); toast('Richiesta prenotata.'); renderAll();
 }
+let soddisfazioneReqId=null;
+let soddisfazioneStep=1;
+function showSoddisfazione(reqId){
+  const u=currentUser(); if(!u) return showAuth('register');
+  const r=S.requests.find(x=>x.id===reqId); if(!r) return;
+  if(r.stato!=='aperta') return toast('Richiesta non piu disponibile.');
+  soddisfazioneReqId=reqId; soddisfazioneStep=1;
+  renderSoddisfazioneModal();
+}
+function renderSoddisfazioneModal(){
+  const r=S.requests.find(x=>x.id===soddisfazioneReqId); if(!r) return closeModal();
+  const body=document.getElementById('modalBody');
+  if(soddisfazioneStep===1){
+    body.innerHTML=`<h2>Soddisfa Richiesta — Step 1/3</h2>
+      <p style="margin-bottom:12px;color:var(--muted);font-size:12px">Dati tessuto per <strong>${escapeHtml(r.name)}</strong></p>
+      <div class="field"><label>Composizione</label><input id="sodComp" value="${escapeHtml(r.comp)}"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="field"><label>Peso (g/mq)</label><input id="sodWeight" type="number" value="${r.weight}"></div>
+        <div class="field"><label>Larghezza (cm)</label><input id="sodWidth" type="number" value="${r.width}"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="field"><label>Metraggio (m)</label><input id="sodMeters" type="number" value="${r.meters}"></div>
+        <div class="field"><label>Colore</label><input id="sodColor" value="${escapeHtml(r.color)}"></div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px"><button class="ghost small" onclick="closeModal()">Annulla</button><button class="button small" onclick="soddisfazioneStep=2;renderSoddisfazioneModal()">Avanti</button></div>`;
+  }
+  else if(soddisfazioneStep===2){
+    body.innerHTML=`<h2>Soddisfa Richiesta — Step 2/3</h2>
+      <p style="margin-bottom:12px;color:var(--muted);font-size:12px">Fasi di lavorazione necessarie</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        ${FASES.map(f=>`<label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><input type="checkbox" class="sodFase" value="${f}" ${r.fasi.includes(f)?'checked':''} style="accent-color:var(--accent2)"> ${f}</label>`).join('')}
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px"><button class="ghost small" onclick="soddisfazioneStep=1;renderSoddisfazioneModal()">Indietro</button><button class="button small" onclick="soddisfazioneStep=3;renderSoddisfazioneModal()">Avanti</button></div>`;
+  }
+  else if(soddisfazioneStep===3){
+    body.innerHTML=`<h2>Soddisfa Richiesta — Step 3/3</h2>
+      <p style="margin-bottom:12px;color:var(--muted);font-size:12px">Dati di consegna e note</p>
+      <div class="field"><label>Indirizzo consegna</label><input id="sodIndirizzo" placeholder="Via, Citta, CAP"></div>
+      <div class="field"><label>Note per la lavorazione</label><textarea id="sodNote" placeholder="Istruzioni speciali, scadenze, ecc."></textarea></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px"><button class="ghost small" onclick="soddisfazioneStep=2;renderSoddisfazioneModal()">Indietro</button><button class="button small" id="submitSoddisfazione">Conferma Soddisfazione</button></div>`;
+    document.getElementById('submitSoddisfazione').onclick=submitSoddisfazione;
+  }
+  document.getElementById('modal').classList.add('show');
+}
+function submitSoddisfazione(){
+  const u=currentUser(); if(!u) return;
+  const r=S.requests.find(x=>x.id===soddisfazioneReqId); if(!r) return;
+  const comp=document.getElementById('sodComp').value.trim()||r.comp;
+  const weight=parseInt(document.getElementById('sodWeight').value)||r.weight;
+  const width=parseInt(document.getElementById('sodWidth').value)||r.width;
+  const meters=parseInt(document.getElementById('sodMeters').value)||r.meters;
+  const color=document.getElementById('sodColor').value.trim()||r.color;
+  const fasi=[...document.querySelectorAll('.sodFase:checked')].map(x=>x.value);
+  const indirizzo=document.getElementById('sodIndirizzo').value.trim();
+  const note=document.getElementById('sodNote').value.trim();
+  if(!fasi.length) return toast('Seleziona almeno una fase.');
+  if(!indirizzo) return toast('Inserisci indirizzo consegna.');
+  r.stato='in lavorazione';
+  r.soddisfazione={userId:u.id,comp,weight,width,meters,color,fasi,indirizzo,note,createdAt:Date.now()};
+  if(!r.prenotazioni) r.prenotazioni=[];
+  if(!r.prenotazioni.some(p=>p.userId===u.id)) r.prenotazioni.push({userId:u.id,createdAt:Date.now()});
+  pNotification(r.authorId,'soddisfazione',u.id,null,`${u.name} ha soddisfatto la richiesta "${r.name}".`);
+  saveState(S); closeModal(); toast('Soddisfazione registrata.'); renderAll();
+}
 function completaRequest(reqId){
   const u=currentUser(); if(!u) return showAuth('register');
   const r=S.requests.find(x=>x.id===reqId); if(!r) return;
@@ -323,8 +387,16 @@ function completaRequest(reqId){
 }
 function prenotazioniHtml(r){
   if(!r.prenotazioni||!r.prenotazioni.length) return '';
-  return '<div style="margin-top:8px;padding:8px;background:rgba(0,240,255,.03);border-radius:4px;border:1px solid rgba(0,240,255,.1)"><div style="font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Prenotazioni</div>'+
-    r.prenotazioni.map(p=>{const pu=S.users.find(x=>x.id===p.userId);return `<div style="font-size:11px;color:var(--text)">@${escapeHtml(pu?.handle||'?')} <span style="color:var(--muted)">${timeAgo(p.createdAt)}</span></div>`;}).join('')+'</div>';
+  let html='<div style="margin-top:8px;padding:8px;background:rgba(0,240,255,.03);border-radius:4px;border:1px solid rgba(0,240,255,.1)"><div style="font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Prenotazioni</div>'+
+    r.prenotazioni.map(p=>{const pu=S.users.find(x=>x.id===p.userId);return `<div style="font-size:11px;color:var(--text)">@${escapeHtml(pu?.handle||'?')} <span style="color:var(--muted)">${timeAgo(p.createdAt)}</span></div>`;}).join('');
+  if(r.soddisfazione){
+    const su=S.users.find(x=>x.id===r.soddisfazione.userId);
+    html+='<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,240,255,.1)"><div style="font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--accent2);margin-bottom:4px">Soddisfazione</div>'+
+      `<div style="font-size:11px;color:var(--text)">@${escapeHtml(su?.handle||'?')} — ${escapeHtml(r.soddisfazione.indirizzo)}</div>`+
+      (r.soddisfazione.note?`<div style="font-size:11px;color:var(--muted);margin-top:4px">${escapeHtml(r.soddisfazione.note)}</div>`:'')+
+      `<div style="font-size:10px;color:var(--muted);margin-top:4px">Fasi: ${r.soddisfazione.fasi.join(', ')}</div></div>`;
+  }
+  return html+'</div>';
 }
 let currentFilter='all';
 function renderFilterBar(){
@@ -352,8 +424,9 @@ function renderFeed(){
       const statoColor=r.stato==='aperta'?'var(--good)':r.stato==='in lavorazione'?'var(--accent2)':'var(--accent3)';
       const prenotaBtn=u&&u.id!==r.authorId&&r.stato==='aperta'?`<button class="button small" onclick="prenotaRequest('${r.id}')">Prenota</button>`:'';
       const completaBtn=u&&r.stato==='in lavorazione'&&r.prenotazioni?.some(p=>p.userId===u.id)?`<button class="button small" onclick="completaRequest('${r.id}')">Completa</button>`:'';
+      const soddisfaBtn=u&&u.id!==r.authorId&&r.stato==='aperta'?`<button class="button small" onclick="showSoddisfazione('${r.id}')">Soddisfa</button>`:'';
       return `<div class="post" data-request-id="${r.id}">
-        <div class="post-head">${avatarHtml(a,40)}<div><strong>${escapeHtml(r.name)}</strong> <span class="handle">@${escapeHtml(a.handle)}</span><div class="handle">${timeAgo(r.createdAt)}</div></div><div style="display:flex;gap:6px;margin-left:auto">${prenotaBtn}${completaBtn}</div></div>
+        <div class="post-head">${avatarHtml(a,40)}<div><strong>${escapeHtml(r.name)}</strong> <span class="handle">@${escapeHtml(a.handle)}</span><div class="handle">${timeAgo(r.createdAt)}</div></div><div style="display:flex;gap:6px;margin-left:auto">${soddisfaBtn}${prenotaBtn}${completaBtn}</div></div>
         <div style="margin:6px 0"><span class="badge lav">Richiesta</span></div>
         <div class="post-text" style="font-size:12px">${escapeHtml(r.comp)} • ${r.weight}g/mq • ${r.width}cm • ${r.meters}m • Colore: ${escapeHtml(r.color)}</div>
         <div style="margin:8px 0;display:flex;flex-wrap:wrap;gap:4px">${r.fasi.map(f=>`<span class="badge" style="font-size:10px">${escapeHtml(f)}</span>`).join('')}</div>
