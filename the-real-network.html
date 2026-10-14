@@ -5,11 +5,27 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Real Network</title>
 <style>
-:root{--bg:#09111e;--bg2:#111a28;--card:rgba(24,35,55,.74);--line:#3a4f6b;--text:#f8f2e8;--muted:#b9c7da;--accent:#f3c969;--accent2:#7dd3fc;--good:#38d39f}
+:root{--bg:#0A0A0A;--bg2:#161616;--card:rgba(30,30,30,.74);--line:#2a2a2a;--text:#f5f5f5;--muted:#a3a3a3;--accent:#D4A843;--accent2:#2DD4BF;--accent3:#ff2d6f;--good:#38d39f}
 *{box-sizing:border-box;margin:0}
-html,body{height:100%;font:13px/1.55 "Space Grotesk",system-ui,sans-serif;color:var(--text);background:var(--bg)}
+html,body{height:100%;font:13px/1.55 "Inter",system-ui,sans-serif;color:var(--text);background:var(--bg)}
 a{color:var(--accent2);text-decoration:none} button,input,textarea,select{font:inherit}
-body{background:linear-gradient(145deg,#172031 0%,#0b1322 55%,#09111f 100%)}
+body{background:linear-gradient(145deg,#1a1a1a 0%,#0d0d0d 55%,#0A0A0A 100%)}
+.mono{font-family:"IBM Plex Mono",monospace}
+.kpi-table{width:100%;border-collapse:collapse;font-family:"IBM Plex Mono",monospace;font-size:12px}
+.kpi-table th,.kpi-table td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line)}
+.kpi-table th{color:var(--muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.kpi-table td:first-child{color:var(--muted)}
+.kpi-table td:last-child{text-align:right;font-weight:600}
+.kpi-table tr:hover td{background:rgba(255,255,255,.03)}
+.spark{display:flex;align-items:flex-end;gap:2px;height:32px;margin-top:6px}
+.spark i{flex:1;background:var(--accent2);opacity:.7;border-radius:2px 2px 0 0;min-height:2px}
+.spark i:nth-child(odd){background:var(--accent)}
+.ticker{display:flex;gap:16px;overflow:hidden;padding:8px 0;font-family:"IBM Plex Mono",monospace;font-size:11px}
+.ticker span{white-space:nowrap;color:var(--muted)}
+.ticker b{color:var(--text);font-weight:600}
+.ticker .up{color:var(--good)} .ticker .down{color:var(--accent3)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.post{animation:fadeUp .3s ease both}
 .topbar{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:14px;padding:10px 16px;background:rgba(5,9,16,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .brand{display:flex;align-items:center;gap:10px;white-space:nowrap}
 .brand-mark{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;background:linear-gradient(135deg,#ff2d6f,#6ee7ff);color:#000;font-weight:900}
@@ -54,10 +70,13 @@ button.danger{background:#ef4444}
 .toast.show{display:block}
 .notice{background:#121f31;border:1px solid var(--line);border-radius:10px;padding:10px;margin:8px 0}
 .empty{color:var(--muted);padding:18px;text-align:center}
-.badge{display:inline-block;font-size:11px;padding:3px 8px;border-radius:99px;background:#0d182a;color:var(--muted);border:1px solid var(--line)}
- evening? no
+.badge{display:inline-block;font-size:11px;padding:3px 8px;border-radius:99px;background:#1a1a1a;color:var(--muted);border:1px solid var(--line)}
+.badge.eco{background:rgba(212,168,67,.15);color:var(--accent);border-color:rgba(212,168,67,.3)}
+.badge.tech{background:rgba(45,212,191,.15);color:var(--accent2);border-color:rgba(45,212,191,.3)}
+.badge.amb{background:rgba(56,211,159,.15);color:var(--good);border-color:rgba(56,211,159,.3)}
+.badge.lav{background:rgba(255,45,111,.15);color:var(--accent3);border-color:rgba(255,45,111,.3)}
 </style>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"></head>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <body>
 <div class="topbar">
   <div class="brand"><div class="brand-mark">TRN</div><div class="brand-text">The Real Network</div></div>
@@ -74,8 +93,11 @@ button.danger{background:#ef4444}
 </div>
 <div class="layout">
   <aside class="left"><div class="card profile" id="profileCard"></div></aside>
-  <main><section class="card" id="viewFeed"><div class="feed-head"><h2>Feed</h2><button class="button small" id="newPostBtn">Nuovo post</button></div><div class="compose" id="composer" style="display:none"><textarea id="postText" placeholder="Condividi qualcosa con la rete..."></textarea><div style="display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap"><input type="url" id="postImage" placeholder="URL immagine (facoltativo)" style="flex:1;min-width:180px;padding:8px;border-radius:99px;background:#08111d;border:1px solid var(--line);color:var(--text)"><button class="button small" id="publishPost">Pubblica</button><button class="ghost small" id="cancelPost">Annulla</button></div></div><div id="feedList"></div></section><section id="viewExplore" style="display:none" class="card"><h2>Esplora Persone</h2><input class="search" id="searchInput" placeholder="Cerca per nome o handle..." style="margin:10px 0"><div id="exploreList"></div></section><section id="viewProfile" style="display:none" class="card"><div id="profileView"></div></section><section id="viewMessages" style="display:none" class="card"><h2>Messaggi</h2><div class="layout" style="grid-template-columns:240px 1fr;padding:0;max-width:none"><div id="convList" class="card"></div><div id="convThread" class="card"></div></div></section><section id="viewNotifications" style="display:none" class="card"><h2>Notifiche</h2><div id="notifList"></div></section></main>
-  <aside class="rightcol"><div class="card" id="trendingCard"></div></aside>
+  <main>
+    <div class="card" style="padding:10px 14px;margin-bottom:12px"><div class="ticker" id="ticker"></div></div>
+    <section class="card" id="viewFeed"><div class="feed-head"><h2>Feed</h2><button class="button small" id="newPostBtn">Nuovo post</button></div><div class="compose" id="composer" style="display:none"><textarea id="postText" placeholder="Condividi qualcosa con la rete..."></textarea><div style="display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap"><input type="url" id="postImage" placeholder="URL immagine (facoltativo)" style="flex:1;min-width:180px;padding:8px;border-radius:99px;background:#08111d;border:1px solid var(--line);color:var(--text)"><button class="button small" id="publishPost">Pubblica</button><button class="ghost small" id="cancelPost">Annulla</button></div></div><div id="feedList"></div></section><section id="viewExplore" style="display:none" class="card"><h2>Esplora Persone</h2><input class="search" id="searchInput" placeholder="Cerca per nome o handle..." style="margin:10px 0"><div id="exploreList"></div></section><section id="viewProfile" style="display:none" class="card"><div id="profileView"></div></section><section id="viewMessages" style="display:none" class="card"><h2>Messaggi</h2><div class="layout" style="grid-template-columns:240px 1fr;padding:0;max-width:none"><div id="convList" class="card"></div><div id="convThread" class="card"></div></div></section><section id="viewNotifications" style="display:none" class="card"><h2>Notifiche</h2><div id="notifList"></div></section>
+  </main>
+  <aside class="rightcol"><div class="card" id="kpiCard"></div><div class="card" id="trendingCard" style="margin-top:12px"></div></aside>
 </div>
 <div id="modal" class="modal"><div class="modal-body" id="modalBody"></div></div>
 <div id="toast" class="toast"></div>
@@ -95,32 +117,45 @@ function seedDemo(){
     S.users.push(u);
   });
   const posts=[
- "Prato riparte dalla supply chain: il distretto tessile taglia i tempi di delivery del 18% con una piattaforma condivisa.",
- "Nuova linea per filati riciclati a Montemurlo: 1.200 tonnellate annuali in arrivo entro il 2026.",
- "Il municipio estende gli incentivi per digitalizzare PMI tessili: voucher fino a 25.000 euro per ERP e tracciabilità.",
- "Accordo tra consorzio lanifici e università: laboratorio 4.0 per testare nuovi blend lana-sintetico.",
- "Prato export +7% nel primo trimestre. Crescono audens e buyers europei su campioni sostenibili.",
- "Mercato tessile rigenerato: costi della materia prima riciclata scendono sotto il 15% del virgin market.",
- "Nuovo hub logistico a Calenzano: cross-docking per filati e tessuti con tempi di throughput ridotti a 48 ore.",
- "Digitale in fabbrica: MES e sensori su telai hanno ridotto le fermate non pianificate del 32%.",
- "Startup pratese lancia software per tracciabilità della filiera: da fibra a prodotto finito in blockchain privata.",
- "Fotovoltaico industriale: 14 capannoni in solare, cash flow positivo dopo 3 anni.",
- "Formazione tecnica: 200 giovani in apprendistato tessile quest'anno, con docenti in fabbrica.",
- "Pronto moda pratese all'estero: ordini B2B da Germania e Nord Europa in crescita del 21%.",
- "Tintoria riduce consumo acqua del 40% con impianti closed-loop a recupero in stabilimento.",
- "Nova business: servizio di certificazione anagrafiche materiali per brand luxury e fast fashion.",
- "Prato Fashion Week locale: 80 stand di tessuti innovativi, focus su riciclo e upcycling.",
- "Costo energia: consorzio imprese contratta fornitura green a lungo termine scontato 12%.",
- "Reti di impresa per export: 15 PMI con dividono agenti e packaging per abbattere i costi.",
- "Politici locali annunciano piano 2026 per incubatore tessile e laboratorio test materiali.",
- "Dati economici: occupazione manifatturiera Prato +3,1% su base annua, 1.700 nuovi posti.",
- "Economia circolare e tessile: eccellenza pratese riconosciuta a Bruxelles per il progetto distretto verde."
+   {t:"Prato riparte dalla supply chain: il distretto tessile taglia i tempi di delivery del 18% con una piattaforma condivisa.",c:'eco'},
+   {t:"Nuova linea per filati riciclati a Montemurlo: 1.200 tonnellate annuali in arrivo entro il 2026.",c:'amb'},
+   {t:"Il municipio estende gli incentivi per digitalizzare PMI tessili: voucher fino a 25.000 euro per ERP e tracciabilità.",c:'lav'},
+   {t:"Accordo tra consorzio lanifici e università: laboratorio 4.0 per testare nuovi blend lana-sintetico.",c:'tech'},
+   {t:"Prato export +7% nel primo trimestre. Crescono ordini e buyers europei su campioni sostenibili.",c:'eco'},
+   {t:"Mercato tessile rigenerato: costi della materia prima riciclata scendono sotto il 15% del virgin market.",c:'amb'},
+   {t:"Nuovo hub logistico a Calenzano: cross-docking per filati e tessuti con tempi di throughput ridotti a 48 ore.",c:'tech'},
+   {t:"Digitale in fabbrica: MES e sensori su telai hanno ridotto le fermate non pianificate del 32%.",c:'tech'},
+   {t:"Startup pratese lancia software per tracciabilità della filiera: da fibra a prodotto finito in blockchain privata.",c:'tech'},
+   {t:"Fotovoltaico industriale: 14 capannoni in solare, cash flow positivo dopo 3 anni.",c:'amb'},
+   {t:"Formazione tecnica: 200 giovani in apprendistato tessile quest'anno, con docenti in fabbrica.",c:'lav'},
+   {t:"Pronto moda pratese all'estero: ordini B2B da Germania e Nord Europa in crescita del 21%.",c:'eco'},
+   {t:"Tintoria riduce consumo acqua del 40% con impianti closed-loop a recupero in stabilimento.",c:'amb'},
+   {t:"Nova business: servizio di certificazione anagrafiche materiali per brand luxury e fast fashion.",c:'lav'},
+   {t:"Prato Fashion Week locale: 80 stand di tessuti innovativi, focus su riciclo e upcycling.",c:'eco'},
+   {t:"Costo energia: consorzio imprese contratta fornitura green a lungo termine scontato 12%.",c:'amb'},
+   {t:"Reti di impresa per export: 15 PMI con dividono agenti e packaging per abbattere i costi.",c:'eco'},
+   {t:"Politici locali annunciano piano 2026 per incubatore tessile e laboratorio test materiali.",c:'lav'},
+   {t:"Dati economici: occupazione manifatturiera Prato +3,1% su base annua, 1.700 nuovi posti.",c:'eco'},
+   {t:"Economia circolare e tessile: eccellenza pratese riconosciuta a Bruxelles per il progetto distretto verde.",c:'amb'}
   ];
   const authors=['u1'];
-  posts.forEach((text,i)=>{ addPostSeed(authors[i % authors.length], text, null); });
+  posts.forEach((p,i)=>{ addPostSeed(authors[i % authors.length], p.t, null, p.c); });
 
 }
-function addPostSeed(authorId,text,image){ const p={id:uid('p'),authorId,text,image:image||null,createdAt:Date.now()-Math.random()*86400000,likes:[],commentIds:[]}; S.posts.push(p); return p.id; }
+const KPI_DATA=[
+  {label:'Export',val:'+7,1%',spark:[3,5,4,6,7,6,8,7,9,8,10,11],cls:'up'},
+  {label:'Occupazione',val:'+3,1%',spark:[2,3,3,4,4,5,5,6,6,7,7,8],cls:'up'},
+  {label:'Energia green',val:'-12%',spark:[8,7,7,6,6,5,5,4,4,3,3,2],cls:'down'},
+  {label:'Acqua rid.',val:'-40%',spark:[9,8,8,7,6,6,5,5,4,4,3,3],cls:'down'},
+  {label:'Riciclato',val:'1,2kt',spark:[1,2,2,3,3,4,4,5,5,6,6,7],cls:'up'},
+  {label:'MES fermate',val:'-32%',spark:[7,6,6,5,5,4,4,3,3,2,2,1],cls:'down'}
+];
+const TICKER=[
+  {s:'EUR/USD',v:'1,0842',c:'up'},{s:'Cotone',v:'1,42 €/kg',c:'up'},{s:'Lana',v:'3,85 €/kg',c:'down'},
+  {s:'Poliestere',v:'1,12 €/kg',c:'up'},{s:'Setticlo',v:'2,30 €/kg',c:'down'},{s:'Lino',v:'4,10 €/kg',c:'up'},
+  {s:'Export Prato',v:'+7,1%',c:'up'},{s:'Occupazione',v:'+3,1%',c:'up'},{s:'Riciclato',v:'-15% costi',c:'up'}
+];
+function addPostSeed(authorId,text,image,cat){ const p={id:uid('p'),authorId,text,image:image||null,cat:cat||'eco',createdAt:Date.now()-Math.random()*86400000,likes:[],commentIds:[]}; S.posts.push(p); return p.id; }
 function addCommentSeed(authorId,postId,text){ const c={id:uid('c'),postId,authorId,text,createdAt:Date.now()-Math.random()*86400000}; S.comments.push(c); const p=S.posts.find(x=>x.id===postId); if(p) p.commentIds.push(c.id); return c.id; }
 function currentUser(){ const sess=loadSession(); return sess ? S.users.find(u=>u.id===sess.userId) : null; }
 function view(viewName){ document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.view===viewName)); ['Feed','Explore','Profile','Messages','Notifications'].forEach(v=>{const el=document.getElementById('view'+v); if(el) el.style.display=(v.toLowerCase()===viewName)?'block':'none';}); renderAll(); }
@@ -195,7 +230,17 @@ function toggleFollow(userId){
 function timeAgo(ts){ const s=Math.floor((Date.now()-ts)/1000); if(s<60)return 'ora'; if(s<3600)return Math.floor(s/60)+' min'; if(s<86400)return Math.floor(s/3600)+' h'; return Math.floor(s/86400)+' g'; }
 let selectedProfileId=null;
 let selectedConversation=null;
-function renderAll(){ renderSession(); renderProfileCard(); renderFeed(); renderExplore(); renderProfileView(); renderMessages(); renderNotifications(); renderTrending(); }
+function renderAll(){ renderSession(); renderProfileCard(); renderFeed(); renderExplore(); renderProfileView(); renderMessages(); renderNotifications(); renderTrending(); renderKPI(); renderTicker(); }
+function renderKPI(){
+  const el=document.getElementById('kpiCard'); if(!el) return;
+  el.innerHTML='<h3 style="margin-bottom:10px">KPI Distretto</h3><table class="kpi-table"><thead><tr><th>Metrica</th><th>Valore</th></tr></thead><tbody>'+
+    KPI_DATA.map(k=>`<tr><td>${k.label}</td><td class="${k.cls}">${k.val}</td></tr>`).join('')+'</tbody></table>'+
+    '<div class="spark">'+KPI_DATA[0].spark.map(v=>`<i style="height:${v*8}%"></i>`).join('')+'</div>';
+}
+function renderTicker(){
+  const el=document.getElementById('ticker'); if(!el) return;
+  el.innerHTML=TICKER.map(t=>`<span>${t.s} <b class="${t.c}">${t.v}</b></span>`).join('');
+}
 function renderProfileCard(){
   const el=document.getElementById('profileCard'); const u=currentUser();
   if(!u){ el.innerHTML='<h3>Crea nome utente</h3><p class="empty">Crea un profilo locale e inizia a pubblicare.</p><button class="button" onclick="showAuth(\'register\')" style="width:100%;margin-top:8px">Crea nome utente</button>'; return; }
@@ -227,8 +272,11 @@ function postHtml(p){
     return `<div class="comment">${avatarHtml(ca,22)} <b>${escapeHtml(ca.name)}</b> <span class="handle">@${escapeHtml(ca.handle)} • ${timeAgo(c.createdAt)}</span><div class="post-text" style="margin:4px 0">${escapeHtml(c.text)}</div></div>`;
   }).join('');
   const followBtn = currentUser() && currentUser().id!==p.authorId ? (currentUser().following.includes(p.authorId) ? `<button class="ghost small" onclick="toggleFollow('${p.authorId}')">Seguito</button>` : `<button class="ghost small" onclick="toggleFollow('${p.authorId}')">Segui</button>`) : '';
+  const catLabels={eco:'Economia',tech:'Tecnologia',amb:'Ambiente',lav:'Lavoro'};
+  const catCls=p.cat||'eco';
   return `<div class="post" data-post-id="${p.id}">
     <div class="post-head">${avatarHtml(a,40)}<div><strong>${escapeHtml(a.name)}</strong> <span class="handle">@${escapeHtml(a.handle)}</span><div class="handle">${timeAgo(p.createdAt)}</div></div>${followBtn}</div>
+    <div style="margin:6px 0"><span class="badge ${catCls}">${catLabels[catCls]||'Economia'}</span></div>
     ${p.text?`<div class="post-text">${escapeHtml(p.text)}</div>`:''}
     ${p.image?`<img class="post-image" src="${escapeHtml(p.image)}" alt="immagine post" onerror="this.style.display='none'">`:''}
     <div class="actions">
