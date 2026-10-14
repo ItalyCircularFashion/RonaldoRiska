@@ -80,7 +80,7 @@ tr.sel td{background:rgba(15,110,140,.18)}.dot{display:inline-block;width:14px;h
 <label>Una ripetizione (§4.9)<input id="on" type="checkbox"></label>
 <label>Fili/cm<span><input id="ed" type="number" min="1" max="500" style="width:58px"> × <input id="pk" type="number" min="1" max="500" style="width:58px"></span></label>
 <label>Area fili × trame<span><input id="nn" type="number" min="4" max="2000" style="width:62px"> × <input id="mm" type="number" min="4" max="2000" style="width:62px"></span></label>
-<button id="rl">Rendering reale</button><label id="plw" hidden>Pelo %<input id="pl" type="range" min="0" max="100" style="width:90px"><output id="opl"></output></label><span id="in" class="sub"></span><span id="st" class="sub" role="status"></span>
+<button id="rl">Rendering reale</button><label id="plw" hidden>Pelo %<input id="pl" type="range" min="0" max="100" style="width:90px"><input id="pln" type="number" min="0" max="100" style="width:56px"></label><span id="in" class="sub"></span><span id="st" class="sub" role="status"></span>
 </div>
 <div id="wrap"><canvas id="fab" tabindex="0" aria-label="Simulazione del tessuto"></canvas></div>
 </main></div>
@@ -144,7 +144,7 @@ function spr(y,vert,cw,ch,f,sc,top){const W=cw*sc,H=ch*sc,c=document.createEleme
  if((y.tw==='S'||y.tw==='Z')&&y.tpm>0){x.strokeStyle='rgba(255,255,255,.2)';x.lineWidth=Math.max(1,sc*.7);const d=y.tw==='S'?1:-1;x.beginPath();
   for(let k=0;k<2;k++){if(vert){x.moveTo(o,H*k/2);x.lineTo(o+t,H*k/2+d*t*.8)}else{x.moveTo(W*k/2,o);x.lineTo(W*k/2+d*t*.8,o+t)}}x.stroke()}
  return c}
-function draw(){if(ST.real){drawReal();return}
+function draw(lo){if(ST.real){drawReal(lo);return}
  const T=ST,A=SA(),B=SB(),M=T.M,h=M.length,w=M[0].length;let N=T.n,R=T.m;if(T.one){N=Math.min(400,lcm(w,A.length));R=Math.min(400,lcm(h,B.length))}
  const px=37.8*T.zoom/100,cw=Math.max(1,Math.round(px/T.ends)),ch=Math.max(1,Math.round(px/T.picks));while(N*cw*R*ch>6e6&&R>4)R=Math.floor(R*.8);
  const cv=$('#fab'),x=cv.getContext('2d');cv.width=N*cw;cv.height=R*ch;x.fillStyle=T.bg;x.fillRect(0,0,cv.width,cv.height);
@@ -158,50 +158,84 @@ function draw(){if(ST.real){drawReal();return}
  G={cw,ch,N,R,A,B,h,w};
  $('#in').textContent=`${N} fili × ${R} trame · ${f1(N/T.ends)} cm · zoom ${T.zoom}% · ripetizioni: armatura ${w}×${h}, ordito ${A.length}, trama ${B.length}`}
 // ---- Rendering reale (vista a parte: la vista tecnica resta invariata) ----
-// Filato = cilindro ombreggiato con ondulazione (immersione sotto l'incrocio), rumore di fibra e torsione; sopra: ingrossamenti (fiammato), nodini (bottonato), anellini (bouclé), melange (ritorto di 2–4 capi) e pelo.
+// Ottimizzato: livelli in cache (fili → effetti → pelo), sprite condivisi tra filati con lo stesso aspetto, tabelle di rumore, fibre raggruppate in pochi tracciati,
+// aggiornamenti accorpati per fotogramma e qualità ridotta durante il trascinamento (qualità piena appena ci si ferma).
 const DMC=['#f4f1ea','#a63d2f','#2f6b4f'],plyCols=y=>{const n=y.mn>1?y.mn:1,a=[y.c];for(let k=1;k<n;k++)a.push(y.mc[k-1]||DMC[k-1]);return a},rgb3=h=>[1,3,5].map(i=>parseInt(h.substr(i,2),16)),plyRGB=y=>plyCols(y).map(rgb3);
-const hs=(a,b,c=0)=>{const x=Math.sin(a*127.1+b*311.7+c*74.7)*43758.5453;return x-Math.floor(x)};
+const RT=new Float32Array(65536);{let q=12345;for(let i=0;i<65536;i++){q=(Math.imul(q,1664525)+1013904223)>>>0;RT[i]=q/4294967296}}
+const hs=(a,b,c=0)=>RT[(Math.imul(a,73856093)^Math.imul(b,19349663)^Math.imul(c,83492791))&65535];
 const vn=(t,s)=>{const i=Math.floor(t),f=t-i,u=f*f*(3-2*f);return hs(i,s)*(1-u)+hs(i+1,s)*u};
-const shA=(hex,k,a)=>sh(hex,k).replace('rgb','rgba').replace(')',`,${a})`),RC=new Map();
-const syncReal=()=>{$('#rl').classList.toggle('on',!!ST.real);$('#rl').textContent=ST.real?'Vista tecnica':'Rendering reale';$('#plw').hidden=!ST.real;$('#opl').textContent=(ST.pelo||0)+'%'};
-function rspr(y,vert,cw,ch,f,dv,k,P){
- const c=document.createElement('canvas');c.width=cw;c.height=ch;const x=c.getContext('2d'),im=x.createImageData(cw,ch),d=im.data,A=vert?cw:ch,Lg=vert?ch:cw,n=P.length,mp=y.mp/100,spec=y.lu/30*.6,tw=y.tw==='S'?1:y.tw==='Z'?-1:0,sg=tw||1,ks=Array.from({length:A},(_,a)=>1+(hs(a,k,5)-.5)*.3);
+const shA=(hex,k,a)=>sh(hex,k).replace('rgb','rgba').replace(')',`,${a})`),RC=new Map(),FXK=new Set(['mp','bo','fl','bt']);
+const PCT=(y,k,lb)=>`<label>${lb}<span><input type="range" data-k="${k}" min="0" max="100" step="1" value="${y[k]}" style="width:100px"> <input type="number" data-k="${k}" min="0" max="100" step="1" value="${y[k]}" style="width:54px"></span></label>`;
+const syncReal=()=>{$('#rl').classList.toggle('on',!!ST.real);$('#rl').textContent=ST.real?'Vista tecnica':'Rendering reale';$('#plw').hidden=!ST.real;$('#pl').value=ST.pelo||0;$('#pln').value=ST.pelo||0};
+let dq=0,dfin=false,dtm=0;
+function reqDraw(fin){dfin=dfin||!!fin;clearTimeout(dtm);if(!dq)dq=requestAnimationFrame(()=>{dq=0;const f=dfin;dfin=false;draw(!f);if(!f)dtm=setTimeout(()=>draw(false),200)})}
+function rspr(P,mp,lu,tw,vert,cw,ch,f,dv,k){
+ const c=document.createElement('canvas');c.width=cw;c.height=ch;const x=c.getContext('2d'),im=x.createImageData(cw,ch),d=im.data,A=vert?cw:ch,Lg=vert?ch:cw,n=P.length,spec=lu/30*.6,ts=tw==='S'?1:tw==='Z'?-1:0,sg=ts||1;
+ const U=new Float32Array(A),LM=new Float32Array(A),SP=new Float32Array(A),EG=new Float32Array(A),OC=new Float32Array(Lg);
+ for(let a=0;a<A;a++){const u=((a+.5-A*(1-f)/2)/(A*f))*2-1,au=Math.abs(u);U[a]=u;
+  if(au>1)EG[a]=-(.38-.24*Math.min(1,(au-1)/.4));
+  else{const nz=Math.sqrt(1-au*au);EG[a]=1;LM[a]=(.34+.72*Math.max(0,-u*.55+nz*.83))*(1+(hs(a,k,5)-.5)*.3)*(.6+.4*nz);SP[a]=Math.pow(Math.max(0,-u*.288+nz*.958),28)*spec*255}}
+ for(let l=0;l<Lg;l++){const v=(l+.5)/Lg;let o=1;if(dv&1)o-=.5*Math.max(0,1-v/.3);if(dv&2)o-=.5*Math.max(0,1-(1-v)/.3);OC[l]=o}
+ const p0=P[0];
  for(let py=0;py<ch;py++)for(let px=0;px<cw;px++){
-  const a=vert?px:py,l=vert?py:px,u=((a+.5-A*(1-f)/2)/(A*f))*2-1,v=(l+.5)/Lg,au=Math.abs(u);let col=P[0],o;
-  if(n>1){const ph=v+u*.32*sg+k*.37,fr=(ph-Math.floor(ph))*n,id=Math.floor(fr),w=fr-id,nb=w>.82?P[(id+1)%n]:w<.18?P[(id+n-1)%n]:null,bl=w>.82?(w-.82)/.18*.5:w<.18?(.18-w)/.18*.5:0;
-   col=P[id].map((q,i)=>{const m=nb?q*(1-bl)+nb[i]*bl:q;return P[0][i]*(1-mp)+m*mp})}
-  if(au>1)o=col.map(q=>q*(.38-.24*Math.min(1,(au-1)/.4)));
-  else{const nz=Math.sqrt(1-au*au),df=Math.max(0,u*-.55+nz*.83),sp=Math.pow(Math.max(0,-u*.288+nz*.958),28)*spec;let occ=1;if(dv&1)occ-=.5*Math.max(0,1-v/.3);if(dv&2)occ-=.5*Math.max(0,1-(1-v)/.3);
-   const lum=(.34+.72*df)*occ*(tw?1+.16*Math.sin((v*2+u*.45*tw)*6.283):1)*ks[a]*(1+(hs(px,py,k)-.5)*.1)*(.6+.4*nz);o=col.map(q=>Math.min(255,q*lum+255*sp*occ))}
-  const i=(py*cw+px)*4;d[i]=o[0];d[i+1]=o[1];d[i+2]=o[2];d[i+3]=255}
+  const a=vert?px:py,l=vert?py:px,v=(l+.5)/Lg,u=U[a];let r=p0[0],g=p0[1],b=p0[2];
+  if(n>1){const ph=v+u*.32*sg+k*.37,fr=(ph-Math.floor(ph))*n,id=fr|0,w=fr-id,q=P[id];let r0=q[0],g0=q[1],b0=q[2];
+   if(w>.82){const o=P[(id+1)%n],t=(w-.82)/.18*.5;r0+=(o[0]-r0)*t;g0+=(o[1]-g0)*t;b0+=(o[2]-b0)*t}
+   else if(w<.18){const o=P[(id+n-1)%n],t=(.18-w)/.18*.5;r0+=(o[0]-r0)*t;g0+=(o[1]-g0)*t;b0+=(o[2]-b0)*t}
+   r=p0[0]+(r0-p0[0])*mp;g=p0[1]+(g0-p0[1])*mp;b=p0[2]+(b0-p0[2])*mp}
+  const e=EG[a],i=(py*cw+px)*4;
+  if(e<0){const t=-e;d[i]=r*t;d[i+1]=g*t;d[i+2]=b*t}
+  else{const oc=OC[l],lum=LM[a]*oc*(ts?1+.16*Math.sin((v*2+u*.45*ts)*6.283):1)*(1+(hs(px,py,k)-.5)*.1),s=SP[a]*oc;d[i]=r*lum+s;d[i+1]=g*lum+s;d[i+2]=b*lum+s}
+  d[i+3]=255}
  x.putImageData(im,0,0);return c}
-function drawReal(){
+const RS={k0:'',k1:'',k2:'',c0:document.createElement('canvas'),c1:document.createElement('canvas'),t:document.createElement('canvas')};
+function drawReal(lo){
  const T=ST,A=SA(),B=SB(),M=T.M,h=M.length,w=M[0].length;let N=T.n,R=T.m;if(T.one){N=Math.min(400,lcm(w,A.length));R=Math.min(400,lcm(h,B.length))}
  const px=37.8*T.zoom/100,cw=Math.max(8,Math.round(px/T.ends)),ch=Math.max(8,Math.round(px/T.picks));while(N*cw*R*ch>5e6&&R>4)R=Math.floor(R*.8);
- const cv=$('#fab'),x=cv.getContext('2d');cv.width=N*cw;cv.height=R*ch;x.fillStyle=T.bg;x.fillRect(0,0,cv.width,cv.height);if(RC.size>1500)RC.clear();
- const up=(i,j)=>{const b=B[((j%B.length)+B.length)%B.length];return b==='y'||M[((j%h)+h)%h][((i%w)+w)%w]},YK={},yk=l=>YK[l]||(YK[l]=JSON.stringify(yd(l)));
- const spr=(l,v,f,dv,k)=>{const key=[l,v,f,dv,k,cw,ch,yk(l)].join('|');let c=RC.get(key);if(!c){const y=yd(l);c=rspr(y,v,cw,ch,f,dv,k,plyRGB(y));RC.set(key,c)}return c};
- const slub=[];
- for(let j=0;j<R;j++)for(let i=0;i<N;i++){
-  const v=!!up(i,j),l=v?A[i%A.length]:B[j%B.length],y=yd(l),th=v?i:j,t=v?j:i,sd=th+(v?0:500),X=i*cw,Y=(R-1-j)*ch,sp=10/(v?T.ends:T.picks);
-  let fw=dia(y)/sp*(1+(hs(th,v?1:2,11)-.5)*2*y.va/100);
-  if(y.fl){const g=Math.max(0,(vn(t*.16,sd)-.5)/.5),n2=Math.max(0,(.28-vn(t*.16+19,sd))/.28);fw*=1+y.fl/100*(1.6*g*g-.4*n2)}   // fiammato: zone di accumulo e assottigliamenti lungo il filo
-  const f=Math.round(cl(Math.min(fw,1),.3,1)*20)/20,dv=v?((up(i,j+1)?0:1)|(up(i,j-1)?0:2)):((up(i-1,j)?1:0)|(up(i+1,j)?2:0)),k=Math.floor(hs(i,j,13)*3);
-  x.drawImage(spr(l,v,f,dv,k),X,Y);if(fw>1.04)slub.push([l,v,Math.min(fw,2.4),dv,k,X,Y])}
- for(const[l,v,s,dv,k,X,Y]of slub){const im=spr(l,v,1,dv,k);if(v)x.drawImage(im,X-(s-1)*cw/2,Y,cw*s,ch);else x.drawImage(im,X,Y-(s-1)*ch/2,cw,ch*s)}
- const nub=(cx,cy,r,col)=>{const g=x.createRadialGradient(cx-r*.3,cy-r*.3,r*.1,cx,cy,r);g.addColorStop(0,sh(col,1.25));g.addColorStop(1,sh(col,.55));x.fillStyle='rgba(0,0,0,.25)';x.beginPath();x.ellipse(cx+r*.2,cy+r*.3,r,r*.8,0,0,6.283);x.fill();x.fillStyle=g;x.beginPath();x.arc(cx,cy,r,0,6.283);x.fill()};
- const loop=(cx,cy,r,col,a0)=>{x.lineCap='round';x.strokeStyle='rgba(0,0,0,.3)';x.lineWidth=r*.55;x.beginPath();x.arc(cx+r*.12,cy+r*.18,r,a0,a0+4.4);x.stroke();x.strokeStyle=sh(col,.9);x.lineWidth=r*.42;x.beginPath();x.arc(cx,cy,r,a0,a0+4.4);x.stroke();x.strokeStyle=sh(col,1.3);x.lineWidth=r*.16;x.beginPath();x.arc(cx-r*.06,cy-r*.08,r,a0+.3,a0+3.1);x.stroke()};
- for(let j=0;j<R;j++)for(let i=0;i<N;i++){const v=!!up(i,j),l=v?A[i%A.length]:B[j%B.length],y=yd(l);if(!(y.bt||y.bo))continue;
-  const cols=plyCols(y),X=i*cw+cw/2,Y=(R-1-j)*ch+ch/2,tw_=Math.min(cw,ch)*.8;
-  if(y.bt&&hs(i,j,3)<y.bt/100*.1){const r=tw_*(.3+.35*hs(i,j,5)),c=cols[Math.floor(hs(i,j,6)*cols.length)],o=(hs(i,j,8)-.5)*.5;nub(X+(v?0:o*cw),Y+(v?o*ch:0),r,c)}   // bottonato: nodini casuali
-  if(y.bo&&hs(i,j,4)<y.bo/100*.75){const m=1+(y.bo>60&&hs(i,j,9)>.5?1:0);for(let q=0;q<m;q++){const r=tw_*(.28+.3*hs(i,j,10+q)),sg=hs(i,j,12+q)<.5?-1:1,c=cols[Math.floor(hs(i,j,14+q)*cols.length)],off=tw_*(.35+.25*hs(i,j,16+q))*sg,al=(hs(i,j,18+q)-.5)*.6;
-   loop(X+(v?off:al*cw),Y+(v?al*ch:off),r,c,hs(i,j,20+q)*6.283)}}}   // bouclé: anellini
+ const W=N*cw,Hh=R*ch,YS={};for(const l of new Set([...A,...B])){const y=yd(l);YS[l]={y,cols:plyCols(y),rgb:plyRGB(y),dia:dia(y)}}
+ const sg=Object.entries(YS).map(([l,q])=>[l,q.cols,q.y.mp,q.y.lu,q.y.tw,q.y.va,q.y.fl,q.dia]),k0=JSON.stringify([M,A,B,N,R,cw,ch,T.ends,T.picks,T.bg,sg]),
+  k1=k0+JSON.stringify(Object.entries(YS).map(([l,q])=>[l,q.y.bo,q.y.bt])),fx=Object.values(YS).some(q=>q.y.bo||q.y.bt);
+ if(RC.size>2500)RC.clear();
+ const S2=N+2;let UPG=null;
+ const grid=()=>UPG||(UPG=(()=>{const g=new Uint8Array(S2*(R+2));for(let j=-1;j<=R;j++){const b=B[((j%B.length)+B.length)%B.length],row=M[((j%h)+h)%h];for(let i=-1;i<=N;i++)g[(j+1)*S2+i+1]=(b==='y'||row[((i%w)+w)%w])?1:0}return g})());
+ const sprite=(S,v,f,dv,k)=>{const y=S.y,key=[v,f,dv,k,cw,ch,S.cols.join(),y.mp,y.lu,y.tw].join('|');let c=RC.get(key);if(!c){c=rspr(S.rgb,y.mp/100,y.lu,y.tw,v,cw,ch,f,dv,k);RC.set(key,c)}return c};
+ // livello 0: fili (con ondulazione, torsione, melange, fiammato)
+ const base=x=>{x.fillStyle=T.bg;x.fillRect(0,0,W,Hh);x.imageSmoothingEnabled=false;const UP=grid(),sl=[];
+  for(let j=0;j<R;j++)for(let i=0;i<N;i++){
+   const v=UP[(j+1)*S2+i+1]===1,l=v?A[i%A.length]:B[j%B.length],S=YS[l],y=S.y,th=v?i:j,t=v?j:i,sd=th+(v?0:500),sp=10/(v?T.ends:T.picks);
+   let fw=S.dia/sp*(1+(hs(th,v?1:2,11)-.5)*2*y.va/100);
+   if(y.fl){const g=Math.max(0,(vn(t*.16,sd)-.5)/.5),n2=Math.max(0,(.28-vn(t*.16+19,sd))/.28);fw*=1+y.fl/100*(1.6*g*g-.4*n2)}
+   const f=Math.round(cl(Math.min(fw,1),.3,1)*20)/20,dv=v?((UP[(j+2)*S2+i+1]?0:1)|(UP[j*S2+i+1]?0:2)):((UP[(j+1)*S2+i]?1:0)|(UP[(j+1)*S2+i+2]?2:0)),k=(hs(i,j,13)*3)|0,X=i*cw,Y=(R-1-j)*ch;
+   x.drawImage(sprite(S,v,f,dv,k),X,Y);if(fw>1.04)sl.push(l,v,Math.min(fw,2.4),dv,k,X,Y)}
+  x.imageSmoothingEnabled=true;
+  for(let q=0;q<sl.length;q+=7){const S=YS[sl[q]],v=sl[q+1],s=sl[q+2],im=sprite(S,v,1,sl[q+3],sl[q+4]),X=sl[q+5],Y=sl[q+6];if(v)x.drawImage(im,X-(s-1)*cw/2,Y,cw*s,ch);else x.drawImage(im,X,Y-(s-1)*ch/2,cw,ch*s)}};
+ // livello 1: nodini (bottonato) e anellini (bouclé)
+ const effects=x=>{const UP=grid();
+  const nub=(cx,cy,r,col)=>{const g=x.createRadialGradient(cx-r*.3,cy-r*.3,r*.1,cx,cy,r);g.addColorStop(0,sh(col,1.25));g.addColorStop(1,sh(col,.55));x.fillStyle='rgba(0,0,0,.25)';x.beginPath();x.ellipse(cx+r*.2,cy+r*.3,r,r*.8,0,0,6.283);x.fill();x.fillStyle=g;x.beginPath();x.arc(cx,cy,r,0,6.283);x.fill()};
+  const loop=(cx,cy,r,col,a0)=>{x.lineCap='round';x.strokeStyle='rgba(0,0,0,.3)';x.lineWidth=r*.55;x.beginPath();x.arc(cx+r*.12,cy+r*.18,r,a0,a0+4.4);x.stroke();x.strokeStyle=sh(col,.9);x.lineWidth=r*.42;x.beginPath();x.arc(cx,cy,r,a0,a0+4.4);x.stroke();x.strokeStyle=sh(col,1.3);x.lineWidth=r*.16;x.beginPath();x.arc(cx-r*.06,cy-r*.08,r,a0+.3,a0+3.1);x.stroke()};
+  for(let j=0;j<R;j++)for(let i=0;i<N;i++){const v=UP[(j+1)*S2+i+1]===1,S=YS[v?A[i%A.length]:B[j%B.length]],y=S.y;if(!(y.bt||y.bo))continue;
+   const cols=S.cols,X=i*cw+cw/2,Y=(R-1-j)*ch+ch/2,tw_=Math.min(cw,ch)*.8;
+   if(y.bt&&hs(i,j,3)<y.bt/100*.1){const r=tw_*(.3+.35*hs(i,j,5)),c=cols[(hs(i,j,6)*cols.length)|0],o=(hs(i,j,8)-.5)*.5;nub(X+(v?0:o*cw),Y+(v?o*ch:0),r,c)}
+   if(y.bo&&hs(i,j,4)<y.bo/100*.75){const m=1+(y.bo>60&&hs(i,j,9)>.5?1:0);for(let q=0;q<m;q++){const r=tw_*(.28+.3*hs(i,j,10+q)),sgn=hs(i,j,12+q)<.5?-1:1,c=cols[(hs(i,j,14+q)*cols.length)|0],off=tw_*(.35+.25*hs(i,j,16+q))*sgn,al=(hs(i,j,18+q)-.5)*.6;
+    loop(X+(v?off:al*cw),Y+(v?al*ch:off),r,c,hs(i,j,20+q)*6.283)}}}};
+ const C0=RS.c0,C1=RS.c1;
+ if(RS.k0!==k0){C0.width=W;C0.height=Hh;base(C0.getContext('2d'));RS.k0=k0;RS.k1='';RS.k2=''}
+ let src=C0;
+ if(fx){if(RS.k1!==k1){C1.width=W;C1.height=Hh;const x1=C1.getContext('2d');x1.drawImage(C0,0,0);effects(x1);RS.k1=k1;RS.k2=''}src=C1}
+ const cv=$('#fab'),x=cv.getContext('2d');if(cv.width!==W||cv.height!==Hh){cv.width=W;cv.height=Hh}
+ x.globalAlpha=1;x.drawImage(src,0,0);
  const pl=(T.pelo||0)/100;
- if(pl>0){const t=document.createElement('canvas');t.width=Math.max(1,cv.width>>1);t.height=Math.max(1,cv.height>>1);t.getContext('2d').drawImage(cv,0,0,t.width,t.height);x.globalAlpha=pl*.55;x.drawImage(t,0,0,cv.width,cv.height);x.globalAlpha=1;   // alone morbido
-  const cnt=Math.min(30000,Math.round(N*R*pl*9)),Lm=pl*Math.min(cw,ch)*1.6;x.lineCap='round';
-  for(let q=0;q<cnt;q++){const i=Math.floor(hs(q,1,7)*N),j=Math.floor(hs(q,2,7)*R),v=!!up(i,j),yy=yd(v?A[i%A.length]:B[j%B.length]),cs=plyCols(yy),col=cs[Math.floor(hs(q,3,7)*cs.length)],
-    X=i*cw+hs(q,4,7)*cw,Y=(R-1-j)*ch+hs(q,5,7)*ch,an=(v?Math.PI/2:0)+(hs(q,6,7)-.5)*2.2+(hs(q,7,7)<.5?0:Math.PI),len=Lm*(.35+hs(q,8,7)*.9);
-   x.strokeStyle=shA(col,1+(hs(q,9,7)-.4)*.5,.22+hs(q,10,7)*.35);x.lineWidth=Math.max(.6,Math.min(cw,ch)*.05);x.beginPath();x.moveTo(X,Y);x.quadraticCurveTo(X+Math.cos(an+.5)*len*.5,Y+Math.sin(an+.5)*len*.5,X+Math.cos(an)*len,Y+Math.sin(an)*len);x.stroke()}}   // pelo: fibre sporgenti
+ if(pl>0){   // livello 2: pelo = alone morbido + fibre sporgenti (a qualità ridotta mentre si trascina)
+  const tw=Math.max(1,W>>1),th=Math.max(1,Hh>>1),key=fx?k1:k0;
+  if(RS.k2!==key){RS.t.width=tw;RS.t.height=th;RS.t.getContext('2d').drawImage(src,0,0,tw,th);RS.k2=key}
+  x.globalAlpha=pl*.55;x.drawImage(RS.t,0,0,W,Hh);x.globalAlpha=1;
+  const UP=grid(),cnt=Math.min(lo?9000:30000,Math.round(N*R*pl*(lo?4:9))),Lm=pl*Math.min(cw,ch)*1.6,bk=new Map();
+  for(let q=0;q<cnt;q++){const i=(hs(q,1,7)*N)|0,j=(hs(q,2,7)*R)|0,v=UP[(j+1)*S2+i+1]===1,S=YS[v?A[i%A.length]:B[j%B.length]],col=S.cols[(hs(q,3,7)*S.cols.length)|0],lt=hs(q,9,7)<.5?0:1,al=(hs(q,10,7)*3)|0,kk=col+lt+al;
+   let b=bk.get(kk);if(!b){b={path:new Path2D(),col,lt,al};bk.set(kk,b)}
+   const X=i*cw+hs(q,4,7)*cw,Y=(R-1-j)*ch+hs(q,5,7)*ch,an=(v?1.5708:0)+(hs(q,6,7)-.5)*2.2+(hs(q,7,7)<.5?0:3.1416),len=Lm*(.35+hs(q,8,7)*.9);
+   b.path.moveTo(X,Y);b.path.quadraticCurveTo(X+Math.cos(an+.5)*len*.5,Y+Math.sin(an+.5)*len*.5,X+Math.cos(an)*len,Y+Math.sin(an)*len)}
+  x.lineCap='round';x.lineWidth=Math.max(.6,Math.min(cw,ch)*.05);
+  for(const b of bk.values()){x.strokeStyle=shA(b.col,b.lt?1.3:.95,.22+b.al*.14);x.stroke(b.path)}}
  G={cw,ch,N,R,A,B,h,w};
  $('#in').textContent=`Rendering reale · ${N} fili × ${R} trame · ${f1(N/T.ends)} cm · zoom ${T.zoom}% · pelo ${T.pelo||0}%`}
 // ---- Interfaccia ----
@@ -211,7 +245,7 @@ function ensureYarns(){if(!ST.yl)ST.yl={w:[],f:[]};for(const l of new Set([...SA
 const hex2hsl=h=>{const[r,g,b]=[1,3,5].map(i=>parseInt(h.substr(i,2),16)/255),mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/2,d=mx-mn,s=d?d/(1-Math.abs(2*l-1)):0,hh=!d?0:mx===r?((g-b)/d+6)%6:mx===g?(b-r)/d+2:(r-g)/d+4;return[Math.round(hh*60)%360,Math.round(s*100),Math.round(l*100)]};
 const hsl2hex=(h,s,l)=>{s/=100;l/=100;const k=n=>(n+h/30)%12,a=s*Math.min(l,1-l),f=n=>l-a*Math.max(-1,Math.min(k(n)-3,9-k(n),1));return'#'+[f(0),f(8),f(4)].map(v=>Math.round(v*255).toString(16).padStart(2,'0')).join('')};
 const CP={h:0,s:0,l:0},cur=()=>{if(ST.sel==='#')return ST.bg;const y=yd(ST.sel);return ST.ply>0&&ST.ply<y.mn?(y.mc[ST.ply-1]||DMC[ST.ply-1]):y.c};
-function setColor(col){if(ST.sel==='#')ST.bg=col;else{const y=yd(ST.sel);if(ST.ply>0&&ST.ply<y.mn){const mc=[...y.mc];mc[ST.ply-1]=col;ST.Y[ST.sel]={...ST.Y[ST.sel],mc}}else ST.Y[ST.sel]={...ST.Y[ST.sel],c:col}}bar();ytb();tech();draw()}
+function setColor(col){if(ST.sel==='#')ST.bg=col;else{const y=yd(ST.sel);if(ST.ply>0&&ST.ply<y.mn){const mc=[...y.mc];mc[ST.ply-1]=col;ST.Y[ST.sel]={...ST.Y[ST.sel],mc}}else ST.Y[ST.sel]={...ST.Y[ST.sel],c:col}}bar();ytb();reqDraw()}
 function bar(){const u=new Set([...SA(),...SB()]),mk=l=>`<span class="chip${ST.sel===l?' sel':''}" data-l="${l}" style="background:${yd(l).c};${ST.prot[l]?'text-decoration:line-through;':''}">${l}${u.has(l)?'*':''}</span>`;
  $('#yb').innerHTML=`<div>Ordito ${ST.yl.w.map(mk).join('')}</div><div>Trama ${ST.yl.f.map(mk).join('')}</div><div><span class="chip${ST.sel==='#'?' sel':''}" data-l="#" style="background:${ST.bg};color:#000;text-shadow:none">#</span> Sfondo <button data-add="w">+ Filato ordito</button> <button data-add="f">+ Filato trama</button></div><div class="sub">* in uso · clic = seleziona e modifica · doppio clic = protetto</div>`;ytb()}
 const ytable=()=>'<table><tr><td></td><td>Filato</td><td>Titolo</td><td>Ø mm</td><td>Copertura</td></tr>'+[...ST.yl.w,...ST.yl.f].map(l=>{const y=yd(l),sp=10/(LET(l)==='w'?ST.ends:ST.picks);return`<tr class="${ST.sel===l?'sel':''}" data-l="${l}" style="cursor:pointer"><td><span class="dot" style="background:${y.c}"></span></td><td>${l} ${LET(l)==='w'?'ord.':'tr.'}</td><td>${y.cnt} ${y.u}</td><td>${dia(y).toFixed(3)}</td><td>${Math.round(dia(y)/sp*100)}%</td></tr>`}).join('')+'</table>';
@@ -228,8 +262,8 @@ ${N('df','Fattore dimensionale (18)',8,40,.1)}<label>Diametro simulato (dal tito
 <label>Torsione<select data-k="tw">${['0','S','Z'].map(t=>`<option${t===y.tw?' selected':''}>${t}</option>`).join('')}</select></label>${N('tpm','Torsioni per metro',0,5000,10)}${N('tc','Contrazione da torsione %',0,30,.5)}${N('tr','Trasparenza 0–9',0,9,1)}${N('pr','Prezzo (per kg)',0,1e6,.01)}
 <h3>Effetti filato${ST.real?'':' (visibili con Rendering reale)'}</h3>
 <label>Melange · capi del ritorto<select data-k="mn">${[0,2,3,4].map(n=>`<option value="${n}"${n===y.mn?' selected':''}>${n?n+' capi':'spento'}</option>`).join('')}</select></label>
-${y.mn>1?`<div>Capi: ${plyCols(y).map((c,i)=>`<span class="chip${ST.ply===i?' sel':''}" data-ply="${i}" style="background:${c}">${i+1}</span>`).join('')} <span class="sub">clic = modifica il colore del capo</span></div>${N('mp','Melange % (mescolanza)',0,100,1)}`:''}
-${N('bo','Bouclé % (anellini)',0,100,1)}${N('fl','Fiammato % (ingrossamenti)',0,100,1)}${N('bt','Bottonato % (nodini)',0,100,1)}
+${y.mn>1?`<div>Capi: ${plyCols(y).map((c,i)=>`<span class="chip${ST.ply===i?' sel':''}" data-ply="${i}" style="background:${c}">${i+1}</span>`).join('')} <span class="sub">clic = modifica il colore del capo</span></div>${PCT(y,'mp','Melange % (mescolanza)')}`:''}
+${PCT(y,'bo','Bouclé % (anellini)')}${PCT(y,'fl','Fiammato % (ingrossamenti)')}${PCT(y,'bt','Bottonato % (nodini)')}
 <label>Codice<input data-k="cd" value="${y.cd}" style="width:90px"></label><label>Nome<input data-k="nm" value="${y.nm}" style="width:120px"></label><button data-del="1">Rimuovi questo filato</button>`);
  [CP.h,CP.s,CP.l]=hex2hsl(cur());cpSync();if(!bgc)$('#dm').textContent=dia(y).toFixed(3)+' mm'}
 function addYarn(isW){const k=isW?'w':'f',free=[...'ABCDEFGHIJKLMNOPQRSTUVWXY'].map(c=>isW?c:c.toLowerCase()).find(c=>!ST.yl[k].includes(c));
@@ -303,8 +337,10 @@ $('#yb').addEventListener('click',e=>{const t=e.target,a=t.dataset.add;if(a){add
 $('#yb').addEventListener('dblclick',e=>{const l=e.target.dataset.l;if(l&&l!=='#'){ST.prot[l]=!ST.prot[l];bar()}});
 $('#ye').addEventListener('input',e=>{const t=e.target,cp=t.dataset.cp,k=t.dataset.k;
  if(cp){let col;if(cp==='x'){const v=t.value.trim().toLowerCase();if(!/^#[0-9a-f]{6}$/.test(v))return;col=v;[CP.h,CP.s,CP.l]=hex2hsl(v)}else{CP[cp]=+t.value;col=hsl2hex(CP.h,CP.s,CP.l)}setColor(col);cpSync(cp);return}
- if(!k)return;const v=t.type==='number'||k==='mn'?parseFloat(t.value):t.value;if(typeof v==='number'&&isNaN(v))return;
- ST.Y[ST.sel]={...ST.Y[ST.sel],[k]:v};const y=yd(ST.sel);$('#dm').textContent=dia(y).toFixed(3)+' mm';ytb();bar();draw();tech();if(k==='mn'){ST.ply=0;yedit()}});
+ if(!k)return;const v=t.type==='number'||t.type==='range'||k==='mn'?parseFloat(t.value):t.value;if(typeof v==='number'&&isNaN(v))return;
+ ST.Y[ST.sel]={...ST.Y[ST.sel],[k]:v};const y=yd(ST.sel);$('#dm').textContent=dia(y).toFixed(3)+' mm';document.querySelectorAll(`#ye [data-k="${k}"]`).forEach(o=>{if(o!==t&&(o.type==='range'||o.type==='number'))o.value=v});
+ if(FXK.has(k))reqDraw();else{ytb();bar();tech();reqDraw()}if(k==='mn'){ST.ply=0;yedit()}});
+$('#ye').addEventListener('change',e=>{if(e.target.dataset.k||e.target.dataset.cp)reqDraw(true)});
 $('#ye').addEventListener('click',e=>{const t=e.target,r=t.closest('tr[data-l]');
  if(t.dataset.add){addYarn(t.dataset.add==='w');return}if(t.dataset.del){delYarn();return}if(t.dataset.ply!==undefined){ST.ply=+t.dataset.ply;yedit();return}
  if(t.dataset.c){setColor(t.dataset.c);[CP.h,CP.s,CP.l]=hex2hsl(t.dataset.c);cpSync();return}
@@ -329,7 +365,9 @@ $('#fi').onchange=async e=>{try{const o=JSON.parse(await e.target.files[0].text(
 $('#fp').onclick=()=>$('#fab').toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='tessuto.png';a.click()});
 $('#fw').onclick=()=>{if(ST.M[0].length>99)say('Attenzione: oltre 99 licci (limite del manuale)');dl('tessuto.wif',wif(),'text/plain')};
 $('#fh').onclick=()=>dl('dati-tecnici.html','<!doctype html><meta charset="utf-8"><title>Dati tecnici</title>'+$('#tt').innerHTML,'text/html');
-$('#rl').onclick=()=>{ST.real=ST.real?0:1;syncReal();draw()};$('#pl').oninput=e=>{ST.pelo=+e.target.value;syncReal();draw()};
+$('#rl').onclick=()=>{ST.real=ST.real?0:1;syncReal();draw()};
+$('#pl').oninput=e=>{ST.pelo=+e.target.value;$('#pln').value=ST.pelo;reqDraw()};$('#pl').onchange=()=>reqDraw(true);
+$('#pln').oninput=e=>{ST.pelo=cl(+e.target.value||0,0,100);$('#pl').value=ST.pelo;reqDraw()};$('#pln').onchange=()=>reqDraw(true);
 init();
 </script>
 </body>
