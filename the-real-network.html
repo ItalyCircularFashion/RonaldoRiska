@@ -74,7 +74,8 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent2)
 .topbar{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:14px;padding:12px 20px;background:rgba(5,5,10,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,240,255,.2);box-shadow:0 0 30px rgba(0,240,255,.05)}
 .brand{display:flex;align-items:center;gap:12px;white-space:nowrap}
 .brand-mark{width:40px;height:40px;border-radius:6px;display:grid;place-items:center;background:linear-gradient(135deg,#ff2d6f,#00f0ff);color:#000;font-weight:900;font-family:"Orbitron",sans-serif;font-size:14px;box-shadow:0 0 20px rgba(255,45,111,.4)}
-.brand-text{font-family:"Orbitron",sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:2px;text-transform:uppercase;background:linear-gradient(90deg,#00f0ff,#ff2d6f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.brand-text{font-family:"Orbitron",sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:2px;text-transform:uppercase;background:linear-gradient(90deg,#00f0ff,#ff2d6f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:glitch 4s infinite}
+@keyframes glitch{0%,92%,100%{text-shadow:none;transform:none}93%{text-shadow:3px 0 var(--accent2),-3px 0 var(--accent3);transform:translateX(2px)}95%{text-shadow:-3px 0 var(--accent2),3px 0 var(--accent3);transform:translateX(-2px)}97%{text-shadow:2px 2px var(--accent2),-2px -2px var(--accent3);transform:none}}
 .tabs{display:flex;gap:4px;flex-wrap:wrap}
 .tabs button{background:transparent;border:1px solid rgba(0,240,255,.2);color:var(--muted);border-radius:4px;padding:8px 16px;cursor:pointer;font-family:"Orbitron",sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;transition:all .3s}
 .tabs button:hover{border-color:var(--accent2);color:var(--accent2);box-shadow:0 0 15px rgba(0,240,255,.2)}
@@ -145,7 +146,7 @@ button.danger{background:#ef4444}
     <div class="card" style="padding:10px 14px;margin-bottom:12px"><div class="ticker" id="ticker"></div></div>
     <section class="card" id="viewFeed"><div class="feed-head"><h2>Feed</h2><button class="button small" id="newPostBtn">Nuovo post</button></div><div class="compose" id="composer" style="display:none"><textarea id="postText" placeholder="Condividi qualcosa con la rete..."></textarea><div style="display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap"><input type="url" id="postImage" placeholder="URL immagine (facoltativo)" style="flex:1;min-width:180px;padding:8px;border-radius:99px;background:#08111d;border:1px solid var(--line);color:var(--text)"><button class="button small" id="publishPost">Pubblica</button><button class="ghost small" id="cancelPost">Annulla</button></div></div><div id="feedList"></div></section><section id="viewExplore" style="display:none" class="card"><h2>Esplora Persone</h2><input class="search" id="searchInput" placeholder="Cerca per nome o handle..." style="margin:10px 0"><div id="exploreList"></div></section><section id="viewProfile" style="display:none" class="card"><div id="profileView"></div></section><section id="viewMessages" style="display:none" class="card"><h2>Messaggi</h2><div class="layout" style="grid-template-columns:240px 1fr;padding:0;max-width:none"><div id="convList" class="card"></div><div id="convThread" class="card"></div></div></section><section id="viewNotifications" style="display:none" class="card"><h2>Notifiche</h2><div id="notifList"></div></section>
   </main>
-  <aside class="rightcol"><div class="card" id="kpiCard"></div><div class="card" id="requestCard" style="margin-top:12px"></div><div class="card" id="trendingCard" style="margin-top:12px"></div></aside>
+  <aside class="rightcol"><div class="card" id="kpiCard"></div><div class="card" id="requestCard" style="margin-top:12px"></div><div class="card" id="timelineCard" style="margin-top:12px"></div><div class="card" id="trendingCard" style="margin-top:12px"></div></aside>
 </div>
 <div id="modal" class="modal"><div class="modal-body" id="modalBody"></div></div>
 <div id="toast" class="toast"></div>
@@ -287,7 +288,23 @@ function timeAgo(ts){ const s=Math.floor((Date.now()-ts)/1000); if(s<60)return '
 let selectedProfileId=null;
 let selectedConversation=null;
 const FASES=['Ritorcitura','Orditura','Imbozzimatura','Tessitura','Controllo Greggio','Rifinizione','Controllo Finito'];
-function renderAll(){ renderSession(); renderProfileCard(); renderFeed(); renderExplore(); renderProfileView(); renderMessages(); renderNotifications(); renderTrending(); renderKPI(); renderTicker(); renderRequestCard(); renderRequests(); }
+function renderAll(){ renderSession(); renderProfileCard(); renderFeed(); renderExplore(); renderProfileView(); renderMessages(); renderNotifications(); renderTrending(); renderKPI(); renderTicker(); renderRequestCard(); renderRequests(); renderTimeline(); }
+function renderTimeline(){
+  const el=document.getElementById('timelineCard'); if(!el) return;
+  const fasi=[
+    {n:'01',t:'Ritorcitura',d:'Preparazione filati'},
+    {n:'02',t:'Orditura',d:'Montatura catena'},
+    {n:'03',t:'Imbozzimatura',d:'Avvio telaio'},
+    {n:'04',t:'Tessitura',d:'Produzione tessuto'},
+    {n:'05',t:'Controllo Greggio',d:'Ispezione qualita'},
+    {n:'06',t:'Rifinizione',d:'Finitura e stiratura'},
+    {n:'07',t:'Controllo Finito',d:'Certificazione finale'}
+  ];
+  el.innerHTML='<h3 style="margin-bottom:12px;font-family:Orbitron,sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--accent2)">Timeline Filiera</h3>'+
+    '<div style="position:relative;padding-left:24px">'+
+    '<div style="position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent2),var(--accent3))"></div>'+
+    fasi.map((f,i)=>`<div style="position:relative;margin-bottom:14px"><div style="position:absolute;left:-20px;top:4px;width:10px;height:10px;border-radius:50%;background:${i<4?'var(--accent2)':'var(--accent3)'};box-shadow:0 0 8px ${i<4?'var(--accent2)':'var(--accent3)'}"></div><div style="font-family:Orbitron,sans-serif;font-size:10px;color:var(--muted);letter-spacing:1px">${f.n}</div><div style="font-weight:600;font-size:13px">${f.t}</div><div style="font-size:11px;color:var(--muted)">${f.d}</div></div>`).join('')+'</div>';
+}
 function renderRequestCard(){
   const el=document.getElementById('requestCard'); if(!el) return;
   const u=currentUser();
@@ -361,7 +378,10 @@ function renderKPI(){
   const el=document.getElementById('kpiCard'); if(!el) return;
   el.innerHTML='<h3 style="margin-bottom:10px">KPI Distretto</h3><table class="kpi-table"><thead><tr><th>Metrica</th><th>Valore</th></tr></thead><tbody>'+
     KPI_DATA.map(k=>`<tr><td>${k.label}</td><td class="${k.cls}">${k.val}</td></tr>`).join('')+'</tbody></table>'+
-    '<div class="spark">'+KPI_DATA[0].spark.map(v=>`<i style="height:${v*8}%"></i>`).join('')+'</div>';
+    '<div class="spark">'+KPI_DATA[0].spark.map(v=>`<i style="height:${v*8}%"></i>`).join('')+'</div>'+
+    '<h3 style="margin:14px 0 8px;font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--accent2)">Export Trimestrale</h3>'+
+    '<div style="display:flex;align-items:flex-end;gap:6px;height:80px;padding:8px 0">'+
+    [65,72,58,80,68,85,74,90,78,95,82,98].map((v,i)=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:100%;background:linear-gradient(180deg,var(--accent2),var(--accent3));border-radius:2px 2px 0 0;height:${v}%;box-shadow:0 0 8px rgba(0,240,255,.3)"></div><span style="font-size:9px;color:var(--muted);font-family:JetBrains Mono,monospace">${i+1}T</span></div>`).join('')+'</div>';
 }
 function renderTicker(){
   const el=document.getElementById('ticker'); if(!el) return;
@@ -404,7 +424,7 @@ function postHtml(p){
     <div class="post-head">${avatarHtml(a,40)}<div><strong>${escapeHtml(a.name)}</strong> <span class="handle">@${escapeHtml(a.handle)}</span><div class="handle">${timeAgo(p.createdAt)}</div></div>${followBtn}</div>
     <div style="margin:6px 0"><span class="badge ${catCls}">${catLabels[catCls]||'Economia'}</span></div>
     ${p.text?`<div class="post-text">${escapeHtml(p.text)}</div>`:''}
-    ${p.image?`<img class="post-image" src="${escapeHtml(p.image)}" alt="immagine post" onerror="this.style.display='none'">`:''}
+    ${p.image?`<img class="post-image" src="${escapeHtml(p.image)}" alt="immagine post" onerror="this.style.display='none'">`:inlineSvg(p.cat||'eco')}
     <div class="actions">
       <button class="ghost small" onclick="toggleLike('${p.id}')">${isLiked?'❤️':'🤍'} ${p.likes.length}</button>
       <button class="ghost small" onclick="focusComments('${p.id}')">💬 ${comments.length}</button>
@@ -415,6 +435,12 @@ function postHtml(p){
       ${currentUser()?`<div style="display:flex;gap:8px;margin-top:8px"><input id="commentInput-${p.id}" placeholder="Commenta..." style="flex:1;padding:8px;border-radius:99px;background:#08111d;border:1px solid var(--line);color:var(--text)"><button class="ghost small" onclick="addComment('${p.id}')">Invia</button></div>`:''}
     </div>
   </div>`;
+}
+function inlineSvg(cat){
+  const colors={eco:['#f0e68c','#00f0ff'],tech:['#00f0ff','#ff2d6f'],amb:['#00ff9f','#00f0ff'],lav:['#ff2d6f','#b388ff']};
+  const [c1,c2]=colors[cat]||colors.eco;
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" style="width:100%;border-radius:4px;border:1px solid rgba(0,240,255,.2)"><defs><linearGradient id="g${cat}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${c1}" stop-opacity=".3"/><stop offset="100%" stop-color="${c2}" stop-opacity=".1"/></linearGradient></defs><rect width="400" height="200" fill="url(#g${cat})"/><g stroke="${c1}" stroke-width="1" opacity=".4"><line x1="0" y1="50" x2="400" y2="50"/><line x1="0" y1="100" x2="400" y2="100"/><line x1="0" y1="150" x2="400" y2="150"/><line x1="100" y1="0" x2="100" y2="200"/><line x1="200" y1="0" x2="200" y2="200"/><line x1="300" y1="0" x2="300" y2="200"/></g><g fill="${c2}" opacity=".6"><circle cx="100" cy="50" r="4"/><circle cx="200" cy="100" r="4"/><circle cx="300" cy="150" r="4"/><circle cx="50" cy="120" r="3"/><circle cx="150" cy="30" r="3"/><circle cx="250" cy="70" r="3"/><circle cx="350" cy="180" r="3"/></g><text x="200" y="105" text-anchor="middle" fill="${c1}" font-family="Orbitron,sans-serif" font-size="14" letter-spacing="2">${cat.toUpperCase()}</text></svg>`;
+  return `<div style="margin:8px 0">${svg}</div>`;
 }
 function focusComments(postId){ const el=document.getElementById('comments-'+postId); if(!el) return; el.style.display=el.style.display==='none'?'block':'none'; }
 function deletePost(postId){ const p=S.posts.find(x=>x.id===postId); if(!p) return; if(!currentUser()||currentUser().id!==p.authorId) return; S.posts=S.posts.filter(x=>x.id!==postId); S.comments=S.comments.filter(c=>c.postId!==postId); S.messages=S.messages; saveState(S); toast('Post eliminato.'); renderAll(); }
