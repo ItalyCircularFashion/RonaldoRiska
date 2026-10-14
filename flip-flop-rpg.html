@@ -62,7 +62,7 @@ const $=s=>document.querySelector(s), cv=$('#cv'), ctx=cv.getContext('2d'), OVL=
 const KEY='flip-flop-rpg-v1', VERSION=1;
 const T={GROUND:0,PATH:1,WALL:2,GRASS:3,WATER:4,DOOR:5,SIGN:6,TREE:7,ITEM:8};
 const WALK=new Set([T.GROUND,T.PATH,T.GRASS,T.DOOR,T.SIGN,T.ITEM]);
-const COL={0:'#7ecf7a',1:'#b79b72',2:'#6b4f3a',3:'#4f9f4c',4:'#3f86a6',5:'#8a5a3a',6:'#f5c542',7:'#2f6b3a',8:'#e63946'};
+const COL={0:'#d8dee8',1:'#3b4049',2:'#252932',3:'#3f8f45',4:'#3f86a6',5:'#8b6a47',6:'#f5c542',7:'#2c6b35',8:'#e63946'};
 const TY={fuoco:{c:'#f0643a',e:{erba:2,acqua:.5,fuoco:.5,roccia:.5}},acqua:{c:'#3b8cff',e:{fuoco:2,roccia:2,acqua:.5,erba:.5}},erba:{c:'#3fb54f',e:{acqua:2,roccia:2,fuoco:.5,erba:.5}},elettro:{c:'#d9a800',e:{acqua:2,erba:.5,elettro:.5}},normale:{c:'#8b929c',e:{roccia:.5}},roccia:{c:'#a0804f',e:{fuoco:2}}};
 const MOVES={Placcaggio:{t:'normale',p:40,acc:100,pp:35,desc:'Colpo fisico base.'},Graffio:{t:'normale',p:40,acc:100,pp:35,desc:'Artigli affilati.'},Beccata:{t:'normale',p:45,acc:100,pp:30,desc:'Becco veloce.'},Braciere:{t:'fuoco',p:50,acc:100,pp:25,desc:'Soffio di fuoco.'},Pistolacqua:{t:'acqua',p:50,acc:100,pp:25,desc:'Getto d acqua.'},Foglielama:{t:'erba',p:50,acc:95,pp:25,desc:'Lame di foglia.'},Scintilla:{t:'elettro',p:50,acc:95,pp:25,desc:'Scarica elettrica.'},Sassata:{t:'roccia',p:55,acc:90,pp:20,desc:'Scaglia rocce.'},Veleno:{t:'normale',p:30,acc:100,pp:20,desc:'Morso velenoso, può avvelenare.'}};
 const CR=[
@@ -112,36 +112,111 @@ function newGame(){
 }
 const CHAR={'.':T.GROUND,'#':T.WALL,'g':T.GRASS,'~':T.WATER,'p':T.PATH,'D':T.DOOR,'S':T.SIGN,'T':T.TREE,'I':T.ITEM,'N':T.GROUND,'G':T.GROUND};
 const MAPS={
- town:{name:'Borgo Iniziale',rows:[
- 'TTTTTTTTTTTTTTTT','T..............T','T..N...........T','T..............T','T.....S........T','T..............T','T..............D','T..............T','T..N...........T','T..............T','TTTTTTTTTTTTTTTT'
- ], npcs:[{id:'sindaco',x:2,y:2,name:'Sindaco',text:'Benvenuto a Borgo Iniziale. Parla con me per la missione principale.'},{id:'infermiera',x:2,y:8,name:'Infermiera',text:'Curo la squadra gratis. Interagisci per curare.'}], signs:[{x:5,y:4,text:'Borgo Iniziale - Verso Rotta Erbosa a EST.'}], trans:[{x:15,y:6,to:'route1',tx:1,ty:6}]},
+ town:{name:'Metropoli Neon',rows:[
+ '##############################','T..............................T','T..####..#########..####......T','T..####..#########..####......T','T..####..#########..####......T','T..............................T','pppppppppppppppppppppppppppppp','T..............................T','T..####..####...####..####.....T','T..####..####...####..####.....T','T..####..####...####..####.....T','T..............................T','pppppppppppppppppppppppppppppp','T..............................T','T..NN....S....I................D','T..............................T','T..............................T','##############################'
+ ], npcs:[{id:'sindaco',x:2,y:14,name:'Sindaco',text:'Benvenuto a Metropoli Neon.'},{id:'infermiera',x:3,y:14,name:'Infermiera',text:'Curo la squadra gratis.'}], signs:[{x:7,y:14,text:'Metropoli Neon - Strade a EST, Uscita a E.'}], trans:[{x:29,y:14,to:'route1',tx:1,ty:6}]},
  route1:{name:'Rotta Erbosa',rows:[
  'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT','T..............................T','T...gggg.....gggg..............T','T...gggg.....gggg.....N........T','T..........pppppp..............T','T....I.....pppppp..............T','T..........pppppp.....N........T','T...gggg.....gggg..............T','T...gggg.....gggg..............T','T..............................T','T..............................T','TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT'
- ], npcs:[{id:'tre',x:22,y:3,name:'Allenatore Marco',text:'Sfida me se vuoi passare! (interagisci)'},{id:'scout',x:22,y:6,name:'Scout Luna',text:'Qui la nebbia nasconde creature rare.'}], signs:[], trans:[{x:0,y:6,to:'town',tx:14,ty:6},{x:29,y:5,to:'cave',tx:1,ty:5},{x:29,y:6,to:'cave',tx:1,ty:6}], item:{x:5,y:5,id:'orb',text:'Hai trovato Orbe Lunare!'}},
+ ], npcs:[{id:'tre',x:22,y:3,name:'Allenatore Marco',text:'Sfida me se vuoi passare.'},{id:'scout',x:22,y:6,name:'Scout Luna',text:'Qui la nebbia nasconde creature rare.'}], signs:[], trans:[{x:0,y:6,to:'town',tx:27,ty:14},{x:29,y:5,to:'cave',tx:1,ty:5},{x:29,y:6,to:'cave',tx:1,ty:6}], item:{x:5,y:5,id:'orb',text:'Hai trovato Orbe Lunare!'}},
  cave:{name:'Caverna Ombra',rows:[
  '####################','N..................#','N..gggg............#','N..gggg.....N......#','.................G.#','.....########.....#','.....#......#.....#','.....#......#.....#','.....########.....#','..................#','..............N...#','####################'
- ], npcs:[{id:'guard',x:8,y:3,name:'Guardiano',text:'Il boss è in fondo. Preparati.'},{id:'boss',x:16,y:4,name:'Umbra',text:'Sei pronto per l incontro finale?'}], signs:[], trans:[{x:1,y:5,to:'route1',tx:27,ty:5},{x:1,y:4,to:'route1',tx:27,ty:4}], gate:{x:16,y:4}}
+ ], npcs:[{id:'guard',x:8,y:3,name:'Guardiano',text:'Il boss e in fondo.'},{id:'boss',x:16,y:4,name:'Umbra',text:'Sei pronto per l incontro finale?'}], signs:[], trans:[{x:1,y:5,to:'route1',tx:27,ty:5},{x:1,y:4,to:'route1',tx:27,ty:4}], gate:{x:16,y:4}}
 };
 function parseMap(m){m.w=m.rows[0].length; m.h=m.rows.length; m.tiles=[]; m.npcs=m.npcs||[]; m.signs=m.signs||[]; m.trans=m.trans||[]; for(let y=0;y<m.h;y++){const row=m.rows[y];const arr=[]; for(let x=0;x<m.w;x++){arr.push(CHAR[row[x]]||0);} m.tiles.push(arr);} }
 Object.values(MAPS).forEach(parseMap);
 function map(){return MAPS[S.player.map]}
-const TILE=24, VW=30, VH=16;
+const TILE=32, VW=22, VH=12;
 function tileAt(m,x,y){if(!m||x<0||y<0||x>=m.w||y>=m.h)return T.WALL;return m.tiles[y][x]}
 function walkable(m,x,y){const t=tileAt(m,x,y); if(!WALK.has(t)) return false; if(m.npcs.some(n=>n.x===x&&n.y===y)) return false; return true; }
 function camera(){const m=map(); const px=S.player.x*TILE, py=S.player.y*TILE; let cx=px-VW*TILE/2+TILE/2, cy=py-VH*TILE/2+TILE/2; cx=Math.max(0,Math.min(m.w*TILE-VW*TILE,cx)); cy=Math.max(0,Math.min(m.h*TILE-VH*TILE,cy)); return {x:cx,y:cy}; }
-function drawMap(){const m=map(), c=camera(); ctx.clearRect(0,0,cv.width,cv.height); ctx.fillStyle='#8fd3ff'; ctx.fillRect(0,0,cv.width,cv.height); const sx=Math.floor(c.x/TILE), sy=Math.floor(c.y/TILE); for(let y=0;y<VH;y++)for(let x=0;x<VW;x++){const wx=sx+x, wy=sy+y; const t=tileAt(m,wx,wy); ctx.fillStyle=COL[t]||'#000'; ctx.fillRect(x*TILE-c.x%TILE, y*TILE-c.y%TILE, TILE,TILE); if(t===T.GRASS){ctx.fillStyle='#3f7a3f';ctx.fillRect(x*TILE-c.x%TILE+3, y*TILE-c.y%TILE+3, 4,4);}}
- // npcs/signs/items
- (m.npcs||[]).forEach(n=>drawEnt(n.x,n.y,'#e63946',n.name[0]));
- (m.signs||[]).forEach(s=>drawEnt(s.x,s.y,'#f5c542','!'));
- if(m.item && !S.flags.orb) drawEnt(m.item.x,m.item.y,'#ef4b4b','★');
- // player
- const px=S.player.x*TILE+TILE/2-c.x, py=S.player.y*TILE+TILE/2-c.y; ctx.fillStyle='#1b2340'; ctx.beginPath(); ctx.arc(px,py,10,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#fff'; ctx.fillRect(px-4,py-4,8,8);
- // HUD
- $('#loc').textContent=m.name+'  x:'+S.player.x+' y:'+S.player.y;
- var qname=['Parla al Sindaco','Raccogli Orbe Lunare','Sconfiggi Marco','Sconfiggi Umbra (finale)'][S.quests.main];
- $('#questtop').textContent='Quest: '+qname;
+const MAPCACHE={};
+function buildMapCache(m){
+ if(MAPCACHE[m.name]) return MAPCACHE[m.name];
+ const c=document.createElement('canvas'); c.width=m.w*TILE; c.height=m.h*TILE;
+ const cx=c.getContext('2d');
+ for(let y=0;y<m.h;y++){
+  for(let x=0;x<m.w;x++){
+   const t=m.tiles[y][x];
+   const X=x*TILE,Y=y*TILE;
+   if(t===T.WALL){
+     // pseudo-3D skyscraper block
+     cx.fillStyle='#2a2f3a'; cx.fillRect(X,Y-TILE,TILE,TILE*2);
+     cx.fillStyle='#1e222b'; cx.fillRect(X,Y,TILE,TILE);
+     cx.fillStyle='#59647a';
+     for(let yy=0;yy<TILE;yy+=6){
+      for(let xx=2;xx<TILE-2;xx+=6){ cx.fillRect(X+xx,Y-TILE+yy+2,3,3); }
+     }
+     cx.fillStyle='#6b778f'; cx.fillRect(X,Y-TILE,TILE,3);
+   } else if(t===T.PATH){
+     cx.fillStyle='#3b4049'; cx.fillRect(X,Y,TILE,TILE);
+     cx.fillStyle='rgba(255,255,255,.18)';
+     for(let yy=6;yy<TILE;yy+=12){ cx.fillRect(X+TILE/2-1,Y+yy,2,4); }
+   } else if(t===T.GROUND){
+     cx.fillStyle='#cbd2db'; cx.fillRect(X,Y,TILE,TILE);
+     cx.strokeStyle='rgba(80,90,110,.25)'; cx.lineWidth=1; cx.strokeRect(X+.5,Y+.5,TILE-1,TILE-1);
+   } else if(t===T.GRASS){
+     cx.fillStyle='#36833d'; cx.fillRect(X,Y,TILE,TILE);
+     cx.fillStyle='#2d6a32'; for(let i=0;i<5;i++){ cx.fillRect(X+((i*7)%TILE),Y+((i*11)%TILE),2,2); }
+   } else if(t===T.TREE){
+     cx.fillStyle='#5f8f5a'; cx.fillRect(X,Y,TILE,TILE);
+     cx.fillStyle='#2f6b35'; cx.beginPath(); cx.arc(X+TILE/2,Y+TILE/2,9,0,Math.PI*2); cx.fill();
+     cx.fillStyle='#f5c542'; cx.beginPath(); cx.arc(X+TILE/2-6,Y+TILE/2-6,2,0,Math.PI*2); cx.fill();
+   } else if(t===T.WATER){
+     cx.fillStyle='#3f86a6'; cx.fillRect(X,Y,TILE,TILE);
+   } else if(t===T.DOOR){
+     cx.fillStyle='#8b6a47'; cx.fillRect(X,Y,TILE,TILE);
+     cx.fillStyle='#f5c542'; cx.fillRect(X+TILE/2-3,Y+4,6,8);
+   } else if(t===T.SIGN){
+     cx.fillStyle='#cbd2db'; cx.fillRect(X,Y,TILE,TILE);
+     cx.fillStyle='#d9a800'; cx.fillRect(X+TILE/2-6,Y+4,12,10);
+   } else if(t===T.ITEM){
+     cx.fillStyle='#cbd2db'; cx.fillRect(X,Y,TILE,TILE);
+     cx.fillStyle='#ef4b4b'; cx.beginPath(); cx.arc(X+TILE/2,Y+TILE/2,6,0,Math.PI*2); cx.fill();
+   } else {
+     cx.fillStyle='#1a1d25'; cx.fillRect(X,Y,TILE,TILE);
+   }
+  }
+ }
+ MAPCACHE[m.name]=c; return c;
 }
-function drawEnt(x,y,color,ch){ const m=map(), c=camera(); const sx=x*TILE+TILE/2-c.x, sy=y*TILE+TILE/2-c.y; ctx.fillStyle=color; ctx.beginPath(); ctx.arc(sx,sy,8,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#fff'; ctx.font='12px monospace'; ctx.fillText(ch,sx-4,sy+4); }
+function scheduleYield(){ try { if(typeof scheduler!=='undefined' && scheduler.yield) scheduler.yield(); } catch(e){} }
+function drawMap(){
+ const m=map(), cam=camera();
+ const cache=buildMapCache(m);
+ ctx.clearRect(0,0,cv.width,cv.height);
+ ctx.fillStyle='#0f172a'; ctx.fillRect(0,0,cv.width,cv.height);
+ ctx.save(); ctx.beginPath(); ctx.rect(0,0,cv.width,cv.height); ctx.clip();
+ ctx.drawImage(cache, -cam.x, -cam.y);
+ ctx.restore();
+ const ents=[];
+ (m.npcs||[]).forEach(n=>ents.push({type:'npc',x:n.x,y:n.y,color:'#dc2626',ch:n.name[0],r:12}));
+ (m.signs||[]).forEach(s=>ents.push({type:'sign',x:s.x,y:s.y,color:'#d9a800',ch:'!',r:10}));
+ if(m.item && !S.flags.orb) ents.push({type:'item',x:m.item.x,y:m.item.y,color:'#ef4b4b',ch:'★',r:10});
+ ents.push({type:'player',x:S.player.x,y:S.player.y,color:'#2563eb',ch:'P',r:14});
+ ents.sort((a,b)=>a.y-b.y);
+ ents.forEach(e=>{
+  const sx=e.x*TILE+TILE/2-cam.x; const sy=e.y*TILE+TILE/2-cam.y;
+  if(sx<-20||sy<-20||sx>cv.width+20||sy>cv.height+20) return;
+  ctx.fillStyle='rgba(0,0,0,0.24)'; ctx.beginPath(); ctx.ellipse(sx,sy+ (e.r*0.85), e.r+4, 6, 0,0,Math.PI*2); ctx.fill();
+  // pseudo-3D body layers
+  ctx.fillStyle='rgba(255,255,255,0.08)'; ctx.beginPath(); ctx.arc(sx, sy-6, e.r+1,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle=e.color; ctx.beginPath(); ctx.arc(sx, sy-4, e.r,0,Math.PI*2); ctx.fill();
+  ctx.lineWidth=2; ctx.strokeStyle='#0f172a'; ctx.stroke();
+  ctx.fillStyle='#fff'; ctx.font='bold '+(e.r-2)+'px monospace'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(e.ch,sx,sy-4);
+  if(e.type==='player'){ ctx.strokeStyle='#93c5fd'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(sx,sy-4,e.r+3,0,Math.PI*2); ctx.stroke(); }
+ });
+ ctx.textAlign='left'; ctx.textBaseline='alphabetic';
+ $('#loc').textContent=m.name+'  x:'+S.player.x+' y:'+S.player.y;
+ var qname=['Parla al Sindaco','Raccogli Orbe Lunare','Sconfiggi Marco','Sconfiggi Umbra (finale)'][Math.min(S.quests.main,3)];
+ $('#questtop').textContent='Quest: '+qname;
+ updatePartyBar();
+ scheduleYield();
+}
+function drawEnt(x,y,color,ch){
+ const m=map(),cam=camera(), sx=x*TILE+TILE/2-cam.x, sy=y*TILE+TILE/2-cam.y;
+ ctx.fillStyle=color; ctx.beginPath(); ctx.arc(sx,sy-4,11,0,Math.PI*2); ctx.fill();
+ ctx.fillStyle='#fff'; ctx.font='12px monospace'; ctx.fillText(ch,sx-4,sy+2);
+}
 let lastStep=0;
 function loop(ts){ if(S.screen==='map'){ if(!lastStep||ts-lastStep>150){ moveInput(); lastStep=ts;} drawMap(); updatePartyBar();} requestAnimationFrame(loop);}
 function startLoop(){requestAnimationFrame(loop);}
@@ -153,7 +228,7 @@ function handleTile(){ const m=map(); const p=S.player; const t=m.tiles[p.y][p.x
  // item orb
  if(m.item && p.x===m.item.x && p.y===m.item.y && !S.flags.orb){ S.flags.orb=true; S.inv.orb=(S.inv.orb||0)+1; S.log='Hai trovato Orbe Lunare!'; if(S.quests.main===1) S.quests.main=2; save(); }
  // grass encounter
- if(t===T.GRASS){ if(Math.random()<0.22) startWildBattle(); }
+ if(t===T.PATH){ if(Math.random()<0.22) startWildBattle(); }
 }
 function adjacentNpc(){ const p=S.player, m=map(); return m.npcs.find(n=>Math.abs(n.x-p.x)+Math.abs(n.y-p.y)===1); }
 function adjacentSign(){ const p=S.player, m=map(); return m.signs.find(n=>Math.abs(n.x-p.x)+Math.abs(n.y-p.y)===1); }
