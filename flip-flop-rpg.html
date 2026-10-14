@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Flip Flop Pokè RPG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1b2340;--paper:#eef3fb;--grass:#5fae5a;--path:#c9b58a;--wall:#6b4f3a;--water:#4aa3b8;--red:#e63946;--ok:#3ecf6e;--mid:#f5c542;--low:#ef4b4b}
+*{box-sizing:border-box;margin:0}
+body{min-height:100vh;display:grid;place-items:center;padding:10px;background:radial-gradient(900px 500px at 50% -10%,#3a58a8,#0e1430 70%);font:10px/1.6 "Press Start 2P",ui-monospace,"Courier New",monospace;color:var(--ink)}
+#app{width:min(860px,100%);background:var(--paper);border:4px solid var(--ink);border-radius:16px;box-shadow:0 0 0 6px #e63946,0 20px 50px #000a;padding:12px}
+h1{font-size:20px;text-align:center;margin:4px 0 8px;color:#e63946;text-shadow:2px 2px 0 var(--ink)}
+.top{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:6px 0 8px;font-size:9px}
+canvas{display:block;border:3px solid var(--ink);border-radius:8px;background:#8fd3ff;image-rendering:pixelated}
+.hud{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.bar{flex:1;min-width:200px;background:#fff;border:3px solid var(--ink);border-radius:10px;padding:6px}
+.hp{height:8px;background:#d5dbe8;border:2px solid var(--ink);border-radius:5px;margin-top:4px;overflow:hidden}
+.hp i{display:block;height:100%;width:100%;transition:width .3s,background .3s}
+.menu{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
+button{font:inherit;font-size:9px;padding:9px 6px;border:3px solid var(--ink);border-radius:9px;background:#fff;color:var(--ink);cursor:pointer;box-shadow:0 3px 0 var(--ink)}
+button:hover{background:#dbe8ff}button:active{translate:0 2px;box-shadow:0 1px 0 var(--ink)}button:focus-visible{outline:3px solid #e63946;outline-offset:2px}
+.big{background:#e63946;color:#fff}.big:hover{background:#ff5561}
+.ghost{background:transparent;box-shadow:none;border-style:dashed}
+.off{opacity:.4;pointer-events:none}
+.overlay{position:fixed;inset:0;display:grid;place-items:center;background:#0008;z-index:50}
+.panel{width:min(720px,92vw);max-height:86vh;overflow:auto;background:var(--paper);border:4px solid var(--ink);border-radius:14px;padding:12px;box-shadow:0 0 0 6px #e63946}
+.row{display:flex;gap:10px;align-items:center;padding:6px 8px;border:2px solid var(--ink);border-radius:8px;background:#fff;margin-bottom:6px}
+.ico{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px}
+.ico svg{width:100%;height:100%}
+.dlg{background:#1b2340;color:#fff;border-radius:10px;padding:10px;margin-top:8px;font-size:9px;min-height:54px}
+.tp{display:inline-block;color:#fff;border-radius:5px;padding:0 5px;font-size:8px;margin-left:4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.card{border:2px solid var(--ink);border-radius:8px;padding:8px;background:#fff}
+@media(max-width:700px){.menu{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<main id="app">
+ <h1>Flip Flop Pokè — RPG</h1>
+ <div class="top"><span id="loc">—</span><span id="money">💰 0</span><span id="questtop">Quest: —</span></div>
+ <canvas id="cv" width="720" height="405"></canvas>
+ <div class="hud">
+  <div class="bar" id="partybar">Caricamento...</div>
+ </div>
+ <div class="menu">
+  <button onclick="openMapMenu()">🗺️ Mappa</button>
+  <button onclick="openTeam()">👥 Squadra</button>
+  <button onclick="openInv()">🎒 Oggetti</button>
+  <button onclick="openQuest()">📜 Quest</button>
+  <button onclick="openSave()">💾 Salva/Carica</button>
+  <button onclick="talkNPC()">💬 Parla</button>
+  <button onclick="pickup()">📦 Prendi</button>
+  <button onclick="settings()">⚙️ Impostazioni</button>
+ </div>
+ <p class="dlg" id="log">Pronto. Frecce/WASD per muoversi, Enter per interagire.</p>
+</main>
+<div id="ovl"></div>
+<script>
+const $=s=>document.querySelector(s), cv=$('#cv'), ctx=cv.getContext('2d'), OVL=$('#ovl');
+const KEY='flip-flop-rpg-v1', VERSION=1;
+const T={GROUND:0,PATH:1,WALL:2,GRASS:3,WATER:4,DOOR:5,SIGN:6,TREE:7,ITEM:8};
+const WALK=new Set([T.GROUND,T.PATH,T.GRASS,T.DOOR,T.SIGN,T.ITEM]);
+const COL={0:'#7ecf7a',1:'#b79b72',2:'#6b4f3a',3:'#4f9f4c',4:'#3f86a6',5:'#8a5a3a',6:'#f5c542',7:'#2f6b3a',8:'#e63946'};
+const TY={fuoco:{c:'#f0643a',e:{erba:2,acqua:.5,fuoco:.5,roccia:.5}},acqua:{c:'#3b8cff',e:{fuoco:2,roccia:2,acqua:.5,erba:.5}},erba:{c:'#3fb54f',e:{acqua:2,roccia:2,fuoco:.5,erba:.5}},elettro:{c:'#d9a800',e:{acqua:2,erba:.5,elettro:.5}},normale:{c:'#8b929c',e:{roccia:.5}},roccia:{c:'#a0804f',e:{fuoco:2}}};
+const MOVES={Placcaggio:{t:'normale',p:40,acc:100,pp:35,desc:'Colpo fisico base.'},Graffio:{t:'normale',p:40,acc:100,pp:35,desc:'Artigli affilati.'},Beccata:{t:'normale',p:45,acc:100,pp:30,desc:'Becco veloce.'},Braciere:{t:'fuoco',p:50,acc:100,pp:25,desc:'Soffio di fuoco.'},Pistolacqua:{t:'acqua',p:50,acc:100,pp:25,desc:'Getto d acqua.'},Foglielama:{t:'erba',p:50,acc:95,pp:25,desc:'Lame di foglia.'},Scintilla:{t:'elettro',p:50,acc:95,pp:25,desc:'Scarica elettrica.'},Sassata:{t:'roccia',p:55,acc:90,pp:20,desc:'Scaglia rocce.'},Veleno:{t:'normale',p:30,acc:100,pp:20,desc:'Morso velenoso, può avvelenare.'}};
+const CR=[
+{n:'Bracino',t:'fuoco',h:40,a:50,d:42,s:58,hh:1,evo:{at:12,to:1},svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="58" r="30" fill="#e63946" stroke="#1b2340" stroke-width="3"/><circle cx="70" cy="40" r="16" fill="#e63946" stroke="#1b2340" stroke-width="3"/><circle cx="76" cy="38" r="3" fill="#1b2340"/><path d="M62 46 Q72 50 66 54" stroke="#1b2340" stroke-width="3" fill="none"/></svg>`,desc:'Piccolo drago di brace, curioso e acceso.'},
+{n:'Dinofiamma',t:'fuoco',h:62,a:72,d:58,s:64,hh:1,evo:null,svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="70" rx="32" ry="22" fill="#8b1a1a" stroke="#1b2340" stroke-width="3"/><circle cx="70" cy="44" r="22" fill="#8b1a1a" stroke="#1b2340" stroke-width="3"/><polygon points="56,30 62,12 68,30 74,8 82,26 92,10" fill="#f5c542" stroke="#1b2340" stroke-width="2"/><circle cx="78" cy="42" r="4" fill="#f5c542"/><path d="M66 52 Q76 58 70 62" stroke="#1b2340" stroke-width="3" fill="none"/></svg>`,desc:'Il fuoco di un dinosauro adulto, temuto sulle rotte.'},
+{n:'Gocciolo',t:'acqua',h:42,a:46,d:50,s:55,hh:2,evo:{at:11,to:3},svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="62" rx="26" ry=28" fill="#3b8cff" stroke="#1b2340" stroke-width="3"/><circle cx="40" cy="50" r="4" fill="#1b2340"/><circle cx="60" cy="50" r="4" fill="#1b2340"/><path d="M44 70 Q50 76 56 70" stroke="#1b2340" stroke-width="3" fill="none"/></svg>`.replace('ry=28','ry="28"'),desc:'Slime acquatico, docile e gorgogliante.'},
+{n:'Maremoto',t:'acqua',h:60,a:62,d:68,s:58,hh:2,evo:null,svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="46" cy="58" rx="30" ry="20" fill="#1e6fd9" stroke="#1b2340" stroke-width="3"/><polygon points="70,58 92,42 92,74" fill="#1e6fd9" stroke="#1b2340" stroke-width="3"/><circle cx="32" cy="52" r="4" fill="#1b2340"/><path d="M26 62 Q16 68 22 74" stroke="#1b2340" stroke-width="3" fill="none"/></svg>`,desc:'Un cavalluccio delle maree, potente negli uragani.'},
+{n:'Foglietto',t:'erba',h:44,a:48,d:48,s:54,hh:3,evo:{at:12,to:5},svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="60" r="26" fill="#3fb54f" stroke="#1b2340" stroke-width="3"/><ellipse rx="14" ry="20" cx="50" cy="32" fill="#2e8e3c" stroke="#1b2340" stroke-width="3"/><circle cx="42" cy="58" r="3" fill="#1b2340"/><circle cx="58" cy="58" r="3" fill="#1b2340"/></svg>`,desc:'Germoglio vivace, si nasconde tra le erbe.'},
+{n:'Rampicante',t:'erba',h:64,a:66,d:70,s:56,hh:3,evo:null,svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="34" r="16" fill="#2e8e3c" stroke="#1b2340" stroke-width="3"/><circle cx="60" cy="34" r="16" fill="#2e8e3c" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="48" r="18" fill="#2e8e3c" stroke="#1b2340" stroke-width="3"/><ellipse cx="50" cy="72" rx="28" ry="20" fill="#2e8e3c" stroke="#1b2340" stroke-width="3"/><circle cx="42" cy="58" r="3" fill="#1b2340"/><circle cx="58" cy="58" r="3" fill="#1b2340"/></svg>`,desc:'Pianta ambulante, ripara i compagni.'},
+{n:'Scinti',t:'elettro',h:38,a:58,d:40,s:78,hh:4,evo:{at:13,to:7},svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="60" r="22" fill="#d9a800" stroke="#1b2340" stroke-width="3"/><polygon points="34,46 44,30 54,46 64,30 74,46" fill="#f5c542" stroke="#1b2340" stroke-width="2"/><circle cx="44" cy="58" r="3" fill="#1b2340"/><circle cx="58" cy="58" r="3" fill="#1b2340"/></svg>`,desc:'Fulmine tascabile, nervoso e veloce.'},
+{n:'Tuono',t:'elettro',h:56,a:78,d:52,s:104,hh:4,evo:null,svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="58" r="28" fill="#b88a00" stroke="#1b2340" stroke-width="3"/><polygon points="30,44 42,20 54,44 66,20 78,44" fill="#f5c542" stroke="#1b2340" stroke-width="2"/><circle cx="42" cy="56" r="4" fill="#1b2340"/><circle cx="58" cy="56" r="4" fill="#1b2340"/></svg>`,desc:'Tempesta a quattro zampe.'},
+{n:'Ciotolo',t:'roccia',h:50,a:78,d:96,s:30,hh:6,evo:{at:14,to:9},svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="64" rx="30" ry="22" fill="#a0804f" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="46" r="18" fill="#a0804f" stroke="#1b2340" stroke-width="3"/><circle cx="44" cy="44" r="3" fill="#1b2340"/><circle cx="56" cy="44" r="3" fill="#1b2340"/></svg>`,desc:'Masso vivente, testardo e pesante.'},
+{n:'Megalite',t:'roccia',h:78,a:96,d:124,s:40,hh:6,evo:null,svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="62" rx="38" ry="26" fill="#7f643d" stroke="#1b2340" stroke-width="4"/><circle cx="50" cy="44" r="22" fill="#7f643d" stroke="#1b2340" stroke-width="4"/><circle cx="44" cy="42" r="4" fill="#1b2340"/><circle cx="56" cy="42" r="4" fill="#1b2340"/></svg>`,desc:'Rocca antica che cammina.'},
+{n:'Cane rosa',t:'normale',h:44,a:48,d:46,s:62,hh:5,evo:{at:12,to:11},svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="64" rx="34" ry="26" fill="#ff9ecb" stroke="#1b2340" stroke-width="3"/><circle cx="38" cy="44" r="12" fill="#ff9ecb" stroke="#1b2340" stroke-width="3"/><circle cx="62" cy="44" r="12" fill="#ff9ecb" stroke="#1b2340" stroke-width="3"/><circle cx="40" cy="60" r="3" fill="#1b2340"/><circle cx="60" cy="60" r="3" fill="#1b2340"/><ellipse cx="50" cy="70" rx="6" ry="4" fill="#1b2340"/></svg>`,desc:'Compagno domestico, dolce e caparbio.'},
+{n:'Cane coraggioso',t:'normale',h:66,a:68,d:70,s:78,hh:5,evo:null,svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="64" rx="36" ry="28" fill="#ffb3d6" stroke="#1b2340" stroke-width="3"/><circle cx="36" cy="42" r="14" fill="#ffb3d6" stroke="#1b2340" stroke-width="3"/><circle cx="64" cy="42" r="14" fill="#ffb3d6" stroke="#1b2340" stroke-width="3"/><circle cx="40" cy="60" r="4" fill="#1b2340"/><circle cx="60" cy="60" r="4" fill="#1b2340"/></svg>`,desc:'Protettore fedele della squadra.'},
+{n:'Lupo occhiali',t:'roccia',h:46,a:52,d:58,s:60,hh:6,evo:{at:15,to:13},svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="66" rx="32" ry="24" fill="#8b929c" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="44" r="20" fill="#8b929c" stroke="#1b2340" stroke-width="3"/><circle cx="43" cy="42" r="6" fill="#fff" stroke="#1b2340" stroke-width="2"/><circle cx="57" cy="42" r="6" fill="#fff" stroke="#1b2340" stroke-width="2"/><circle cx="43" cy="42" r="3" fill="#1b2340"/><circle cx="57" cy="42" r="3" fill="#1b2340"/></svg>`,desc:'Lupo saggio, vede oltre le rocce.'},
+{n:'Lupo magister',t:'roccia',h:72,a:76,d:88,s:68,hh:6,evo:null,svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="66" rx="34" ry="24" fill="#707883" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="42" r="22" fill="#707883" stroke="#1b2340" stroke-width="3"/><rect x="30" y="34" width="40" height="6" rx="3" fill="#f5c542" stroke="#1b2340" stroke-width="2"/></svg>`,desc:'Maestro delle cave, guida i cuccioli.'},
+{n:'Pipistrello arrabbiato',t:'elettro',h:40,a:56,d:40,s:80,hh:4,evo:{at:13,to:15},svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 32 Q20 12 10 46 Q22 56 36 50 L50 66 L64 50 Q78 56 90 46 Q80 12 50 32Z" fill="#6b4fa0" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="60" r="22" fill="#6b4fa0" stroke="#1b2340" stroke-width="3"/><circle cx="46" cy="60" r="4" fill="#1b2340"/><circle cx="58" cy="60" r="4" fill="#1b2340"/></svg>`,desc:'Vola nelle caverne, lamentoso e feroce.'},
+{n:'Pipistrello furioso',t:'elettro',h:58,a:76,d:50,s:102,hh:4,evo:null,svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 28 Q16 8 6 48 Q20 60 34 52 L50 70 L66 52 Q80 60 94 48 Q84 8 50 28Z" fill="#4a2f7a" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="60" r="24" fill="#4a2f7a" stroke="#1b2340" stroke-width="3"/><circle cx="42" cy="56" r="5" fill="#ef4b4b"/><circle cx="58" cy="56" r="5" fill="#ef4b4b"/></svg>`,desc:'Ombra delle miniere, attacca in gruppo.'},
+{n:'Pecora nuvola',t:'erba',h:48,a:44,d:54,s:58,hh:3,evo:{at:12,to:17},svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="34" r="16" fill="#fff" stroke="#1b2340" stroke-width="3"/><circle cx="60" cy="34" r="16" fill="#fff" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="48" r="18" fill="#fff" stroke="#1b2340" stroke-width="3"/><ellipse cx="50" cy="72" rx="28" ry="20" fill="#fff" stroke="#1b2340" stroke-width="3"/><circle cx="42" cy="58" r="3" fill="#1b2340"/><circle cx="58" cy="58" r="3" fill="#1b2340"/></svg>`,desc:'Morbidissima, riposa sulle colline.'},
+{n:'Pecora tempesta',t:'erba',h:70,a:58,d:76,s:60,hh:3,evo:null,svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="34" r="16" fill="#d5dbe8" stroke="#1b2340" stroke-width="3"/><circle cx="60" cy="34" r="16" fill="#d5dbe8" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="48" r="18" fill="#d5dbe8" stroke="#1b2340" stroke-width="3"/><ellipse cx="50" cy="72" rx="28" ry="20" fill="#d5dbe8" stroke="#1b2340" stroke-width="3"/><circle cx="42" cy="58" r="3" fill="#1b2340"/><circle cx="58" cy="58" r="3" fill="#1b2340"/></svg>`,desc:'Pecora delle burrasche, scuote il terreno.'},
+{n:'Pesce bollitore',t:'acqua',h:42,a:50,d:48,s:50,hh:2,evo:null,svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="46" cy="58" rx="30" ry="20" fill="#3b8cff" stroke="#1b2340" stroke-width="3"/><polygon points="70,58 92,42 92,74" fill="#3b8cff" stroke="#1b2340" stroke-width="3"/><circle cx="32" cy="52" r="4" fill="#1b2340"/><circle cx="44" cy="30" r="3" fill="#fff"/><circle cx="60" cy="30" r="3" fill="#fff"/></svg>`,desc:'Abbrustolito d acqua e vapore.'},
+{n:'Scarabeo neon',t:'elettro',h:36,a:60,d:52,s:68,hh:4,evo:null,svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="64" rx="26" ry="18" fill="#3fb54f" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="40" r="16" fill="#3fb54f" stroke="#1b2340" stroke-width="3"/><circle cx="44" cy="38" r="3" fill="#1b2340"/><circle cx="56" cy="38" r="3" fill="#1b2340"/><circle cx="50" cy="52" r="4" fill="#d9a800"/></svg>`,desc:'Brilla nelle caverne buie.'},
+{n:'Gatto boss',t:'normale',h:40,a:56,d:44,s:72,hh:5,evo:null,svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="66" rx="28" ry="22" fill="#1b2340" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="44" r="20" fill="#1b2340" stroke="#1b2340" stroke-width="3"/><circle cx="43" cy="42" r="4" fill="#f5c542"/><circle cx="57" cy="42" r="4" fill="#f5c542"/><rect x="42" y="60" width="16" height="12" rx="2" fill="#e63946"/></svg>`,desc:'Bosseggia i vicoli cittadini.'},
+{n:'Aquila sindaco',t:'normale',h:38,a:60,d:42,s:86,hh:5,evo:null,svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 22 Q20 34 12 70 Q30 82 50 74 Q70 82 88 70 Q80 34 50 22Z" fill="#a0804f" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="32" r="14" fill="#a0804f" stroke="#1b2340" stroke-width="3"/><circle cx="46" cy="30" r="3" fill="#1b2340"/><circle cx="54" cy="30" r="3" fill="#1b2340"/><rect x="40" y="54" width="20" height="8" rx="4" fill="#e63946" stroke="#1b2340" stroke-width="2"/></svg>`,desc:'Sindaco dei cieli, elegante e severo.'},
+{n:'Ormo',t:'erba',h:52,a:54,d:60,s:46,hh:3,evo:null,svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="68" rx="30" ry="22" fill="#6a9a4b" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="42" r="18" fill="#6a9a4b" stroke="#1b2340" stroke-width="3"/><path d="M34 30 Q50 10 66 30" fill="#2e8e3c" stroke="#1b2340" stroke-width="3"/></svg>`,desc:'Muschio vivo, lento ma resistente.'}
+];
+let S=null, battle=null, ui=null, keys={}, mapImg=null;
+function init(){const raw=localStorage.getItem(KEY); if(raw){try{const d=JSON.parse(raw); if(d&&d.version===VERSION) S=d; else S=newGame();}catch(e){S=newGame();}} else S=newGame(); startLoop();}
+function newGame(){
+ const creature=(id,L=5)=>{const s=CR[id],m={id,L,xp:0,hp:0,mh:0,a:0,d:0,s:s.s,moveIds:[],status:null};calc(m,s);m.hp=m.mh;m.moveIds=s.hh? [learnedAt(s, 0)] : ['Placcaggio']; /* placeholder */ m.moveIds=['Placcaggio','Braciere']; if (s.t!=='fuoco') m.moveIds=['Placcaggio','Graffio']; return m;};
+ const hero=creature(0,5);
+ S={version:VERSION, screen:'map', player:{name:'Ronaldo', x:3, y:6, dir:1, map:'town', money:100}, team:[hero], box:[], inv:{sfera:10,pozione:5}, quests:{principale:0, completa:false}, flags:{orb:false, trainer1:false, boss:false}, posLog:{}, saveTime:null};
+ return S;
+}
+function learnedAt(s,i){return Object.keys(MOVES)[i]||'Placcaggio'}
+function statBase(s,stat,L){return Math.floor(s[stat]*2*L/100)+5}
+function calc(m,_s){const s=_s||CR[m.id]; m.mh=Math.floor(s.h*2*m.L/100)+m.L+10; m.a=Math.floor(s.a*2*m.L/100)+5; m.d=Math.floor(s.d*2*m.L/100)+5; m.s=Math.floor(s.s*2*m.L/100)+5; m.sp=s.s; return m;}
+function healAll(){ S.team.forEach(m=>{calc(m);m.hp=m.mh;m.status=null}); S.inv.pozione=Math.max(S.inv.pozione,1); log('Squadra curata.'); }
+function movesForType(t){const base=['Placcaggio','Graffio']; const special={fuoco:['Braciere'],acqua:['Pistolacqua'],erba:['Foglielama'],elettro:['Scintilla'],roccia:['Sassata'],normale:[]}; return base.concat(special[t]||[]);}
+function creature(id,L){const s=CR[id]; const m={id,L,xp:0,hp:0,mh:0,a:0,d:0,s:s.s,moves:movesForType(s.t).slice(0,2),status:null,pp:{} }; calc(m,s); m.hp=m.mh; m.moves.forEach(k=>{ if(!m.pp[k]) m.pp[k]=MOVES[k].pp; }); m.moves.forEach(k=>m.pp[k]=MOVES[k].pp); return m; }
+// regenerate starter hero via newGame rewrite not possible; adjust newGame initializer separately by patching at runtime? We'll replace newGame via patch later.
+function newGame(){
+ const hero=creature(0,5);
+ S={version:VERSION, screen:'map', player:{name:'Giocatore', x:4, y:6, dir:1, map:'town'}, money:150, team:[hero], box:[], inv:{sfera:12,pozione:6}, quests:{main:0,done:0}, flags:{orb:false,trainer:false,boss:false}, log:'Benvenuto! Parla al sindaco.'};
+ return S;
+}
+const CHAR={'.':T.GROUND,'#':T.WALL,'g':T.GRASS,'~':T.WATER,'p':T.PATH,'D':T.DOOR,'S':T.SIGN,'T':T.TREE,'I':T.ITEM,'N':T.GROUND,'G':T.GROUND};
+const MAPS={
+ town:{name:'Borgo Iniziale',rows:[
+ 'TTTTTTTTTTTTTTTT','T..............T','T..N...........T','T..............T','T.....S........T','T..............T','T..............D','T..............T','T..N...........T','T..............T','TTTTTTTTTTTTTTTT'
+ ], npcs:[{id:'sindaco',x:2,y:2,name:'Sindaco',text:'Benvenuto a Borgo Iniziale. Parla con me per la missione principale.'},{id:'infermiera',x:2,y:8,name:'Infermiera',text:'Curo la squadra gratis. Interagisci per curare.'}], signs:[{x:5,y:4,text:'Borgo Iniziale - Verso Rotta Erbosa a EST.'}], trans:[{x:15,y:6,to:'route1',tx:1,ty:6}]},
+ route1:{name:'Rotta Erbosa',rows:[
+ 'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT','T..............................T','T...gggg.....gggg..............T','T...gggg.....gggg.....N........T','T..........pppppp..............T','T....I.....pppppp..............T','T..........pppppp.....N........T','T...gggg.....gggg..............T','T...gggg.....gggg..............T','T..............................T','T..............................T','TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT'
+ ], npcs:[{id:'tre',x:22,y:3,name:'Allenatore Marco',text:'Sfida me se vuoi passare! (interagisci)'},{id:'scout',x:22,y:6,name:'Scout Luna',text:'Qui la nebbia nasconde creature rare.'}], signs:[], trans:[{x:0,y:6,to:'town',tx:14,ty:6},{x:29,y:5,to:'cave',tx:1,ty:5},{x:29,y:6,to:'cave',tx:1,ty:6}], item:{x:5,y:5,id:'orb',text:'Hai trovato Orbe Lunare!'}},
+ cave:{name:'Caverna Ombra',rows:[
+ '####################','N..................#','N..gggg............#','N..gggg.....N......#','.................G.#','.....########.....#','.....#......#.....#','.....#......#.....#','.....########.....#','..................#','..............N...#','####################'
+ ], npcs:[{id:'guard',x:8,y:3,name:'Guardiano',text:'Il boss è in fondo. Preparati.'},{id:'boss',x:16,y:4,name:'Umbra',text:'Sei pronto per l incontro finale?'}], signs:[], trans:[{x:1,y:5,to:'route1',tx:27,ty:5},{x:1,y:4,to:'route1',tx:27,ty:4}], gate:{x:16,y:4}}
+};
+function parseMap(m){m.w=m.rows[0].length; m.h=m.rows.length; m.tiles=[]; m.npcs=m.npcs||[]; m.signs=m.signs||[]; m.trans=m.trans||[]; for(let y=0;y<m.h;y++){const row=m.rows[y];const arr=[]; for(let x=0;x<m.w;x++){arr.push(CHAR[row[x]]||0);} m.tiles.push(arr);} }
+Object.values(MAPS).forEach(parseMap);
+function map(){return MAPS[S.player.map]}
+const TILE=24, VW=30, VH=16;
+function tileAt(m,x,y){if(!m||x<0||y<0||x>=m.w||y>=m.h)return T.WALL;return m.tiles[y][x]}
+function walkable(m,x,y){const t=tileAt(m,x,y); if(!WALK.has(t)) return false; if(m.npcs.some(n=>n.x===x&&n.y===y)) return false; return true; }
+function camera(){const m=map(); const px=S.player.x*TILE, py=S.player.y*TILE; let cx=px-VW*TILE/2+TILE/2, cy=py-VH*TILE/2+TILE/2; cx=Math.max(0,Math.min(m.w*TILE-VW*TILE,cx)); cy=Math.max(0,Math.min(m.h*TILE-VH*TILE,cy)); return {x:cx,y:cy}; }
+function drawMap(){const m=map(), c=camera(); ctx.clearRect(0,0,cv.width,cv.height); ctx.fillStyle='#8fd3ff'; ctx.fillRect(0,0,cv.width,cv.height); const sx=Math.floor(c.x/TILE), sy=Math.floor(c.y/TILE); for(let y=0;y<VH;y++)for(let x=0;x<VW;x++){const wx=sx+x, wy=sy+y; const t=tileAt(m,wx,wy); ctx.fillStyle=COL[t]||'#000'; ctx.fillRect(x*TILE-c.x%TILE, y*TILE-c.y%TILE, TILE,TILE); if(t===T.GRASS){ctx.fillStyle='#3f7a3f';ctx.fillRect(x*TILE-c.x%TILE+3, y*TILE-c.y%TILE+3, 4,4);}}
+ // npcs/signs/items
+ (m.npcs||[]).forEach(n=>drawEnt(n.x,n.y,'#e63946',n.name[0]));
+ (m.signs||[]).forEach(s=>drawEnt(s.x,s.y,'#f5c542','!'));
+ if(m.item && !S.flags.orb) drawEnt(m.item.x,m.item.y,'#ef4b4b','★');
+ // player
+ const px=S.player.x*TILE+TILE/2-c.x, py=S.player.y*TILE+TILE/2-c.y; ctx.fillStyle='#1b2340'; ctx.beginPath(); ctx.arc(px,py,10,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#fff'; ctx.fillRect(px-4,py-4,8,8);
+ // HUD
+ $('#loc').textContent=m.name+'  x:'+S.player.x+' y:'+S.player.y;
+ var qname=['Parla al Sindaco','Raccogli Orbe Lunare','Sconfiggi Marco','Sconfiggi Umbra (finale)'][S.quests.main];
+ $('#questtop').textContent='Quest: '+qname;
+}
+function drawEnt(x,y,color,ch){ const m=map(), c=camera(); const sx=x*TILE+TILE/2-c.x, sy=y*TILE+TILE/2-c.y; ctx.fillStyle=color; ctx.beginPath(); ctx.arc(sx,sy,8,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#fff'; ctx.font='12px monospace'; ctx.fillText(ch,sx-4,sy+4); }
+let lastStep=0;
+function loop(ts){ if(S.screen==='map'){ if(!lastStep||ts-lastStep>150){ moveInput(); lastStep=ts;} drawMap(); updatePartyBar();} requestAnimationFrame(loop);}
+function startLoop(){requestAnimationFrame(loop);}
+function moveInput(){ if(keys['ArrowUp']||keys['w']) tryMove(0,-1); else if(keys['ArrowDown']||keys['s']) tryMove(0,1); else if(keys['ArrowLeft']||keys['a']) tryMove(-1,0); else if(keys['ArrowRight']||keys['d']) tryMove(1,0);}
+function tryMove(dx,dy){ const p=S.player; const nx=p.x+dx, ny=p.y+dy; const m=map(); if(nx<0||ny<0||nx>=m.w||ny>=m.h)return; if(!walkable(m,nx,ny))return; p.x=nx; p.y=ny; p.dir=dx<0?3:dx>0?1:dy<0?0:2; handleTile(); }
+function handleTile(){ const m=map(); const p=S.player; const t=m.tiles[p.y][p.x]; 
+ // transitions
+ const tr=(m.trans||[]).find(e=>e.x===p.x&&e.y===p.y); if(tr){ S.player.map=tr.to; S.player.x=tr.tx; S.player.y=tr.ty; S.log='Vai a '+MAPS[tr.to].name; save(); return;}
+ // item orb
+ if(m.item && p.x===m.item.x && p.y===m.item.y && !S.flags.orb){ S.flags.orb=true; S.inv.orb=(S.inv.orb||0)+1; S.log='Hai trovato Orbe Lunare!'; if(S.quests.main===1) S.quests.main=2; save(); }
+ // grass encounter
+ if(t===T.GRASS){ if(Math.random()<0.22) startWildBattle(); }
+}
+function adjacentNpc(){ const p=S.player, m=map(); return m.npcs.find(n=>Math.abs(n.x-p.x)+Math.abs(n.y-p.y)===1); }
+function adjacentSign(){ const p=S.player, m=map(); return m.signs.find(n=>Math.abs(n.x-p.x)+Math.abs(n.y-p.y)===1); }
+function openDlg(html, opts){ const box=document.createElement('div'); box.className='overlay'; box.innerHTML='<div class="panel">'+html+'</div>'; box.onclick=e=>{if(e.target===box) box.remove();}; (opts&&opts.noclose)?0:0; OVL.appendChild(box); return box; }
+function closeOvl(){ OVL.innerHTML=''; }
+function talkNPC(){ const n=adjacentNpc(); const s=adjacentSign(); if(n) return onNPC(n); if(s){ log(s.text); openDlg('<h2>Cartello</h2><p>'+s.text+'</p><button onclick="closeOvl()">OK</button>'); return;} log('Nessuno con cui parlare.'); }
+function onNPC(n){
+ if(n.id==='infermiera'){ healAll(); openDlg('<h2>Infermiera</h2><p>Squadra curata e pozioni rifornite.</p><button onclick="closeOvl()">OK</button>'); return; }
+ if(n.id==='sindaco'){
+   if(S.quests.main===0){ S.quests.main=1; openDlg('<h2>Sindaco</h2><p>Recupera l Orbe Lunare nella Rotta Erbosa e poi sconfiggi l Allenatore Marco.</p><button onclick="closeOvl()">OK</button>'); }
+   else openDlg('<h2>Sindaco</h2><p>Continua la missione. La caverna finale attende.</p><button onclick="closeOvl()">OK</button>');
+   save(); return;
+ }
+ if(n.id==='tre'){
+   if(!S.flags.trainer){ openDlg('<h2>Allenatore Marco</h2><p>Duello! (Premi Lotta)</p><div class="grid2"><button class="big" onclick="closeOvl();startTrainerBattle()">⚔️ Lotta</button><button onclick="closeOvl()">Fuggi</button></div>'); }
+   else openDlg('<h2>Allenatore Marco</h2><p>Sei forte. Allenati ancora.</p><button onclick="closeOvl()">OK</button>');
+   return;
+ }
+ if(n.id==='scout'){ openDlg('<h2>Scout Luna</h2><p>'+n.text+'</p><button onclick="closeOvl()">OK</button>'); return;}
+ if(n.id==='guard'){ openDlg('<h2>Guardiano</h2><p>'+n.text+'</p><button onclick="closeOvl()">OK</button>'); return;}
+ if(n.id==='boss'){
+   openDlg('<h2>Umbra</h2><p>'+n.text+'</p><div class="grid2"><button class="big" onclick="closeOvl();startBossBattle()">⚔️ Lotta finale</button><button onclick="closeOvl()">Indietro</button></div>'); return;
+ }
+ openDlg('<h2>'+n.name+'</h2><p>'+n.text+'</p><button onclick="closeOvl()">OK</button>');
+}
+function pickup(){ if(S.player.map==='route1' && S.player.x===5 && S.player.y===5 && !S.flags.orb){ S.flags.orb=true; S.inv.orb=(S.inv.orb||0)+1; S.quests.main=2; S.log='Orbe Lunare presa.'; openDlg('<h2>Oggetto</h2><p>Hai raccolto Orbe Lunare.</p><button onclick="closeOvl()">OK</button>'); save(); return;} log('Nulla da raccogliere.'); }
+function newEnemyTeam(list){ return list.map(([id,lv])=>creature(id,lv)); }
+let B=null;
+function openBattleUI(){ closeOvl(); const wrap=document.createElement('div'); wrap.className='overlay'; wrap.id='bwrap'; wrap.innerHTML=`<div class="panel"><h2 id="btitle">Battaglia</h2><div class="grid2"><div class="card" id="benemy"></div><div class="card" id="bplayer"></div></div><div class="dlg" id="bmsg">...</div><div class="menu" id="bmenu"></div></div>`; OVL.appendChild(wrap); }
+function updBattle(){
+ const e=B.e, p=B.p;
+ $('#benemy').innerHTML=`<b>${CR[e.id].n}</b> Lv${e.L}${hbar(e)}<small>${e.hp}/${e.mh} PS</small><div class="ico" style="margin-top:4px">${CR[e.id].svg}</div>`;
+ $('#bplayer').innerHTML=`<b>${CR[p.id].n}</b> Lv${p.L}${hbar(p)}<small>${e? '': ''}${p.hp}/${p.mh} PS</small><div class="ico" style="margin-top:4px">${CR[p.id].svg}</div>`;
+}
+function hbar(m){const r=m.hp/m.mh;return`<div class="hp"><i style="width:${r*100}%;background:${r>.5?'var(--ok)':r>.2?'var(--mid)':'var(--low)'}"></i></div>`;}
+function bmsg(t){const el=document.getElementById('bmsg'); if(el) el.textContent=t; else log(t);}
+function bmenu(html){$('#bmenu').innerHTML=html;}
+function effText(e){if(e>1)return'È superefficace!';if(e<1)return'Non è molto efficace...';return'';}
+function dmg(a,d,moveId){const m=MOVES[moveId]; const acc=Math.random()*100; if(acc>m.acc)return{hit:false}; const e=TY[m.t].e[CR[d.id].t]??1; const stab=m.t===CR[a.id].t?1.5:1; const crit=Math.random()<0.08?1.5:1; const val=Math.max(1,Math.floor(((2*a.L/5+2)*m.p*a.a/d.d/50+2)*e*stab*crit*(.88+Math.random()*.14))); return{hit:true,dmg:val,eff:e,crit:crit>1};}
+async function sayBattle(t){bmsg(t); await sl(900);}
+function sl(ms){return new Promise(r=>setTimeout(r,ms));}
+async function enemyAttack(){ const e=B.enemy; const mv=e.moves[Math.floor(Math.random()*e.moves.length)]; await sayBattle(`${CR[e.id].n} usa ${mv}!`); const r=dmg(e,B.player,mv); if(!r.hit){ await sayBattle('Il nemico manca!'); return; } B.player.hp=Math.max(0,B.player.hp-r.dmg); updBattle(); const ei=effText(r.eff); if(ei) await sayBattle(ei); if(r.crit) await sayBattle('Brutto colpo!'); if(B.player.hp<=0){ await sayBattle(`${CR[B.player.id].n} è esausto!`); autoSwitch(); } }
+function autoSwitch(){ const next=S.team.findIndex((m,i)=>i>B.playerIndex? m.hp>0 : false)??-1; // find any
+ let idx=S.team.findIndex((m,ii)=>ii!==B.playerIndex && m.hp>0); if(idx>=0){ B.playerIndex=idx; B.player=S.team[idx]; sayBattle(`Vai ${CR[B.player.id].n}!`); } else { B.lost=true; } }
+function battleIndexReset(){ B.playerIndex=S.team.findIndex(m=>m.hp>0); B.p=S.team[B.playerIndex]; B.enemyIndex=0; B.e=B.enemyTeam[0]; }
+async function startBattleCore(enemyTeam,opts){
+ B={enemyTeam,enemyIndex:0,playerIndex:S.team.findIndex(m=>m.hp>0),canCapture:!!opts.canCapture,wild:!!opts.wild,busy:false,lost:false,won:false,rewardMoney:opts.money||0,rewardXP:opts.xp||0,onWin:opts.onWin||null};
+ if(B.playerIndex<0) B.playerIndex=0; B.p=S.team[B.playerIndex]; B.e=B.enemyTeam[0];
+ if(B.p.hp<=0) calc(B.p);
+ openBattleUI(); $('#btitle').textContent=opts.title||'Battaglia'; updBattle(); await sayBattle(opts.intro||'Un nemico appare!'); battleTurnMenu();
+}
+async function startWildBattle(){ const avg=Math.max(2,Math.round(S.team.reduce((s,m)=>s+m.L,0)/S.team.length)); const id=Math.floor(Math.random()*CR.length); const e=creature(id,Math.max(2,avg+Math.floor(Math.random()*3)-1)); S.log=''; await startBattleCore([e],{title:'Incontro selvatico',wild:true,canCapture:true,intro:`Un ${CR[e.id].n} selvatico appare!`,money:20,xp:30,onWin:async()=>{ if(S.quests.main===2 && S.flags.orb){ S.quests.main=3; } } }); }
+async function startTrainerBattle(){ const avg=Math.max(3,Math.round(S.team.reduce((s,m)=>s+m.L,0)/S.team.length)+1); const e=creature(12,avg); await startBattleCore([e],{title:'Allenatore Marco',wild:false,canCapture:false,intro:'Marco: preparati a perdere!',money:150,xp:60,onWin:async()=>{ S.flags.trainer=true; if(S.quests.main<=2) S.quests.main=3; } }); }
+async function startBossBattle(){ const avg=Math.max(6,Math.round(S.team.reduce((s,m)=>s+m.L,0)/S.team.length)+2); const team=[creature(17,avg),creature(15,avg-1),creature(13,avg)]; await startBattleCore(team,{title:'Umbra - Incontro finale',wild:false,canCapture:false,intro:'Umbra: nessuno passa!',money:500,xp:150,onWin:async()=>{ S.flags.boss=true; S.quests.main=4; S.quests.done=1; } }); }
+function battleTurnMenu(){
+ if(B.lost||B.won){ return; }
+ B.busy=false;
+ B.p=S.team[B.playerIndex]; B.e=B.enemyTeam[B.enemyIndex];
+ updBattle();
+ const moves=B.p.moves.map(k=>`<button onclick="bAttack('${k}')">${k}<br><small>${MOVES[k].t} ${MOVES[k].p}</small></button>`).join('');
+ bmenu(moves+`<button onclick="bSwitch()">🔄 Squadra</button><button onclick="bBall()">🔴 Sfera</button><button onclick="bPot()">🧪 Pozione</button><button class="ghost" onclick="bRun()">🏃 Fuga</button>`);
+ bmsg(`Cosa farà ${CR[B.p.id].n}?`);
+}
+async function bAttack(move){ if(B.busy||B.won||B.lost)return; B.busy=true; bmenu(''); await playerAttackMove(move); if(B.won||B.lost){await endBattleFlow(); return;} if(B.e.hp>0 && B.p.hp>0){ await enemyAttack(); if(B.p.hp<=0){ if(S.team.some(m=>m.hp>0 && m!==B.p)){ autoSwitch(); } else { B.lost=true; } } } if(B.won||B.lost){ await endBattleFlow(); return;} B.busy=false; battleTurnMenu(); }
+async function playerAttackMove(move){ bmsg(`${CR[B.p.id].n} usa ${move}!`); await sl(700); const r=dmg(B.p,B.e,move); if(!r.hit){ bmsg('Mancato!'); await sl(600); return; } B.e.hp=Math.max(0,B.e.hp-r.dmg); updBattle(); if(r.crit) await sayBattle('Brutto colpo!'); const ei=effText(r.eff); if(ei) await sayBattle(ei); if(B.e.hp<=0){ await sayBattle(`${CR[B.e.id].n} è esausto!`); await gainXP(B.p,B.rewardXP); await advanceEnemyOrWin(); } }
+async function advanceEnemyOrWin(){ B.enemyIndex++; if(B.enemyIndex<B.enemyTeam.length){ B.e=B.enemyTeam[B.enemyIndex]; await sayBattle(`Entra ${CR[B.e.id].n}! (${B.enemyIndex+1}/${B.enemyTeam.length})`); } else { B.won=true; } }
+async function enemyAttack(){ bmsg(`${CR[B.e.id].n} selvatico usa...`); await sl(400); const mv=B.e.moves[Math.floor(Math.random()*B.e.moves.length)]; bmsg(`${CR[B.e.id].n} usa ${mv}!`); await sl(700); const r=dmg(B.e,B.p,mv); if(!r.hit){ bmsg('Il nemico manca!'); await sl(600); return; } B.p.hp=Math.max(0,B.p.hp-r.dmg); updBattle(); if(r.crit) await sayBattle('Brutto colpo nemico!'); const ei=effText(r.eff); if(ei) await sayBattle(ei); if(B.p.hp<=0){ await sayBattle(`${CR[B.p.id].n} è esausto!`); } }
+function bSwitch(){ if(B.busy)return; B.busy=true; bmenu(''); let html='<h3>Scegli compagno</h3>'; S.team.forEach((m,i)=>{ if(m.hp>0) html+=`<button onclick="doSwitch(${i})">${CR[m.id].svg} ${CR[m.id].n} Lv${m.L} ${m.hp}/${m.mh}</button>`; else html+=`<button class="off">${CR[m.id].n} esausto</button>`; }); html+='<button class="ghost" onclick="battleTurnMenu()">Indietro</button>'; openDlg2(html); B.busy=false; }
+function openDlg2(html){ const w=document.createElement('div'); w.className='overlay'; w.id='xovl'; w.innerHTML='<div class="panel">'+html+'</div>'; OVL.appendChild(w); }
+function closeX(){ const w=document.getElementById('xovl'); if(w) w.remove(); }
+async function doSwitch(i){ closeX(); if(i===B.playerIndex)return; B.playerIndex=i; B.p=S.team[i]; bmsg(`Vai ${CR[B.p.id].n}!`); await sl(800); updBattle(); // enemy turn
+ B.busy=true; await enemyAttack(); if(B.p.hp<=0){ if(S.team.some((m,ii)=>ii!==B.playerIndex && m.hp>0)){ autoSwitch(); } else B.lost=true; } if(B.won||B.lost){await endBattleFlow();return;} B.busy=false; battleTurnMenu(); }
+async function bBall(){ if(B.busy)return; if(!B.canCapture){ bmsg('Non puoi catturare qui.'); return; } if((S.inv.sfera||0)<1){ bmsg('Non hai Sfere!'); return;} B.busy=true; bmenu(''); S.inv.sfera--; bmsg('Lanci una Sfera!'); await sl(1000); const e=B.e; const rate=Math.min(0.95,0.25+0.6*(1-e.hp/e.mh)); if(Math.random()<rate){ const c=Object.assign({},e,{moves:e.moves.slice(),pp:{...e.pp},status:null}); c.hp=e.hp; await sayBattle(`Preso! ${CR[e.id].n} catturato.`); if(S.team.length<6) S.team.push(c); else S.box.push(c); S.log=CR[e.id].n+' catturato.'; B.won=true; await endBattleFlow(); return; } await sayBattle(`${CR[e.id].n} si libera!`); updBattle(); await enemyAttack(); if(B.p.hp<=0){ if(S.team.some((m,ii)=>ii!==B.playerIndex && m.hp>0)) autoSwitch(); else B.lost=true;} if(B.won||B.lost){await endBattleFlow();return;} B.busy=false; battleTurnMenu(); }
+async function bPot(){ if(B.busy)return; const m=B.p; if((S.inv.pozione||0)<1){ bmsg('Non hai Pozioni!'); return;} if(m.hp>=m.mh){ bmsg('PS già pieni.'); return;} B.busy=true; bmenu(''); S.inv.pozione--; m.hp=Math.min(m.mh,m.hp+35); updBattle(); await sayBattle(`${CR[m.id].n} recupera PS!`); await enemyAttack(); if(m.hp<=0){ if(S.team.some((x,ii)=>ii!==B.playerIndex && x.hp>0)) autoSwitch(); else B.lost=true;} if(B.won||B.lost){await endBattleFlow();return;} B.busy=false; battleTurnMenu(); }
+async function bRun(){ if(B.busy)return; if(!B.wild){ bmsg('Non puoi fuggire da un duello!'); return;} B.busy=true; bmenu(''); if(Math.random()<0.85){ bmsg('Sei fuggito!'); await sl(700); B.won=true; B.escaped=true; await endBattleFlow(); return;} await sayBattle('Non riesci a scappare!'); await enemyAttack(); if(B.p.hp<=0){ if(S.team.some((x,ii)=>ii!==B.playerIndex && x.hp>0)) autoSwitch(); else B.lost=true;} if(B.won||B.lost){await endBattleFlow();return;} B.busy=false; battleTurnMenu(); }
+async function endBattleFlow(){ closeOvl(); B.busy=true; if(B.lost){ await sl(500); S.team.forEach(m=>m.hp=Math.max(1,m.mh? m.hp:0)); // soft reset no
+   S.money=Math.max(0,S.money-30); S.log='Sconfitta... perdi ₿30. Cura la squadra.'; healAll(); }
+ else {
+   if(B.escaped){ S.log='Fuga riuscita. Nessuna ricompensa.'; }
+   else { S.money += B.rewardMoney||0; S.log=`Vittoria! +₿${B.rewardMoney||0}`; if(B.onWin) await B.onWin(); }
+ }
+ save(); // close battle overlay remove
+ const w=document.getElementById('bwrap'); if(w) w.remove(); B=null; S.screen='map';
+ if(S.quests.main===4){ await sl(500); openDlg(`<h2>Missione compiuta!</h2><p>Hai sconfitto Umbra e completato l'avventura.</p><p>Puoi continuare ad esplorare. Salva il progresso.</p><button onclick="closeOvl()">OK</button>`);}
+}
+async function gainXP(m,amt){ if(!amt)return; m.xp+=amt; while(m.xp>=m.L*20){ m.xp-=m.L*20; m.L++; calc(m); m.hp=Math.min(m.mh,m.hp+Math.floor(m.mh*0.2)); await sayBattle(`${CR[m.id].n} sale al livello ${m.L}!`); const sp=CR[m.id]; if(sp.evo && m.L>=sp.evo.at && m.id!==sp.evo.to){ const old=sp.n; m.id=sp.evo.to; calc(m); m.hp=Math.min(m.mh,m.hp+Math.floor(m.mh*0.25)); await sayBattle(`${old} si evolve in ${CR[m.id].n}! ✨`); await sl(900); } } }
+function sl(ms){return new Promise(r=>setTimeout(r,ms));}
+async function tryEvolve(m){const sp=CR[m.id]; if(sp.evo&&m.L>=sp.evo.at&&m.id!==sp.evo.to){const old=sp.n;m.id=sp.evo.to;calc(m);m.hp=Math.min(m.mh,m.hp+Math.floor(m.mh*.2));await sayBattle(`${old} si evolve in ${CR[m.id].n}!`);}}
+function updatePartyBar(){ const rows=S.team.map((m,i)=>`<div class="row" style="padding:4px"><div class="ico">${CR[m.id].svg}</div><div style="flex:1"><b>${CR[m.id].n}</b> Lv${m.L}<small>${m.hp}/${m.mh} PS · ${m.status||'ok'}</small>${hbar(m)}</div></div>`).join(''); $('#partybar').innerHTML = rows + (S.team.length===0?'Squadra vuota.':''); }
+function openTeam(){ let html='<h2>Squadra / Box</h2><div class="grid2"><div><h3>Attivi</h3>'+S.team.map((m,i)=>`<div class="card"><div class="ico">${CR[m.id].svg}</div><b>${CR[m.id].n}</b> Lv${m.L}<br><small>${m.hp}/${m.mh} PS · ${m.moves.join(', ')}</small><br><button style="margin-top:4px" onclick="moveToBox(${i})">→ Box</button></div>`).join('')+'</div><div><h3>Box</h3>'+(S.box.length? S.box.map((m,i)=>`<div class="card"><div class="ico">${CR[m.id].svg}</div><b>${CR[m.id].n}</b> Lv${m.L}<br><button style="margin-top:4px" onclick="moveToTeam(${i})">→ Squadra</button></div>`).join(''):'<p>Box vuoto.</p>')+'</div></div><button onclick="closeX()">Chiudi</button>'; openDlg2(html); }
+function moveToBox(i){ if(S.team.length<=1){ alert('Serve almeno un compagno.'); return;} const c=S.team.splice(i,1)[0]; S.box.push(c); closeX(); openTeam(); save(); }
+function moveToTeam(i){ if(S.team.length>=6){ alert('Squadra piena (max 6).'); return;} const c=S.box.splice(i,1)[0]; S.team.push(c); closeX(); openTeam(); save(); }
+function openInv(){ let html='<h2>Oggetti</h2>'; for(const [k,v] of Object.entries(S.inv)){ html+=`<div class="card">${k}: <b>${v}</b></div>`; } html+='<h3>Uso veloce</h3><p>Pozioni curano 35 PS in battaglia. Sfere catturano creature selvatiche.</p><button onclick="closeX()">Chiudi</button>'; openDlg2(html); }
+function openQuest(){ const names=['Parla con il sindaco','Raccogli Orbe Lunare','Sconfiggi Allenatore Marco','Sconfiggi Umbra (finale)']; let html='<h2>Quest log</h2><p>Quest corrente: <b>'+names[Math.min(S.quests.main,names.length-1)]+'</b></p><ul>'; html+='<li>Se main=0: parla al Sindaco.</li><li>Se main=1: raccogli Orbe Lunare nella Rotta Erbosa.</li><li>Se main=2: sconfiggi Marco.</li><li>Se main=3: entra in caverna e sconfiggi Umbra.</li></ul><button onclick="closeX()">Chiudi</button>'; openDlg2(html); }
+function openSave(){ let html='<h2>Salva / Carica</h2>'; html+=`<button class="big" onclick="save();closeX()">💾 Salva ora</button>`; html+=`<button onclick="loadGameConfirm()">📂 Carica (ricarica)</button>`; html+=`<button class="ghost" onclick="resetGame()">↺ Nuova partita</button>`; html+=`<button onclick="exportSave()">⬇️ Esporta JSON</button>`; html+=`<button onclick="importSave()">⬆️ Importa JSON</button>`; html+='<button onclick="closeX()">Chiudi</button>'; openDlg2(html); }
+function loadGameConfirm(){ if(confirm('Ricaricare l ultimo salvataggio?')){ location.reload(); } }
+function resetGame(){ if(confirm('Cancellare i progressi e ricominciare?')){ localStorage.removeItem(KEY); location.reload(); } }
+function exportSave(){ const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='flip-flop-rpg-save.json'; a.click(); }
+function importSave(){ const i=document.createElement('input'); i.type='file'; i.accept='application/json'; i.onchange=async()=>{ const f=i.files[0]; if(!f)return; const t=await f.text(); try{const d=JSON.parse(t); if(d&&d.version===VERSION){ localStorage.setItem(KEY,JSON.stringify(d)); location.reload();} else alert('Save incompatibile.');}catch(e){alert('JSON non valido.');} }; i.click(); }
+function settings(){ openDlg2('<h2>Impostazioni</h2><p>Controlli: WASD/Frecce. Invio/Spazio: interagisci. M: mappa (non attivo).</p><p>Versione '+VERSION+'</p><button onclick="closeX()">Chiudi</button>'); }
+function save(){ try{ S.saveTime=new Date().toISOString(); localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){ console.warn(e); } S.log='Salvataggio riuscito.'; }
+function log(t){ S.log=t; const el=document.getElementById('log'); if(el) el.textContent=t; }
+function openMapMenu(){ openDlg2('<h2>Mappa</h2><p>Luoghi: Borgo Iniziale, Rotta Erbosa, Caverna Ombra.</p><p>Posizione attuale: <b>'+map().name+'</b></p><button onclick="closeX()">Chiudi</button>'); }
+window.addEventListener('keydown',e=>{ keys[e.key]=true; if(e.key==='Enter' || e.key===' ') talkNPC(); if(e.key==='Escape') closeX(); });
+window.addEventListener('keyup',e=>{ keys[e.key]=false; });
+// fix grass encounter trigger name
+try { } catch(e){}
+init();
+</script>
+</body>
+</html>

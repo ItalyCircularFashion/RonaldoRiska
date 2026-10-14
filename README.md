@@ -257,4 +257,26 @@ Sviluppato con approccio **industrial tech**: integrazione tra competenze operat
 
 ---
 
+---
+
+## 🎮 Flip Flop Pokè — RPG (nuovo)
+
+Gioco RPG monster-catching accessibile dal sito (top bar → **Flip Flop Pokè / Flip Flop Pokè RPG**):
+
+- File: `flip-flop-rpg.html` (self-contained, nessuna dipendenza, `file://` o GitHub Pages).
+- Controlli: WASD/Frecce per muoversi, Enter/Spazio per interagire, menu per squadra, oggetti, quest, salvataggi.
+- Funzionalità: esplorazione tile-based, collisioni, transizioni tra aree, NPC e quest, battaglie a turni con efficacia tipi, cattura, inventario, XP e livelli, evoluzioni (3 catene complete), cura, team max 6 + box, salvataggio/caricamento JSON + localStorage versionato.
+- Creature originali: 24 specie (Bracino→Dinofiamma, Gocciolo→Maremoto, Scinti→Tuono, Ciotolo→Megalite, Cane rosa→Cane coraggioso, Lupo occhiali→Lupo magister, Pipistrello arrabbiato→Pipistrello furioso, Pecora nuvola→Pecora tempesta, più specie non evolventi).
+- Quest principale: Sindaco → Orbe Lunare → Allenatore Marco → Boss finale Umbra.
+
+Avvio locale:
+
+```bash
+python3 -m http.server 8793
+# apri http://127.0.0.1:8793/flip-flop-rpg.html
+```
+
+Known limitations: asset placeholder SVG, audio non presente, bilanciamento iniziale, un solo set di mappe (MVP). Roadmap: tile art finale, più route/arene, trainer aggiuntivi, negozi, stats screen dedicato, test automatizzati DOM.
+
+
 *Ultimo aggiornamento: Settembre 2026*
