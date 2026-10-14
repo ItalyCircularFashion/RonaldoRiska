@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEON//ZERO</title>
+<style>
+:root{--ink:#031014;--neon:#22d3ee;--mag:#ec4899;--amb:#f59e0b;--steel:#64748b;--panel:rgba(5,10,20,.78)}
+*{box-sizing:border-box;margin:0}
+body{min-height:100vh;display:grid;place-items:center;padding:8px;background:radial-gradient(circle at 50% 20%,#132033,#02040a 75%);font:10px/1.5 "Courier New",monospace;color:#d7f9ff;overflow:hidden}
+#app{width:min(980px,100%);background:#060b13;border:2px solid #0f2b33;border-radius:12px;box-shadow:0 0 30px #08334480;padding:8px}
+h1{font-size:18px;text-align:center;color:#22d3ee;text-shadow:0 0 12px #22d3ee;letter-spacing:3px;margin:4px 0 6px}
+canvas{display:block;width:100%;height:auto;border:1px solid #1f3b45;border-radius:8px;image-rendering:pixelated;background:#02040a}
+.hud{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0;font-size:9px}
+.bar{flex:1;min-width:180px;background:var(--panel);border:1px solid #1f3b45;border-radius:6px;padding:6px}
+.hp{height:8px;background:#13252e;border-radius:4px;overflow:hidden;margin-top:3px}
+.hp i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#22d3ee,#ec4899);transition:width .15s}
+.row{display:flex;justify-content:space-between;gap:8px}
+.log{background:#030712;border:1px solid #1f3b45;border-radius:6px;padding:6px;min-height:34px;margin:6px 0;color:#a5f3fc;font-size:9px}
+.controls{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+button{font:inherit;font-size:9px;padding:9px 6px;border:1px solid #1f3b45;border-radius:6px;background:#07101a;color:#d7f9ff;cursor:pointer}
+button:hover{background:#0e202f}button:active{translate:0 1px}
+.touch{display:none;margin-top:8px;grid-template-columns:repeat(4,1fr);gap:6px}
+@media (max-width:900px){.touch{display:grid}}
+kbd{background:#07101a;border:1px solid #1f3b45;border-radius:3px;padding:1px 4px}
+</style>
+</head>
+<body>
+<div id="app">
+<h1>NEON//ZERO</h1>
+<canvas id="cv" width="960" height="540"></canvas>
+<div class="hud">
+ <div class="bar"><div id="hpLine">HP 100/100</div><div class="hp"><i id="hpbar"></i></div><div id="cdLine">Atk ready | Dodge ready</div></div>
+ <div class="bar"><div id="misLine">OBJ: ...</div><div id="statLine">Cr 0 | XP 0 | Focus 1</div></div>
+</div>
+<div class="log" id="log">Inizializza sistema...</div>
+<div class="controls">
+ <button onclick="togglePause()">Pause</button>
+ <button onclick="useHack()">Hack</button>
+ <button onclick="upgradeMenu()">Upgrade</button>
+ <button onclick="saveNow()">Save</button>
+</div>
+<div class="touch">
+ <button ontouchstart="touchMove(-1,0)" ontouchend="touchMove(0,0)">◀</button>
+ <button ontouchstart="touchMove(0,-1)" ontouchend="touchMove(0,0)">▲</button>
+ <button ontouchstart="touchMove(0,1)" ontouchend="touchMove(0,0)">▼</button>
+ <button ontouchstart="touchMove(1,0)" ontouchend="touchMove(0,0)">▶</button>
+</div>
+<div class="log" id="ctrlHelp">Tastiera: WASD/frecce, mouse mira• click attacco, Space schivata, E interazione, H hack. Mobile: touch pad + bottoni.</div>
+</div>
+<script>
+const $=s=>document.querySelector(s), cv=$('#cv'), ctx=cv.getContext('2d'), logEl=$('#log'), hpBar=$('#hpbar');
+const KEY='neon-zero-v1', VER=1, W=cv.width, H=cv.height, WORLD={w:2400,h:1400};
+const walls=[]; const doors=[]; const terminals=[]; const enemies=[]; const bullets=[]; const loot=[]; const fx=[];
+const state={running:true,paused:false,mission:0,dialogue:null,shop:false,flags:{lab:false,boss:false}};
+const player={x:160,y:700,r:14,hp:100,maxHp:100,cd:0,dodgeCd:0,inv:0,speed:150,aim:0,dodgeT:0,credits:0,xp:0,focus:1,up:{blade:0,reflex:0,neural:0},atkPower:18};
+const keys={}; let mouse={x:W/2,y:H/2,down:false};
+let cam={x:0,y:0}, last=performance.now();
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+function log(t){logEl.textContent=t;}
+function hbar(t){const r=t.hp/t.maxHp; hpBar.style.width=r*100+'%'; $('#hpLine').textContent='HP '+Math.ceil(t.hp)+'/'+t.maxHp; $('#cdLine').textContent='Atk '+(player.cd>0?player.cd.toFixed(1):'READY')+' | Dodge '+(player.dodgeCd>0?player.dodgeCd.toFixed(1):'READY');}
+function updateHUD(){ $('#statLine').textContent='Cr '+player.credits+' | XP '+player.xp+' | Focus '+player.focus; const objs=['Vai al distretto Redline.','Hack terminale porta per aprire il laboratorio.','Elimina le guardie nella zona lab.','Indaga terminale centrale (scoperta).','Scegli: estrai i dati o distruggi.', 'Missione completata: torna alla safehouse.']; $('#misLine').textContent='OBJ: '+objs[Math.min(state.mission,objs.length-1)]; }
+walls.push({x:0,y:0,w:WORLD.w,h:20},{x:0,y:WORLD.h-20,w:WORLD.w,h:20},{x:0,y:0,w:20,h:WORLD.h},{x:WORLD.w-20,y:0,w:20,h:WORLD.h});
+// buildings
+function block(x,y,w,h){walls.push({x,y,w,h});}
+block(120,120,180,120); block(360,100,260,160); block(680,140,220,180); block(950,120,280,160); block(1320,160,220,180); block(1600,120,260,140); block(1950,140,280,180);
+block(150,420,220,180); block(420,390,300,200); block(790,430,240,180); block(1120,400,300,220); block(1500,450,260,180); block(1840,400,320,220);
+block(140,720,240,170); block(440,710,300,190); block(820,720,260,180); block(1160,740,300,180); block(1520,710,280,200); block(1880,740,320,180);
+block(160,1030,260,180); block(470,1010,320,200); block(850,1040,260,180); block(1180,1020,320,180); block(1540,1010,280,200); block(1880,1040,340,180);
+// doors
+doors.push({id:'labdoor', x:860,y:360,w:24,h:90, locked:true});
+// terminals
+terminals.push({id:'shop', x:210,y:230, r:24, label:'UPGRADE', type:'upgrade', used:false});
+terminals.push({id:'doorhack', x:760,y:340, r:24, label:'TERM', type:'hackdoor', used:false});
+terminals.push({id:'core', x:2050,y:1130, r:26, label:'DATA', type:'core', used:false});
+terminals.push({id:'exit', x:120,y:650, r:24, label:'SAFE', type:'heal', used:false});
+// enemies spawned by mission progression
+function spawnEnemy(type,x,y){
+ const t = (type==='ranged') ? {hp:45,sp:95,dmg:8,range:240,cd:1.4,color:'#f43f5e',r:14}
+   : (type==='boss') ? {hp:140,sp:85,dmg:15,range:120,cd:1.0,color:'#a855f7',r:20}
+   : {hp:60,sp:90,dmg:10,range:50,cd:0.9,color:'#fb7185',r:15};
+ enemies.push({type,x,y,vx:0,vy:0,hp:t.hp,maxHp:t.hp,sp:t.sp,dmg:t.dmg,range:t.range,cd:t.cd,color:t.color,r:t.r,state:'chase',timer:Math.random(),hitFlash:0,dead:false});
+}
+// loot
+function drop(x,y,n){for(let i=0;i<n;i++) loot.push({x:x+Math.random()*10-5,y:y+Math.random()*10-5,r:6,taken:false});}
+function newGame(){ player.x=220;player.y=230;player.hp=100;player.credits=0;player.xp=0;player.focus=1;player.up={blade:0,reflex:0,neural:0};player.atkPower=18;player.speed=150;player.cd=0;player.dodgeCd=0;player.inv=0; state.mission=0;state.paused=false; enemies.length=0; bullets.length=0; loot.length=0; fx.length=0; terminals.forEach(t=>t.used=false); doors.forEach(d=>d.locked=true); spawnEnemy('melee',900,520); spawnEnemy('ranged',1200,480); log('Connessione stabilita. Trova il distretto Redline (EST).'); updateHUD(); save(); }
+function load(){const raw=localStorage.getItem(KEY); if(raw){try{const d=JSON.parse(raw); if(d&&d.v===VER){Object.assign(player,d.p);state.mission=d.m;terminals.forEach(t=>{const u=d.t.find(x=>x.id===t.id); if(u)t.used=u.used;});doors.forEach(dd=>{const u=d.d.find(x=>x.id===dd.id); if(u)dd.locked=u.locked;});enemies.length=0; (d.e||[]).forEach(e=>enemies.push(e)); bullets.length=0; loot.length=0; (d.loot||[]).forEach(l=>loot.push(l)); log('Partita caricata.'); updateHUD(); return;} }catch(e){} } newGame();}
+function circleRect(x,y,r,rt){return x+r>rt.x && x-r<rt.x+rt.w && y+r>rt.y && y-r<rt.y+rt.h;}
+function movePlayer(dt){
+ if(state.paused) return;
+ let mx=0,my=0;
+ if(keys['a']||keys['ArrowLeft'])mx-=1; if(keys['d']||keys['ArrowRight'])mx+=1; if(keys['w']||keys['ArrowUp'])my-=1; if(keys['s']||keys['ArrowDown'])my+=1; mx+=touchInput.x; my+=touchInput.y;
+ const len=Math.hypot(mx,my)||1; mx/=len; my/=len;
+ const spd=player.dodgeT>0?player.speed*1.85:player.speed;
+ let nx=player.x+mx*spd*dt, ny=player.y+my*spd*dt;
+ // collision
+ for(const w of walls){ if(circleRect(nx,player.y,player.r,w)) nx=player.x; if(circleRect(player.x,ny,player.r,w)) ny=player.y; }
+ for(const d of doors){ if(d.locked && circleRect(nx,player.y,player.r,d)) nx=player.x; if(d.locked && circleRect(player.x,ny,player.r,d)) ny=player.y; }
+ player.x=clamp(nx,20,WORLD.w-20); player.y=clamp(ny,20,WORLD.h-20);
+ if(mx||my) player.aim=Math.atan2(my,mx);
+}
+function cameraUpdate(){cam.x=clamp(player.x-W/2,0,WORLD.w-W);cam.y=clamp(player.y-H/2,0,WORLD.h-H);}
+function nearestEnemy(maxr=260){let best=null,bestD=maxr; for(const e of enemies){if(e.dead)continue; const d=dist(player,e); if(d<bestD){bestD=d;best=e;}} return best;}
+function doAttack(){ if(player.cd>0||state.paused) return; const e=nearestEnemy(160); player.cd=0.45-(player.up.blade*0.07); if(e){const d=dist(player,e); const dmg=player.atkPower+player.up.blade*4; if(d< e.r+player.r+12){ e.hp-=dmg; e.hitFlash=0.12; fx.push({type:'slash',x:e.x,y:e.y,t:0.12,ang:player.aim}); if(e.hp<=0){e.dead=true;player.xp+=e.type==='boss'?120:35;player.credits+=e.type==='boss'?150:25; updateHUD(); checkMission();} } } fx.push({type:'ring',x:player.x+Math.cos(player.aim)*30,y:player.y+Math.sin(player.aim)*30,t:0.1,color:'#22d3ee'}); }
+let bossEnemy=null;
+function doDodge(){ if(player.dodgeCd>0||state.paused) return; player.dodgeCd=1.5-player.up.reflex*0.35; player.dodgeT=0.18; player.inv=0.25; fx.push({type:'dash',x:player.x,y:player.y,t:0.18,ang:player.aim}); }
+function tryInteract(){ const near=terminals.find(t=>dist(player,t)<48) || doors.find(d=>dist(player,{x:d.x+d.w/2,y:d.y+d.h/2})<50); if(near && near.label) terminalInteract(near); else if(near) interactDoor(near); else log('Nessun terminale vicino.'); }
+function terminalInteract(t){
+ if(t.type==='upgrade'){ openShop(); return; }
+ if(t.type==='hackdoor'){ if(t.used){log('Porta già sbloccata.');return;} if(player.focus<1){log('Focus insufficiente.');return;} t.used=true; player.focus--; const d=doors.find(x=>x.id==='labdoor'); if(d)d.locked=false; log('HACK riuscito: porta lab aperta.'); if(state.mission<2) state.mission=2; updateHUD(); save(); return; }
+ if(t.type==='core'){ if(t.used){ if(state.mission===4) finishMission(true); else log('Dati già estratti.'); return;} t.used=true; log('SCOPERTA: progetto NEURAL-CHAIN usa io neurali civili. +1 focus.'); player.focus++; player.xp+=80; player.credits+=60; if(state.mission<3) state.mission=3; updateHUD(); save(); return; }
+ if(t.type==='heal'){ if(t.used){log('Kit già usato.');return;} t.used=true; player.hp=Math.min(player.maxHp,player.hp+45); log('Med-kit usato.'); updateHUD(); return; }
+}
+function openShop(){ let msg='UPGRADE: [1] LAMINA +4 dmg (costo 90cr) [2] RIFLESSI -cd (costo 110cr) [3] NEURALE +focus (costo 80cr). Premi 1/2/3.'; log(msg); state.shop=true; }
+function handleShopKey(k){ if(!state.shop) return false; if(k==='1'){ if(player.credits<90){log('Crediti insufficienti.');return true;} player.credits-=90; player.up.blade++; player.atkPower+=4; log('LAMINA installata.'); state.shop=false; save(); return true;} if(k==='2'){ if(player.credits<110){log('Crediti insufficienti.');return true;} player.credits-=110; player.up.reflex++; log('RIFLESSI installati.'); state.shop=false; save(); return true;} if(k==='3'){ if(player.credits<80){log('Crediti insufficienti.');return true;} player.credits-=80; player.up.neural++; player.focus++; log('NEURALE installato.'); state.shop=false; save(); return true;} return true; }
+function useHack(){ const t=terminals.find(x=>dist(player,x)<60); if(!t){log('Nessun terminale nel raggio.');return;} terminalInteract(t); }
+function interactDoor(d){ if(d.locked) log('Porta bloccata. Hack terminale vicino.'); else log('Porta aperta.'); }
+function spawnWave(){ enemies.length=0; if(state.mission>=2){ spawnEnemy('melee',980,520); spawnEnemy('melee',1120,560); spawnEnemy('ranged',1280,480); } if(state.mission>=4){ const b=spawnEnemy('boss',2050,1130); bossEnemy=enemies[enemies.length-1]; } }
+function updateAI(dt){
+ for(const e of enemies){
+  if(e.dead) continue;
+  e.timer-=dt; e.hitFlash=Math.max(0,e.hitFlash-dt);
+  const d=dist(e,player);
+  // ranged fire
+  if(e.type==='ranged' && d<380 && e.timer<=0){ e.timer=e.cd; let ang=Math.atan2(player.y-e.y,player.x-e.x); bullets.push({x:e.x,y:e.y,vx:Math.cos(ang)*260,vy:Math.sin(ang)*260,life:1.5,enemy:true,dmg:e.dmg}); }
+  if(e.type==='melee' && d< e.r+player.r+6 && e.timer<=0){ e.timer=e.cd; if(player.inv<=0){ player.hp-=e.dmg; if(player.hp<=0){player.hp=0; failMission();} updateHUD(); } fx.push({type:'hit',x:player.x,y:player.y,t:0.15}); }
+  let vx=0,vy=0;
+  if(d> e.range){ vx=(player.x-e.x)/d; vy=(player.y-e.y)/d; }
+  e.x+=vx*e.sp*dt; e.y+=vy*e.sp*dt;
+  for(const w of walls){ if(circleRect(e.x,e.y,e.r,w)){ e.x-=vx*e.sp*dt; e.y-=vy*e.sp*dt; } }
+ }
+}
+function updateBullets(dt){
+ for(let i=bullets.length-1;i>=0;i--){
+  const b=bullets[i]; b.x+=b.vx*dt; b.y+=b.vy*dt; b.life-=dt;
+  if(b.life<=0 || circleRect(b.x,b.y,4,{x:0,y:0,w:WORLD.w,h:WORLD.h})===false){ bullets.splice(i,1); continue; }
+  if(b.enemy && dist(b,player)<player.r+6 && player.inv<=0){ player.hp-=b.dmg; if(player.hp<=0){player.hp=0; failMission();} updateHUD(); bullets.splice(i,1); fx.push({type:'hit',x:player.x,y:player.y,t:0.15}); continue; }
+  if(!b.enemy){ const e=enemies.find(x=>!x.dead && dist(b,x)<x.r+6); if(e){ e.hp-=b.dmg; e.hitFlash=0.1; bullets.splice(i,1); if(e.hp<=0){e.dead=true; player.xp+=35; player.credits+=25; updateHUD(); checkMission();} } }
+ }
+}
+function checkMission(){
+ if(state.mission===0 && player.x>1500){ state.mission=1; log('Redline raggiunto. Trova il terminale della porta.'); updateHUD(); save(); }
+ if(state.mission===1){ const d=doors.find(x=>x.id==='labdoor'); if(d&&!d.locked && player.x>760 && player.x<1000){ state.mission=2; spawnWave(); log('Laboratorio aperto. Elimina le guardie.'); updateHUD(); save(); } }
+ if(state.mission===2 && enemies.filter(e=>!e.dead).length===0 && !state.flags.boss){ state.flags.boss=true; state.mission=3; spawnEnemy('boss',2050,1110); log('Guardie eliminate. Boss NEURAL-CHAIN attivo. Raggiungi il terminale centrale.'); updateHUD(); save(); }
+ if(state.mission===3){ const c=terminals.find(t=>t.id==='core'); if(c && c.used){ state.mission=4; log('Scegli: E=estrai dati, D=distruggi (bottone Hack per estrarre; attacco per distruggere).'); updateHUD(); save(); } }
+}
+function resolveChoice(){
+ if(state.mission!==4) return;
+ // hack extracts, attack destroys; handled in keydown r and a
+}
+function failMission(){ if(state.mission===99) return; state.mission=99; state.paused=true; log('SEGNALAZIONE CRITICA: operative down. Riemergi dalla safehouse? Premi R per riprova.'); save(); }
+function respawn(){ newGame(); }
+function save(){ const d={v:VER,p:player,m:state.mission,t:terminals.map(t=>({id:t.id,used:t.used})),d:doors.map(dd=>({id:dd.id,locked:dd.locked})),e:enemies.map(e=>({...e})),loot:loot.map(l=>({...l}))}; try{localStorage.setItem(KEY,JSON.stringify(d));}catch(e){} }
+function load(){const raw=localStorage.getItem(KEY); if(raw){try{const d=JSON.parse(raw); if(d&&d.v===VER){Object.assign(player,d.p);state.mission=d.m;terminals.forEach(t=>{const u=d.t.find(x=>x.id===t.id); if(u)t.used=u.used;});doors.forEach(dd=>{const u=d.d.find(x=>x.id===dd.id); if(u)dd.locked=u.locked;});enemies.length=0;(d.e||[]).forEach(e=>enemies.push(e)); bullets.length=0; loot.length=0;(d.loot||[]).forEach(l=>loot.push(l)); log('Partita caricata.'); updateHUD(); return;} }catch(e){} } newGame();}
+function updateFX(dt){ for(let i=fx.length-1;i>=0;i--){fx[i].t-=dt; if(fx[i].t<=0) fx.splice(i,1);} }
+function updateLoot(){ for(const l of loot){ if(l.taken) continue; if(dist(l,player)<player.r+8){l.taken=true; player.credits+=10; player.xp+=5; fx.push({type:'ring',x:l.x,y:l.y,t:0.2,color:'#f59e0b'}); updateHUD();} } }
+const touchInput={x:0,y:0};
+function touchMove(x,y){ touchInput.x=x; touchInput.y=y; }
+function render(){
+ ctx.fillStyle='#02060d'; ctx.fillRect(0,0,W,H);
+ // ground grid
+ ctx.strokeStyle='rgba(34,211,238,.06)'; ctx.lineWidth=1; for(let x=-cam.x%60; x<W; x+=60){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();} for(let y=-cam.y%60;y<H;y+=60){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+ // walls
+ for(const w of walls){ drawRect(w.x,w.y,w.w,w.h,'#1a2230','#0b1018'); }
+ // doors
+ for(const d of doors){ drawRect(d.x,d.y,d.w,d.h,d.locked?'#7f1d1d':'#14532d',d.locked?'#450a0a':'#052e16'); ctx.fillStyle='#d1d5db'; ctx.font='8px monospace'; ctx.fillText(d.locked?'LOCK':'OPEN',d.x-cam.x+1,d.y-cam.y+10); }
+ // terminals
+ for(const t of terminals){ const on=t.used; ctx.fillStyle=on?'#164e3b':'#0e7490'; ctx.beginPath(); ctx.arc(t.x-cam.x,t.y-cam.y,t.r,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='#22d3ee'; ctx.stroke(); ctx.fillStyle='#e0f2fe'; ctx.font='9px monospace'; ctx.textAlign='center'; ctx.fillText(t.label,t.x-cam.x,t.y-cam.y+3); ctx.textAlign='left'; }
+ // loot
+ for(const l of loot){ if(l.taken)continue; ctx.fillStyle='#f59e0b'; ctx.beginPath(); ctx.arc(l.x-cam.x,l.y-cam.y,5,0,Math.PI*2); ctx.fill(); }
+ // enemies
+ for(const e of enemies){ if(e.dead)continue; ctx.fillStyle=e.hitFlash>0?'#fff':e.color; ctx.beginPath(); ctx.arc(e.x-cam.x,e.y-cam.y,e.r,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.35)'; ctx.stroke(); // telegraph ring
+   if(e.timer> e.cd-0.25){ ctx.strokeStyle='rgba(236,72,153,.45)'; ctx.beginPath(); ctx.arc(e.x-cam.x,e.y-cam.y,e.r+10,0,Math.PI*2); ctx.stroke();}
+   // hp
+   const bw=e.r*2; ctx.fillStyle='#111827'; ctx.fillRect(e.x-cam.x-bw/2,e.y-cam.y-e.r-10,bw,5); ctx.fillStyle='#f43f5e'; ctx.fillRect(e.x-cam.x-bw/2,e.y-cam.y-e.r-10,bw*(e.hp/e.maxHp),5);
+ }
+ // bullets
+ for(const b of bullets){ ctx.fillStyle=b.enemy?'#f43f5e':'#22d3ee'; ctx.beginPath(); ctx.arc(b.x-cam.x,b.y-cam.y,4,0,Math.PI*2); ctx.fill(); }
+ // player
+ ctx.save(); ctx.translate(player.x-cam.x,player.y-cam.y); ctx.rotate(player.aim); ctx.fillStyle=player.inv>0?'#67e8f9':'#22d3ee'; ctx.beginPath(); ctx.roundRect(-player.r,-player.r,player.r*2,player.r*2,4); ctx.fill(); ctx.strokeStyle='#083344'; ctx.stroke(); // gun
+ ctx.fillStyle='#0f172a'; ctx.fillRect(player.r-2,-3,10,6); ctx.restore();
+ if(player.inv>0){ ctx.strokeStyle='rgba(34,211,238,.35)'; ctx.beginPath(); ctx.arc(player.x-cam.x,player.y-cam.y,player.r+8,0,Math.PI*2); ctx.stroke();}
+ // combat fx
+ for(const f of fx){
+  if(f.type==='ring'){ ctx.strokeStyle=f.color; ctx.globalAlpha=Math.max(0,f.t/0.1); ctx.beginPath(); ctx.arc(f.x-cam.x,f.y-cam.y, (0.1-f.t)*80+10,0,Math.PI*2); ctx.stroke(); ctx.globalAlpha=1;}
+  if(f.type==='slash'){ ctx.strokeStyle='#ec4899'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(f.x-cam.x,f.y-cam.y,24, f.ang-0.9, f.ang+0.9); ctx.stroke(); ctx.lineWidth=1;}
+  if(f.type==='dash'){ ctx.strokeStyle='rgba(34,211,238,.35)'; ctx.beginPath(); ctx.arc(f.x-cam.x,f.y-cam.y,30,0,Math.PI*2); ctx.stroke();}
+  if(f.type==='hit'){ ctx.fillStyle='rgba(236,72,153,.6)'; ctx.beginPath(); ctx.arc(f.x-cam.x,f.y-cam.y, (0.15-f.t)*60,0,Math.PI*2); ctx.fill();}
+ }
+ // rain
+ const time=performance.now()/1000; ctx.strokeStyle='rgba(147,197,253,.18)'; for(let i=0;i<70;i++){ const rx=(i*97+cam.x*0.2)%W; const ry=(i*149+cam.y*0.15+ (time*180+i*3))%H; ctx.beginPath(); ctx.moveTo(rx,ry); ctx.lineTo(rx-2,ry+8); ctx.stroke();}
+ // vignette
+ const g=ctx.createRadialGradient(W/2,H/2,80,W/2,H/2,W*.75); g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,'rgba(0,0,0,.45)'); ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+}
+function drawRect(x,y,w,h,fill,stroke){ ctx.fillStyle=fill; ctx.fillRect(x-cam.x,y-cam.y,w,h); ctx.strokeStyle=stroke; ctx.strokeRect(x-cam.x,y-cam.y,w,h); }
+function step(ts){
+ const dt=Math.min(0.033,(ts-last)/1000); last=ts;
+ if(!state.paused && !state.dialogue && state.mission!==99){
+  movePlayer(dt); cameraUpdate(); updateAI(dt); updateBullets(dt); updateLoot(); updateFX(dt);
+  player.cd=Math.max(0,player.cd-dt); player.dodgeCd=Math.max(0,player.dodgeCd-dt); player.inv=Math.max(0,player.inv-dt); player.dodgeT=Math.max(0,player.dodgeT-dt);
+  checkMission(); updateHUD();
+ }
+ render();
+ if(state.shop && !state.paused){ /* wait for key */ }
+ requestAnimationFrame(step);
+}
+function togglePause(){ state.paused=!state.paused; log(state.paused?'PAUSA.':'Riprendi.'); }
+function finishMission(extract){
+ state.mission=5; if(extract){ player.xp+=150; player.credits+=120; player.focus++; log('Dati estratti e trasmessi. Finanziatori informati. Missione completata.'); } else { player.xp+=90; log('Core distrutto. Tracce eliminate. Missione completata.'); }
+ updateHUD(); save();
+ const w=document.createElement('div'); w.className='overlay'; w.innerHTML='<div class="panel"><h2>MISSIONE COMPLETATA</h2><p>'+logEl.textContent+'</p><button onclick="this.parentElement.parentElement.remove(); state.mission=6; save();">Chiudi</button></div>'; document.body.appendChild(w); state.paused=true;
+}
+function saveNow(){ save(); log('Salvataggio completato.'); }
+function keyboard(e){
+ if(state.shop){ if(handleShopKey(e.key)) { e.preventDefault(); return; } }
+ if(e.type==='keydown'){
+  keys[e.key]=true; keys[e.key.toLowerCase()]=true;
+  if(e.key===' '){ e.preventDefault(); doAttack(); }
+  if(e.key==='Shift'){ doDodge(); }
+  if(e.key.toLowerCase()==='e'){ tryInteract(); if(state.mission===4){ const c=terminals.find(t=>t.id==='core' && dist(player,t)<70); if(c && c.used && state.mission===4) finishMission(true); } }
+  if(e.key.toLowerCase()==='r' && state.mission===99) respawn();
+  if(e.key.toLowerCase()==='q' && state.mission===4){ const c=terminals.find(t=>t.id==='core' && dist(player,t)<70); if(c && c.used) finishMission(false); }
+  if(e.key.toLowerCase()==='h') useHack();
+ }
+ if(e.type==='keyup'){ keys[e.key]=false; keys[e.key.toLowerCase()]=false; }
+}
+window.addEventListener('keydown',keyboard); window.addEventListener('keyup',keyboard);
+window.addEventListener('mousemove',e=>{ const r=cv.getBoundingClientRect(); mouse.x=(e.clientX-r.left)*(cv.width/r.width); mouse.y=(e.clientY-r.top)*(cv.height/r.height); const wx=mouse.x+cam.x, wy=mouse.y+cam.y; player.aim=Math.atan2(wy-player.y,wx-player.x);});
+window.addEventListener('mousedown',e=>{ if(e.button===0) doAttack(); });
+window.addEventListener('contextmenu',e=>e.preventDefault());
+load(); requestAnimationFrame(ts=>{last=ts; step(ts);});
+</script>
+</body>
+</html>
