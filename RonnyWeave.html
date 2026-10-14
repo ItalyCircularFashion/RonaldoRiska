@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tessuto CAD · dal manuale ArahWeave 10</title>
+<style>
+:root{color-scheme:light dark;--bg:#eef0f2;--pn:#fff;--ink:#1d2b38;--mut:#667684;--ln:#cdd5db;--ac:#0f6e8c}
+@media(prefers-color-scheme:dark){:root{--bg:#121b23;--pn:#18232d;--ink:#e2ebf2;--mut:#8ea3b3;--ln:#2a3b49;--ac:#4fb6d6}}
+*{box-sizing:border-box}body{margin:0;font:14px/1.4 system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+header{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px 12px;background:var(--pn);border-bottom:1px solid var(--ln)}
+header span{color:var(--mut);font-size:12px;flex:1;min-width:200px}
+button,select,input,textarea{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--ln);border-radius:6px;padding:4px 7px}
+button{cursor:pointer}button:hover{border-color:var(--ac)}.tabs button.on{background:var(--ac);color:var(--pn);border-color:var(--ac)}
+#app{display:grid;grid-template-columns:370px 1fr;height:calc(100vh - 50px)}
+aside{background:var(--pn);border-right:1px solid var(--ln);overflow:auto;padding:10px}
+main{display:flex;flex-direction:column;min-width:0}
+#bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:6px 10px;background:var(--pn);border-bottom:1px solid var(--ln)}
+#wrap{flex:1;overflow:auto;padding:12px}
+#fab,#we{image-rendering:pixelated;outline:none;display:block;max-width:none}
+#we{border:1px solid var(--ln);touch-action:none;cursor:crosshair}
+.tabs{display:flex;gap:4px;margin:8px 0}.tabs button{flex:1;padding:4px 2px}
+section{display:none}section.on{display:block}
+h3{font-size:13px;margin:12px 0 4px;color:var(--mut)}
+label{display:flex;justify-content:space-between;gap:8px;align-items:center;margin:4px 0}
+textarea{width:100%;height:56px;font-family:monospace}
+.chip{display:inline-block;min-width:22px;text-align:center;border:1px solid var(--ln);border-radius:4px;margin:1px;padding:1px 3px;cursor:pointer;font:600 12px monospace;color:#fff;text-shadow:0 0 2px #000}
+.chip.sel{outline:2px solid var(--ac);outline-offset:1px}
+.err{color:#c4235f;font-size:12px;min-height:16px}.sub{color:var(--mut);font-size:12px;margin:4px 0}
+table{border-collapse:collapse;width:100%}td{padding:2px 4px;border-bottom:1px solid var(--ln)}td:last-child{text-align:right}
+.cpr{-webkit-appearance:none;appearance:none;height:18px;padding:0;border-radius:9px;outline:none}
+.cpr::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:2px solid #222;box-shadow:0 0 2px #0008}
+.cpr::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid #222}
+.cph{background:linear-gradient(90deg,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00)}
+#cpv{height:30px;border-radius:6px;border:1px solid var(--ln);margin:6px 0}
+[hidden]{display:none!important}#rl.on{background:var(--ac);color:var(--pn);border-color:var(--ac)}
+tr.sel td{background:rgba(15,110,140,.18)}.dot{display:inline-block;width:14px;height:14px;border-radius:50%;border:1px solid var(--ln);vertical-align:-2px}
+@media(max-width:800px){#app{grid-template-columns:1fr;height:auto}#wrap{min-height:60vh}}
+</style>
+</head>
+<body>
+<header><b>Tessuto CAD</b><span>Costruito sul manuale ArahWeave 10 (cap. 3–8, 14, 17). Interfaccia in italiano, termini del manuale.</span>
+<button id="fo">Apri…</button><button id="fs">Salva (.json)</button><button id="fp">Texture PNG</button><button id="fw">Esporta WIF</button><button id="fh">Dati tecnici HTML</button><input id="fi" type="file" accept=".json" hidden></header>
+<div id="app"><aside>
+<div id="yb"></div>
+<div class="tabs" id="tabs"><button data-t="w" class="on">Armatura</button><button data-t="f">Fili</button><button data-t="y">Filati</button><button data-t="d">Dati tecnici</button></div>
+<section id="s-w" class="on">
+<h3 id="wt">Armatura</h3>
+<canvas id="we" tabindex="0" aria-label="Editor armatura: clic sinistro punto nero, destro punto bianco"></canvas>
+<p class="sub">Punto nero = ordito sopra, bianco = trama sopra; si parte in basso a sinistra (§5). Con l’editor attivo: tasti 0–9 = armature predefinite (Fig. 63), Spazio = inverti, Ctrl+Z / Ctrl+Y, Ctrl+C / Ctrl+V.</p>
+<label>Ripetizione ordito × trama (§5.2)<span><input id="ww" type="number" min="1" max="96" style="width:58px"> × <input id="wh" type="number" min="1" max="96" style="width:58px"></span></label>
+<label>Carica predefinita (§5.7)<select id="wd"></select></label>
+<label>Estendi ×<span><input id="xw" type="number" value="2" min="1" max="16" style="width:50px"> × <input id="xh" type="number" value="2" min="1" max="16" style="width:50px"> <button id="xb">Estendi</button></span></label>
+<div><button id="dw">Raddoppia ordito</button> <button id="dh">Raddoppia trama</button> <button id="iv">Inverti</button> <button id="un">Annulla</button> <button id="re">Ripeti</button></div>
+</section>
+<section id="s-f">
+<h3>Ordito (A–Y)</h3><textarea id="wa" spellcheck="false"></textarea>
+<label>Modo<select id="ma"><option value="asym">asimmetrico</option><option value="sym">simmetrico</option><option value="p1">pivot1</option><option value="p2">pivot2</option></select><span id="ia"></span></label><div class="err" id="ea"></div>
+<h3>Trama (a–y)</h3><textarea id="wf" spellcheck="false"></textarea>
+<label>Modo<select id="mf"><option value="asym">asimmetrico</option><option value="sym">simmetrico</option><option value="p1">pivot1</option><option value="p2">pivot2</option></select><span id="if2"></span></label><div class="err" id="ef"></div>
+<div><button id="cw">Ordito → trama</button> <button id="cf">Trama → ordito</button> <button id="cx">Scambia fili</button> <button id="sw">Ordito ↔ trama (tessuto)</button></div>
+<p class="sub">Sintassi (§6.1, §6.3): <code>2A 3B</code>, <code>3(1b 1c)</code> ripete la sequenza, <code>5[1b 1c]</code> la ripete fino a 5 fili, annidamento ammesso, <code>a</code> = <code>1a</code>. Sul tessuto: clic = sostituisci il filo selezionato, Maiusc+clic = inserisci, Maiusc+clic destro = elimina (§6.2). Doppio clic su un filo della barra = protetto. Y/y = frangia (§6.19).</p>
+<h3>Ridimensiona (§6.20)</h3>
+<label><select id="rt"><option value="w">ordito</option><option value="f">trama</option></select><span><input id="rn" type="number" placeholder="fili" style="width:62px"> <input id="rp" type="number" placeholder="%" style="width:62px"> <button id="rb">Applica</button></span></label>
+<h3>Generatore di sequenze (§6.21)</h3>
+<label><select id="gt"><option value="w">ordito</option><option value="f">trama</option></select><span>fili <input id="gy" value="4a b c" style="width:90px"></span></label>
+<label>Lunghezza min / max<span><input id="gmn" type="number" value="2" min="1" style="width:50px"> <input id="gmx" type="number" value="8" min="1" style="width:50px"></span></label>
+<label>Consenti uguali consecutive<input id="gac" type="checkbox"></label><label>Segui sequenza dei fili<input id="gfy" type="checkbox"></label>
+<label>Specifica lunghezze<span><input id="gsl" type="checkbox"> <input id="gls" value="2 4 6" style="width:78px"></span></label><label>Segui sequenza delle lunghezze<input id="gfl" type="checkbox"></label>
+<button id="gb">Genera</button>
+</section>
+<section id="s-y"><div id="ye"></div></section>
+<section id="s-d"><h3>Pettine, densità e consumo (cap. 14)</h3><div id="tf"></div><button id="ta">Usa fili/cm e larghezza dal pettine</button><div id="tt"></div></section>
+</aside>
+<main>
+<div id="bar">
+<label>Vista<select id="vw"><option value="w">Armatura [w]</option><option value="a">Intero [a]</option><option value="s">Intero ombreggiato [s]</option><option value="m">Simulazione [m]</option></select></label>
+<label>Qualità<input id="q" type="range" min="1" max="9" style="width:80px"></label>
+<label>Zoom<select id="zm"></select></label>
+<label>Illuminazione dall’alto<input id="tp" type="checkbox"></label>
+<label>Una ripetizione (§4.9)<input id="on" type="checkbox"></label>
+<label>Fili/cm<span><input id="ed" type="number" min="1" max="500" style="width:58px"> × <input id="pk" type="number" min="1" max="500" style="width:58px"></span></label>
+<label>Area fili × trame<span><input id="nn" type="number" min="4" max="2000" style="width:62px"> × <input id="mm" type="number" min="4" max="2000" style="width:62px"></span></label>
+<button id="rl">Rendering reale</button><label id="plw" hidden>Pelo %<input id="pl" type="range" min="0" max="100" style="width:90px"><output id="opl"></output></label><span id="in" class="sub"></span><span id="st" class="sub" role="status"></span>
+</div>
+<div id="wrap"><canvas id="fab" tabindex="0" aria-label="Simulazione del tessuto"></canvas></div>
+</main></div>
+<script>
+'use strict';
+const $=s=>document.querySelector(s),gcd=(a,b)=>b?gcd(b,a%b):a,lcm=(a,b)=>a/gcd(a,b)*b,cl=(v,a,b)=>Math.max(a,Math.min(b,v)),f1=v=>(+v).toFixed(1).replace('.',','),say=t=>$('#st').textContent=t;
+const PAL=['#23395d','#d9cdb4','#a63d2f','#2f6b4f','#c9a227','#5b5b5b','#7a4e8a','#f4f1ea'];
+const SWATCH=[...PAL,'#000000','#ffffff','#8c2f39','#e07a5f','#f2cc8f','#81b29a','#3d405b','#1d4e89','#6b9080','#a4c3b2','#cce3de','#b08968','#7f5539','#ddb892','#ede0d4','#9d8189'];
+const ST={M:[[1,1,0,0],[0,1,1,0],[0,0,1,1],[1,0,0,1]],wa:'8A 8B',wf:'8a 8b',ma:'asym',mf:'asym',Y:{},yl:{w:['A','B'],f:['a','b']},bg:'#ffffff',ends:24,picks:20,n:96,m:96,view:'m',q:5,zoom:400,top:0,one:0,real:0,pelo:25,ply:0,sel:'A',prot:{},
+ T:{reed:12,rw:4,epd:2,loom:20,wsh:2,fsh:3,tu:6,loss:2,len:100}};
+const LV={wa:ST.wa,wf:ST.wf};let CB=null,G={};
+// ---- Colori (cap. 7): CIE L*a*b* ----
+const lab=hex=>{const[r,g,b]=[1,3,5].map(i=>parseInt(hex.substr(i,2),16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4),
+ X=(.4124*r+.3576*g+.1805*b)/.95047,Y=.2126*r+.7152*g+.0722*b,Z=(.0193*r+.1192*g+.9505*b)/1.08883,f=t=>t>.008856?Math.cbrt(t):7.787*t+16/116;
+ return[116*f(Y)-16,500*(f(X)-f(Y)),200*(f(Y)-f(Z))]};
+const sh=(hex,k)=>{const n=parseInt(hex.slice(1),16);return'rgb('+[n>>16,n>>8&255,n&255].map(v=>cl(Math.round(v*k),0,255)).join()+')'};
+// ---- Filati (cap. 8): titolo in tex, diametro = √tex / fattore dimensionale (§8.2) ----
+const UN={Tex:v=>v,dTex:v=>v/10,Nm:v=>1000/v,NeC:v=>590.54/v,NeW:v=>885.8/v,NeL:v=>1653.5/v,Td:v=>v/9,Run:v=>310/v,YPP:v=>496060/v};
+const yd=l=>Object.assign({c:PAL[(l.toUpperCase().charCodeAt(0)-65)%8],cnt:20,u:'Tex',df:18,lu:10,va:0,tw:'0',tpm:0,tc:0,tr:0,pr:0,nm:'',cd:'',mn:0,mp:50,mc:[],bo:0,fl:0,bt:0},ST.Y[l]);
+const tex=y=>UN[y.u](y.cnt)*(1+y.tc/100),dia=y=>Math.sqrt(UN[y.u](y.cnt))/y.df*(1+y.tc/100);
+// ---- Sequenze di fili (§6.1, §6.3, §6.4) ----
+function parse(t){let i=0,er=null;const fail=m=>{er=er||{p:i,m}};
+ const sq=close=>{let o='';while(i<t.length){const c=t[i];
+  if(c===')'||c===']'){if(c===close)return o;fail('parentesi non bilanciata');i++;continue}
+  if(/\s/.test(c)){i++;continue}
+  let n=null;if(/\d/.test(c)){n=0;while(/\d/.test(t[i]||''))n=n*10+ +t[i++]}
+  const d=t[i];
+  if(d==='('||d==='['){const e=d==='('?')':']';i++;const s=sq(e);if(t[i]!==e){fail('parentesi non chiusa');return o}i++;n=n===null?1:n;
+   o+=d==='('?s.repeat(Math.min(n,999)):(s?s.repeat(Math.ceil(n/s.length)).slice(0,n):'')}
+  else if(/[A-Ya-y]/.test(d||'')){i++;o+=d.repeat(Math.min(n===null?1:n,999))}
+  else{fail(d?`carattere non valido «${d}»`:'numero senza filo');i++}
+  if(o.length>2e4)o=o.slice(0,2e4)}
+  if(close)fail('parentesi non chiusa');return o};
+ return{s:sq(null),er}}
+const runs=s=>{const r=[];for(const c of s){const l=r[r.length-1];l&&l[0]===c?l[1]++:r.push([c,1])}return r},un=r=>r.map(([c,n])=>c.repeat(n)).join(''),rle=s=>runs(s).map(([c,n])=>n+c).join(' ');
+// simmetrico: sequenza + specchio; pivot1 non ripete prima e ultima voce; pivot2 non ripete le prime e ultime due (§6.4)
+const mode=(s,m)=>{if(m==='asym'||!s)return s;const r=runs(s);if(m==='sym')return s+[...s].reverse().join('');const k=m==='p1'?1:2;return r.length<=2*k?s:s+un(r.slice(k,r.length-k).reverse())};
+const SA=()=>mode(parse(LV.wa).s,ST.ma).toUpperCase()||'A',SB=()=>mode(parse(LV.wf).s,ST.mf).toLowerCase()||'a';
+// ---- Armature predefinite: Figura 63 (righe dal basso; colonne dei punti neri) ----
+const DEF=[['0 Mancata',[[],[]]],['1 Taglio',[[0,1],[0,1]]],['2 Tela',[[0],[1]]],['3 Saia',[[0],[1],[2]]],['4 Saia spezzata',[[0],[1],[3],[2]]],['5 Raso 5',[[0],[2],[4],[1],[3]]],['6 Raso 6',[[0],[3],[1],[5],[2],[4]]],['7 Raso 7',[[0],[2],[4],[6],[1],[3],[5]]],['8 Raso 8',[[0],[3],[6],[1],[4],[7],[2],[5]]],['9 Raso 9',[[0],[2],[4],[6],[8],[1],[3],[5],[7]]]];
+const wv=r=>{const n=r.length;return r.map(c=>Array.from({length:n},(_,i)=>c.includes(i)?1:0))};
+const satin=n=>{let s=2;while(gcd(n,s)!==1)s++;return wv(Array.from({length:n},(_,j)=>[j*s%n]))};   // passo = più piccolo coprimo: coincide con Raso 5, 7, 8, 9
+const EXTRA=[10,11,12,15,16,30,32,40,48,50];
+// Batavia = saia 2/2 (due sopra, due sotto; fonti: SILKNOW da Galcerán Escobet e Castany; Fairchild). Doppia Batavia = ipotesi: stessa diagonale raddoppiata, saia 4/4 su 8 fili.
+const BAT=[['Batavia (saia 2/2)',wv([[0,1],[1,2],[2,3],[3,0]])],['Doppia Batavia (saia 4/4, ipotesi)',wv(Array.from({length:8},(_,j)=>[0,1,2,3].map(k=>(j+k)%8)))]];
+// ---- Cronologia armatura ----
+let H=[],HI=-1;const snap=()=>{H=H.slice(0,HI+1);H.push(JSON.stringify(ST.M));if(H.length>60)H.shift();HI=H.length-1};
+const setM=(M,ns)=>{ST.M=M;if(!ns)snap();wdraw();draw()};
+const undo=()=>{if(HI>0){HI--;setM(JSON.parse(H[HI]),1)}},redo=()=>{if(HI<H.length-1){HI++;setM(JSON.parse(H[HI]),1)}};
+const tile=(w,h)=>{const o=ST.M;return Array.from({length:h},(_,j)=>Array.from({length:w},(_,i)=>o[j%o.length][i%o[0].length]))};
+function wdraw(){const c=$('#we'),M=ST.M,h=M.length,w=M[0].length,s=cl(Math.floor(320/Math.max(w,h)),5,24);c.width=w*s;c.height=h*s;const x=c.getContext('2d');
+ x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.fillStyle='#111';for(let j=0;j<h;j++)for(let i=0;i<w;i++)if(M[j][i])x.fillRect(i*s,(h-1-j)*s,s,s);
+ x.strokeStyle='#8aa';x.lineWidth=1;x.beginPath();for(let i=0;i<=w;i++){x.moveTo(i*s+.5,0);x.lineTo(i*s+.5,h*s)}for(let j=0;j<=h;j++){x.moveTo(0,j*s+.5);x.lineTo(w*s,j*s+.5)}x.stroke();
+ $('#wt').textContent=`Armatura ${w}×${h}`;$('#ww').value=w;$('#wh').value=h}
+// ---- Simulazione (cap. 4): filo = chiaro a un bordo e scuro all'opposto; dall'alto = chiaro al centro (§4.4) ----
+function spr(y,vert,cw,ch,f,sc,top){const W=cw*sc,H=ch*sc,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d'),lt=1+y.lu*.022,dk=1-y.lu*.03;
+ x.fillStyle=sh(y.c,.35);x.fillRect(0,0,W,H);
+ const L=vert?W:H,t=L*f,o=(L-t)/2,g=vert?x.createLinearGradient(o,0,o+t,0):x.createLinearGradient(0,o,0,o+t);
+ if(top){g.addColorStop(0,sh(y.c,dk));g.addColorStop(.5,sh(y.c,lt));g.addColorStop(1,sh(y.c,dk))}else{g.addColorStop(0,sh(y.c,lt));g.addColorStop(1,sh(y.c,dk))}
+ x.fillStyle=g;if(vert)x.fillRect(o,0,t,H);else x.fillRect(0,o,W,t);
+ if((y.tw==='S'||y.tw==='Z')&&y.tpm>0){x.strokeStyle='rgba(255,255,255,.2)';x.lineWidth=Math.max(1,sc*.7);const d=y.tw==='S'?1:-1;x.beginPath();
+  for(let k=0;k<2;k++){if(vert){x.moveTo(o,H*k/2);x.lineTo(o+t,H*k/2+d*t*.8)}else{x.moveTo(W*k/2,o);x.lineTo(W*k/2+d*t*.8,o+t)}}x.stroke()}
+ return c}
+function draw(){if(ST.real){drawReal();return}
+ const T=ST,A=SA(),B=SB(),M=T.M,h=M.length,w=M[0].length;let N=T.n,R=T.m;if(T.one){N=Math.min(400,lcm(w,A.length));R=Math.min(400,lcm(h,B.length))}
+ const px=37.8*T.zoom/100,cw=Math.max(1,Math.round(px/T.ends)),ch=Math.max(1,Math.round(px/T.picks));while(N*cw*R*ch>6e6&&R>4)R=Math.floor(R*.8);
+ const cv=$('#fab'),x=cv.getContext('2d');cv.width=N*cw;cv.height=R*ch;x.fillStyle=T.bg;x.fillRect(0,0,cv.width,cv.height);
+ const sc=1+Math.floor((T.q-1)/3),C=new Map(),V=T.view;
+ const get=(l,v,i)=>{const y=yd(l),sp=10/(v?T.ends:T.picks),jit=(Math.sin(i*12.9898+(v?1:7.3))*43758.5453)%1;
+  let f=V==='s'?1:cl(dia(y)/sp,.25,1);f=Math.round(cl(f*(1+y.va/100*jit),.2,1)*20)/20;const k=l+v+f;let s=C.get(k);if(!s){s=spr(y,v,cw,ch,f,sc,T.top);C.set(k,s)}return[s,y.tr]};
+ for(let j=0;j<R;j++)for(let i=0;i<N;i++){const bl=B[j%B.length],up=bl==='y'||M[j%h][i%w],l=up?A[i%A.length]:bl,X=i*cw,Y=(R-1-j)*ch;
+  if(V==='w'){x.fillStyle=up?'#111':'#fff';x.fillRect(X,Y,cw,ch)}
+  else if(V==='a'){x.fillStyle=yd(l).c;x.fillRect(X,Y,cw,ch)}
+  else{const[s,tr]=get(l,!!up,up?i:j);x.globalAlpha=1-tr/10;x.drawImage(s,X,Y,cw,ch);x.globalAlpha=1}}
+ G={cw,ch,N,R,A,B,h,w};
+ $('#in').textContent=`${N} fili × ${R} trame · ${f1(N/T.ends)} cm · zoom ${T.zoom}% · ripetizioni: armatura ${w}×${h}, ordito ${A.length}, trama ${B.length}`}
+// ---- Rendering reale (vista a parte: la vista tecnica resta invariata) ----
+// Filato = cilindro ombreggiato con ondulazione (immersione sotto l'incrocio), rumore di fibra e torsione; sopra: ingrossamenti (fiammato), nodini (bottonato), anellini (bouclé), melange (ritorto di 2–4 capi) e pelo.
+const DMC=['#f4f1ea','#a63d2f','#2f6b4f'],plyCols=y=>{const n=y.mn>1?y.mn:1,a=[y.c];for(let k=1;k<n;k++)a.push(y.mc[k-1]||DMC[k-1]);return a},rgb3=h=>[1,3,5].map(i=>parseInt(h.substr(i,2),16)),plyRGB=y=>plyCols(y).map(rgb3);
+const hs=(a,b,c=0)=>{const x=Math.sin(a*127.1+b*311.7+c*74.7)*43758.5453;return x-Math.floor(x)};
+const vn=(t,s)=>{const i=Math.floor(t),f=t-i,u=f*f*(3-2*f);return hs(i,s)*(1-u)+hs(i+1,s)*u};
+const shA=(hex,k,a)=>sh(hex,k).replace('rgb','rgba').replace(')',`,${a})`),RC=new Map();
+const syncReal=()=>{$('#rl').classList.toggle('on',!!ST.real);$('#rl').textContent=ST.real?'Vista tecnica':'Rendering reale';$('#plw').hidden=!ST.real;$('#opl').textContent=(ST.pelo||0)+'%'};
+function rspr(y,vert,cw,ch,f,dv,k,P){
+ const c=document.createElement('canvas');c.width=cw;c.height=ch;const x=c.getContext('2d'),im=x.createImageData(cw,ch),d=im.data,A=vert?cw:ch,Lg=vert?ch:cw,n=P.length,mp=y.mp/100,spec=y.lu/30*.6,tw=y.tw==='S'?1:y.tw==='Z'?-1:0,sg=tw||1,ks=Array.from({length:A},(_,a)=>1+(hs(a,k,5)-.5)*.3);
+ for(let py=0;py<ch;py++)for(let px=0;px<cw;px++){
+  const a=vert?px:py,l=vert?py:px,u=((a+.5-A*(1-f)/2)/(A*f))*2-1,v=(l+.5)/Lg,au=Math.abs(u);let col=P[0],o;
+  if(n>1){const ph=v+u*.32*sg+k*.37,fr=(ph-Math.floor(ph))*n,id=Math.floor(fr),w=fr-id,nb=w>.82?P[(id+1)%n]:w<.18?P[(id+n-1)%n]:null,bl=w>.82?(w-.82)/.18*.5:w<.18?(.18-w)/.18*.5:0;
+   col=P[id].map((q,i)=>{const m=nb?q*(1-bl)+nb[i]*bl:q;return P[0][i]*(1-mp)+m*mp})}
+  if(au>1)o=col.map(q=>q*(.38-.24*Math.min(1,(au-1)/.4)));
+  else{const nz=Math.sqrt(1-au*au),df=Math.max(0,u*-.55+nz*.83),sp=Math.pow(Math.max(0,-u*.288+nz*.958),28)*spec;let occ=1;if(dv&1)occ-=.5*Math.max(0,1-v/.3);if(dv&2)occ-=.5*Math.max(0,1-(1-v)/.3);
+   const lum=(.34+.72*df)*occ*(tw?1+.16*Math.sin((v*2+u*.45*tw)*6.283):1)*ks[a]*(1+(hs(px,py,k)-.5)*.1)*(.6+.4*nz);o=col.map(q=>Math.min(255,q*lum+255*sp*occ))}
+  const i=(py*cw+px)*4;d[i]=o[0];d[i+1]=o[1];d[i+2]=o[2];d[i+3]=255}
+ x.putImageData(im,0,0);return c}
+function drawReal(){
+ const T=ST,A=SA(),B=SB(),M=T.M,h=M.length,w=M[0].length;let N=T.n,R=T.m;if(T.one){N=Math.min(400,lcm(w,A.length));R=Math.min(400,lcm(h,B.length))}
+ const px=37.8*T.zoom/100,cw=Math.max(8,Math.round(px/T.ends)),ch=Math.max(8,Math.round(px/T.picks));while(N*cw*R*ch>5e6&&R>4)R=Math.floor(R*.8);
+ const cv=$('#fab'),x=cv.getContext('2d');cv.width=N*cw;cv.height=R*ch;x.fillStyle=T.bg;x.fillRect(0,0,cv.width,cv.height);if(RC.size>1500)RC.clear();
+ const up=(i,j)=>{const b=B[((j%B.length)+B.length)%B.length];return b==='y'||M[((j%h)+h)%h][((i%w)+w)%w]},YK={},yk=l=>YK[l]||(YK[l]=JSON.stringify(yd(l)));
+ const spr=(l,v,f,dv,k)=>{const key=[l,v,f,dv,k,cw,ch,yk(l)].join('|');let c=RC.get(key);if(!c){const y=yd(l);c=rspr(y,v,cw,ch,f,dv,k,plyRGB(y));RC.set(key,c)}return c};
+ const slub=[];
+ for(let j=0;j<R;j++)for(let i=0;i<N;i++){
+  const v=!!up(i,j),l=v?A[i%A.length]:B[j%B.length],y=yd(l),th=v?i:j,t=v?j:i,sd=th+(v?0:500),X=i*cw,Y=(R-1-j)*ch,sp=10/(v?T.ends:T.picks);
+  let fw=dia(y)/sp*(1+(hs(th,v?1:2,11)-.5)*2*y.va/100);
+  if(y.fl){const g=Math.max(0,(vn(t*.16,sd)-.5)/.5),n2=Math.max(0,(.28-vn(t*.16+19,sd))/.28);fw*=1+y.fl/100*(1.6*g*g-.4*n2)}   // fiammato: zone di accumulo e assottigliamenti lungo il filo
+  const f=Math.round(cl(Math.min(fw,1),.3,1)*20)/20,dv=v?((up(i,j+1)?0:1)|(up(i,j-1)?0:2)):((up(i-1,j)?1:0)|(up(i+1,j)?2:0)),k=Math.floor(hs(i,j,13)*3);
+  x.drawImage(spr(l,v,f,dv,k),X,Y);if(fw>1.04)slub.push([l,v,Math.min(fw,2.4),dv,k,X,Y])}
+ for(const[l,v,s,dv,k,X,Y]of slub){const im=spr(l,v,1,dv,k);if(v)x.drawImage(im,X-(s-1)*cw/2,Y,cw*s,ch);else x.drawImage(im,X,Y-(s-1)*ch/2,cw,ch*s)}
+ const nub=(cx,cy,r,col)=>{const g=x.createRadialGradient(cx-r*.3,cy-r*.3,r*.1,cx,cy,r);g.addColorStop(0,sh(col,1.25));g.addColorStop(1,sh(col,.55));x.fillStyle='rgba(0,0,0,.25)';x.beginPath();x.ellipse(cx+r*.2,cy+r*.3,r,r*.8,0,0,6.283);x.fill();x.fillStyle=g;x.beginPath();x.arc(cx,cy,r,0,6.283);x.fill()};
+ const loop=(cx,cy,r,col,a0)=>{x.lineCap='round';x.strokeStyle='rgba(0,0,0,.3)';x.lineWidth=r*.55;x.beginPath();x.arc(cx+r*.12,cy+r*.18,r,a0,a0+4.4);x.stroke();x.strokeStyle=sh(col,.9);x.lineWidth=r*.42;x.beginPath();x.arc(cx,cy,r,a0,a0+4.4);x.stroke();x.strokeStyle=sh(col,1.3);x.lineWidth=r*.16;x.beginPath();x.arc(cx-r*.06,cy-r*.08,r,a0+.3,a0+3.1);x.stroke()};
+ for(let j=0;j<R;j++)for(let i=0;i<N;i++){const v=!!up(i,j),l=v?A[i%A.length]:B[j%B.length],y=yd(l);if(!(y.bt||y.bo))continue;
+  const cols=plyCols(y),X=i*cw+cw/2,Y=(R-1-j)*ch+ch/2,tw_=Math.min(cw,ch)*.8;
+  if(y.bt&&hs(i,j,3)<y.bt/100*.1){const r=tw_*(.3+.35*hs(i,j,5)),c=cols[Math.floor(hs(i,j,6)*cols.length)],o=(hs(i,j,8)-.5)*.5;nub(X+(v?0:o*cw),Y+(v?o*ch:0),r,c)}   // bottonato: nodini casuali
+  if(y.bo&&hs(i,j,4)<y.bo/100*.75){const m=1+(y.bo>60&&hs(i,j,9)>.5?1:0);for(let q=0;q<m;q++){const r=tw_*(.28+.3*hs(i,j,10+q)),sg=hs(i,j,12+q)<.5?-1:1,c=cols[Math.floor(hs(i,j,14+q)*cols.length)],off=tw_*(.35+.25*hs(i,j,16+q))*sg,al=(hs(i,j,18+q)-.5)*.6;
+   loop(X+(v?off:al*cw),Y+(v?al*ch:off),r,c,hs(i,j,20+q)*6.283)}}}   // bouclé: anellini
+ const pl=(T.pelo||0)/100;
+ if(pl>0){const t=document.createElement('canvas');t.width=Math.max(1,cv.width>>1);t.height=Math.max(1,cv.height>>1);t.getContext('2d').drawImage(cv,0,0,t.width,t.height);x.globalAlpha=pl*.55;x.drawImage(t,0,0,cv.width,cv.height);x.globalAlpha=1;   // alone morbido
+  const cnt=Math.min(30000,Math.round(N*R*pl*9)),Lm=pl*Math.min(cw,ch)*1.6;x.lineCap='round';
+  for(let q=0;q<cnt;q++){const i=Math.floor(hs(q,1,7)*N),j=Math.floor(hs(q,2,7)*R),v=!!up(i,j),yy=yd(v?A[i%A.length]:B[j%B.length]),cs=plyCols(yy),col=cs[Math.floor(hs(q,3,7)*cs.length)],
+    X=i*cw+hs(q,4,7)*cw,Y=(R-1-j)*ch+hs(q,5,7)*ch,an=(v?Math.PI/2:0)+(hs(q,6,7)-.5)*2.2+(hs(q,7,7)<.5?0:Math.PI),len=Lm*(.35+hs(q,8,7)*.9);
+   x.strokeStyle=shA(col,1+(hs(q,9,7)-.4)*.5,.22+hs(q,10,7)*.35);x.lineWidth=Math.max(.6,Math.min(cw,ch)*.05);x.beginPath();x.moveTo(X,Y);x.quadraticCurveTo(X+Math.cos(an+.5)*len*.5,Y+Math.sin(an+.5)*len*.5,X+Math.cos(an)*len,Y+Math.sin(an)*len);x.stroke()}}   // pelo: fibre sporgenti
+ G={cw,ch,N,R,A,B,h,w};
+ $('#in').textContent=`Rendering reale · ${N} fili × ${R} trame · ${f1(N/T.ends)} cm · zoom ${T.zoom}% · pelo ${T.pelo||0}%`}
+// ---- Interfaccia ----
+const LET=l=>l===l.toUpperCase()?'w':'f';
+function ensureYarns(){if(!ST.yl)ST.yl={w:[],f:[]};for(const l of new Set([...SA(),...SB()])){const k=LET(l);if(!ST.yl[k].includes(l))ST.yl[k].push(l)}ST.yl.w.sort();ST.yl.f.sort()}
+// selettore colore proprio (cursori HSL + esadecimale + palette): funziona anche dove <input type="color"> non si apre
+const hex2hsl=h=>{const[r,g,b]=[1,3,5].map(i=>parseInt(h.substr(i,2),16)/255),mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/2,d=mx-mn,s=d?d/(1-Math.abs(2*l-1)):0,hh=!d?0:mx===r?((g-b)/d+6)%6:mx===g?(b-r)/d+2:(r-g)/d+4;return[Math.round(hh*60)%360,Math.round(s*100),Math.round(l*100)]};
+const hsl2hex=(h,s,l)=>{s/=100;l/=100;const k=n=>(n+h/30)%12,a=s*Math.min(l,1-l),f=n=>l-a*Math.max(-1,Math.min(k(n)-3,9-k(n),1));return'#'+[f(0),f(8),f(4)].map(v=>Math.round(v*255).toString(16).padStart(2,'0')).join('')};
+const CP={h:0,s:0,l:0},cur=()=>{if(ST.sel==='#')return ST.bg;const y=yd(ST.sel);return ST.ply>0&&ST.ply<y.mn?(y.mc[ST.ply-1]||DMC[ST.ply-1]):y.c};
+function setColor(col){if(ST.sel==='#')ST.bg=col;else{const y=yd(ST.sel);if(ST.ply>0&&ST.ply<y.mn){const mc=[...y.mc];mc[ST.ply-1]=col;ST.Y[ST.sel]={...ST.Y[ST.sel],mc}}else ST.Y[ST.sel]={...ST.Y[ST.sel],c:col}}bar();ytb();tech();draw()}
+function bar(){const u=new Set([...SA(),...SB()]),mk=l=>`<span class="chip${ST.sel===l?' sel':''}" data-l="${l}" style="background:${yd(l).c};${ST.prot[l]?'text-decoration:line-through;':''}">${l}${u.has(l)?'*':''}</span>`;
+ $('#yb').innerHTML=`<div>Ordito ${ST.yl.w.map(mk).join('')}</div><div>Trama ${ST.yl.f.map(mk).join('')}</div><div><span class="chip${ST.sel==='#'?' sel':''}" data-l="#" style="background:${ST.bg};color:#000;text-shadow:none">#</span> Sfondo <button data-add="w">+ Filato ordito</button> <button data-add="f">+ Filato trama</button></div><div class="sub">* in uso · clic = seleziona e modifica · doppio clic = protetto</div>`;ytb()}
+const ytable=()=>'<table><tr><td></td><td>Filato</td><td>Titolo</td><td>Ø mm</td><td>Copertura</td></tr>'+[...ST.yl.w,...ST.yl.f].map(l=>{const y=yd(l),sp=10/(LET(l)==='w'?ST.ends:ST.picks);return`<tr class="${ST.sel===l?'sel':''}" data-l="${l}" style="cursor:pointer"><td><span class="dot" style="background:${y.c}"></span></td><td>${l} ${LET(l)==='w'?'ord.':'tr.'}</td><td>${y.cnt} ${y.u}</td><td>${dia(y).toFixed(3)}</td><td>${Math.round(dia(y)/sp*100)}%</td></tr>`}).join('')+'</table>';
+const ytb=()=>{const e=$('#ytb');if(e)e.innerHTML=ytable()};
+const cpick=()=>`<div id="cpv"></div><label>Tonalità<input class="cpr cph" type="range" data-cp="h" min="0" max="360" style="width:60%"></label><label>Saturazione<input class="cpr" type="range" data-cp="s" min="0" max="100" style="width:60%"></label><label>Luminosità<input class="cpr" type="range" data-cp="l" min="0" max="100" style="width:60%"></label>
+<label>Esadecimale<input data-cp="x" maxlength="7" spellcheck="false" style="width:86px"></label><p class="sub">CIE L*a*b*: <span id="lb"></span> <button id="nr">Più vicino in palette (ΔE76)</button></p><div>${SWATCH.map(c=>`<span class="chip" data-c="${c}" style="background:${c}">&nbsp;</span>`).join('')}</div>`;
+function cpSync(skip){const col=cur(),{h,s,l}=CP,q=k=>document.querySelector(`[data-cp="${k}"]`),put=(k,v)=>{if(k!==skip)q(k).value=v};
+ $('#cpv').style.background=col;put('h',h);put('s',s);put('l',l);put('x',col);
+ q('s').style.background=`linear-gradient(90deg,hsl(${h},0%,${l}%),hsl(${h},100%,${l}%))`;q('l').style.background=`linear-gradient(90deg,#000,hsl(${h},${s}%,50%),#fff)`;$('#lb').textContent=lab(col).map(f1).join(' · ')}
+function yedit(){const l=ST.sel,bgc=l==='#',y=bgc?null:yd(l),N=(k,lb,mn,mx,st)=>`<label>${lb}<input type="number" data-k="${k}" min="${mn}" max="${mx}" step="${st}" value="${y[k]}" style="width:80px"></label>`;
+ $('#ye').innerHTML=`<div id="ytb">${ytable()}</div><div><button data-add="w">+ Aggiungi filato di ordito</button> <button data-add="f">+ Aggiungi filato di trama</button></div><h3>${bgc?'Sfondo (#)':`Filato ${l} · ${LET(l)==='w'?'ordito':'trama'}`}</h3>${cpick()}`+(bgc?'':`
+<label>Titolo<span><input type="number" data-k="cnt" min="0.1" step="any" value="${y.cnt}" style="width:70px"> <select data-k="u">${Object.keys(UN).map(u=>`<option${u===y.u?' selected':''}>${u}</option>`).join('')}</select></span></label>
+${N('df','Fattore dimensionale (18)',8,40,.1)}<label>Diametro simulato (dal titolo)<b id="dm"></b></label>${N('lu','Lucentezza 0–30 (10)',0,30,1)}${N('va','Variazione % 0–50',0,50,1)}
+<label>Torsione<select data-k="tw">${['0','S','Z'].map(t=>`<option${t===y.tw?' selected':''}>${t}</option>`).join('')}</select></label>${N('tpm','Torsioni per metro',0,5000,10)}${N('tc','Contrazione da torsione %',0,30,.5)}${N('tr','Trasparenza 0–9',0,9,1)}${N('pr','Prezzo (per kg)',0,1e6,.01)}
+<h3>Effetti filato${ST.real?'':' (visibili con Rendering reale)'}</h3>
+<label>Melange · capi del ritorto<select data-k="mn">${[0,2,3,4].map(n=>`<option value="${n}"${n===y.mn?' selected':''}>${n?n+' capi':'spento'}</option>`).join('')}</select></label>
+${y.mn>1?`<div>Capi: ${plyCols(y).map((c,i)=>`<span class="chip${ST.ply===i?' sel':''}" data-ply="${i}" style="background:${c}">${i+1}</span>`).join('')} <span class="sub">clic = modifica il colore del capo</span></div>${N('mp','Melange % (mescolanza)',0,100,1)}`:''}
+${N('bo','Bouclé % (anellini)',0,100,1)}${N('fl','Fiammato % (ingrossamenti)',0,100,1)}${N('bt','Bottonato % (nodini)',0,100,1)}
+<label>Codice<input data-k="cd" value="${y.cd}" style="width:90px"></label><label>Nome<input data-k="nm" value="${y.nm}" style="width:120px"></label><button data-del="1">Rimuovi questo filato</button>`);
+ [CP.h,CP.s,CP.l]=hex2hsl(cur());cpSync();if(!bgc)$('#dm').textContent=dia(y).toFixed(3)+' mm'}
+function addYarn(isW){const k=isW?'w':'f',free=[...'ABCDEFGHIJKLMNOPQRSTUVWXY'].map(c=>isW?c:c.toLowerCase()).find(c=>!ST.yl[k].includes(c));
+ if(!free){say('Massimo 25 filati per ordito o trama (A–Y)');return}
+ const used=new Set([...ST.yl.w,...ST.yl.f].map(l=>yd(l).c)),col=SWATCH.find(c=>!used.has(c))||hsl2hex((ST.yl[k].length*47)%360,60,45);
+ ST.yl[k].push(free);ST.yl[k].sort();ST.Y[free]={c:col};ST.sel=free;ST.ply=0;bar();yedit();say(`Filato ${free} aggiunto: imposta titolo e colore, poi usalo nelle sequenze o disegnalo sul tessuto`)}
+function delYarn(){const l=ST.sel;if(l==='#')return;const k=LET(l);if(ST.yl[k].length<2){say('Serve almeno un filato');return}
+ if([...SA(),...SB()].includes(l)){say(`Il filato ${l} è usato nelle sequenze: sostituiscilo prima`);return}
+ ST.yl[k]=ST.yl[k].filter(x=>x!==l);delete ST.Y[l];ST.sel=ST.yl[k][0];ST.ply=0;bar();yedit();draw();tech()}
+const TF=[['reed','Numero pettine (denti/cm)',1,1000,.01],['rw','Larghezza pettine (cm)',5,10000,.01],['epd','Fili per dente',1,125,1],['loom','Densità trama sul telaio (fili/cm)',1,50000,.1],['wsh','Restringimento in tessitura %',0,50,.1],['fsh','Restringimento in finissaggio %',0,50,.1],['tu','Take-up %',0,50,.1],['loss','Perdita %',0,50,.1],['len','Lunghezza tessuto finito (m)',.1,100000,.1]];
+function tech(){const T=ST.T,A=SA(),B=SB(),dents=Math.round(T.reed*T.rw),thr=dents*T.epd,TU=1+T.tu/100,LS=1-T.loss/100,L=T.len,raw=L*100/(100-T.fsh),warp=raw*100/(100-T.tu),rawW=T.loom*(100+T.wsh)/100,finW=rawW*(100+T.fsh)/100;
+ const cnt={},fr={};for(let i=0;i<Math.min(thr,65520);i++){const l=A[i%A.length];cnt[l]=(cnt[l]||0)+1}for(const l of B)fr[l]=(fr[l]||0)+1/B.length;
+ let rows='',kw=0,kf=0,cost=0;for(const l of new Set([...Object.keys(cnt),...Object.keys(fr)])){const y=yd(l),nm=1000/tex(y),a=(cnt[l]||0)*L*TU/(nm*1000*LS),b=T.rw*T.loom*L*(fr[l]||0)/(nm*1000*LS);kw+=a;kf+=b;cost+=(a+b)*y.pr;
+  rows+=`<tr><td>${l}</td><td>${cnt[l]||0} fili · ${f1((fr[l]||0)*100)}% trama</td><td>${a.toFixed(3)} + ${b.toFixed(3)} kg</td></tr>`}
+ const gm=(kw+kf)*1000*LS/L;
+ $('#tt').innerHTML=`<table><tr><td>Denti nel pettine</td><td>${dents}</td></tr><tr><td>Fili totali (denti × fili/dente)</td><td>${thr}</td></tr><tr><td>Fili/cm dal pettine</td><td>${f1(T.reed*T.epd)}</td></tr>
+<tr><td>Lunghezza greggio / ordito (m)</td><td>${f1(raw)} / ${f1(warp)}</td></tr><tr><td>Densità trama greggio / finito (fili/cm)</td><td>${f1(rawW)} / ${f1(finW)}</td></tr>
+<tr><td>Consumo ordito / trama (kg)</td><td>${kw.toFixed(3)} / ${kf.toFixed(3)}</td></tr><tr><td>Peso (g/m)</td><td>${f1(gm)}</td></tr><tr><td>Peso (g/m²) su larghezza pettine</td><td>${f1(gm/(T.rw/100))}</td></tr><tr><td>Costo filati</td><td>${cost.toFixed(2)}</td></tr></table>
+<h3>Consumo per filato</h3><table>${rows}</table><p class="sub">§14.6: ordito = fili × L × take-up ÷ (Nm × 1000 × perdita); trama = larghezza pettine × densità × L ÷ (Nm × 1000 × perdita); peso g/m = (ordito + trama) × 1000 × perdita ÷ L. Il numero di denti è arrotondato a un intero (§14.1).</p>`}
+function pchk(){for(const[k,e,i]of[['wa','#ea','#ia'],['wf','#ef','#if2']]){const r=parse(ST[k]);$(e).textContent=r.er?`Errore al carattere ${r.er.p+1}: ${r.er.m} (sequenza non applicata)`:'';if(!r.er)LV[k]=ST[k];$(i).textContent='ripetizione: '+(k==='wa'?SA():SB()).length}ensureYarns()}
+function ui(){$('#wa').value=ST.wa;$('#wf').value=ST.wf;$('#ma').value=ST.ma;$('#mf').value=ST.mf;LV.wa=ST.wa;LV.wf=ST.wf;if(!ST.yl)ST.yl={w:[],f:[]};pchk();if(ST.sel!=='#'&&![...ST.yl.w,...ST.yl.f].includes(ST.sel))ST.sel=ST.yl.w[0]||'A';bar();yedit();tech();wdraw();
+ $('#vw').value=ST.view;$('#q').value=ST.q;$('#zm').value=ST.zoom;$('#tp').checked=!!ST.top;$('#on').checked=!!ST.one;$('#ed').value=ST.ends;$('#pk').value=ST.picks;$('#nn').value=ST.n;$('#mm').value=ST.m;$('#pl').value=ST.pelo||0;syncReal();
+ for(const[k]of TF)document.querySelector(`[data-tk="${k}"]`).value=ST.T[k];draw()}
+function setPat(isW,s){if(isW){ST.wa=rle(s.toUpperCase());ST.ma='asym'}else{ST.wf=rle(s.toLowerCase());ST.mf='asym'}$('#wa').value=ST.wa;$('#wf').value=ST.wf;$('#ma').value=ST.ma;$('#mf').value=ST.mf;pchk();bar();tech();draw()}
+// scambio ordito/trama (§6.23): fili, filati, densità e armatura ruotata di 90° (trasposizione con inversione: reversibile)
+function swapAll(){const t=ST,up=s=>s.replace(/[a-y]/g,c=>c.toUpperCase()),lo=s=>s.replace(/[A-Y]/g,c=>c.toLowerCase()),sw=l=>/[A-Z]/.test(l)?l.toLowerCase():l.toUpperCase();
+ [t.wa,t.wf]=[up(t.wf),lo(t.wa)];[t.ma,t.mf]=[t.mf,t.ma];const Y={},P={};for(const l in t.Y)Y[sw(l)]=t.Y[l];for(const l in t.prot)P[sw(l)]=t.prot[l];t.Y=Y;t.prot=P;t.sel=sw(t.sel);t.yl={w:t.yl.f.map(sw).sort(),f:t.yl.w.map(sw).sort()};
+ [t.ends,t.picks]=[t.picks,t.ends];[t.n,t.m]=[t.m,t.n];const h=t.M.length,w=t.M[0].length;t.M=Array.from({length:w},(_,j)=>Array.from({length:h},(_,i)=>1-t.M[i][j]));snap();ui()}
+function gen(){const wf=$('#gt').value==='w',R=Math.max(1,(wf?SA():SB()).length),ys=wf?parse($('#gy').value).s.toUpperCase():parse($('#gy').value).s.toLowerCase();if(!ys){say('Inserisci i fili da usare');return}
+ const order=[...new Set(ys)],mn=Math.max(1,+$('#gmn').value||1),mx=Math.max(mn,+$('#gmx').value||mn),sp=$('#gsl').checked?$('#gls').value.split(/[\s,]+/).map(Number).filter(n=>n>0):[],fl=$('#gfl').checked,fy=$('#gfy').checked,ac=$('#gac').checked;
+ let o='',k=0,q=0,last='';while(o.length<R){let c;if(fy)c=order[k++%order.length];else{let g=0;do{c=ys[Math.floor(Math.random()*ys.length)]}while(!ac&&c===last&&order.length>1&&++g<50)}
+  const n=sp.length?(fl?sp[q++%sp.length]:sp[Math.floor(Math.random()*sp.length)]):mn+Math.floor(Math.random()*(mx-mn+1));o+=c.repeat(n);last=c}
+ setPat(wf,o.slice(0,R))}
+function rsz(){const wf=$('#rt').value==='w',s=wf?SA():SB();let n=+$('#rn').value;const p=+$('#rp').value;if(p)n=Math.round(s.length*p/100);n=cl(n||s.length,1,5000);
+ setPat(wf,Array.from({length:n},(_,k)=>s[Math.floor(k*s.length/n)]).join(''))}
+// ---- File: JSON, texture PNG, WIF (§3.5), dati tecnici HTML ----
+const dl=(name,data,type)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1e3)};
+function wif(){const h=ST.M.length,w=ST.M[0].length,A=SA(),B=SB(),NW=Math.min(lcm(w,A.length),9999),NH=Math.min(lcm(h,B.length),9999),cols=[...new Set([...A,...B])],ci=l=>cols.indexOf(l)+1,rgb=l=>[1,3,5].map(i=>parseInt(yd(l).c.substr(i,2),16)).join(',');
+ let o=`[WIF]\nVersion=1.1\nDate=${new Date().toDateString()}\nDevelopers=wif@mhsoft.com\nSource Program=Tessuto CAD (manuale ArahWeave 10)\n[CONTENTS]\nCOLOR PALETTE=true\nWEAVING=true\nWARP=true\nWEFT=true\nCOLOR TABLE=true\nTHREADING=true\nLIFTPLAN=true\nWARP COLORS=true\nWEFT COLORS=true\n[COLOR PALETTE]\nEntries=${cols.length}\nRange=0,255\n[COLOR TABLE]\n${cols.map((l,i)=>`${i+1}=${rgb(l)}`).join('\n')}\n[WEAVING]\nShafts=${w}\nTreadles=0\nRising Shed=true\n[WARP]\nThreads=${NW}\nColor=1\nUnits=Centimeters\nSpacing=${(1/ST.ends).toFixed(4)}\nThickness=${(dia(yd(A[0]))/10).toFixed(4)}\n[WEFT]\nThreads=${NH}\nColor=1\nUnits=Centimeters\nSpacing=${(1/ST.picks).toFixed(4)}\nThickness=${(dia(yd(B[0]))/10).toFixed(4)}\n[THREADING]\n`;
+ for(let i=0;i<NW;i++)o+=`${i+1}=${i%w+1}\n`;o+='[LIFTPLAN]\n';for(let j=0;j<NH;j++){const s=[];for(let i=0;i<w;i++)if(ST.M[j%h][i])s.push(i+1);o+=`${j+1}=${s.join(',')}\n`}
+ o+='[WARP COLORS]\n';for(let i=0;i<NW;i++)o+=`${i+1}=${ci(A[i%A.length])}\n`;o+='[WEFT COLORS]\n';for(let j=0;j<NH;j++)o+=`${j+1}=${ci(B[j%B.length])}\n`;return o}
+// ---- Zoom (§4.1): 39 livelli da 1:20 a 20:1 ----
+const ZL=[...Array(19)].map((_,k)=>100/(20-k)).concat([100],[...Array(19)].map((_,k)=>(k+2)*100));
+const zset=z=>{ST.zoom=z;$('#zm').value=z;draw()},zstep=d=>{const i=ZL.reduce((b,v,k)=>Math.abs(v-ST.zoom)<Math.abs(ZL[b]-ST.zoom)?k:b,0);zset(ZL[cl(i+d,0,ZL.length-1)])};
+function init(){
+ $('#zm').innerHTML=ZL.map(z=>`<option value="${z}">${z<100?'1:'+Math.round(100/z):Math.round(z/100)+':1'} (${z}%)</option>`).join('');
+ $('#wd').innerHTML=DEF.map((d,i)=>`<option value="${i}">${d[0]}</option>`).join('')+EXTRA.map(n=>`<option value="s${n}">Raso ${n}</option>`).join('')+BAT.map((b,i)=>`<option value="b${i}">${b[0]}</option>`).join('');
+ $('#tf').innerHTML=TF.map(([k,lb,mn,mx,st])=>`<label>${lb}<input type="number" data-tk="${k}" min="${mn}" max="${mx}" step="${st}" style="width:90px"></label>`).join('');
+ snap();ui()}
+// ---- Eventi ----
+const tab=n=>{document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x.dataset.t===n));document.querySelectorAll('section').forEach(x=>x.classList.toggle('on',x.id==='s-'+n))};
+$('#tabs').onclick=e=>{const b=e.target.closest('[data-t]');if(b)tab(b.dataset.t)};
+(()=>{const c=$('#we');let dn=0,v=1;const at=e=>{const r=c.getBoundingClientRect(),M=ST.M;return[Math.floor((e.clientX-r.left)/r.width*M[0].length),M.length-1-Math.floor((e.clientY-r.top)/r.height*M.length)]};
+ const put=e=>{const[i,j]=at(e),M=ST.M;if(M[j]&&M[j][i]!==undefined&&M[j][i]!==v){M[j][i]=v;wdraw();draw()}};
+ c.oncontextmenu=e=>e.preventDefault();
+ c.onpointerdown=e=>{dn=1;c.setPointerCapture(e.pointerId);c.focus();const[i,j]=at(e),M=ST.M;v=e.pointerType==='touch'?1-(M[j]?M[j][i]:0):(e.button===2?0:1);put(e)};
+ c.onpointermove=e=>{if(dn)put(e)};c.onpointerup=()=>{if(dn){dn=0;snap()}};
+ c.onkeydown=e=>{const k=e.key;if(/^\d$/.test(k)){e.preventDefault();setM(wv(DEF[+k][1]))}else if(k===' '){e.preventDefault();setM(ST.M.map(r=>r.map(b=>1-b)))}
+  else if(e.ctrlKey&&k==='z'){e.preventDefault();undo()}else if(e.ctrlKey&&k==='y'){e.preventDefault();redo()}else if(e.ctrlKey&&k==='c')CB=JSON.stringify(ST.M);else if(e.ctrlKey&&k==='v'&&CB){e.preventDefault();setM(JSON.parse(CB))}}})();
+$('#ww').oninput=$('#wh').oninput=()=>setM(tile(cl(+$('#ww').value||1,1,96),cl(+$('#wh').value||1,1,96)));
+$('#wd').onchange=e=>{const v=e.target.value;setM(v[0]==='s'?satin(+v.slice(1)):v[0]==='b'?BAT[+v.slice(1)][1].map(r=>r.slice()):wv(DEF[+v][1]))};
+$('#xb').onclick=()=>setM(tile(cl(ST.M[0].length*(+$('#xw').value||1),1,96),cl(ST.M.length*(+$('#xh').value||1),1,96)));
+$('#dw').onclick=()=>setM(tile(cl(ST.M[0].length*2,1,96),ST.M.length));$('#dh').onclick=()=>setM(tile(ST.M[0].length,cl(ST.M.length*2,1,96)));
+$('#iv').onclick=()=>setM(ST.M.map(r=>r.map(b=>1-b)));$('#un').onclick=undo;$('#re').onclick=redo;
+for(const k of['wa','wf'])$('#'+k).oninput=e=>{ST[k]=e.target.value;pchk();bar();draw();tech()};
+$('#ma').onchange=e=>{ST.ma=e.target.value;pchk();bar();draw()};$('#mf').onchange=e=>{ST.mf=e.target.value;pchk();bar();draw()};
+$('#cw').onclick=()=>setPat(false,SA().toLowerCase());$('#cf').onclick=()=>setPat(true,SB().toUpperCase());$('#cx').onclick=()=>{const a=SA(),b=SB();setPat(true,b.toUpperCase());setPat(false,a.toLowerCase())};
+$('#sw').onclick=swapAll;$('#gb').onclick=gen;$('#rb').onclick=rsz;
+$('#yb').addEventListener('click',e=>{const t=e.target,a=t.dataset.add;if(a){addYarn(a==='w');tab('y');return}const l=t.dataset.l;
+ if(l&&ST.sel!==l){ST.sel=l;ST.ply=0;bar();yedit();if(!['f','y'].includes(document.querySelector('#tabs .on').dataset.t))tab('y')}});
+$('#yb').addEventListener('dblclick',e=>{const l=e.target.dataset.l;if(l&&l!=='#'){ST.prot[l]=!ST.prot[l];bar()}});
+$('#ye').addEventListener('input',e=>{const t=e.target,cp=t.dataset.cp,k=t.dataset.k;
+ if(cp){let col;if(cp==='x'){const v=t.value.trim().toLowerCase();if(!/^#[0-9a-f]{6}$/.test(v))return;col=v;[CP.h,CP.s,CP.l]=hex2hsl(v)}else{CP[cp]=+t.value;col=hsl2hex(CP.h,CP.s,CP.l)}setColor(col);cpSync(cp);return}
+ if(!k)return;const v=t.type==='number'||k==='mn'?parseFloat(t.value):t.value;if(typeof v==='number'&&isNaN(v))return;
+ ST.Y[ST.sel]={...ST.Y[ST.sel],[k]:v};const y=yd(ST.sel);$('#dm').textContent=dia(y).toFixed(3)+' mm';ytb();bar();draw();tech();if(k==='mn'){ST.ply=0;yedit()}});
+$('#ye').addEventListener('click',e=>{const t=e.target,r=t.closest('tr[data-l]');
+ if(t.dataset.add){addYarn(t.dataset.add==='w');return}if(t.dataset.del){delYarn();return}if(t.dataset.ply!==undefined){ST.ply=+t.dataset.ply;yedit();return}
+ if(t.dataset.c){setColor(t.dataset.c);[CP.h,CP.s,CP.l]=hex2hsl(t.dataset.c);cpSync();return}
+ if(t.id==='nr'){const a=lab(cur());let b=SWATCH[0],m=1e9;for(const c of SWATCH){const d=Math.hypot(...lab(c).map((v,i)=>v-a[i]));if(d<m){m=d;b=c}}say(`Più vicino: ${b} (ΔE ${f1(m)})`);setColor(b);[CP.h,CP.s,CP.l]=hex2hsl(b);cpSync();return}
+ if(r){ST.sel=r.dataset.l;ST.ply=0;bar();yedit()}});
+$('#tf').addEventListener('input',e=>{const k=e.target.dataset.tk,v=parseFloat(e.target.value);if(!k||isNaN(v))return;ST.T[k]=v;tech()});
+$('#ta').onclick=()=>{const T=ST.T;ST.ends=T.reed*T.epd;ST.n=Math.min(2000,Math.round(T.reed*T.rw)*T.epd);ui()};
+$('#vw').onchange=e=>{ST.view=e.target.value;draw()};$('#q').oninput=e=>{ST.q=+e.target.value;draw()};$('#zm').onchange=e=>zset(+e.target.value);
+$('#tp').onchange=e=>{ST.top=e.target.checked?1:0;draw()};$('#on').onchange=e=>{ST.one=e.target.checked?1:0;draw()};
+$('#ed').oninput=e=>{ST.ends=cl(+e.target.value||24,1,500);draw();tech()};$('#pk').oninput=e=>{ST.picks=cl(+e.target.value||20,1,500);draw()};
+$('#nn').oninput=e=>{ST.n=cl(+e.target.value||96,4,2000);draw()};$('#mm').oninput=e=>{ST.m=cl(+e.target.value||96,4,2000);draw()};
+// disegno dei fili col mouse sul tessuto (§6.2): il filo selezionato sostituisce quello cliccato; Maiusc inserisce, Maiusc+destro elimina
+(()=>{const cv=$('#fab');let dn=0;const paint=e=>{const r=cv.getBoundingClientRect(),i=Math.floor((e.clientX-r.left)/r.width*G.N),j=G.R-1-Math.floor((e.clientY-r.top)/r.height*G.R),l=ST.sel,isW=l===l.toUpperCase();if(l==='#')return;
+  const up=G.B[j%G.B.length]==='y'||ST.M[j%G.h][i%G.w];if(isW!==!!up)return;const s=[...(isW?G.A:G.B)],k=(isW?i:j)%s.length;if(ST.prot[s[k]]&&!e.shiftKey)return;
+  if(e.shiftKey){e.button===2?s.splice(k,1):s.splice(k,0,l)}else s[k]=l;setPat(isW,s.join(''))};
+ cv.oncontextmenu=e=>e.preventDefault();cv.onpointerdown=e=>{dn=1;cv.setPointerCapture(e.pointerId);cv.focus();paint(e)};cv.onpointermove=e=>{if(dn&&!e.shiftKey)paint(e)};cv.onpointerup=()=>dn=0;
+ cv.onwheel=e=>{if(!e.ctrlKey)return;e.preventDefault();zstep(e.deltaY<0?1:-1)};
+ cv.onkeydown=e=>{const k=e.key;if(/^\d$/.test(k)){e.preventDefault();zset(e.ctrlKey?(+k||10)*10:(+k||10)*100)}else if(k==='+'||k==='='){zstep(1)}else if(k==='-'){zstep(-1)}
+  else if(k==='r'&&!e.ctrlKey){ST.real=ST.real?0:1;syncReal();draw()}else if('wasm'.includes(k)&&!e.ctrlKey){ST.view=k;$('#vw').value=k;draw()}}})();
+$('#fs').onclick=()=>dl('tessuto.json',JSON.stringify(ST),'application/json');$('#fo').onclick=()=>$('#fi').click();
+$('#fi').onchange=async e=>{try{const o=JSON.parse(await e.target.files[0].text());if(!o.M)throw 0;Object.assign(ST,o);H=[];HI=-1;snap();ui();say('Tessuto caricato')}catch(_){say('File non valido')}e.target.value=''};
+$('#fp').onclick=()=>$('#fab').toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='tessuto.png';a.click()});
+$('#fw').onclick=()=>{if(ST.M[0].length>99)say('Attenzione: oltre 99 licci (limite del manuale)');dl('tessuto.wif',wif(),'text/plain')};
+$('#fh').onclick=()=>dl('dati-tecnici.html','<!doctype html><meta charset="utf-8"><title>Dati tecnici</title>'+$('#tt').innerHTML,'text/html');
+$('#rl').onclick=()=>{ST.real=ST.real?0:1;syncReal();draw()};$('#pl').oninput=e=>{ST.pelo=+e.target.value;syncReal();draw()};
+init();
+</script>
+</body>
+</html>
