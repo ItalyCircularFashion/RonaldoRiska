@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Flip Flop Pokè · Modalità semplice</title>
+<title>Kira World Creation RR · Modalità semplice</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
@@ -68,7 +68,7 @@ erba:{c:'#3fb54f',e:{acqua:2,roccia:2,fuoco:.5,erba:.5}},
 elettro:{c:'#d9a800',e:{acqua:2,erba:.5,elettro:.5}},
 normale:{c:'#8b929c',e:{roccia:.5}},
 roccia:{c:'#a0804f',e:{fuoco:2}}};
-const MV={Placcaggio:['normale',40],Graffio:['normale',40],Beccata:['normale',45],Braciere:['fuoco',50],Pistolacqua:['acqua',50],Foglielama:['erba',50],Scintilla:['elettro',50],Sassata:['roccia',55]};
+const MV={Placcaggio:['normale',40],Graffio:['normale',40],Beccata:['normale',45],Braciere:['fuoco',50],Pistolacqua:['acqua',50],Foglielama:['erba',50],Scintilla:['elettro',50],Sassata:['roccia',55],Urla:['normale','∞']};
 const CR=[
 {n:'Dinosauro-pericolo',e:'🦕',t:'fuoco',h:46,a:54,d:45,m:['Graffio','Braciere'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="52" cy="70" rx="30" ry="22" fill="#e63946" stroke="#1b2340" stroke-width="3"/><circle cx="72" cy="46" r="20" fill="#e63946" stroke="#1b2340" stroke-width="3"/><polygon points="58,32 66,18 74,32" fill="#f5c542" stroke="#1b2340" stroke-width="2"/><polygon points="74,30 82,16 90,30" fill="#f5c542" stroke="#1b2340" stroke-width="2"/><circle cx="80" cy="44" r="4" fill="#1b2340"/><path d="M68 54 Q78 58 72 62" stroke="#1b2340" stroke-width="3" fill="none"/><rect x="30" y="80" width="8" height="16" rx="3" fill="#1b2340"/><rect x="56" y="82" width="8" height="14" rx="3" fill="#1b2340"/><path d="M84 62 Q98 70 92 80" stroke="#e63946" stroke-width="6" fill="none" stroke-linecap="round"/></svg>`,evo:{at:10,to:12}},
 {n:'Pipistrello arrabbiato',e:'🦇',t:'elettro',h:38,a:56,d:40,m:['Beccata','Scintilla'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 32 Q20 12 10 46 Q22 56 36 50 L50 66 L64 50 Q78 56 90 46 Q80 12 50 32Z" fill="#6b4fa0" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="60" r="22" fill="#6b4fa0" stroke="#1b2340" stroke-width="3"/><polygon points="33,34 39,20 45,34" fill="#6b4fa0" stroke="#1b2340" stroke-width="2"/><polygon points="55,34 61,20 67,34" fill="#6b4fa0" stroke="#1b2340" stroke-width="2"/><polygon points="38,48 46,40 54,48" fill="#fff"/><polygon points="46,48 54,40 62,48" fill="#fff"/><circle cx="46" cy="60" r="4" fill="#1b2340"/><circle cx="58" cy="60" r="4" fill="#1b2340"/><path d="M44 70 L50 64 L56 70" stroke="#1b2340" stroke-width="3" fill="none"/></svg>`,evo:{at:10,to:13}},
@@ -86,6 +86,9 @@ const CR=[
 {n:'Pipistrello furioso',e:'🦇',t:'elettro',h:50,a:74,d:48,m:['Beccata','Scintilla'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 28 Q16 8 6 48 Q20 60 34 52 L50 70 L66 52 Q80 60 94 48 Q84 8 50 28Z" fill="#4a2f7a" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="60" r="24" fill="#4a2f7a" stroke="#1b2340" stroke-width="3"/><polygon points="30,32 36,16 42,32" fill="#4a2f7a" stroke="#1b2340" stroke-width="2"/><polygon points="58,32 64,16 70,32" fill="#4a2f7a" stroke="#1b2340" stroke-width="2"/><circle cx="42" cy="56" r="5" fill="#ef4b4b"/><circle cx="58" cy="56" r="5" fill="#ef4b4b"/><path d="M44 68 L50 62 L56 68" stroke="#ef4b4b" stroke-width="3" fill="none"/><path d="M40 74 Q50 82 60 74" stroke="#ff5561" stroke-width="3" fill="none"/></svg>`},
 {n:'Cane rosa gigante',e:'🐕',t:'normale',h:58,a:62,d:60,m:['Placcaggio','Graffio'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="64" rx="36" ry="28" fill="#ffb3d6" stroke="#1b2340" stroke-width="3"/><circle cx="36" cy="42" r="14" fill="#ffb3d6" stroke="#1b2340" stroke-width="3"/><circle cx="64" cy="42" r="14" fill="#ffb3d6" stroke="#1b2340" stroke-width="3"/><circle cx="40" cy="60" r="4" fill="#1b2340"/><circle cx="60" cy="60" r="4" fill="#1b2340"/><ellipse cx="50" cy="72" rx="8" ry="5" fill="#1b2340"/><path d="M16 34 Q4 16 26 22" stroke="#1b2340" stroke-width="4" fill="none"/><path d="M84 34 Q96 16 74 22" stroke="#1b2340" stroke-width="4" fill="none"/><polygon points="44,16 50,4 56,16" fill="#f5c542" stroke="#1b2340" stroke-width="2"/></svg>`},
 {n:'Pecora tempesta',e:'🐏',t:'erba',h:62,a:58,d:70,m:['Foglielama','Placcaggio'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="34" r="16" fill="#d5dbe8" stroke="#1b2340" stroke-width="3"/><circle cx="60" cy="34" r="16" fill="#d5dbe8" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="48" r="18" fill="#d5dbe8" stroke="#1b2340" stroke-width="3"/><ellipse cx="50" cy="72" rx="28" ry="20" fill="#d5dbe8" stroke="#1b2340" stroke-width="3"/><circle cx="42" cy="58" r="3" fill="#1b2340"/><circle cx="58" cy="58" r="3" fill="#1b2340"/><ellipse cx="50" cy="66" rx="6" ry="4" fill="#1b2340"/><rect x="34" y="84" width="6" height="10" rx="3" fill="#4d4d4d"/><rect x="60" y="84" width="6" height="10" rx="3" fill="#4d4d4d"/><polygon points="50,8 56,22 44,22" fill="#d9a800" stroke="#1b2340" stroke-width="2"/><path d="M82 24 L78 40" stroke="#d9a800" stroke-width="3"/></svg>`}
+,{n:'Giulio',e:'😴',t:'normale',h:68,a:44,d:62,m:['Placcaggio','Graffio'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="70" rx="34" ry="26" fill="#9aa6b2" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="46" r="22" fill="#9aa6b2" stroke="#1b2340" stroke-width="3"/><path d="M34 30 Q50 18 66 30" stroke="#1b2340" stroke-width="3" fill="none"/><circle cx="43" cy="42" r="2" fill="#1b2340"/><circle cx="57" cy="42" r="2" fill="#1b2340"/><path d="M44 54 Q50 50 56 54" stroke="#1b2340" stroke-width="3" fill="none"/><ellipse cx="36" cy="74" rx="6" ry="4" fill="#1b2340"/><ellipse cx="64" cy="74" rx="6" ry="4" fill="#1b2340"/></svg>`},
+{n:'Elettrina',e:'👸',t:'elettro',h:40,a:58,d:44,m:['Scintilla','Urla'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="72" rx="30" ry="22" fill="#d9a800" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="48" r="20" fill="#f5e6a0" stroke="#1b2340" stroke-width="3"/><polygon points="40,28 50,12 60,28" fill="#f5c542" stroke="#1b2340" stroke-width="2"/><circle cx="43" cy="46" r="3" fill="#1b2340"/><circle cx="57" cy="46" r="3" fill="#1b2340"/><path d="M44 56 Q50 60 56 56" stroke="#1b2340" stroke-width="3" fill="none"/><path d="M30 34 L36 24 L42 34" fill="#e63946" stroke="#1b2340" stroke-width="2"/><path d="M70 34 L64 24 L58 34" fill="#e63946" stroke="#1b2340" stroke-width="2"/></svg>`},
+{n:'Aurorina',e:'👸',t:'normale',h:42,a:50,d:48,m:['Placcaggio','Urla'],svg:`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="72" rx="30" ry="22" fill="#b6d9ff" stroke="#1b2340" stroke-width="3"/><circle cx="50" cy="48" r="20" fill="#f0f6ff" stroke="#1b2340" stroke-width="3"/><polygon points="40,28 50,12 60,28" fill="#8fd3ff" stroke="#1b2340" stroke-width="2"/><circle cx="43" cy="46" r="3" fill="#1b2340"/><circle cx="57" cy="46" r="3" fill="#1b2340"/><path d="M44 56 Q50 62 56 56" stroke="#1b2340" stroke-width="3" fill="none"/><circle cx="32" cy="60" r="2" fill="#f5c542"/><circle cx="68" cy="60" r="2" fill="#f5c542"/></svg>`}
 ];
 let G=null,B=null,note='Pronto per una nuova avventura?';
 const badge=t=>`<span class="tp" style="background:${TY[t].c}">${t}</span>`;
@@ -99,9 +102,9 @@ function calc(m){const s=CR[m.i],f=b=>Math.floor(b*2*m.L/100)+5,o=m.mh||0;m.mh=M
 function mk(i,L){const m={i,L,xp:0};calc(m);m.hp=m.mh;return m}
 function dmg(a,k,d){const[t,p]=MV[k],e=TY[t].e[CR[d.i].t]??1,s=t===CR[a.i].t?1.5:1;return[Math.max(1,Math.floor(((2*a.L/5+2)*p*a.a/d.d/50+2)*e*s*(.85+Math.random()*.15))),e]}
 
-function title(){scr.innerHTML=`<h1><span class="pb"></span>Flip Flop Pokè</h1><p class="sub">Modalità semplice</p><p class="lead">Scegli il tuo compagno</p><div class="starters">${[0,1,2].map(i=>`<button class="card" onclick="start(${i})"><span class="ico">${CR[i].svg}</span><b>${CR[i].n}</b>${badge(CR[i].t)}</button>`).join('')}</div>`}
+function title(){scr.innerHTML=`<h1><span class="pb"></span>Kira World Creation RR</h1><p class="sub">Modalità semplice</p><p class="lead">Scegli il tuo compagno</p><div class="starters">${[0,1,2].map(i=>`<button class="card" onclick="start(${i})"><span class="ico">${CR[i].svg}</span><b>${CR[i].n}</b>${badge(CR[i].t)}</button>`).join('')}</div>`}
 function start(i){G={team:[mk(i,5)],balls:10,pots:3,wins:0,caught:[i]};note="Esplora l'erba alta per incontrare nuove Creature!";save();home()}
-function home(){scr.innerHTML=`<h1><span class="pb"></span>Flip Flop Pokè</h1>
+function home(){scr.innerHTML=`<h1><span class="pb"></span>Kira World Creation RR</h1>
 <div class="top"><span>🔴 ${G.balls}</span><span>🧪 ${G.pots}</span><span>🏆 ${G.wins}</span></div>
 ${G.team.map(m=>`<div class="row"><span class="ico">${CR[m.i].svg}</span><div><b>${CR[m.i].n}</b> Lv${m.L}${badge(CR[m.i].t)}${hbar(m)}<small>${m.hp}/${m.mh} PS</small></div></div>`).join('')}
 <div class="dex" title="Creature dex">${CR.map((s,i)=>`<span class="dexico" title="${s.n}">${G.caught.includes(i)?s.svg:'❔'}</span>`).join('')}</div>
@@ -130,6 +133,11 @@ function teamMenu(forced){btns([...G.team.map((m,i)=>[`${CR[m.i].svg} ${CR[m.i].
 async function swap(i,forced){const go=async()=>{B.me=i;upd();await say(`Vai, ${CR[cur().i].n}!`)};if(forced){await go();mainMenu()}else turn(go)}
 
 async function hit(a,d,k,mine){
+if(k==='Urla'){
+const el=$(mine?'#fsp':'#msp');
+el.classList.add('hit');d.hp=0;upd();await sl(450);el.classList.remove('hit');
+await say(`L'urlo di ${CR[a.i].n} spazza via tutti i PS!`);
+return}
 await say(`${CR[a.i].n}${mine?'':' selvatico'} usa ${k}!`);
 const[x,e]=dmg(a,k,d),el=$(mine?'#fsp':'#msp');
 el.classList.add('hit');d.hp=Math.max(0,d.hp-x);upd();await sl(450);el.classList.remove('hit');
