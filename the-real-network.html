@@ -3,594 +3,425 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>The Real Network</title>
+<title>TextileHUB Network — Ricerca e gestione fornitori</title>
+<meta name="description" content="Database strutturato per trovare e confrontare aziende manifatturiere, inizialmente nel distretto pratese: filtri, schede, valutazioni, preventivi ed export Excel.">
 <style>
-:root{--bg:#050508;--bg2:#0c0c14;--card:rgba(15,15,25,.85);--line:#1a1a2e;--text:#e0e0ff;--muted:#7a7a9a;--accent:#f0e68c;--accent2:#00f0ff;--accent3:#ff2d6f;--good:#00ff9f;--neon-purple:#b388ff;--neon-blue:#4488ff}
+:root{
+  --bg:#050508;--bg2:#0c0c14;--card:rgba(15,15,25,.85);--line:#1a1a2e;
+  --text:#e0e0ff;--muted:#7a7a9a;--accent:#f0e68c;--accent2:#00f0ff;
+  --accent3:#ff2d6f;--good:#00ff9f;--neon-purple:#b388ff;--neon-blue:#4488ff;
+}
 *{box-sizing:border-box;margin:0}
-html,body{height:100%;font:14px/1.6 "Rajdhani",system-ui,sans-serif;color:var(--text);background:var(--bg)}
-a{color:var(--accent2);text-decoration:none} button,input,textarea,select{font:inherit}
-body{background:
-  radial-gradient(ellipse at 20% 10%,rgba(0,240,255,.08) 0%,transparent 50%),
-  radial-gradient(ellipse at 80% 90%,rgba(255,45,111,.06) 0%,transparent 50%),
-  linear-gradient(180deg,#08080f 0%,#050508 100%);
-  min-height:100vh}
+html,body{height:100%}
+body{
+  font:14px/1.6 "Rajdhani",system-ui,sans-serif;color:var(--text);
+  background:
+    radial-gradient(ellipse at 20% 10%,rgba(0,240,255,.08) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 90%,rgba(255,45,111,.06) 0%,transparent 50%),
+    linear-gradient(180deg,#08080f 0%,#050508 100%);
+  min-height:100vh;
+}
+a{color:var(--accent2);text-decoration:none}
+button,input,select,textarea{font:inherit}
 .mono{font-family:"JetBrains Mono",monospace}
-.kpi-table{width:100%;border-collapse:collapse;font-family:"JetBrains Mono",monospace;font-size:11px}
-.kpi-table th,.kpi-table td{padding:8px 10px;text-align:left;border-bottom:1px solid rgba(0,240,255,.1)}
-.kpi-table th{color:var(--muted);font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:1px;font-family:"Orbitron",sans-serif}
-.kpi-table td:first-child{color:var(--muted)}
-.kpi-table td:last-child{text-align:right;font-weight:600;color:var(--accent2)}
-.kpi-table tr:hover td{background:rgba(0,240,255,.05)}
-.spark{display:flex;align-items:flex-end;gap:2px;height:32px;margin-top:6px}
-.spark i{flex:1;background:var(--accent2);opacity:.8;border-radius:1px;min-height:2px;box-shadow:0 0 4px var(--accent2)}
-.spark i:nth-child(odd){background:var(--accent3);box-shadow:0 0 4px var(--accent3)}
-.ticker{display:flex;gap:20px;overflow:hidden;padding:10px 0;font-family:"JetBrains Mono",monospace;font-size:11px;border-bottom:1px solid rgba(0,240,255,.1)}
-.ticker span{white-space:nowrap;color:var(--muted);padding:4px 8px;border:1px solid rgba(0,240,255,.15);border-radius:4px;background:rgba(0,240,255,.03)}
+
+/* ── TOPBAR ── */
+.topbar{
+  position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:16px;
+  padding:12px 20px;border-bottom:1px solid rgba(0,240,255,.15);
+  background:rgba(5,5,8,.92);backdrop-filter:blur(10px);flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-mark{
+  width:38px;height:38px;display:grid;place-items:center;
+  font-family:"Orbitron",sans-serif;font-weight:800;font-size:14px;letter-spacing:1px;
+  color:#050508;background:linear-gradient(135deg,var(--accent2),var(--accent3));
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));
+  box-shadow:0 0 18px rgba(0,240,255,.35);
+}
+.brand-text{font-family:"Orbitron",sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs a{
+  font-family:"Orbitron",sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--muted);padding:7px 12px;border:1px solid rgba(0,240,255,.15);border-radius:4px;
+  background:rgba(0,240,255,.03);transition:all .3s;
+}
+.tabs a:hover,.tabs a.active{color:var(--accent2);border-color:var(--accent2);box-shadow:0 0 12px rgba(0,240,255,.2)}
+.topbar .right{margin-left:auto}
+
+/* ── TICKER ── */
+.ticker{
+  display:flex;gap:14px;overflow:hidden;padding:10px 0;
+  font-family:"JetBrains Mono",monospace;font-size:11px;
+  border-bottom:1px solid rgba(0,240,255,.1);
+}
+.ticker span{white-space:nowrap;color:var(--muted);padding:4px 10px;border:1px solid rgba(0,240,255,.15);border-radius:4px;background:rgba(0,240,255,.03)}
 .ticker b{color:var(--text);font-weight:600;margin-left:4px}
 .ticker .up{color:var(--good)} .ticker .down{color:var(--accent3)}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-@keyframes glitch{0%,100%{text-shadow:2px 0 var(--accent2),-2px 0 var(--accent3)}25%{text-shadow:-2px 0 var(--accent2),2px 0 var(--accent3)}50%{text-shadow:2px 2px var(--accent2),-2px -2px var(--accent3)}75%{text-shadow:-2px 2px var(--accent2),2px -2px var(--accent3)}}
-.post{animation:fadeUp .4s ease both;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));border:1px solid rgba(0,240,255,.2);background:linear-gradient(135deg,rgba(15,15,25,.9),rgba(10,10,20,.85));padding:18px;margin-bottom:14px;position:relative;overflow:hidden;transition:all .3s}
-.post::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent2),var(--accent3),var(--accent2));opacity:.7}
-.post::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,240,255,.3),transparent)}
-.post:hover{border-color:var(--accent2);box-shadow:0 0 30px rgba(0,240,255,.15),inset 0 0 30px rgba(0,240,255,.03);transform:translateY(-2px)}
-.post-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
-.post-text{margin:8px 0;white-space:pre-wrap;word-break:break-word;color:var(--text);font-size:13px;line-height:1.6}
-.post-image{width:100%;border-radius:4px;margin-bottom:8px;max-height:400px;object-fit:cover;border:1px solid rgba(0,240,255,.2)}
-.actions{display:flex;gap:8px;align-items:center;margin-top:10px}
-.stats-line{color:var(--muted);font-size:11px;font-family:"JetBrains Mono",monospace}
-.comments{margin-top:10px;padding-left:12px;border-left:2px solid rgba(0,240,255,.3)}
-.comment{margin:8px 0;padding:10px;background:rgba(0,240,255,.03);border-radius:4px;border:1px solid rgba(0,240,255,.1)}
-.search{width:100%;padding:10px 14px;border-radius:4px;background:rgba(0,240,255,.03);border:1px solid rgba(0,240,255,.2);color:var(--text);font-family:"Rajdhani",sans-serif}
-.search:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 15px rgba(0,240,255,.2)}
-.modal{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.8);z-index:10;backdrop-filter:blur(8px)}
-.modal.show{display:grid}
-.modal-body{width:min(480px,92vw);background:linear-gradient(135deg,#0c0c14,#08080f);border:1px solid rgba(0,240,255,.3);border-radius:8px;padding:24px;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));box-shadow:0 0 40px rgba(0,240,255,.2)}
-.modal h2{margin-bottom:16px;font-family:"Orbitron",sans-serif;font-size:16px;letter-spacing:2px;text-transform:uppercase;color:var(--accent2)}
-.field{margin:10px 0}
-.field label{display:block;color:var(--muted);margin-bottom:4px;font-family:"Orbitron",sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase}
-.field input,.field textarea,.field select{width:100%;padding:10px 12px;border-radius:4px;background:rgba(0,240,255,.03);border:1px solid rgba(0,240,255,.2);color:var(--text);font-family:"Rajdhani",sans-serif}
-.field input:focus,.field textarea:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 15px rgba(0,240,255,.2)}
-.toast{position:fixed;bottom:20px;right:20px;padding:12px 18px;background:linear-gradient(90deg,rgba(0,240,255,.15),rgba(255,45,111,.15));border:1px solid var(--accent2);border-radius:4px;display:none;max-width:320px;font-family:"Orbitron",sans-serif;font-size:11px;letter-spacing:1px}
-.toast.show{display:block}
-.notice{background:rgba(0,240,255,.05);border:1px solid rgba(0,240,255,.2);border-radius:4px;padding:10px;margin:8px 0;font-size:12px}
-.empty{color:var(--muted);padding:20px;text-align:center;font-family:"Orbitron",sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase}
-.badge{display:inline-block;font-size:10px;padding:4px 10px;border-radius:4px;background:rgba(0,240,255,.1);color:var(--accent2);border:1px solid rgba(0,240,255,.3);font-family:"Orbitron",sans-serif;letter-spacing:1px;text-transform:uppercase}
-.badge.eco{background:rgba(240,230,140,.15);color:var(--accent);border-color:rgba(240,230,140,.3)}
-.badge.tech{background:rgba(0,240,255,.15);color:var(--accent2);border-color:rgba(0,240,255,.3)}
-.badge.amb{background:rgba(0,255,159,.15);color:var(--good);border-color:rgba(0,255,159,.3)}
-.badge.lav{background:rgba(255,45,111,.15);color:var(--accent3);border-color:rgba(255,45,111,.3)}
-button{background:linear-gradient(90deg,rgba(0,240,255,.2),rgba(255,45,111,.2));color:#fff;border:1px solid var(--accent2);border-radius:4px;padding:8px 16px;cursor:pointer;font-family:"Orbitron",sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;transition:all .3s}
+
+/* ── LAYOUT ── */
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+section{padding:34px 0}
+.eyebrow{
+  font-family:"Orbitron",sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--accent2);margin-bottom:10px;
+}
+h1{
+  font-family:"Orbitron",sans-serif;font-size:clamp(28px,4.5vw,44px);line-height:1.15;
+  letter-spacing:1px;animation:glitch 6s infinite;
+}
+@keyframes glitch{
+  0%,100%{text-shadow:2px 0 var(--accent2),-2px 0 var(--accent3)}
+  25%{text-shadow:-2px 0 var(--accent2),2px 0 var(--accent3)}
+  50%{text-shadow:2px 2px var(--accent2),-2px -2px var(--accent3)}
+  75%{text-shadow:-2px 2px var(--accent2),2px -2px var(--accent3)}
+}
+h2{
+  font-family:"Orbitron",sans-serif;font-size:15px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent2);margin-bottom:14px;
+}
+.lead{font-size:16px;color:var(--text);max-width:62ch;margin-top:12px}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+
+.card{
+  border:1px solid rgba(0,240,255,.2);border-radius:6px;padding:22px;
+  background:linear-gradient(135deg,rgba(15,15,25,.9),rgba(10,10,20,.85));
+  clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
+}
+
+/* ── FEATURES ── */
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.feature{position:relative;padding:18px 18px 16px 58px;transition:all .3s}
+.feature:hover{border-color:var(--accent2);box-shadow:0 0 26px rgba(0,240,255,.12);transform:translateY(-2px)}
+.feature .num{
+  position:absolute;left:16px;top:16px;font-family:"Orbitron",sans-serif;font-size:18px;
+  color:var(--accent3);text-shadow:0 0 10px rgba(255,45,111,.5);
+}
+.feature h3{font-family:"Orbitron",sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:6px}
+.feature p{font-size:13px;color:var(--muted)}
+
+/* ── BADGE / NOTICE ── */
+.badge{
+  display:inline-block;font-size:10px;padding:4px 10px;border-radius:4px;
+  background:rgba(0,240,255,.1);color:var(--accent2);border:1px solid rgba(0,240,255,.3);
+  font-family:"Orbitron",sans-serif;letter-spacing:1px;text-transform:uppercase;
+}
+.badge.demo{background:rgba(255,45,111,.15);color:var(--accent3);border-color:rgba(255,45,111,.35)}
+.notice{
+  background:rgba(0,240,255,.05);border:1px solid rgba(0,240,255,.2);border-radius:4px;
+  padding:14px 16px;font-size:13px;
+}
+.notice strong{color:var(--accent2)}
+
+/* ── BUTTONS ── */
+button{
+  background:linear-gradient(90deg,rgba(0,240,255,.2),rgba(255,45,111,.2));color:#fff;
+  border:1px solid var(--accent2);border-radius:4px;padding:9px 16px;cursor:pointer;
+  font-family:"Orbitron",sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;transition:all .3s;
+}
 button:hover{box-shadow:0 0 20px rgba(0,240,255,.3);transform:translateY(-1px)}
 button.small{font-size:10px;padding:6px 12px}
 button.ghost{background:transparent;border:1px solid rgba(0,240,255,.2);color:var(--muted)}
-button.ghost:hover{border-color:var(--accent2);color:var(--accent2);box-shadow:0 0 15px rgba(0,240,255,.2)}
-button.danger{border-color:var(--accent3);color:var(--accent3)}
-input,textarea,select{background:rgba(0,240,255,.03);border:1px solid rgba(0,240,255,.2);color:var(--text);border-radius:4px;padding:8px 12px}
-input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 15px rgba(0,240,255,.2)}
-.feed-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media (max-width:900px){.feed-grid{grid-template-columns:1fr}}
-.filter-bar{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
-.filter-bar button{background:rgba(0,240,255,.03);border:1px solid rgba(0,240,255,.15);color:var(--muted);border-radius:4px;padding:5px 12px;cursor:pointer;font-family:"Orbitron",sans-serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;transition:all .3s}
-.filter-bar button:hover,.filter-bar button.active{border-color:var(--accent2);color:var(--accent2);box-shadow:0 0 10px rgba(0,240,255,.2)}
+button.ghost:hover{border-color:var(--accent2);color:var(--accent2)}
+button.ghost.on{border-color:var(--accent);color:var(--accent);box-shadow:0 0 12px rgba(240,230,140,.25)}
+
+/* ── DEMO BAR ── */
+.demo-bar{display:grid;grid-template-columns:1fr 1fr 2fr auto;gap:10px;margin-bottom:14px}
+@media (max-width:820px){.demo-bar{grid-template-columns:1fr 1fr}.demo-bar .grow{grid-column:1/-1}}
+input,select{
+  background:rgba(0,240,255,.03);border:1px solid rgba(0,240,255,.2);color:var(--text);
+  border-radius:4px;padding:9px 12px;width:100%;
+}
+input:focus,select:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 14px rgba(0,240,255,.2)}
+select option{background:#0c0c14;color:var(--text)}
+.stats-line{color:var(--muted);font-size:11px;font-family:"JetBrains Mono",monospace}
+
+/* ── COMPANY GRID ── */
+.company-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.company{
+  border:1px solid rgba(0,240,255,.2);border-radius:6px;padding:16px;cursor:pointer;
+  background:linear-gradient(135deg,rgba(15,15,25,.9),rgba(10,10,20,.85));
+  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
+  transition:all .3s;position:relative;
+}
+.company::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent2),var(--accent3),var(--accent2));opacity:.7;
+}
+.company:hover{border-color:var(--accent2);box-shadow:0 0 26px rgba(0,240,255,.15);transform:translateY(-2px)}
+.company h3{font-family:"Orbitron",sans-serif;font-size:13px;letter-spacing:1px;margin-bottom:4px}
+.company .meta{font-size:12px;color:var(--muted);margin-bottom:8px}
+.chip-row{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0}
+.rate{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:11px;color:var(--muted)}
+.rate .bar{flex:1;height:6px;border-radius:3px;background:rgba(0,240,255,.08);overflow:hidden}
+.rate .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent3));box-shadow:0 0 6px rgba(0,240,255,.4)}
+.empty{
+  color:var(--muted);padding:26px;text-align:center;
+  font-family:"Orbitron",sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;
+}
+
+/* ── MODAL ── */
+.modal{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.8);z-index:50;backdrop-filter:blur(8px);padding:16px}
+.modal.show{display:grid}
+.modal-body{
+  width:min(560px,94vw);max-height:86vh;overflow:auto;
+  background:linear-gradient(135deg,#0c0c14,#08080f);border:1px solid rgba(0,240,255,.3);
+  border-radius:8px;padding:26px;
+  clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));
+  box-shadow:0 0 40px rgba(0,240,255,.2);
+}
+.modal h2{margin-bottom:14px}
+.field{margin:10px 0}
+.field label{display:block;color:var(--muted);margin-bottom:4px;font-family:"Orbitron",sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase}
+.field .val{font-size:13px;color:var(--text)}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:20px;right:20px;padding:12px 18px;
+  background:linear-gradient(90deg,rgba(0,240,255,.15),rgba(255,45,111,.15));
+  border:1px solid var(--accent2);border-radius:4px;display:none;max-width:320px;
+  font-family:"Orbitron",sans-serif;font-size:11px;letter-spacing:1px;z-index:60;
+}
+.toast.show{display:block}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid rgba(0,240,255,.15);padding:22px 0;margin-top:20px;
+  color:var(--muted);font-size:12px;display:flex;gap:14px;flex-wrap:wrap;align-items:center;
+}
+footer .mono{font-size:10px}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+</head>
 <body>
+
 <div class="topbar">
-  <div class="brand"><div class="brand-mark">TRN</div><div class="brand-text">The Real Network</div></div>
-  <div class="tabs">
-    <button data-view="feed" class="active">Home</button>
-    <button data-view="explore">Esplora</button>
-    <button data-view="profile">Profilo</button>
-    <button data-view="messages">Messaggi</button>
-    <button data-view="notifications">Notifiche</button>
-  </div>
-  <div class="right">
-    <div id="session"></div>
-  </div>
+  <div class="brand"><div class="brand-mark">TN</div><div class="brand-text">TextileHUB Network</div></div>
+  <nav class="tabs" aria-label="Sezioni pagina">
+    <a href="#visione" class="active">Visione</a>
+    <a href="#funzionalita">Funzionalità</a>
+    <a href="#demo">Demo</a>
+    <a href="index.html">Torna al sito</a>
+  </nav>
+  <div class="right"><span class="badge demo">Dataset dimostrativo</span></div>
 </div>
-<div class="layout">
-  <aside class="left"><div class="card profile" id="profileCard"></div></aside>
-  <main>
-    <div class="card" style="padding:10px 14px;margin-bottom:12px"><div class="ticker" id="ticker"></div></div>
-    <section class="card" id="viewFeed"><div class="feed-head"><h2>Feed</h2><button class="button small" id="newPostBtn">Nuovo post</button></div><div class="filter-bar" id="filterBar"></div><div class="compose" id="composer" style="display:none"><textarea id="postText" placeholder="Condividi qualcosa con la rete..."></textarea><div style="display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap"><input type="url" id="postImage" placeholder="URL immagine (facoltativo)" style="flex:1;min-width:180px;padding:8px;border-radius:99px;background:#08111d;border:1px solid var(--line);color:var(--text)"><button class="button small" id="publishPost">Pubblica</button><button class="ghost small" id="cancelPost">Annulla</button></div></div><div id="feedList"></div></section><section id="viewExplore" style="display:none" class="card"><h2>Esplora Persone</h2><input class="search" id="searchInput" placeholder="Cerca per nome o handle..." style="margin:10px 0"><div id="exploreList"></div></section><section id="viewProfile" style="display:none" class="card"><div id="profileView"></div></section><section id="viewMessages" style="display:none" class="card"><h2>Messaggi</h2><div class="layout" style="grid-template-columns:240px 1fr;padding:0;max-width:none"><div id="convList" class="card"></div><div id="convThread" class="card"></div></div></section><section id="viewNotifications" style="display:none" class="card"><h2>Notifiche</h2><div id="notifList"></div></section>
-  </main>
-  <aside class="rightcol"><div class="card" id="kpiCard"></div><div class="card" id="requestCard" style="margin-top:12px"></div><div class="card" id="timelineCard" style="margin-top:12px"></div><div class="card" id="trendingCard" style="margin-top:12px"></div></aside>
-</div>
+
+<div class="wrap"><div class="ticker" id="ticker"></div></div>
+
+<!-- ══ VISIONE ══ -->
+<section id="visione" class="wrap">
+  <p class="eyebrow">Sezione 3 · Modulo piattaforma</p>
+  <h1>TextileHUB Network</h1>
+  <p class="lead">Ricerca e gestione fornitori. Un database strutturato per trovare e confrontare aziende manifatturiere, inizialmente nel distretto pratese.</p>
+  <div class="hero-cta">
+    <a href="#demo"><button>Apri la demo ↓</button></a>
+    <a href="#funzionalita"><button class="ghost">Cosa fa</button></a>
+  </div>
+</section>
+
+<!-- ══ FUNZIONALITÀ ══ -->
+<section id="funzionalita" class="wrap">
+  <h2>Cosa fa</h2>
+  <div class="feature-grid">
+    <div class="card feature"><span class="num">01</span><h3>Filtri per lavorazione, specializzazione e località</h3><p>Selezione rapida tra le fasi della filiera — dalla ritorcitura al controllo finito — con raffinamento per specializzazione tecnica e comune.</p></div>
+    <div class="card feature"><span class="num">02</span><h3>Schede di aziende e contatti</h3><p>Scheda sintetica per ogni fornitore con dati di contatto, lavorazioni dichiarate e note operative.</p></div>
+    <div class="card feature"><span class="num">03</span><h3>Valutazione capacità, qualità e tempi</h3><p>Profilo comparabile su capacità produttiva, indice di qualità e tempo di risposta, per scegliere il terzista giusto al primo tentativo.</p></div>
+    <div class="card feature"><span class="num">04</span><h3>Richieste di preventivo e storico contatti</h3><p>Richiesta di preventivo in un click e tracciamento di ogni interazione con il fornitore nel tempo.</p></div>
+    <div class="card feature"><span class="num">05</span><h3>Esportazione dei prospect in Excel</h3><p>Estrazione della rosa di fornitori selezionati in CSV compatibile Excel per uffici acquisti e reportistica.</p></div>
+  </div>
+  <div class="card" style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:20px">
+    <div>
+      <h3 style="font-family:Orbitron,sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;color:var(--text)">Utenti</h3>
+      <p style="font-size:13px;color:var(--muted)">Uffici acquisti, disponenti, commerciali e piccole aziende: chi cerca terzisti e chi vuole farsi trovare, sullo stesso dato aggiornato.</p>
+    </div>
+    <div>
+      <h3 style="font-family:Orbitron,sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;color:var(--text)">Valore distintivo</h3>
+      <p style="font-size:13px;color:var(--muted)">La qualità e l'aggiornamento dei dati, non semplicemente un elenco di imprese.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DEMO ══ -->
+<section id="demo" class="wrap">
+  <h2>Demo funzionante</h2>
+  <p class="notice" style="margin-bottom:14px">
+    <strong>Dataset dimostrativo.</strong> Le aziende mostrate sono fittizie (nomi marcati Demo / Esempio, contatti fittizi) e servono solo a provare filtri, schede ed export. Nessun dato reale di azienda.
+  </p>
+
+  <div class="demo-bar">
+    <select id="fLav" aria-label="Filtra per lavorazione"><option value="all">Tutte le lavorazioni</option></select>
+    <select id="fLoc" aria-label="Filtra per località"><option value="all">Tutte le località</option></select>
+    <input id="fQ" class="grow" placeholder="Cerca per nome, specializzazione o parola chiave..." aria-label="Cerca">
+    <button id="exportBtn">↓ Export Excel</button>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+    <span class="stats-line" id="countLine"></span>
+    <button class="ghost small" id="prospectBtn">⭐ Prospect: 0</button>
+  </div>
+
+  <div class="company-grid" id="grid"></div>
+</section>
+
+<footer class="wrap">
+  <span>TextileHUB Network — ricerca e gestione fornitori, distretto pratese.</span>
+  <span class="mono" style="margin-left:auto">Sezione 3 · dataset dimostrativo</span>
+</footer>
+
 <div id="modal" class="modal"><div class="modal-body" id="modalBody"></div></div>
 <div id="toast" class="toast"></div>
+
 <script>
-const KEY='trn:data:v3', SESSION='trn:session:v3';
-function uid(prefix='x'){ return prefix+'_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,8); }
-function loadState(){ try{ return JSON.parse(localStorage.getItem(KEY)) || null; }catch(e){ return null; } }
-function saveState(s){ localStorage.setItem(KEY,JSON.stringify(s)); }
-function loadSession(){ return JSON.parse(localStorage.getItem(SESSION)||'null'); }
-function saveSession(s){ if(s) localStorage.setItem(SESSION,JSON.stringify(s)); else localStorage.removeItem(SESSION); }
-let S=loadState();
-if(!S){ S={users:[],posts:[],comments:[],messages:[],notifications:[]}; seedDemo(); saveState(S); }
-function seedDemo(){
-  const demo=[['indigouser','IndigoUser','Articoli, note e analisi su Prato e distretto tessile.'],['pratoinforma','Prato Informa','Agenda economica, imprese e lavoro del distretto.'],['tessilelab','Tessile Lab','Tecnica, filati, tintura e innovazione tessile.'],['supplychain','Supply Chain','Logistica, materiali e processi.']];
-  demo.forEach(([handle,name,bio],i)=>{
-    const u={id:'u'+(i+1),handle,name,bio,avatar:'',color:['#ff2d6f','#6ee7ff','#38d39f','#ffb347'][i%4],password:null,createdAt:Date.now()-86400000*(4-i),following:[],followers:[]};
-    S.users.push(u);
-  });
-  const posts=[
-   {t:"Prato riparte dalla supply chain: il distretto tessile taglia i tempi di delivery del 18% con una piattaforma condivisa.",c:'eco'},
-   {t:"Nuova linea per filati riciclati a Montemurlo: 1.200 tonnellate annuali in arrivo entro il 2026.",c:'amb'},
-   {t:"Il municipio estende gli incentivi per digitalizzare PMI tessili: voucher fino a 25.000 euro per ERP e tracciabilità.",c:'lav'},
-   {t:"Accordo tra consorzio lanifici e università: laboratorio 4.0 per testare nuovi blend lana-sintetico.",c:'tech'},
-   {t:"Prato export +7% nel primo trimestre. Crescono ordini e buyers europei su campioni sostenibili.",c:'eco'},
-   {t:"Mercato tessile rigenerato: costi della materia prima riciclata scendono sotto il 15% del virgin market.",c:'amb'},
-   {t:"Nuovo hub logistico a Calenzano: cross-docking per filati e tessuti con tempi di throughput ridotti a 48 ore.",c:'tech'},
-   {t:"Digitale in fabbrica: MES e sensori su telai hanno ridotto le fermate non pianificate del 32%.",c:'tech'},
-   {t:"Startup pratese lancia software per tracciabilità della filiera: da fibra a prodotto finito in blockchain privata.",c:'tech'},
-   {t:"Fotovoltaico industriale: 14 capannoni in solare, cash flow positivo dopo 3 anni.",c:'amb'},
-   {t:"Formazione tecnica: 200 giovani in apprendistato tessile quest'anno, con docenti in fabbrica.",c:'lav'},
-   {t:"Pronto moda pratese all'estero: ordini B2B da Germania e Nord Europa in crescita del 21%.",c:'eco'},
-   {t:"Tintoria riduce consumo acqua del 40% con impianti closed-loop a recupero in stabilimento.",c:'amb'},
-   {t:"Nova business: servizio di certificazione anagrafiche materiali per brand luxury e fast fashion.",c:'lav'},
-   {t:"Prato Fashion Week locale: 80 stand di tessuti innovativi, focus su riciclo e upcycling.",c:'eco'},
-   {t:"Costo energia: consorzio imprese contratta fornitura green a lungo termine scontato 12%.",c:'amb'},
-   {t:"Reti di impresa per export: 15 PMI con dividono agenti e packaging per abbattere i costi.",c:'eco'},
-   {t:"Politici locali annunciano piano 2026 per incubatore tessile e laboratorio test materiali.",c:'lav'},
-   {t:"Dati economici: occupazione manifatturiera Prato +3,1% su base annua, 1.700 nuovi posti.",c:'eco'},
-   {t:"Economia circolare e tessile: eccellenza pratese riconosciuta a Bruxelles per il progetto distretto verde.",c:'amb'}
-  ];
-  const authors=['u1'];
-  posts.forEach((p,i)=>{ addPostSeed(authors[i % authors.length], p.t, null, p.c); });
-  const reqs=[
-    {name:'Jersey Cotone Bio',comp:'100% Cotone',weight:180,width:150,meters:500,color:'Navy',fasi:['Ritorcitura','Tessitura','Controllo Finito']},
-    {name:'Satin Viscosa',comp:'80% Viscosa 20% Lino',weight:120,width:140,meters:300,color:'Bordeaux',fasi:['Orditura','Tessitura','Controllo Greggio','Rifinizione']},
-    {name:'Denim Rigenerato',comp:'98% Cotone 2% Elastan',weight:340,width:160,meters:800,color:'Indigo',fasi:['Ritorcitura','Orditura','Imbozzimatura','Tessitura','Controllo Finito']}
-  ];
-  reqs.forEach((r,i)=>{
-    S.requests=S.requests||[];
-    S.requests.push({id:uid('r'),authorId:'u1',...r,createdAt:Date.now()-86400000*(3-i),stato:'aperta'});
-  });
-}
-const KPI_DATA=[
-  {label:'Export',val:'+7,1%',spark:[3,5,4,6,7,6,8,7,9,8,10,11],cls:'up'},
-  {label:'Occupazione',val:'+3,1%',spark:[2,3,3,4,4,5,5,6,6,7,7,8],cls:'up'},
-  {label:'Energia green',val:'-12%',spark:[8,7,7,6,6,5,5,4,4,3,3,2],cls:'down'},
-  {label:'Acqua rid.',val:'-40%',spark:[9,8,8,7,6,6,5,5,4,4,3,3],cls:'down'},
-  {label:'Riciclato',val:'1,2kt',spark:[1,2,2,3,3,4,4,5,5,6,6,7],cls:'up'},
-  {label:'MES fermate',val:'-32%',spark:[7,6,6,5,5,4,4,3,3,2,2,1],cls:'down'}
+"use strict";
+/* ── Dataset dimostrativo: aziende FITTIZIE, contatti fittizi ── */
+const AZIENDE=[
+  {id:'a01',nome:'Lanificio Demo Alfa',lav:'Tessitura',spec:'Pettinato lana, filati ritorti',loc:'Prato',cap:'18.000 m/giorno',qual:82,tempo:3,tel:'+39 055 000 0101',mail:'info@demo-alfa.example',note:'Telaio aria e projectile, campionario interno.'},
+  {id:'a02',nome:'Tintoria Esempio Beta',lav:'Tintura',spec:'Filato in matasse, tone su tone',loc:'Montemurlo',cap:'2.400 kg/giorno',qual:88,tempo:5,tel:'+39 055 000 0102',mail:'info@esempio-beta.example',note:'Impianti closed-loop, ricetta su campione.'},
+  {id:'a03',nome:'Tessitura Campione Gamma',lav:'Tessitura',spec:'Rigenerato, denim e saia',loc:'Vaiano',cap:'9.500 m/giorno',qual:76,tempo:4,tel:'+39 055 000 0103',mail:'info@campione-gamma.example',note:'Specializzata fibre riciclate, ordini da 500 m.'},
+  {id:'a04',nome:'Stamperia Prova Delta',lav:'Stampa',spec:'Digitale e rotativa, carta e transfer',loc:'Calenzano',cap:'6.000 m/giorno',qual:79,tempo:6,tel:'+39 055 000 0104',mail:'info@prova-delta.example',note:'Campionario digitale senza minimo di tiratura.'},
+  {id:'a05',nome:'Nobilitazione Test Epsilon',lav:'Finissaggio',spec:'Sanfor, spalmatura e calandra',loc:'Prato',cap:'12.000 m/giorno',qual:85,tempo:4,tel:'+39 055 000 0105',mail:'info@test-epsilon.example',note:'Reparto ricerca handfeel su richiesta.'},
+  {id:'a06',nome:'Maglieria Demo Zeta',lav:'Confezione',spec:'Maglia su misura, taglia piccola',loc:'Campi Bisenzio',cap:'1.800 capi/giorno',qual:81,tempo:7,tel:'+39 055 000 0106',mail:'info@demo-zeta.example',note:'Prototipia rapida in 10 giorni.'},
+  {id:'a07',nome:'Ricamo Esempio Eta',lav:'Ricamo',spec:'Macchine multi-testa, cad/loghi',loc:'Prato',cap:'3.200 pezzi/giorno',qual:90,tempo:5,tel:'+39 055 000 0107',mail:'info@esempio-eta.example',note:'Digitalizzazione disegni inclusa.'},
+  {id:'a08',nome:'Finissaggio Campione Theta',lav:'Finissaggio',spec:'Rammendo, carta e controllo finale',loc:'Seano',cap:'10.000 m/giorno',qual:83,tempo:2,tel:'+39 055 000 0108',mail:'info@campione-theta.example',note:'Tempi di risposta più bassi del panel.'},
+  {id:'a09',nome:'Feltri Demo Iota',lav:'Finissaggio',spec:'Feltri tecnici e calpestio',loc:'Vaiano',cap:'1.500 m/giorno',qual:74,tempo:6,tel:'+39 055 000 0109',mail:'info@demo-iota.example',note:'Settore calzaturiero e arredo.'},
+  {id:'a10',nome:'Rigenerazione Esempio Kappa',lav:'Ritorcitura',spec:'Filato da post-consumo, titoli Ne',loc:'Prato',cap:'1.100 kg/giorno',qual:87,tempo:5,tel:'+39 055 000 0110',mail:'info@esempio-kappa.example',note:'Tracciabilità lotto garantita.'},
+  {id:'a11',nome:'Orditura Demo Lambda',lav:'Orditura',spec:'Catena lunga, ordito su trave',loc:'Montemurlo',cap:'24 travi/giorno',qual:80,tempo:3,tel:'+39 055 000 0111',mail:'info@demo-lambda.example',note:'Preparazione catena per telai esterni.'},
+  {id:'a12',nome:'Controllo Qualità Campione My',lav:'Controllo Qualità',spec:'Ispezione in tavolo, difettologia',loc:'Prato',cap:'15.000 m/giorno',qual:92,tempo:2,tel:'+39 055 000 0112',mail:'info@campione-my.example',note:'Report difetti per lotto e metro.'}
 ];
 const TICKER=[
-  {s:'EUR/USD',v:'1,0842',c:'up'},{s:'Cotone',v:'1,42 €/kg',c:'up'},{s:'Lana',v:'3,85 €/kg',c:'down'},
-  {s:'Poliestere',v:'1,12 €/kg',c:'up'},{s:'Setticlo',v:'2,30 €/kg',c:'down'},{s:'Lino',v:'4,10 €/kg',c:'up'},
-  {s:'Export Prato',v:'+7,1%',c:'up'},{s:'Occupazione',v:'+3,1%',c:'up'},{s:'Riciclato',v:'-15% costi',c:'up'}
+  {s:'Tessitura',v:'cap. media +8%',c:'up'},{s:'Tintura',v:'lead time 5g',c:'down'},
+  {s:'Rigenerato',v:'quota ordini +14%',c:'up'},{s:'Qualità',v:'indice 82/100',c:'up'},
+  {s:'Preventivi',v:'risposta 3-7g',c:'down'},{s:'Distretto',v:'12 profili demo',c:'up'}
 ];
-function addPostSeed(authorId,text,image,cat){ const p={id:uid('p'),authorId,text,image:image||null,cat:cat||'eco',createdAt:Date.now()-Math.random()*86400000,likes:[],commentIds:[]}; S.posts.push(p); return p.id; }
-function addCommentSeed(authorId,postId,text){ const c={id:uid('c'),postId,authorId,text,createdAt:Date.now()-Math.random()*86400000}; S.comments.push(c); const p=S.posts.find(x=>x.id===postId); if(p) p.commentIds.push(c.id); return c.id; }
-function currentUser(){ const sess=loadSession(); return sess ? S.users.find(u=>u.id===sess.userId) : null; }
-function view(viewName){ document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.view===viewName)); ['Feed','Explore','Profile','Messages','Notifications'].forEach(v=>{const el=document.getElementById('view'+v); if(el) el.style.display=(v.toLowerCase()===viewName)?'block':'none';}); renderAll(); }
-function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2400); }
-function onReaderLoad(){ }
-function fmtDate(ts){ const d=new Date(ts); return d.toLocaleDateString('it-IT', {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}); }
-function escapeHtml(s){ return String(s||'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function initials(u){ return (u.name||u.handle).split(/\s/).map(x=>x?.[0]||'').join('').slice(0,2).toUpperCase(); }
-function avatarHtml(u,size=38){ if(u.avatar){ return `<div class="avatar" style="width:${size}px;height:${size}px"><img src="${escapeHtml(u.avatar)}" alt="${escapeHtml(u.name)}" onerror="this.style.display='none'"></div>`; } return `<div class="avatar" style="width:${size}px;height:${size}px;background:${escapeHtml(u.color)}">${escapeHtml(initials(u))}</div>`; }
-function renderSession(){   const c=document.getElementById('session'); const u=currentUser(); if(u){ c.innerHTML=`<div class="user-chip">${avatarHtml(u,28)}<span>@${escapeHtml(u.handle)}</span><button class="ghost small" id="logoutBtn">Esci</button></div>`; document.getElementById('logoutBtn').onclick=logout; } else { c.innerHTML=`<button class="button small" id="createUserBtn">Crea nome utente</button>`; document.getElementById('createUserBtn').onclick=()=>showAuth('register'); } }
-function showAuth(mode){
-  const body=document.getElementById('modalBody');
-  body.innerHTML=`<h2>Crea nome utente</h2>
-  <div class="field"><label>Handle</label><input id="authHandle" placeholder="es. prato-user"></div>
-  <div class="field"><label>Nome (opzionale)</label><input id="authName" placeholder="Nome Cognome"></div>
-  <div class="field"><label>Bio (opzionale)</label><textarea id="authBio"></textarea></div>
-  <div class="field"><label>Avatar URL (opzionale)</label><input id="authAvatar" type="url"></div>
-  <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px"><button class="ghost small" id="authCancel">Annulla</button><button class="button small" id="authSubmit">Crea</button></div>
-  <p class="notice" style="margin-top:12px;font-size:11px">Il profilo è locale del browser. Nessuna password o server.</p>`;
+
+/* ── Stato ── */
+const prospect=new Set();
+const storico=[];
+
+/* ── Utility ── */
+function escapeHtml(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
+function closeModal(){document.getElementById('modal').classList.remove('show');}
+
+/* ── Ticker ── */
+document.getElementById('ticker').innerHTML=TICKER.map(t=>`<span>${escapeHtml(t.s)} <b class="${t.c}">${escapeHtml(t.v)}</b></span>`).join('');
+
+/* ── Filtri ── */
+function fillSelect(el,values){
+  const cur=el.value;
+  el.innerHTML=el.options[0].outerHTML+values.map(v=>`<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('');
+  el.value=cur;
+}
+fillSelect(document.getElementById('fLav'),[...new Set(AZIENDE.map(a=>a.lav))].sort());
+fillSelect(document.getElementById('fLoc'),[...new Set(AZIENDE.map(a=>a.loc))].sort());
+
+function filtered(){
+  const lav=document.getElementById('fLav').value;
+  const loc=document.getElementById('fLoc').value;
+  const q=(document.getElementById('fQ').value||'').trim().toLowerCase();
+  return AZIENDE.filter(a=>
+    (lav==='all'||a.lav===lav)&&
+    (loc==='all'||a.loc===loc)&&
+    (!q||(a.nome+' '+a.spec+' '+a.lav+' '+a.loc).toLowerCase().includes(q))
+  );
+}
+
+function rateHtml(label,val,max){
+  const pct=Math.max(0,Math.min(100,Math.round(val/max*100)));
+  return `<div class="rate"><span style="width:92px">${escapeHtml(label)}</span><span class="bar"><i style="width:${pct}%"></i></span><span class="mono">${escapeHtml(String(val))}</span></div>`;
+}
+
+function renderGrid(){
+  const list=filtered();
+  const grid=document.getElementById('grid');
+  document.getElementById('countLine').textContent=`${list.length} aziende su ${AZIENDE.length} · storico contatti: ${storico.length}`;
+  if(!list.length){grid.innerHTML='<div class="empty">Nessuna azienda con questi filtri.</div>';return;}
+  grid.innerHTML=list.map(a=>`
+    <article class="company" data-id="${a.id}" tabindex="0" role="button" aria-label="Scheda ${escapeHtml(a.nome)}">
+      <h3>${escapeHtml(a.nome)}</h3>
+      <div class="meta">${escapeHtml(a.lav)} · ${escapeHtml(a.loc)}</div>
+      <div class="chip-row"><span class="badge">${escapeHtml(a.lav)}</span><span class="badge">${escapeHtml(a.loc)}</span></div>
+      <div class="meta">${escapeHtml(a.spec)}</div>
+      ${rateHtml('Qualità',a.qual,100)}
+      ${rateHtml('Tempo risposta (g)',14-a.tempo,14)}
+    </article>`).join('');
+  grid.querySelectorAll('.company').forEach(el=>{
+    const open=()=>openCard(el.dataset.id);
+    el.addEventListener('click',open);
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});
+  });
+}
+
+/* ── Scheda azienda ── */
+function openCard(id){
+  const a=AZIENDE.find(x=>x.id===id);if(!a)return;
+  const isP=prospect.has(a.id);
+  document.getElementById('modalBody').innerHTML=`
+    <h2>${escapeHtml(a.nome)}</h2>
+    <div class="chip-row" style="margin-top:0"><span class="badge">${escapeHtml(a.lav)}</span><span class="badge">${escapeHtml(a.loc)}</span><span class="badge demo">dati fittizi</span></div>
+    <div class="field"><label>Specializzazione</label><div class="val">${escapeHtml(a.spec)}</div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="field"><label>Capacità produttiva</label><div class="val">${escapeHtml(a.cap)}</div></div>
+      <div class="field"><label>Tempo di risposta</label><div class="val">${escapeHtml(String(a.tempo))} giorni</div></div>
+    </div>
+    <div class="field"><label>Contatti</label><div class="val">${escapeHtml(a.tel)}<br>${escapeHtml(a.mail)}</div></div>
+    <div class="field"><label>Note</label><div class="val">${escapeHtml(a.note)}</div></div>
+    ${rateHtml('Qualità',a.qual,100)}
+    ${rateHtml('Tempo risposta (g)',14-a.tempo,14)}
+    <div class="modal-actions">
+      <button class="ghost" id="mClose">Chiudi</button>
+      <button class="ghost ${isP?'on':''}" id="mProspect">${isP?'✓ Tra i prospect':'⭐ Aggiungi ai prospect'}</button>
+      <button id="mQuote">Richiedi preventivo</button>
+    </div>`;
   document.getElementById('modal').classList.add('show');
-  document.getElementById('authCancel').onclick=closeModal;
-  document.getElementById('authSubmit').onclick=()=>submitAuth(mode);
+  document.getElementById('mClose').onclick=closeModal;
+  document.getElementById('mProspect').onclick=()=>{toggleProspect(a.id);closeModal();};
+  document.getElementById('mQuote').onclick=()=>{
+    storico.push({azienda:a.nome,when:new Date().toISOString()});
+    toast('Richiesta di preventivo inviata a '+a.nome+' (demo).');
+    closeModal();renderGrid();
+  };
 }
-function closeModal(){ document.getElementById('modal').classList.remove('show'); }
-function submitAuth(mode){
-  const handle=(document.getElementById('authHandle').value||'').trim().toLowerCase().replace(/^@/,'');
-  if(!/^[a-z0-9_.-]{3,24}$/.test(handle)) return toast('Handle non valido (3-24 caratteri, alfanumerico/_ . -).');
-  const existing=S.users.find(x=>x.handle===handle);
-  const name=(document.getElementById('authName').value||'').trim() || handle;
-  const bio=(document.getElementById('authBio').value||'').trim();
-  const avatar=(document.getElementById('authAvatar').value||'').trim();
-  let u=existing;
-  if(!u){ const colors=['#ff2d6f','#6ee7ff','#38d39f','#ffb347','#a78bfa','#f472b6']; u={id:uid('u'),handle,name,bio,avatar,color:colors[Math.floor(Math.random()*colors.length)],password:null,createdAt:Date.now(),following:[],followers:[]}; S.users.push(u); }
-  else { u.name=name; u.bio=bio; if(avatar) u.avatar=avatar; }
-  saveState(S); saveSession({userId:u.id});
-  pNotification(u.id,'welcome','u1',null,'Benvenuto su The Real Network. Esplora i 20 articoli su economia e tessile di Prato e crea il tuo profilo.');
-  toast('Profilo pronto, @'+u.handle); closeModal(); renderAll();
+
+function toggleProspect(id){
+  if(prospect.has(id)){prospect.delete(id);}
+  else{prospect.add(id);}
+  document.getElementById('prospectBtn').textContent=`⭐ Prospect: ${prospect.size}`;
+  renderGrid();
 }
-function logout(){ saveSession(null); view('feed'); toast('Logout effettuato.'); }
-function pNotification(userId,type,actorId,refId,text){ const n={id:uid('n'),userId,type,actorId,refId,text,read:false,createdAt:Date.now()}; S.notifications.push(n); saveState(S); }
-function unreadCount(u){ if(!u) return 0; return S.notifications.filter(n=>n.userId===u.id && !n.read).length; }
-function addPost(){
-  const u=currentUser(); if(!u) return showAuth('login');
-  const text=(document.getElementById('postText').value||'').trim();
-  const image=(document.getElementById('postImage').value||'').trim();
-  if(!text && !image) return toast('Scrivi qualcosa o aggiungi un\'immagine.');
-  const p={id:uid('p'),authorId:u.id,text,image:image||null,createdAt:Date.now(),likes:[],commentIds:[]}; S.posts.unshift(p); saveState(S);
-  document.getElementById('postText').value=''; document.getElementById('postImage').value='';
-  document.getElementById('composer').style.display='none';
-  toast('Post pubblicato.'); renderAll();
+
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+document.getElementById('prospectBtn').onclick=()=>toast(prospect.size?prospect.size+' prospect pronti per l\'export Excel.':'Seleziona aziende dalle schede per l\'export.');
+document.getElementById('exportBtn').onclick=exportCsv;
+
+/* ── Export CSV (compatibile Excel: BOM UTF-8, separatore ;) ── */
+function csvCell(v){
+  const s=String(v==null?'':v);
+  return '"'+s.replace(/"/g,'""')+'"';
 }
-function toggleLike(postId){
-  const u=currentUser(); if(!u) return showAuth('login');
-  const p=S.posts.find(x=>x.id===postId); if(!p) return;
-  if(p.likes.includes(u.id)){ p.likes=p.likes.filter(x=>x!==u.id); }
-  else { p.likes.push(u.id); if(p.authorId!==u.id) pNotification(p.authorId,'like',u.id,postId,`${u.name} ha messo like al tuo post.`); }
-  saveState(S); renderAll();
+function buildCsv(){
+  const head=['Azienda','Lavorazione','Specializzazione','Località','Capacità produttiva','Indice qualità (0-100)','Tempo risposta (giorni)','Telefono','Email','Note','Prospect'];
+  const rows=AZIENDE.filter(a=>prospect.has(a.id)).map(a=>[a.nome,a.lav,a.spec,a.loc,a.cap,a.qual,a.tempo,a.tel,a.mail,a.note,'si']);
+  return '\uFEFF'+[head].concat(rows).map(r=>r.map(csvCell).join(';')).join('\r\n');
 }
-function addComment(postId){
-  const u=currentUser(); if(!u) return showAuth('login');
-  const area=document.getElementById('commentInput-'+postId); const text=(area?.value||'').trim(); if(!text) return;
-  const c={id:uid('c'),postId,authorId:u.id,text,createdAt:Date.now()}; S.comments.push(c); const p=S.posts.find(x=>x.id===postId); if(p) p.commentIds.push(c.id);
-  if(p && p.authorId!==u.id) pNotification(p.authorId,'comment',u.id,postId,`${u.name} ha commentato il tuo post.`);
-  saveState(S); renderAll();
+function exportCsv(){
+  if(!prospect.size){toast('Nessun prospect selezionato: Aprilo scheda e premi ⭐.');return;}
+  const blob=new Blob([buildCsv()],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement('a');
+  link.href=url;link.download='terzistihub-prospect.csv';
+  document.body.appendChild(link);link.click();link.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  toast('Export generato: '+prospect.size+' prospect.');
 }
-function toggleFollow(userId){
-  const u=currentUser(); if(!u) return showAuth('login'); if(userId===u.id) return;
-  if(!u.following.includes(userId)){ u.following.push(userId); const target=S.users.find(x=>x.id===userId); if(target && !target.followers.includes(u.id)) target.followers.push(u.id); pNotification(userId,'follow',u.id,null,`${u.name} ha iniziato a seguirti.`); toast('Ora segui @'+target.handle); }
-  else { u.following=u.following.filter(x=>x!==userId); const target=S.users.find(x=>x.id===userId); if(target) target.followers=target.followers.filter(x=>x!==u.id); toast('Hai smesso di seguire.'); }
-  saveState(S); renderAll();
-}
-function timeAgo(ts){ const s=Math.floor((Date.now()-ts)/1000); if(s<60)return 'ora'; if(s<3600)return Math.floor(s/60)+' min'; if(s<86400)return Math.floor(s/3600)+' h'; return Math.floor(s/86400)+' g'; }
-let selectedProfileId=null;
-let selectedConversation=null;
-const FASES=['Ritorcitura','Orditura','Imbozzimatura','Tessitura','Controllo Greggio','Rifinizione','Controllo Finito'];
-function renderAll(){ renderSession(); renderProfileCard(); renderFilterBar(); renderFeed(); renderExplore(); renderProfileView(); renderMessages(); renderNotifications(); renderTrending(); renderKPI(); renderTicker(); renderRequestCard(); renderTimeline(); }
-function renderTimeline(){
-  const el=document.getElementById('timelineCard'); if(!el) return;
-  const fasi=[
-    {n:'01',t:'Ritorcitura',d:'Preparazione filati'},
-    {n:'02',t:'Orditura',d:'Montatura catena'},
-    {n:'03',t:'Imbozzimatura',d:'Avvio telaio'},
-    {n:'04',t:'Tessitura',d:'Produzione tessuto'},
-    {n:'05',t:'Controllo Greggio',d:'Ispezione qualita'},
-    {n:'06',t:'Rifinizione',d:'Finitura e stiratura'},
-    {n:'07',t:'Controllo Finito',d:'Certificazione finale'}
-  ];
-  el.innerHTML='<h3 style="margin-bottom:12px;font-family:Orbitron,sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--accent2)">Timeline Filiera</h3>'+
-    '<div style="position:relative;padding-left:24px">'+
-    '<div style="position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent2),var(--accent3))"></div>'+
-    fasi.map((f,i)=>`<div style="position:relative;margin-bottom:14px"><div style="position:absolute;left:-20px;top:4px;width:10px;height:10px;border-radius:50%;background:${i<4?'var(--accent2)':'var(--accent3)'};box-shadow:0 0 8px ${i<4?'var(--accent2)':'var(--accent3)'}"></div><div style="font-family:Orbitron,sans-serif;font-size:10px;color:var(--muted);letter-spacing:1px">${f.n}</div><div style="font-weight:600;font-size:13px">${f.t}</div><div style="font-size:11px;color:var(--muted)">${f.d}</div></div>`).join('')+'</div>';
-}
-function renderRequestCard(){
-  const el=document.getElementById('requestCard'); if(!el) return;
-  const u=currentUser();
-  if(!u){ el.innerHTML='<h3>Richiesta Cliente</h3><p class="empty">Accedi per creare una richiesta.</p>'; return; }
-  el.innerHTML=`<h3 style="margin-bottom:10px">Richiesta Cliente</h3>
-    <p class="stats-line" style="margin-bottom:10px">Crea una richiesta di lavorazione tessile con dati tecnici e fasi richieste.</p>
-    <button class="button small" id="newRequestBtn" style="width:100%">+ Nuova Richiesta</button>`;
-  document.getElementById('newRequestBtn').onclick=()=>showRequestModal();
-}
-function showRequestModal(){
-  const u=currentUser(); if(!u) return showAuth('register');
-  const body=document.getElementById('modalBody');
-  body.innerHTML=`<h2>Nuova Richiesta Cliente</h2>
-    <div class="field"><label>Nome tessuto</label><input id="reqName" placeholder="es. Jersey Cotone Bio"></div>
-    <div class="field"><label>Composizione</label><input id="reqComp" placeholder="es. 100% Cotone"></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      <div class="field"><label>Peso (g/mq)</label><input id="reqWeight" type="number" placeholder="180"></div>
-      <div class="field"><label>Larghezza (cm)</label><input id="reqWidth" type="number" placeholder="150"></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      <div class="field"><label>Metraggio (m)</label><input id="reqMeters" type="number" placeholder="500"></div>
-      <div class="field"><label>Colore</label><input id="reqColor" placeholder="es. Navy"></div>
-    </div>
-    <div class="field"><label>Fasi di lavorazione richieste</label>
-      <div id="faseList" style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:6px"></div>
-    </div>
-    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px"><button class="ghost small" onclick="closeModal()">Annulla</button><button class="button small" id="submitRequest">Crea Richiesta</button></div>`;
-  const faseList=document.getElementById('faseList');
-  faseList.innerHTML=FASES.map(f=>`<label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><input type="checkbox" value="${f}" checked style="accent-color:var(--accent)"> ${f}</label>`).join('');
-  document.getElementById('modal').classList.add('show');
-  document.getElementById('submitRequest').onclick=submitRequest;
-}
-function submitRequest(){
-  const u=currentUser(); if(!u) return;
-  const name=document.getElementById('reqName').value.trim();
-  if(!name) return toast('Inserisci nome tessuto.');
-  const comp=document.getElementById('reqComp').value.trim()||'Da definire';
-  const weight=parseInt(document.getElementById('reqWeight').value)||0;
-  const width=parseInt(document.getElementById('reqWidth').value)||0;
-  const meters=parseInt(document.getElementById('reqMeters').value)||0;
-  const color=document.getElementById('reqColor').value.trim()||'Da definire';
-  const fasi=[...document.querySelectorAll('#faseList input:checked')].map(x=>x.value);
-  if(!fasi.length) return toast('Seleziona almeno una fase.');
-  const r={id:uid('r'),authorId:u.id,name,comp,weight,width,meters,color,fasi,createdAt:Date.now(),stato:'aperta'};
-  if(!S.requests) S.requests=[];
-  S.requests.unshift(r); saveState(S);
-  closeModal(); toast('Richiesta creata.'); renderAll();
-}
-function prenotaRequest(reqId){
-  const u=currentUser(); if(!u) return showAuth('register');
-  const r=S.requests.find(x=>x.id===reqId); if(!r) return;
-  if(r.stato!=='aperta') return toast('Richiesta gia assegnata.');
-  r.stato='in lavorazione';
-  if(!r.prenotazioni) r.prenotazioni=[];
-  r.prenotazioni.push({userId:u.id,createdAt:Date.now()});
-  pNotification(r.authorId,'prenotazione',u.id,null,`${u.name} ha prenotato la richiesta "${r.name}".`);
-  saveState(S); toast('Richiesta prenotata.'); renderAll();
-}
-let soddisfazioneReqId=null;
-let soddisfazioneStep=1;
-function showSoddisfazione(reqId){
-  const u=currentUser(); if(!u) return showAuth('register');
-  const r=S.requests.find(x=>x.id===reqId); if(!r) return;
-  if(r.stato!=='aperta') return toast('Richiesta non piu disponibile.');
-  soddisfazioneReqId=reqId; soddisfazioneStep=1;
-  renderSoddisfazioneModal();
-}
-function renderSoddisfazioneModal(){
-  const r=S.requests.find(x=>x.id===soddisfazioneReqId); if(!r) return closeModal();
-  const body=document.getElementById('modalBody');
-  if(soddisfazioneStep===1){
-    body.innerHTML=`<h2>Soddisfa Richiesta — Step 1/3</h2>
-      <p style="margin-bottom:12px;color:var(--muted);font-size:12px">Dati tessuto per <strong>${escapeHtml(r.name)}</strong></p>
-      <div class="field"><label>Composizione</label><input id="sodComp" value="${escapeHtml(r.comp)}"></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div class="field"><label>Peso (g/mq)</label><input id="sodWeight" type="number" value="${r.weight}"></div>
-        <div class="field"><label>Larghezza (cm)</label><input id="sodWidth" type="number" value="${r.width}"></div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div class="field"><label>Metraggio (m)</label><input id="sodMeters" type="number" value="${r.meters}"></div>
-        <div class="field"><label>Colore</label><input id="sodColor" value="${escapeHtml(r.color)}"></div>
-      </div>
-      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px"><button class="ghost small" onclick="closeModal()">Annulla</button><button class="button small" onclick="soddisfazioneStep=2;renderSoddisfazioneModal()">Avanti</button></div>`;
-  }
-  else if(soddisfazioneStep===2){
-    body.innerHTML=`<h2>Soddisfa Richiesta — Step 2/3</h2>
-      <p style="margin-bottom:12px;color:var(--muted);font-size:12px">Fasi di lavorazione necessarie</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
-        ${FASES.map(f=>`<label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><input type="checkbox" class="sodFase" value="${f}" ${r.fasi.includes(f)?'checked':''} style="accent-color:var(--accent2)"> ${f}</label>`).join('')}
-      </div>
-      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px"><button class="ghost small" onclick="soddisfazioneStep=1;renderSoddisfazioneModal()">Indietro</button><button class="button small" onclick="soddisfazioneStep=3;renderSoddisfazioneModal()">Avanti</button></div>`;
-  }
-  else if(soddisfazioneStep===3){
-    body.innerHTML=`<h2>Soddisfa Richiesta — Step 3/3</h2>
-      <p style="margin-bottom:12px;color:var(--muted);font-size:12px">Dati di consegna e note</p>
-      <div class="field"><label>Indirizzo consegna</label><input id="sodIndirizzo" placeholder="Via, Citta, CAP"></div>
-      <div class="field"><label>Note per la lavorazione</label><textarea id="sodNote" placeholder="Istruzioni speciali, scadenze, ecc."></textarea></div>
-      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px"><button class="ghost small" onclick="soddisfazioneStep=2;renderSoddisfazioneModal()">Indietro</button><button class="button small" id="submitSoddisfazione">Conferma Soddisfazione</button></div>`;
-    document.getElementById('submitSoddisfazione').onclick=submitSoddisfazione;
-  }
-  document.getElementById('modal').classList.add('show');
-}
-function submitSoddisfazione(){
-  const u=currentUser(); if(!u) return;
-  const r=S.requests.find(x=>x.id===soddisfazioneReqId); if(!r) return;
-  const comp=document.getElementById('sodComp').value.trim()||r.comp;
-  const weight=parseInt(document.getElementById('sodWeight').value)||r.weight;
-  const width=parseInt(document.getElementById('sodWidth').value)||r.width;
-  const meters=parseInt(document.getElementById('sodMeters').value)||r.meters;
-  const color=document.getElementById('sodColor').value.trim()||r.color;
-  const fasi=[...document.querySelectorAll('.sodFase:checked')].map(x=>x.value);
-  const indirizzo=document.getElementById('sodIndirizzo').value.trim();
-  const note=document.getElementById('sodNote').value.trim();
-  if(!fasi.length) return toast('Seleziona almeno una fase.');
-  if(!indirizzo) return toast('Inserisci indirizzo consegna.');
-  r.stato='in lavorazione';
-  r.soddisfazione={userId:u.id,comp,weight,width,meters,color,fasi,indirizzo,note,createdAt:Date.now()};
-  if(!r.prenotazioni) r.prenotazioni=[];
-  if(!r.prenotazioni.some(p=>p.userId===u.id)) r.prenotazioni.push({userId:u.id,createdAt:Date.now()});
-  pNotification(r.authorId,'soddisfazione',u.id,null,`${u.name} ha soddisfatto la richiesta "${r.name}".`);
-  saveState(S); closeModal(); toast('Soddisfazione registrata.'); renderAll();
-}
-function completaRequest(reqId){
-  const u=currentUser(); if(!u) return showAuth('register');
-  const r=S.requests.find(x=>x.id===reqId); if(!r) return;
-  if(r.stato!=='in lavorazione') return toast('Richiesta non in lavorazione.');
-  if(!r.prenotazioni?.some(p=>p.userId===u.id)) return toast('Solo il prenotatore puo completare.');
-  r.stato='completata';
-  pNotification(r.authorId,'completata',u.id,null,`${u.name} ha completato la richiesta "${r.name}".`);
-  saveState(S); toast('Richiesta completata.'); renderAll();
-}
-function prenotazioniHtml(r){
-  if(!r.prenotazioni||!r.prenotazioni.length) return '';
-  let html='<div style="margin-top:8px;padding:8px;background:rgba(0,240,255,.03);border-radius:4px;border:1px solid rgba(0,240,255,.1)"><div style="font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Prenotazioni</div>'+
-    r.prenotazioni.map(p=>{const pu=S.users.find(x=>x.id===p.userId);return `<div style="font-size:11px;color:var(--text)">@${escapeHtml(pu?.handle||'?')} <span style="color:var(--muted)">${timeAgo(p.createdAt)}</span></div>`;}).join('');
-  if(r.soddisfazione){
-    const su=S.users.find(x=>x.id===r.soddisfazione.userId);
-    html+='<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,240,255,.1)"><div style="font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--accent2);margin-bottom:4px">Soddisfazione</div>'+
-      `<div style="font-size:11px;color:var(--text)">@${escapeHtml(su?.handle||'?')} — ${escapeHtml(r.soddisfazione.indirizzo)}</div>`+
-      (r.soddisfazione.note?`<div style="font-size:11px;color:var(--muted);margin-top:4px">${escapeHtml(r.soddisfazione.note)}</div>`:'')+
-      `<div style="font-size:10px;color:var(--muted);margin-top:4px">Fasi: ${r.soddisfazione.fasi.join(', ')}</div></div>`;
-  }
-  return html+'</div>';
-}
-let currentFilter='all';
-function renderFilterBar(){
-  const el=document.getElementById('filterBar'); if(!el) return;
-  const filters=[{k:'all',l:'Tutti'},{k:'eco',l:'Economia'},{k:'tech',l:'Tecnologia'},{k:'amb',l:'Ambiente'},{k:'lav',l:'Lavoro'},{k:'richieste',l:'Richieste'}];
-  el.innerHTML=filters.map(f=>`<button class="${currentFilter===f.k?'active':''}" data-filter="${f.k}">${f.l}</button>`).join('');
-  el.querySelectorAll('button').forEach(b=>b.onclick=()=>{currentFilter=b.dataset.filter;renderFilterBar();renderFeed();});
-}
-function renderFeed(){
-  const list=document.getElementById('feedList'); const composer=document.getElementById('composer');
-  const newBtn=document.getElementById('newPostBtn');
-  if(currentUser()){ newBtn.style.display=''; composer.style.display=composer.style.display; newBtn.onclick=()=>{ composer.style.display=composer.style.display==='none'?'block':'none'; }; }
-  else { newBtn.style.display='none'; composer.style.display='none'; }
-  document.getElementById('publishPost').onclick=addPost; document.getElementById('cancelPost').onclick=()=>{ composer.style.display='none'; };
-  const u=currentUser(); let posts=[];
-  if(u && u.following.length){ const ids=[u.id,...u.following]; posts=S.posts.filter(p=>ids.includes(p.authorId)); } else { posts=[...S.posts]; }
-  if(!posts.length) posts=[...S.posts].slice(0,20);
-  if(currentFilter!=='all'&&currentFilter!=='richieste') posts=posts.filter(p=>p.cat===currentFilter);
-  posts.sort((a,b)=>b.createdAt-a.createdAt);
-  const reqs=S.requests||[];
-  let reqsHtml='';
-  if(currentFilter==='all'||currentFilter==='richieste'){
-    reqsHtml=reqs.length?reqs.slice(0,5).map(r=>{
-      const a=S.users.find(x=>x.id===r.authorId)||{name:'?',handle:'?',color:'#666'};
-      const statoColor=r.stato==='aperta'?'var(--good)':r.stato==='in lavorazione'?'var(--accent2)':'var(--accent3)';
-      const prenotaBtn=u&&u.id!==r.authorId&&r.stato==='aperta'?`<button class="button small" onclick="prenotaRequest('${r.id}')">Prenota</button>`:'';
-      const completaBtn=u&&r.stato==='in lavorazione'&&r.prenotazioni?.some(p=>p.userId===u.id)?`<button class="button small" onclick="completaRequest('${r.id}')">Completa</button>`:'';
-      const soddisfaBtn=u&&u.id!==r.authorId&&r.stato==='aperta'?`<button class="button small" onclick="showSoddisfazione('${r.id}')">Soddisfa</button>`:'';
-      return `<div class="post" data-request-id="${r.id}">
-        <div class="post-head">${avatarHtml(a,40)}<div><strong>${escapeHtml(r.name)}</strong> <span class="handle">@${escapeHtml(a.handle)}</span><div class="handle">${timeAgo(r.createdAt)}</div></div><div style="display:flex;gap:6px;margin-left:auto">${soddisfaBtn}${prenotaBtn}${completaBtn}</div></div>
-        <div style="margin:6px 0"><span class="badge lav">Richiesta</span></div>
-        <div class="post-text" style="font-size:12px">${escapeHtml(r.comp)} • ${r.weight}g/mq • ${r.width}cm • ${r.meters}m • Colore: ${escapeHtml(r.color)}</div>
-        <div style="margin:8px 0;display:flex;flex-wrap:wrap;gap:4px">${r.fasi.map(f=>`<span class="badge" style="font-size:10px">${escapeHtml(f)}</span>`).join('')}</div>
-        <div class="stats-line">Stato: <b style="color:${statoColor}">${r.stato}</b></div>
-        ${prenotazioniHtml(r)}
-      </div>`;
-    }).join(''):'';
-  }
-  const postsHtml=posts.length?`<div class="feed-grid">${posts.map(postHtml).join('')}</div>`:'<div class="empty">Nessun post.</div>';
-  list.innerHTML=reqsHtml?`<div style="margin-bottom:14px"><h3 style="margin-bottom:10px;font-family:Orbitron,sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--accent2)">Richieste Cliente</h3><div class="feed-grid">${reqsHtml}</div></div>`+postsHtml:postsHtml;
-}
-function renderKPI(){
-  const el=document.getElementById('kpiCard'); if(!el) return;
-  el.innerHTML='<h3 style="margin-bottom:10px">KPI Distretto</h3><table class="kpi-table"><thead><tr><th>Metrica</th><th>Valore</th></tr></thead><tbody>'+
-    KPI_DATA.map(k=>`<tr><td>${k.label}</td><td class="${k.cls}">${k.val}</td></tr>`).join('')+'</tbody></table>'+
-    '<div class="spark">'+KPI_DATA[0].spark.map(v=>`<i style="height:${v*8}%"></i>`).join('')+'</div>'+
-    '<h3 style="margin:14px 0 8px;font-family:Orbitron,sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--accent2)">Export Trimestrale</h3>'+
-    '<div style="display:flex;align-items:flex-end;gap:6px;height:80px;padding:8px 0">'+
-    [65,72,58,80,68,85,74,90,78,95,82,98].map((v,i)=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:100%;background:linear-gradient(180deg,var(--accent2),var(--accent3));border-radius:2px 2px 0 0;height:${v}%;box-shadow:0 0 8px rgba(0,240,255,.3)"></div><span style="font-size:9px;color:var(--muted);font-family:JetBrains Mono,monospace">${i+1}T</span></div>`).join('')+'</div>';
-}
-function renderTicker(){
-  const el=document.getElementById('ticker'); if(!el) return;
-  el.innerHTML=TICKER.map(t=>`<span>${t.s} <b class="${t.c}">${t.v}</b></span>`).join('');
-}
-function renderProfileCard(){
-  const el=document.getElementById('profileCard'); const u=currentUser();
-  if(!u){ el.innerHTML='<h3>Crea nome utente</h3><p class="empty">Crea un profilo locale e inizia a pubblicare.</p><button class="button" onclick="showAuth(\'register\')" style="width:100%;margin-top:8px">Crea nome utente</button>'; return; }
-  el.innerHTML=`<div style="display:flex;gap:12px;align-items:center">${avatarHtml(u,52)}<div><strong>${escapeHtml(u.name)}</strong><div class="handle">@${escapeHtml(u.handle)}</div></div></div>
-  <p style="margin:10px 0">${escapeHtml(u.bio||'Profilo nuovo su The Real Network.')}</p>
-  <div class="stats-line">Seguiti ${u.following.length} • Follower ${u.followers.length} • Post ${S.posts.filter(p=>p.authorId===u.id).length}</div>
-  <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
-    <button class="ghost small" onclick="view('profile');selectedProfileId='${u.id}'">Vedi profilo</button>
-    <button class="ghost small" onclick="editProfile()">Modifica profilo</button>
-  </div>`;
-}
-function editProfile(){
-  const u=currentUser(); if(!u)return;
-  const body=document.getElementById('modalBody');
-  body.innerHTML=`<h2>Modifica profilo</h2>
-  <div class="field"><label>Nome</label><input id="epName" value="${escapeHtml(u.name)}"></div>
-  <div class="field"><label>Bio</label><textarea id="epBio">${escapeHtml(u.bio||'')}</textarea></div>
-  <div class="field"><label>Avatar URL</label><input id="epAvatar" value="${escapeHtml(u.avatar||'')}"></div>
-  <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px"><button class="ghost small" onclick="closeModal()">Annulla</button><button class="button small" id="epSave">Salva</button></div>`;
-  document.getElementById('modal').classList.add('show');
-  document.getElementById('epSave').onclick=()=>{ u.name=document.getElementById('epName').value.trim()||u.name; u.bio=document.getElementById('epBio').value.trim(); u.avatar=document.getElementById('epAvatar').value.trim(); saveState(S); toast('Profilo aggiornato.'); closeModal(); renderAll(); };
-}
-function postHtml(p){
-  const a=S.users.find(x=>x.id===p.authorId)||{handle:'?','name':'?','color':'#666'};
-  const liked=currentUser()?.likes?.includes? false:false; const isLiked=p.likes.includes(currentUser()?.id);
-  const comments=S.comments.filter(c=>c.postId===p.id);
-  const commentHtml=comments.map(c=>{
-    const ca=S.users.find(x=>x.id===c.authorId)||{handle:'?',name:'?',color:'#666'};
-    return `<div class="comment">${avatarHtml(ca,22)} <b>${escapeHtml(ca.name)}</b> <span class="handle">@${escapeHtml(ca.handle)} • ${timeAgo(c.createdAt)}</span><div class="post-text" style="margin:4px 0">${escapeHtml(c.text)}</div></div>`;
-  }).join('');
-  const followBtn = currentUser() && currentUser().id!==p.authorId ? (currentUser().following.includes(p.authorId) ? `<button class="ghost small" onclick="toggleFollow('${p.authorId}')">Seguito</button>` : `<button class="ghost small" onclick="toggleFollow('${p.authorId}')">Segui</button>`) : '';
-  const catLabels={eco:'Economia',tech:'Tecnologia',amb:'Ambiente',lav:'Lavoro'};
-  const catCls=p.cat||'eco';
-  return `<div class="post" data-post-id="${p.id}">
-    <div class="post-head">${avatarHtml(a,40)}<div><strong>${escapeHtml(a.name)}</strong> <span class="handle">@${escapeHtml(a.handle)}</span><div class="handle">${timeAgo(p.createdAt)}</div></div>${followBtn}</div>
-    <div style="margin:6px 0"><span class="badge ${catCls}">${catLabels[catCls]||'Economia'}</span></div>
-    ${p.text?`<div class="post-text">${escapeHtml(p.text)}</div>`:''}
-    ${p.image?`<img class="post-image" src="${escapeHtml(p.image)}" alt="immagine post" onerror="this.style.display='none'">`:inlineSvg(p.cat||'eco')}
-    <div class="actions">
-      <button class="ghost small" onclick="toggleLike('${p.id}')">${isLiked?'❤️':'🤍'} ${p.likes.length}</button>
-      <button class="ghost small" onclick="focusComments('${p.id}')">💬 ${comments.length}</button>
-      ${currentUser()&&currentUser().id===p.authorId?`<button class="ghost small danger" onclick="deletePost('${p.id}')">Elimina</button>`:''}
-    </div>
-    <div id="comments-${p.id}" style="display:none" class="comments">
-      ${commentHtml}
-      ${currentUser()?`<div style="display:flex;gap:8px;margin-top:8px"><input id="commentInput-${p.id}" placeholder="Commenta..." style="flex:1;padding:8px;border-radius:99px;background:#08111d;border:1px solid var(--line);color:var(--text)"><button class="ghost small" onclick="addComment('${p.id}')">Invia</button></div>`:''}
-    </div>
-  </div>`;
-}
-function inlineSvg(cat){
-  const colors={eco:['#f0e68c','#00f0ff'],tech:['#00f0ff','#ff2d6f'],amb:['#00ff9f','#00f0ff'],lav:['#ff2d6f','#b388ff']};
-  const [c1,c2]=colors[cat]||colors.eco;
-  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" style="width:100%;border-radius:4px;border:1px solid rgba(0,240,255,.2)"><defs><linearGradient id="g${cat}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${c1}" stop-opacity=".3"/><stop offset="100%" stop-color="${c2}" stop-opacity=".1"/></linearGradient></defs><rect width="400" height="200" fill="url(#g${cat})"/><g stroke="${c1}" stroke-width="1" opacity=".4"><line x1="0" y1="50" x2="400" y2="50"/><line x1="0" y1="100" x2="400" y2="100"/><line x1="0" y1="150" x2="400" y2="150"/><line x1="100" y1="0" x2="100" y2="200"/><line x1="200" y1="0" x2="200" y2="200"/><line x1="300" y1="0" x2="300" y2="200"/></g><g fill="${c2}" opacity=".6"><circle cx="100" cy="50" r="4"/><circle cx="200" cy="100" r="4"/><circle cx="300" cy="150" r="4"/><circle cx="50" cy="120" r="3"/><circle cx="150" cy="30" r="3"/><circle cx="250" cy="70" r="3"/><circle cx="350" cy="180" r="3"/></g><text x="200" y="105" text-anchor="middle" fill="${c1}" font-family="Orbitron,sans-serif" font-size="14" letter-spacing="2">${cat.toUpperCase()}</text></svg>`;
-  return `<div style="margin:8px 0">${svg}</div>`;
-}
-function focusComments(postId){ const el=document.getElementById('comments-'+postId); if(!el) return; el.style.display=el.style.display==='none'?'block':'none'; }
-function deletePost(postId){ const p=S.posts.find(x=>x.id===postId); if(!p) return; if(!currentUser()||currentUser().id!==p.authorId) return; S.posts=S.posts.filter(x=>x.id!==postId); S.comments=S.comments.filter(c=>c.postId!==postId); S.messages=S.messages; saveState(S); toast('Post eliminato.'); renderAll(); }
-function renderFeed(){
-  const list=document.getElementById('feedList'); const composer=document.getElementById('composer');
-  const newBtn=document.getElementById('newPostBtn');
-  if(currentUser()){ newBtn.style.display=''; composer.style.display=composer.style.display; newBtn.onclick=()=>{ composer.style.display=composer.style.display==='none'?'block':'none'; }; }
-  else { newBtn.style.display='none'; composer.style.display='none'; }
-  document.getElementById('publishPost').onclick=addPost; document.getElementById('cancelPost').onclick=()=>{ composer.style.display='none'; };
-  const u=currentUser(); let posts=[];
-  if(u && u.following.length){ const ids=[u.id,...u.following]; posts=S.posts.filter(p=>ids.includes(p.authorId)); } else { posts=[...S.posts]; }
-  if(!posts.length) posts=[...S.posts].slice(0,20);
-  posts.sort((a,b)=>b.createdAt-a.createdAt);
-  list.innerHTML=posts.length ? `<div class="feed-grid">${posts.map(postHtml).join('')}</div>` : '<div class="empty">Nessun post. Hai visto la visione del futuro.</div>';
-}
-function renderExplore(){
-  const q=(document.getElementById('searchInput')?.value||'').trim().toLowerCase();
-  const u=currentUser();
-  let users=[...S.users].filter(x=>!u||x.id!==u.id);
-  if(q) users=users.filter(x=>x.name.toLowerCase().includes(q)||x.handle.toLowerCase().includes(q)|| (x.bio||'').toLowerCase().includes(q));
-  const rec=document.getElementById('exploreList');
-  if(!users.length){ rec.innerHTML='<div class="empty">Nessun utente trovato.</div>'; return; }
-  rec.innerHTML=users.map(x=>{
-    const rel = u && u.following.includes(x.id) ? 'Seguito' : (u?'Segui':'');
-    return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)">${avatarHtml(x,40)}<div style="flex:1"><strong>${escapeHtml(x.name)}</strong><div class="handle">@${escapeHtml(x.handle)}</div><div class="stats-line">${escapeHtml(x.bio||'Profilo in costruzione')}</div><div class="stats-line">Seguiti ${x.following.length} • Follower ${x.followers.length}</div></div><div style="display:flex;gap:6px">${u?`<button class="${u.following.includes(x.id)?'ghost':'button'} small" onclick="toggleFollow('${x.id}')">${u.following.includes(x.id)?'Seguito':'Segui'}</button>`:'<button class="button small" onclick="showAuth(\'register\')">Crea nome utente</button>'}<button class="ghost small" onclick="viewProfile('${x.id}')">Profilo</button></div></div>`;
-  }).join('');
-  document.getElementById('searchInput').oninput=()=>renderExplore();
-}
-function viewProfile(userId){ selectedProfileId=userId; view('profile'); }
-function renderProfileView(){
-  const el=document.getElementById('profileView'); if(!selectedProfileId){ const u=currentUser(); if(u) selectedProfileId=u.id; else { el.innerHTML='<div class="empty">Accedi per vedere un profilo.</div>'; return; } }
-  const p=S.users.find(x=>x.id===selectedProfileId); if(!p){ el.innerHTML='<div class="empty">Profilo non trovato.</div>'; return; }
-  const u=currentUser();
-  const isMe=u && u.id===p.id; const isFollowing=u && u.following.includes(p.id);
-  const posts=S.posts.filter(x=>x.authorId===p.id).sort((a,b)=>b.createdAt-a.createdAt);
-  el.innerHTML=`<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">${avatarHtml(p,72)}<div style="flex:1"><h2>${escapeHtml(p.name)}</h2><div class="handle">@${escapeHtml(p.handle)}${isMe?' • Tu':''}</div><p style="margin:8px 0">${escapeHtml(p.bio||'Profilo su The Real Network.')}</p><div class="stats-line">Seguiti ${p.following.length} • Seguaci ${p.followers.length} • Post ${posts.length}</div>
-  ${u&&!isMe?`<div style="margin-top:10px;display:flex;gap:8px"><button class="${isFollowing?'ghost':'button'} small" onclick="toggleFollow('${p.id}')">${isFollowing?'Seguito':'Segui'}</button><button class="ghost small" onclick="startMessage('${p.id}')">Messaggio</button></div>`:''}
-  ${isMe?`<button class="ghost small" onclick="editProfile()" style="margin-top:10px">Modifica profilo</button>`:''}</div></div>
-  <div class="post" style="border-top:1px solid var(--line);margin-top:14px"><h3>Post di @${escapeHtml(p.handle)}</h3></div>
-  ${posts.length?posts.map(postHtml).join(''):'<div class="empty">Nessun post.</div>'}`;
-}
-function startMessage(userId){ selectedConversation=userId; view('messages'); }
-function renderMessages(){
-  const u=currentUser(); const list=document.getElementById('convList'); const thread=document.getElementById('convThread');
-  if(!u){ list.innerHTML='<div class="empty">Accedi.</div>'; thread.innerHTML=''; return; }
-  const ids=new Set();
-  S.messages.forEach(m=>{ if(m.from===u.id||m.to===u.id) { ids.add(m.from===u.id?m.to:m.from);} });
-  ids.add(...u.following);
-  const convs=[...ids].map(id=>S.users.find(x=>x.id===id)).filter(Boolean);
-  list.innerHTML=`<h3 style="margin-bottom:8px">Conversazioni</h3>${convs.length?convs.map(x=>`<div style="padding:8px;border-radius:8px;cursor:pointer;background:${selectedConversation===x.id?'#142033':'transparent'}" onclick="selectedConversation='${x.id}';renderMessages()">${avatarHtml(x,26)} ${escapeHtml(x.name)} <span class="handle">@${escapeHtml(x.handle)}</span></div>`).join(''):'<div class="empty">Nessuna conversazione.</div>'}`;
-  const target=S.users.find(x=>x.id===selectedConversation);
-  if(!target){ thread.innerHTML='<div class="empty">Seleziona una conversazione.</div>'; return; }
-  const msgs=S.messages.filter(m=>((m.from===u.id&&m.to===target.id)||(m.from===target.id&&m.to===u.id))).sort((a,b)=>a.createdAt-b.createdAt);
-  msgs.filter(m=>m.to===u.id&&!m.read).forEach(m=>m.read=true); saveState(S);
-  const html=msgs.map(m=>`<div style="max-width:72%;margin:6px 0;padding:8px 10px;border-radius:12px;${m.from===u.id?'margin-left:auto;background:var(--accent);color:#fff':'background:#11192a'}">${escapeHtml(m.text)}<div style="font-size:9px;opacity:.7;margin-top:4px">${timeAgo(m.createdAt)}</div></div>`).join('');
-  thread.innerHTML=`<h3>${escapeHtml(target.name)}</h3><div style="height:360px;overflow:auto;margin:8px 0;padding:8px;border:1px solid var(--line);border-radius:10px">${html||'<div class="empty">Inizia la conversazione.</div>'}</div>
-  <div style="display:flex;gap:8px"><input id="msgInput" style="flex:1;padding:8px;border-radius:99px;background:#08111d;border:1px solid var(--line);color:var(--text)" placeholder="Scrivi un messaggio..."><button class="button small" onclick="sendMessage('${target.id}')">Invia</button></div>`;
-  const input=document.getElementById('msgInput'); if(input) input.addEventListener('keydown',e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(target.id); }});
-}
-function sendMessage(toId){
-  const u=currentUser(); if(!u) return showAuth('login');
-  const input=document.getElementById('msgInput'); const text=(input?.value||'').trim(); if(!text) return;
-  S.messages.push({id:uid('m'),from:u.id,to:toId,text,createdAt:Date.now(),read:false}); saveState(S); if(input) input.value=''; renderMessages(); toast('Messaggio inviato.');
-}
-function renderNotifications(){
-  const u=currentUser(); const el=document.getElementById('notifList');
-  if(!u){ el.innerHTML='<div class="empty">Accedi.</div>'; return; }
-  const ns=S.notifications.filter(n=>n.userId===u.id).sort((a,b)=>b.createdAt-a.createdAt);
-  if(!ns.length){ el.innerHTML='<div class="empty">Nessuna notifica.</div>'; return; }
-  el.innerHTML=ns.map(n=>{
-    const a=S.users.find(x=>x.id===n.actorId)||{name:'Sistema',color:'#666'};
-    return `<div style="padding:10px;border-bottom:1px solid var(--line);opacity:${n.read?0.65:1};cursor:pointer" onclick="markRead('${n.id}')"><strong>${escapeHtml(a.name)}</strong> <span class="stats-line">${timeAgo(n.createdAt)}</span><div>${escapeHtml(n.text)}</div></div>`;
-  }).join('');
-  const unread=unreadCount(u); document.querySelector('[data-view="notifications"]').textContent=`Notifiche${unread?` (${unread})`:''}`;
-}
-function markRead(id){ const n=S.notifications.find(x=>x.id===id); if(n){ n.read=true; saveState(S); renderAll(); } }
-function renderTrending(){
-  const el=document.getElementById('trendingCard');
-  const top=[...S.users].sort((a,b)=>b.followers.length-a.followers.length).slice(0,5);
-  el.innerHTML=`<h3>Chi seguire</h3>${top.map(x=>`<div style="display:flex;align-items:center;gap:8px;margin:8px 0">${avatarHtml(x,28)}<div style="flex:1"><strong>${escapeHtml(x.name)}</strong><div class="handle">@${escapeHtml(x.handle)}</div></div>${currentUser()&&currentUser().id!==x.id?`<button class="ghost small" onclick="toggleFollow('${x.id}')">${currentUser().following.includes(x.id)?'Seguito':'Segui'}</button>`:''}</div>`).join('')}` || '<div class="empty">Nessun utente.</div>';
-  el.innerHTML+=`<h3 style="margin-top:12px">Suggerimenti</h3><p class="stats-line">Invita persone condividendo URL della pagina. Tutti i dati restano nel browser locale.</p>`;
-}
-document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>view(b.dataset.view)));
-const title=document.getElementById('modal'); title.addEventListener('click',e=>{ if(e.target===title && currentUser()) closeModal(); });
-try { view('feed'); } catch(e){ console.error(e); }
-if(!currentUser()) setTimeout(()=>showAuth('register'), 120);
+
+/* ── Wire filtri ── */
+['fLav','fLoc'].forEach(id=>document.getElementById(id).addEventListener('change',renderGrid));
+document.getElementById('fQ').addEventListener('input',renderGrid);
+
+renderGrid();
 </script>
 </body>
 </html>
