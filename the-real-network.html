@@ -85,11 +85,20 @@ h2{
 .lead{font-size:16px;color:var(--text);max-width:62ch;margin-top:12px}
 .hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
 
-.card{
-  border:1px solid rgba(212,0,42,.18);border-radius:6px;padding:22px;
-  background:linear-gradient(135deg,#ffffff,#faf7f7);
-  clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
-}
+.card{background:var(--card);border:1px solid rgba(0,240,255,.15);border-radius:8px;padding:16px;backdrop-filter:blur(12px);position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent2),transparent);opacity:.6}
+.card::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,240,255,.015) 2px,rgba(0,240,255,.015) 4px);pointer-events:none}
+.user-chip{display:flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid rgba(0,240,255,.3);border-radius:4px;background:rgba(0,240,255,.05)}
+.avatar{width:32px;height:32px;border-radius:4px;object-fit:cover;display:grid;place-items:center;background:linear-gradient(135deg,#1a1a3a,#0a0a1a);color:var(--accent2);font-weight:700;overflow:hidden;border:1px solid rgba(0,240,255,.3)}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.layout{display:grid;grid-template-columns:260px 1fr 280px;gap:20px;padding:20px;max-width:1400px;margin:0 auto}
+@media (max-width:1100px){.layout{grid-template-columns:1fr}.left,.rightcol{order:2}}
+@media (max-width:720px){.layout{padding:12px}.tabs button{padding:6px 10px;font-size:10px}}
+.profile{position:sticky;top:70px}
+.feed-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.compose textarea{width:100%;min-height:92px;resize:vertical;background:#08111d;border:1px solid var(--line);color:var(--text);border-radius:10px;padding:10px}
+.compose textarea:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 15px rgba(0,240,255,.2)}
+.handle{color:var(--muted);font-size:11px;font-family:"JetBrains Mono",monospace}
 
 /* ── FEATURES ── */
 .feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
