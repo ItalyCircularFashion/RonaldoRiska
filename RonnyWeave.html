@@ -36,6 +36,7 @@ table{border-collapse:collapse;width:100%}td{padding:2px 4px;border-bottom:1px s
 tr.sel td{background:rgba(15,110,140,.18)}.dot{display:inline-block;width:14px;height:14px;border-radius:50%;border:1px solid var(--ln);vertical-align:-2px}
 @media(max-width:800px){#app{grid-template-columns:1fr;height:auto}#wrap{min-height:60vh}}
 </style>
+<link rel="stylesheet" href="mobile.css">
 </head>
 <body>
 <header><svg width="26" height="26" viewBox="0 0 24 24" style="flex:0 0 auto;color:var(--ac)" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="5" fill="currentColor" opacity=".92"/><path d="M4 7h16M4 12h16M4 17h16M7 4v16M12 4v16M17 4v16" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".95"/></svg><b>RonnyWeave CAD</b><span>Creato per la popolazione ad uso gratuito</span>
@@ -371,5 +372,6 @@ $('#pl').oninput=e=>{ST.pelo=+e.target.value;$('#pln').value=ST.pelo;reqDraw()};
 $('#pln').oninput=e=>{ST.pelo=cl(+e.target.value||0,0,100);$('#pl').value=ST.pelo;reqDraw()};$('#pln').onchange=()=>reqDraw(true);
 init();
 </script>
+<script src="mobile.js"></script>
 </body>
 </html>

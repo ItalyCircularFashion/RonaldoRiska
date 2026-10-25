@@ -56,6 +56,7 @@ small{font-size:8px;display:block;margin-top:4px}
 .faint{animation:faint .7s forwards}.hit{animation:hit .4s}.shake{animation:shake .5s 2}.evo{animation:evolve .9s}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.faint{opacity:0}}
 </style>
+<link rel="stylesheet" href="mobile.css">
 </head>
 <body>
 <main id="game"></main>
@@ -177,5 +178,6 @@ else{await say('Non hai più Creature in forze... Corri al Centro cura!');G.team
 
 load();G&&G.team&&G.team.length?home():title();
 </script>
+<script src="mobile.js"></script>
 </body>
 </html>

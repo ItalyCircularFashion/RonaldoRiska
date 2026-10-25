@@ -31,6 +31,7 @@ button:hover{background:#12304a}
 #loading{position:absolute;inset:0;display:none;place-items:center;background:#0008;color:#6ee7ff;font-size:14px;pointer-events:none}
 @media (max-width:900px){#app{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}#panel{grid-row:3;max-height:42vh;border-left:none;border-top:1px solid #14303b}}
 </style>
+<link rel="stylesheet" href="mobile.css">
 </head>
 <body>
 <div id="app">
@@ -267,5 +268,6 @@ handleSliders(); wireButtons(); applyParams();
 statusEl.textContent='Ready';
 generateCity(); requestAnimationFrame(ts=>{last=ts;animate(ts);});
 </script>
+<script src="mobile.js"></script>
 </body>
 </html>
