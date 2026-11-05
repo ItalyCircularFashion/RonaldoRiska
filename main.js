@@ -159,6 +159,32 @@ const renderProjectLists = () => {
   });
 };
 
+const renderFeaturedProjects = () => {
+  const mount = qs("[data-featured-grid]");
+  if (!mount || !projects.length) return;
+  const featured = projects.filter((project) => project.featured);
+  if (!featured.length) return;
+  mount.innerHTML = featured
+    .map((project) => {
+      const category = categories[project.category] || {};
+      const statusClass = project.status === "Live" ? "is-status-live" : "is-status-draft";
+      const directHref = fromRoot(project.url);
+      const schedaHref = project.detailPage ? project.detailPage : detailHref(project);
+      return `
+    <article class="featured-card project-card reveal ${statusClass}">
+      <p class="planet-status"><span class="status-dot" aria-hidden="true"></span>${escapeHtml(project.status)} \u00b7 ${escapeHtml(category.label || project.category)}</p>
+      <h3 class="planet-title"><a href="${escapeHtml(schedaHref)}" aria-label="Apri scheda ${escapeHtml(project.title)}">${escapeHtml(project.title)}</a></h3>
+      <p class="featured-desc">${escapeHtml(project.description)}</p>
+      <ul class="tag-list" aria-label="Tag progetto">${renderTagList(project.tags.slice(0, 4))}</ul>
+      <div class="featured-actions">
+        <a class="button button-primary" href="${escapeHtml(directHref)}">Apri tool</a>
+        <a class="button button-ghost" href="${escapeHtml(schedaHref)}">Scheda tecnica</a>
+      </div>
+    </article>`;
+    })
+    .join("");
+};
+
 const applyProjectFilters = () => {
   const activeFilter = qs("[data-filter].is-active")?.dataset.filter || "all";
   const searchValue = (qs("[data-project-search]")?.value || "").trim().toLowerCase();
@@ -572,6 +598,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initNavigation();
   hydrateCategoryBlocks();
   renderProjectLists();
+  renderFeaturedProjects();
   initProjectFilters();
   initReveal();
   initCounters();

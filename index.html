@@ -314,10 +314,9 @@
     </header>
 
     <!-- ── MAIN (un solo <main> per pagina: BUG CORRETTO) ── -->
-    <main id="main">
+        <main id="main">
 
-      <!-- HERO -->
-      <section class="hero" id="top">
+<section class="hero" id="top">
         <div class="container hero-grid">
           <div class="hero-copy reveal">
             <p class="eyebrow">Portfolio tecnico operativo</p>
@@ -372,60 +371,8 @@
           <source src="assets/video/tessitura-hero.mp4" type="video/mp4">
         </video>
       </section>
-<!-- LCA SHOWCASE -->
-<section class="section lca-showcase" id="lca-showcase" aria-labelledby="lca-title">
-  <div class="container">
-    <div class="lca-hero">
-      <div class="lca-hero-content">
-        <p class="eyebrow">Life Cycle Assessment · Tessile</p>
-        <h2 id="lca-title">Costruiamo insieme un LCA</h2>
-        <p class="lca-lead">
-          Un compilatore LCA per tessile e abbigliamento che segue i parametri di 
-          <strong>Textile Exchange</strong> e le <strong>normative europee</strong>. 
-          Cradle-to-gate, benchmarking e report per la filiera moda.
-        </p>
-        <div class="lca-badges">
-          <span class="lca-badge">Textile Exchange</span>
-          <span class="lca-badge">PEF / OEF</span>
-          <span class="lca-badge">Cradle-to-Gate</span>
-          <span class="lca-badge">Sphera 2026</span>
-        </div>
-        <div class="lca-actions">
-          <a class="button button-primary" href="demo-lca.html">Apri la Demo →</a>
-          <a class="button button-secondary" href="#progetti">Vedi altri progetti</a>
-        </div>
-      </div>
-      <div class="lca-hero-visual">
-        <div class="lca-visual-card">
-          <div class="lca-visual-header">
-            <span class="lca-visual-dot"></span>
-            <span class="lca-visual-title">LCA Tessile</span>
-          </div>
-          <div class="lca-visual-body">
-            <div class="lca-metric">
-              <span class="lca-metric-value">4.17</span>
-              <span class="lca-metric-label">kg CO₂e/kg cotone</span>
-            </div>
-            <div class="lca-metric">
-              <span class="lca-metric-value">5.5</span>
-              <span class="lca-metric-label">kg CO₂e/kg poliestere</span>
-            </div>
-            <div class="lca-metric">
-              <span class="lca-metric-value">25</span>
-              <span class="lca-metric-label">kg CO₂e/kg cachemire</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-
-      
-
-<!-- OPERATIONAL METRICS DASHBOARD -->
-      <section class="metrics-section" aria-labelledby="metriche-title">
+<section class="metrics-section" aria-labelledby="metriche-title">
         <div class="container">
 
           <div class="metrics-header reveal">
@@ -491,7 +438,195 @@
               </div>
             </article>
 
-            <article class="metric-insight reveal">
+          </div>
+        </div>
+      </section>
+
+
+      <!-- FEATURED WORK (WP03) -->
+      <section class="section" id="featured" aria-labelledby="featured-title">
+        <div class="container">
+          <div class="section-heading reveal">
+            <div>
+              <p class="eyebrow">Featured Work</p>
+              <h2 id="featured-title">Progetti in evidenza</h2>
+            </div>
+            <p>Selezione dei progetti pi&ugrave; significativi dell&rsquo;ecosistema: piattaforma, simulatori e strumenti operativi live.</p>
+          </div>
+          <div class="featured-grid" data-featured-grid aria-live="polite"></div>
+          <div class="hero-actions" style="margin-top:1.75rem">
+            <a class="button button-secondary" href="#progetti">Esplora tutti i progetti &rarr;</a>
+          </div>
+        </div>
+      </section>
+
+
+<section class="section" id="progetti" aria-labelledby="progetti-title">
+        <div class="container">
+          <div class="section-heading reveal">
+            <div>
+              <p class="eyebrow">PROGETTI</p>
+              <h2 id="progetti-title">TOOL // SIMULATORI // DASHBOARD</h2>
+            </div>
+            <p>Interfacce applicative e prototipi industriali. Stack tecnico e casi d’uso in ogni scheda.</p>
+          </div>
+          <div class="toolbar reveal">
+            <div class="filter-group" role="group" aria-label="Filtri categoria progetto">
+              <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">Tutti <span class="filter-count" data-filter-count="all"></span></button>
+              <button class="filter-button" type="button" data-filter="tessitura" aria-pressed="false">Tessitura <span class="filter-count" data-filter-count="tessitura"></span></button>
+              <button class="filter-button" type="button" data-filter="cad" aria-pressed="false">CAD Moda <span class="filter-count" data-filter-count="cad"></span></button>
+              <button class="filter-button" type="button" data-filter="supply" aria-pressed="false">Supply Chain <span class="filter-count" data-filter-count="supply"></span></button>
+            </div>
+            <label class="sr-only" for="project-search">Cerca progetto</label>
+            <input id="project-search" class="search-input" type="search"
+                   placeholder="Cerca progetto, tag o tecnologia"
+                   data-project-search
+                   autocomplete="off">
+          </div>
+          <!-- Costellazioni: popolate da main.js tramite project-data.js, raggruppate per categoria -->
+          <div class="project-constellations" data-project-groups aria-live="polite" aria-label="Progetti raggruppati per categoria"></div>
+          <p class="project-empty is-hidden" data-project-empty hidden>Nessun progetto trovato per questa ricerca o filtro. <button class="button button-ghost" type="button" data-project-reset>Mostra tutti i progetti</button></p>
+        </div>
+      </section>
+
+<section class="section section-band" aria-labelledby="categorie-title">
+        <div class="container">
+
+          <div class="section-heading reveal">
+            <div>
+              <p class="eyebrow">MACRO-CATEGORIE</p>
+              <h2 id="categorie-title">Tessitura · CAD Moda · Supply Chain</h2>
+            </div>
+            <p>Moduli sviluppati su casi d’uso concreti: armatura, note colore, MRP, make-or-buy, simulazione e operations analytics.</p>
+          </div>
+
+          <div class="categories-stack">
+
+            <article class="category-block reveal" data-category-card="tessitura">
+              <div class="category-header">
+                <div>
+                  <span class="category-id" data-category-tone>T01</span>
+                  <h3 class="category-name" data-category-title>Tessitura</h3>
+                  <p class="category-desc" data-category-summary>Simulatori di armatura, note colore, Gantt ciclo produttivo.</p>
+                </div>
+                <div class="category-meta">
+                  <span class="category-badge"><strong data-category-count>0</strong> <span>moduli</span></span>
+                  <a class="button button-primary category-cta" data-category-link href="tessitura.html">Apri area →</a>
+                </div>
+              </div>
+              <div class="category-tags">
+                <span>Simulatori produttivi</span>
+                <span>Armature</span>
+                <span>Pianificazione</span>
+              </div>
+            </article>
+
+            <article class="category-block reveal" data-category-card="cad">
+              <div class="category-header">
+                <div>
+                  <span class="category-id" data-category-tone>C01</span>
+                  <h3 class="category-name" data-category-title>CAD Moda</h3>
+                  <p class="category-desc" data-category-summary>Modellistica, cartamodelli, SketchHD AI e concept digitale.</p>
+                </div>
+                <div class="category-meta">
+                  <span class="category-badge"><strong data-category-count>0</strong> <span>moduli</span></span>
+                  <a class="button button-primary category-cta" data-category-link href="cad-moda.html">Apri area →</a>
+                </div>
+              </div>
+              <div class="category-tags">
+                <span>Modellistica</span>
+                <span>Sketch AI</span>
+                <span>Prodotto</span>
+              </div>
+            </article>
+
+            <article class="category-block reveal" data-category-card="supply">
+              <div class="category-header">
+                <div>
+                  <span class="category-id" data-category-tone>S01</span>
+                  <h3 class="category-name" data-category-title>Supply Chain</h3>
+                  <p class="category-desc" data-category-summary>MRP, dashboard SCM, make-or-buy e operations analytics.</p>
+                </div>
+                <div class="category-meta">
+                  <span class="category-badge"><strong data-category-count>0</strong> <span>moduli</span></span>
+                  <a class="button button-primary category-cta" data-category-link href="supply-chain-production.html">Apri area →</a>
+                </div>
+              </div>
+              <div class="category-tags">
+                <span>MRP</span>
+                <span>Dashboard</span>
+                <span>Operations Analytics</span>
+              </div>
+            </article>
+
+
+            <article class="category-block reveal" data-explore-tile="digital-lab">
+              <div class="category-header">
+                <div>
+                  <span class="category-id">D01</span>
+                  <h3 class="category-name">Digital Lab</h3>
+                  <p class="category-desc">CAD moda, SketchHD AI, ModaCAD e convertitore PDF.</p>
+                </div>
+                <div class="category-meta">
+                  <a class="button button-primary category-cta" href="cad-moda.html">Apri area &rarr;</a>
+                </div>
+              </div>
+              <div class="category-tags">
+                <span>Modellistica</span>
+                <span>Concept digitale</span>
+              </div>
+            </article>
+
+            <article class="category-block reveal" data-explore-tile="research">
+              <div class="category-header">
+                <div>
+                  <span class="category-id">R01</span>
+                  <h3 class="category-name">Research &amp; Sustainability</h3>
+                  <p class="category-desc">LCA, certificazioni, osservatorio tessile e TextileHUB Network.</p>
+                </div>
+                <div class="category-meta">
+                  <a class="button button-primary category-cta" href="sostenibilita-certificazioni.html">Apri area &rarr;</a>
+                </div>
+              </div>
+              <div class="category-tags">
+                <span>LCA</span>
+                <span>Circular economy</span>
+              </div>
+            </article>
+
+            <article class="category-block reveal" data-explore-tile="other">
+              <div class="category-header">
+                <div>
+                  <span class="category-id">O01</span>
+                  <h3 class="category-name">Other Projects</h3>
+                  <p class="category-desc">Esperimenti, giochi e prototipi fuori dal core professionale.</p>
+                </div>
+                <div class="category-meta">
+                  <a class="button button-primary category-cta" href="schacchi.html">Esplora progetti &rarr;</a>
+                </div>
+              </div>
+              <div class="category-tags">
+                <span>Esperimenti</span>
+                <span>Prototipi</span>
+              </div>
+            </article>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- INDUSTRIAL INTELLIGENCE (WP03) -->
+      <section class="section section-band" id="industrial" aria-labelledby="industrial-title">
+        <div class="container">
+          <div class="section-heading reveal">
+            <div>
+              <p class="eyebrow">Industrial Intelligence</p>
+              <h2 id="industrial-title">Digitalizzazione e operations intelligence</h2>
+            </div>
+            <p>Dashboard KPI, analisi colli di bottiglia, digital twin e governance aziendale data-driven.</p>
+          </div>
+<article class="metric-insight reveal">
               <div class="baroque-panel">
                 <div class="baroque-frame">
                   <div class="baroque-ornament top-ornament"></div>
@@ -591,12 +726,13 @@
                 </div>
               </div>
             </article>
-
-          </div>
         </div>
-      <!-- DIGITAL COMMAND CENTER -->
-      <section class="section" aria-labelledby="command-title">
+      </section>
+
+
+<section class="section" aria-labelledby="command-title">
         <div class="container">
+          <h2 id="command-title" class="sr-only">Command center: KPI e analisi operativa</h2>
           <!-- KPI PIE CHARTS ROW -->
           <div class="kpi-pie-row">
             <div class="kpi-pie reveal">
@@ -765,155 +901,135 @@
               <div class="b-icon-circle">
                 <span aria-hidden="true">⏱️</span>
               </div>
-              <h4>Tempi ciclo</h4>
+              <h3>Tempi ciclo</h3>
               <p>Confronto teorico vs reale per ogni fase</p>
             </div>
             <div class="b-icon reveal">
               <div class="b-icon-circle">
                 <span aria-hidden="true">📦</span>
               </div>
-              <h4>WIP</h4>
+              <h3>WIP</h3>
               <p>Work in progress tra reparti</p>
             </div>
             <div class="b-icon reveal">
               <div class="b-icon-circle">
                 <span aria-hidden="true">🎯</span>
               </div>
-              <h4>Advancement</h4>
+              <h3>Advancement</h3>
               <p>Produzione prevista vs attuale</p>
             </div>
             <div class="b-icon reveal">
               <div class="b-icon-circle">
                 <span aria-hidden="true">💡</span>
               </div>
-              <h4>Colli di bottiglia</h4>
+              <h3>Colli di bottiglia</h3>
               <p>Identificazione automatica criticità</p>
             </div>
             <div class="b-icon reveal">
               <div class="b-icon-circle">
                 <span aria-hidden="true">📊</span>
               </div>
-              <h4>KPI dashboard</h4>
+              <h3>KPI dashboard</h3>
               <p>Metriche in tempo reale</p>
             </div>
             <div class="b-icon reveal">
               <div class="b-icon-circle">
                 <span aria-hidden="true">🤖</span>
               </div>
-              <h4>AI Systems</h4>
+              <h3>AI Systems</h3>
               <p>Modelli predittivi e suggerimenti</p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- MACRO-CATEGORIE -->
-      <section class="section section-band" aria-labelledby="categorie-title">
-        <div class="container">
-
-          <div class="section-heading reveal">
-            <div>
-              <p class="eyebrow">MACRO-CATEGORIE</p>
-              <h2 id="categorie-title">Tessitura · CAD Moda · Supply Chain</h2>
-            </div>
-            <p>Moduli sviluppati su casi d’uso concreti: armatura, note colore, MRP, make-or-buy, simulazione e operations analytics.</p>
-          </div>
-
-          <div class="categories-stack">
-
-            <article class="category-block reveal" data-category-card="tessitura">
-              <div class="category-header">
-                <div>
-                  <span class="category-id" data-category-tone>T01</span>
-                  <h3 class="category-name" data-category-title>Tessitura</h3>
-                  <p class="category-desc" data-category-summary>Simulatori di armatura, note colore, Gantt ciclo produttivo.</p>
-                </div>
-                <div class="category-meta">
-                  <span class="category-badge"><strong data-category-count>0</strong> <span>moduli</span></span>
-                  <a class="button button-primary category-cta" data-category-link href="tessitura.html">Apri area →</a>
-                </div>
-              </div>
-              <div class="category-tags">
-                <span>Simulatori produttivi</span>
-                <span>Armature</span>
-                <span>Pianificazione</span>
-              </div>
-            </article>
-
-            <article class="category-block reveal" data-category-card="cad">
-              <div class="category-header">
-                <div>
-                  <span class="category-id" data-category-tone>C01</span>
-                  <h3 class="category-name" data-category-title>CAD Moda</h3>
-                  <p class="category-desc" data-category-summary>Modellistica, cartamodelli, SketchHD AI e concept digitale.</p>
-                </div>
-                <div class="category-meta">
-                  <span class="category-badge"><strong data-category-count>0</strong> <span>moduli</span></span>
-                  <a class="button button-primary category-cta" data-category-link href="cad-moda.html">Apri area →</a>
-                </div>
-              </div>
-              <div class="category-tags">
-                <span>Modellistica</span>
-                <span>Sketch AI</span>
-                <span>Prodotto</span>
-              </div>
-            </article>
-
-            <article class="category-block reveal" data-category-card="supply">
-              <div class="category-header">
-                <div>
-                  <span class="category-id" data-category-tone>S01</span>
-                  <h3 class="category-name" data-category-title>Supply Chain</h3>
-                  <p class="category-desc" data-category-summary>MRP, dashboard SCM, make-or-buy e operations analytics.</p>
-                </div>
-                <div class="category-meta">
-                  <span class="category-badge"><strong data-category-count>0</strong> <span>moduli</span></span>
-                  <a class="button button-primary category-cta" data-category-link href="supply-chain-production.html">Apri area →</a>
-                </div>
-              </div>
-              <div class="category-tags">
-                <span>MRP</span>
-                <span>Dashboard</span>
-                <span>Operations Analytics</span>
-              </div>
-            </article>
-
-          </div>
-
-        </div>
-      </section>
-
-      <!-- PROGETTI -->
-      <section class="section" id="progetti" aria-labelledby="progetti-title">
+      <!-- RESEARCH & TEXTILE (WP03) -->
+      <section class="section" id="research-textile" aria-labelledby="research-title">
         <div class="container">
           <div class="section-heading reveal">
             <div>
-              <p class="eyebrow">PROGETTI</p>
-              <h2 id="progetti-title">TOOL // SIMULATORI // DASHBOARD</h2>
+              <p class="eyebrow">Research &amp; Textile</p>
+              <h2 id="research-title">Sostenibilit&agrave;, manifattura e distretto</h2>
             </div>
-            <p>Interfacce applicative e prototipi industriali. Stack tecnico e casi d’uso in ogni scheda.</p>
+            <p>LCA, circular economy, osservatorio tessile pratese e analisi di filiera.</p>
           </div>
-          <div class="toolbar reveal">
-            <div class="filter-group" role="group" aria-label="Filtri categoria progetto">
-              <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">Tutti <span class="filter-count" data-filter-count="all"></span></button>
-              <button class="filter-button" type="button" data-filter="tessitura" aria-pressed="false">Tessitura <span class="filter-count" data-filter-count="tessitura"></span></button>
-              <button class="filter-button" type="button" data-filter="cad" aria-pressed="false">CAD Moda <span class="filter-count" data-filter-count="cad"></span></button>
-              <button class="filter-button" type="button" data-filter="supply" aria-pressed="false">Supply Chain <span class="filter-count" data-filter-count="supply"></span></button>
-            </div>
-            <label class="sr-only" for="project-search">Cerca progetto</label>
-            <input id="project-search" class="search-input" type="search"
-                   placeholder="Cerca progetto, tag o tecnologia"
-                   data-project-search
-                   autocomplete="off">
-          </div>
-          <!-- Costellazioni: popolate da main.js tramite project-data.js, raggruppate per categoria -->
-          <div class="project-constellations" data-project-groups aria-live="polite" aria-label="Progetti raggruppati per categoria"></div>
-          <p class="project-empty is-hidden" data-project-empty hidden>Nessun progetto trovato per questa ricerca o filtro. <button class="button button-ghost" type="button" data-project-reset>Mostra tutti i progetti</button></p>
         </div>
       </section>
 
-      <!-- CURRICULUM -->
-      <section class="section section-band" aria-labelledby="cv-title">
+
+<section class="section lca-showcase" id="lca-showcase" aria-labelledby="lca-title">
+  <div class="container">
+    <div class="lca-hero">
+      <div class="lca-hero-content">
+        <p class="eyebrow">Life Cycle Assessment · Tessile</p>
+        <h2 id="lca-title">Costruiamo insieme un LCA</h2>
+        <p class="lca-lead">
+          Un compilatore LCA per tessile e abbigliamento che segue i parametri di 
+          <strong>Textile Exchange</strong> e le <strong>normative europee</strong>. 
+          Cradle-to-gate, benchmarking e report per la filiera moda.
+        </p>
+        <div class="lca-badges">
+          <span class="lca-badge">Textile Exchange</span>
+          <span class="lca-badge">PEF / OEF</span>
+          <span class="lca-badge">Cradle-to-Gate</span>
+          <span class="lca-badge">Sphera 2026</span>
+        </div>
+        <div class="lca-actions">
+          <a class="button button-primary" href="demo-lca.html">Apri la Demo →</a>
+          <a class="button button-secondary" href="#progetti">Vedi altri progetti</a>
+        </div>
+      </div>
+      <div class="lca-hero-visual">
+        <div class="lca-visual-card">
+          <div class="lca-visual-header">
+            <span class="lca-visual-dot"></span>
+            <span class="lca-visual-title">LCA Tessile</span>
+          </div>
+          <div class="lca-visual-body">
+            <div class="lca-metric">
+              <span class="lca-metric-value">4.17</span>
+              <span class="lca-metric-label">kg CO₂e/kg cotone</span>
+            </div>
+            <div class="lca-metric">
+              <span class="lca-metric-value">5.5</span>
+              <span class="lca-metric-label">kg CO₂e/kg poliestere</span>
+            </div>
+            <div class="lca-metric">
+              <span class="lca-metric-value">25</span>
+              <span class="lca-metric-label">kg CO₂e/kg cachemire</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-band" aria-labelledby="journal-title">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="eyebrow">Textile Intelligence · Distretto pratese</p>
+            <h2 id="journal-title">Osservatorio tessile — Prato Textile District</h2>
+            <p class="lead">Analisi e contestualizzazione sul distretto tessile pratese, tra storia, manifattura e transizione digitale.</p>
+          </div>
+
+          <div class="intelligence-stack">
+            <article class="intel-block reveal">
+              <span class="intel-label">Contesto</span>
+              <h3>Prato: ieri e oggi</h3>
+              <p>Dalle origini lanerie del Medioevo all’odierno distretto della circular fashion, il territorio pratese ha trasformato la tessitura in un modello produttivo capace di rinnovarsi senza perdere identità.</p>
+              <p>La nuova sezione è dedicata a questa lettura storica e operativa, con approfondimenti su sostenibilità, tracciabilità e innovazione industriale.</p>
+            </article>
+          </div>
+
+          <div class="hero-actions" style="justify-content:center;margin-top:2.5rem">
+            <a href="prato-textile-district.html" class="button button-primary">Apri osservatorio →</a>
+            <a href="Ronaldo-Riska-CV-2026.pdf" download class="button button-secondary">Scarica CV PDF</a>
+          </div>
+        </div>
+      </section>
+
+<section class="section section-band" aria-labelledby="cv-title">
         <div class="container dashboard-grid">
           <div class="reveal">
             <p class="eyebrow">Curriculum online</p>
@@ -932,8 +1048,7 @@
         </div>
       </section>
 
-      <!-- CONTATTI -->
-      <section class="section contact-section" id="contatti" aria-labelledby="contatti-title">
+<section class="section contact-section" id="contatti" aria-labelledby="contatti-title">
         <div class="container contact-grid">
 
           <div class="reveal">
@@ -976,30 +1091,6 @@
             </div>
           </address>
 
-        </div>
-      </section>
-
-      <section class="section section-band" aria-labelledby="journal-title">
-        <div class="container">
-          <div class="section-heading reveal">
-            <p class="eyebrow">Textile Intelligence · Distretto pratese</p>
-            <h2 id="journal-title">Osservatorio tessile — Prato Textile District</h2>
-            <p class="lead">Analisi e contestualizzazione sul distretto tessile pratese, tra storia, manifattura e transizione digitale.</p>
-          </div>
-
-          <div class="intelligence-stack">
-            <article class="intel-block reveal">
-              <span class="intel-label">Contesto</span>
-              <h3>Prato: ieri e oggi</h3>
-              <p>Dalle origini lanerie del Medioevo all’odierno distretto della circular fashion, il territorio pratese ha trasformato la tessitura in un modello produttivo capace di rinnovarsi senza perdere identità.</p>
-              <p>La nuova sezione è dedicata a questa lettura storica e operativa, con approfondimenti su sostenibilità, tracciabilità e innovazione industriale.</p>
-            </article>
-          </div>
-
-          <div class="hero-actions" style="justify-content:center;margin-top:2.5rem">
-            <a href="prato-textile-district.html" class="button button-primary">Apri osservatorio →</a>
-            <a href="Ronaldo-Riska-CV-2026.pdf" download class="button button-secondary">Scarica CV PDF</a>
-          </div>
         </div>
       </section>
 
