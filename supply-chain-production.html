@@ -52,13 +52,60 @@
       <nav class="nav container" aria-label="Navigazione principale">
         <a class="brand" href="index.html"><span class="brand-mark">RR</span><span class="brand-text"><span>Ronaldo Riska</span><span>Supply Chain</span></span></a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu" data-nav-toggle><span aria-hidden="true"></span><span class="sr-only">Apri menu</span></button>
-        <div class="nav-links" id="site-menu" data-nav-menu>
+        <div class="nav-links gen2-nav" id="site-menu" data-nav-menu>
           <a href="index.html">Home</a>
-          <a href="curriculum.html">Curriculum</a>
-          <a href="tessitura.html">Tessitura</a>
-          <a href="cad-moda.html">CAD Moda</a>
-          <a href="RonnyWeave.html">RonnyWeave</a>
-          <a href="index.html#contatti">Contatti</a>
+          <a href="curriculum.html">Profilo</a>
+          <details class="nav-group">
+            <summary class="nav-group-label">Textile Engineering</summary>
+            <div class="nav-dropdown">
+              <a href="tessitura.html">Panoramica tessitura</a>
+              <a href="RonnyWeave.html">RonnyWeave</a>
+              <a href="weavecad.html">WeaveCAD</a>
+              <a href="note-colore.html">Note colore</a>
+              <a href="gantt-tessile.html">Gantt tessile</a>
+              <a href="tessile-dashboard.html">Tecnico tessile</a>
+            </div>
+          </details>
+          <details class="nav-group">
+            <summary class="nav-group-label">Digital Lab</summary>
+            <div class="nav-dropdown">
+              <a href="cad-moda.html">Panoramica CAD</a>
+              <a href="sketchhd-artifact.html">SketchHD</a>
+              <a href="modacad.html">ModaCAD</a>
+              <a href="pdf-converter.html">Convertitore PDF</a>
+            </div>
+          </details>
+          <details class="nav-group">
+            <summary class="nav-group-label">Industrial Intelligence</summary>
+            <div class="nav-dropdown">
+              <a href="supply-chain-production.html" aria-current="page">Panoramica supply chain</a>
+              <a href="textile-platform-v5.html">Textile Platform v5</a>
+              <a href="mrp-iphone-planner.html">MRP Planner</a>
+              <a href="filieraos.html">FilieraOS</a>
+              <a href="progetto-digitalizzazione-impresa.html">Digitalizza impresa</a>
+            </div>
+          </details>
+          <details class="nav-group">
+            <summary class="nav-group-label">Research &amp; Sustainability</summary>
+            <div class="nav-dropdown">
+              <a href="sostenibilita-certificazioni.html">Sostenibilita&#769; e certificazioni</a>
+              <a href="demo-lca.html">Demo LCA</a>
+              <a href="prato-textile-district.html">Osservatorio Prato</a>
+              <a href="the-real-network.html">TextileHUB Network</a>
+            </div>
+          </details>
+          <details class="nav-group">
+            <summary class="nav-group-label">Other Projects</summary>
+            <div class="nav-dropdown">
+              <a href="schacchi.html">Scacchi</a>
+              <a href="flip-flop-poke.html">Flip Flop Poke&#768;</a>
+              <a href="flip-flop-rpg.html">Flip Flop RPG</a>
+              <a href="neon-zero.html">Neon Zero</a>
+              <a href="fractal-city.html">Fractal City</a>
+              <a href="cyberdeck-os/index.html">Cyberdeck OS</a>
+              <a href="index.html#contatti">Contatti</a>
+            </div>
+          </details>
         </div>
       </nav>
     </header>
@@ -158,9 +205,18 @@
       </section>
     </main>
 
-    <footer class="site-footer">
+    <footer class="site-footer gen2-footer">
       <div class="container footer-inner">
-        <p>&copy; <span data-year></span> Ronaldo Riska. Supply Chain & Production.</p>
+        <nav class="footer-links" aria-label="Mappa del sito">
+            <a href="index.html">Home</a>
+            <a href="curriculum.html">Profilo</a>
+            <a href="tessitura.html">Textile Engineering</a>
+            <a href="cad-moda.html">Digital Lab</a>
+            <a href="supply-chain-production.html">Industrial Intelligence</a>
+            <a href="sostenibilita-certificazioni.html">Research &amp; Sustainability</a>
+            <a href="index.html#progetti">Other Projects</a>
+          </nav>
+          <p>&copy; <span data-year></span> Ronaldo Riska. Supply Chain & Production.</p>
         <a href="index.html">Home</a>
       </div>
     </footer>

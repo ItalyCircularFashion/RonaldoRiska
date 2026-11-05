@@ -1,0 +1,496 @@
+/* ═══════════════════════════════════════════════════════════
+ * MOBILE RESPONSIVE — RonaldoRiska
+ * Schermasi < 768px
+ * Aggiunge esclusivamente regole per il cellulare/tablet
+ * a partire dai token di design di site.css
+ * ═══════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────
+ * 1️⃣ BASE MOBILE-FIRST
+ * ───────────────────────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+  :root {
+    --space-section: clamp(3rem, 10vw, 4.5rem);
+    --space-section-tight: clamp(1.8rem, 5vw, 2.4rem);
+    --space-card: clamp(1rem, 2.6vw, 1.4rem);
+    --radius: 7px;
+    --space-4: 0.5rem;
+    --space-6: 0.75rem;
+    --space-8: 1rem;
+    --shadow: 0 12px 36px rgba(0, 0, 0, 0.28);
+  }
+
+  body {
+    padding-block: var(--space-section-tight);
+    line-height: 1.5;
+  }
+
+  h1 {
+    font-size: clamp(2.4rem, 13vw, 4.2rem);
+    line-height: 1.05;
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 7vw, 2.4rem);
+    line-height: 1.1;
+  }
+
+  h3 {
+    font-size: clamp(1rem, 4.5vw, 1.25rem);
+  }
+
+  p,
+  li,
+  dd,
+  dt {
+    max-width: 100%;
+  }
+
+  .container,
+  .narrow {
+    width: 100%;
+    padding-inline: clamp(1rem, 4.5vw, 1.75rem);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * 2️⃣ NAV + HEADER — Mobile
+ * ───────────────────────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    border-bottom: 1px solid var(--line);
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: blur(20px);
+  }
+
+  .nav {
+    min-height: 60px;
+    gap: 0.5rem;
+  }
+
+  .brand {
+    min-width: max-content;
+  }
+
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+  }
+
+  .brand-text {
+    font-size: 0.95rem;
+  }
+
+  .brand-text span:last-child {
+    font-size: 0.62rem;
+  }
+
+  /* Nav links: sempre visibili su mobile, ombreggiati */
+  .nav-links {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.35rem 0.5rem;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+    min-height: 60px;
+  }
+
+  .nav-links a,
+  .theme-toggle {
+    min-height: 38px;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.82rem;
+    border-radius: 5px;
+  }
+
+  .nav-links a {
+    color: var(--ink-strong);
+  }
+
+  .nav-toggle {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    flex-shrink: 0;
+  }
+
+  .nav-toggle span,
+  .nav-toggle span::before,
+  .nav-toggle span::after {
+    display: block;
+    width: 16px;
+    height: 2px;
+    background: var(--ink-strong);
+  }
+
+  .nav-toggle[aria-expanded="true"] span {
+    transform: rotate(45deg);
+  }
+
+  .nav-toggle[aria-expanded="true"] span::before {
+    transform: rotate(90deg);
+  }
+
+  .nav-toggle[aria-expanded="true"] span::after {
+    transform: scaleX(0);
+  }
+
+  /* Kebab-toggle solo su desktop */
+  .kebab-toggle {
+    display: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * 3️⃣ HERO & SEZIONI
+ * ───────────────────────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+  .hero,
+  .page-hero,
+  .project-hero {
+    padding-block: clamp(3rem, 10vw, 5rem);
+  }
+
+  .section {
+    padding-block: var(--space-section);
+  }
+
+  .section-tight {
+    padding-block: var(--space-section-tight);
+  }
+
+  /* Hero testo + immagine → vertical stacking */
+  .hero-grid,
+  .project-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .section-heading {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 0.5rem;
+  }
+
+  .section-heading .eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.25rem;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * 4️⃣ GRID DI CARD — Mobile
+ * ───────────────────────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+  .cv-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-grid,
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .category-grid,
+  .project-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .category-grid:first-child,
+  .project-grid:first-child {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .category-grid[data-density="compact"],
+  .project-grid[data-density="compact"] {
+    grid-template-columns: 1fr;
+  }
+
+  .company-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
+  }
+
+  .settore-grid {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * 5️⃣ CARD, BUTTON, INPUT — Mobile
+ * ───────────────────────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+  .card {
+    border-radius: var(--radius);
+    padding: var(--space-6);
+    box-shadow: var(--shadow);
+  }
+
+  .card img,
+  .card video,
+  .card iframe {
+    width: 100%;
+    height: auto;
+  }
+
+  .card .card-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 40px;
+  }
+
+  .card .card-body {
+    padding-top: 0;
+  }
+
+  button,
+  .btn {
+    min-height: 42px;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.86rem;
+    border-radius: 6px;
+  }
+
+  button.small,
+  .btn.small {
+    min-height: 32px;
+    padding: 0.3rem 0.55rem;
+    font-size: 0.76rem;
+  }
+
+  input,
+  select,
+  textarea {
+    min-height: 42px;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.9rem;
+    border-radius: 7px;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .tag {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.72rem;
+    border-radius: 99px;
+  }
+
+  .badge {
+    padding: 0.15rem 0.45rem;
+    font-size: 0.72rem;
+  }
+
+  .ticker-bar .ticker-label {
+    font-size: 0.62rem;
+  }
+
+  .ticker-bar .ticker-scroll {
+    font-size: 0.82rem;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * 6️⃣ FORMS & TABLE — Mobile
+ * ───────────────────────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  label {
+    font-size: 0.82rem;
+    min-height: 1.4em;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .field label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody,
+  tr {
+    display: block;
+    padding: 0.4rem 0;
+  }
+
+  tbody::before {
+    content: "Filtra:";
+    font-weight: 700;
+    font-size: 0.74rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  tbody input[type="search"] {
+    width: 100%;
+    padding: 0.35rem 0.5rem;
+    font-size: 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+  }
+
+  tr {
+    border-bottom: 1px solid var(--line);
+    padding: 0.35rem 0;
+  }
+
+  td {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.6rem;
+    padding: 0.3rem 0;
+    font-size: 0.8rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  td:last-child {
+    font-weight: 700;
+    color: var(--ink-strong);
+  }
+
+  .chk-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .chk-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * 7️⃣ TICKER — Mobile
+ * ───────────────────────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+  .ticker-bar .ticker-scroll {
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+  }
+
+  .ticker-bar .ticker-label {
+    display: none;
+  }
+
+  .ticker-scroll-inner {
+    padding: 0.25rem 0;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * 8️⃣ SPACE UTILITY — Mobile
+ * ───────────────────────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+  .gap-sm {
+    gap: 0.4rem !important;
+  }
+
+  .gap-md {
+    gap: 0.7rem !important;
+  }
+
+  .gap-lg {
+    gap: 1rem !important;
+  }
+
+  .mt-sm {
+    margin-top: 0.5rem !important;
+  }
+
+  .mt-md {
+    margin-top: 0.8rem !important;
+  }
+
+  .mt-lg {
+    margin-top: 1.2rem !important;
+  }
+
+  .mb-sm {
+    margin-bottom: 0.5rem !important;
+  }
+
+  .mb-md {
+    margin-bottom: 0.8rem !important;
+  }
+
+  .mb-lg {
+    margin-bottom: 1.2rem !important;
+  }
+
+  .p-sm {
+    padding: 0.4rem !important;
+  }
+
+  .p-md {
+    padding: 0.6rem !important;
+  }
+
+  .p-lg {
+    padding: 0.85rem !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * 9️⃣ REDUCED MOTION (aligna con site.css)
+ * ───────────────────────────────────────────────────────────── */
+@media (max-width: 767.98px) and (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
