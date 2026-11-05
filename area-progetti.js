@@ -79,7 +79,8 @@
     const icon  = TIPO_ICONS[p.tipo || p.type]  || "📁";
     const tipo  = TIPO_LABELS[p.tipo || p.type] || p.tipo || p.type || "";
     const url   = p.url || p.link || "#";                           // compatibile con entrambi i campi
-    const scheda = p.scheda || `progetto.html?id=${p.id}`;          // genera automaticamente se manca
+    const scheda = p.detailPage || p.scheda || `progetto.html?id=${p.id}`;  // file scheda reale dai dati
+    const sub = p.sottotitolo ? `<p class="prog-sub">${escHtml(p.sottotitolo)}</p>` : "";
     const tags   = (p.tags || []).slice(0, 4)
                      .map(t => `<span class="prog-tag">${escHtml(t)}</span>`).join("");
     const hlClass = (p.featured || p.highlight) ? " prog-card--highlight" : "";
@@ -95,7 +96,7 @@
           </div>
         </div>
         <h3 class="prog-nome">${escHtml(p.nome || p.title || "")}</h3>
-        <p class="prog-sub">${escHtml(p.sottotitolo || p.description?.slice(0,80) || "")}</p>
+        ${sub}
         <p class="prog-desc">${escHtml((p.descrizione || p.description || "").slice(0,140))}…</p>
         <div class="prog-tags">${tags}</div>
         <div class="prog-actions">
@@ -179,7 +180,8 @@
   /* ─── Filtro per area (pagine area) ─────────────────────────────────────── */
   async function renderArea() {
     const area      = detectArea();
-    const container = document.getElementById("lista-progetti");
+    const section   = document.getElementById("lista-progetti");
+    const container = section?.querySelector("[data-project-list]") || section;
     if (!container) return;
 
     injectStyles();
