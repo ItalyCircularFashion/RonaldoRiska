@@ -93,38 +93,59 @@ const renderTagList = (items = []) =>
 const renderProjectCard = (project, options = {}) => {
   const category = categories[project.category] || {};
   const typeClass = project.type === "html" ? "is-live" : "is-source";
+  const statusClass = project.status === "Live" ? "is-status-live" : "is-status-draft";
   const directHref = fromRoot(project.url);
   const schedaHref = project.detailPage ? project.detailPage : detailHref(project);
+  const headingTag = options.heading || "h3";
+  const initial = (category.shortLabel || category.label || project.category || "?").trim().charAt(0).toUpperCase();
 
   return `
-    <article class="project-card reveal ${typeClass}" data-project-card data-category="${escapeHtml(
+    <article class="project-card planet-card reveal ${typeClass} ${statusClass}" data-project-card data-category="${escapeHtml(
     project.category
   )}" data-search="${escapeHtml(`${project.title} ${project.description} ${project.tags.join(" ")}`.toLowerCase())}">
-      <a class="project-preview" href="${schedaHref}" aria-label="Apri scheda ${escapeHtml(project.title)}">
-        <span class="preview-topline"></span>
-        <span class="preview-grid" aria-hidden="true">
-          <span></span><span></span><span></span><span></span>
-        </span>
-        <span class="preview-label">${escapeHtml(category.shortLabel || category.label || project.category)}</span>
+      <a class="planet-sphere planet-sphere--${escapeHtml(project.category)}" href="${schedaHref}" aria-label="Apri scheda ${escapeHtml(project.title)}">
+        <span class="planet-orbit" aria-hidden="true"></span>
+        <span class="planet-initial" aria-hidden="true">${escapeHtml(initial)}</span>
+        <${headingTag} class="planet-title">${escapeHtml(project.title)}</${headingTag}>
       </a>
-      <div class="project-card-body">
-        <div class="project-card-meta">
-          <span>${escapeHtml(category.label || project.category)}</span>
-          <span>${escapeHtml(project.status)}</span>
-        </div>
-        <h3>${escapeHtml(project.title)}</h3>
+      <p class="planet-status"><span class="status-dot" aria-hidden="true"></span>${escapeHtml(project.status)} · ${escapeHtml(category.label || project.category)}</p>
+      <button class="planet-hint-btn" type="button" data-planet-toggle aria-expanded="false" aria-controls="planet-details-${escapeHtml(project.id)}">Scopri i dettagli</button>
+      <div class="planet-details" id="planet-details-${escapeHtml(project.id)}">
         <p>${escapeHtml(project.description)}</p>
-        <ul class="tag-list" aria-label="Tag progetto">${renderTagList(project.tags.slice(0, options.compact ? 3 : 5))}</ul>
-      </div>
-      <div class="card-actions">
-        <a class="button button-primary" href="${schedaHref}">Scheda tecnica</a>
-        <a class="button button-ghost" href="${directHref}" target="_blank" rel="noopener">${projectTypeLabel[project.type] || "Apri"}</a>
+        <ul class="tag-list" aria-label="Tag progetto">${renderTagList(project.tags.slice(0, 5))}</ul>
+        <div class="card-actions">
+          <a class="button button-primary" href="${schedaHref}" aria-label="Scheda tecnica di ${escapeHtml(project.title)}">Scheda tecnica</a>
+          <a class="button button-ghost" href="${directHref}" target="_blank" rel="noopener" aria-label="${escapeHtml(projectTypeLabel[project.type] || "Apri")} — ${escapeHtml(project.title)}">${projectTypeLabel[project.type] || "Apri"}</a>
+        </div>
       </div>
     </article>
   `;
 };
 
 const renderProjectLists = () => {
+  if (!projects.length) return;
+
+  const groupsMount = qs("[data-project-groups]");
+  if (groupsMount) {
+    const groupOrder = ["tessitura", "cad", "supply"];
+    groupsMount.innerHTML = groupOrder
+      .map((key) => {
+        const category = categories[key] || {};
+        const list = getCategoryProjects(key);
+        if (!list.length) return "";
+        return `
+          <section class="project-constellation" data-constellation="${escapeHtml(key)}" aria-labelledby="constellation-${escapeHtml(key)}">
+            <header class="constellation-head">
+              <p class="eyebrow">${escapeHtml(category.tone || category.label || key)}</p>
+              <h3 id="constellation-${escapeHtml(key)}">${escapeHtml(category.label || key)} <span class="constellation-count">${list.length}</span></h3>
+              <p>${escapeHtml(category.summary || "")}</p>
+            </header>
+            <div class="project-grid planet-grid">${list.map((project) => renderProjectCard(project, { heading: "h4" })).join("")}</div>
+          </section>`;
+      })
+      .join("");
+  }
+
   qsa("[data-project-list]").forEach((mount) => {
     const category = mount.dataset.category || "all";
     const featuredOnly = mount.dataset.featured === "true";
@@ -134,7 +155,7 @@ const renderProjectLists = () => {
     if (featuredOnly) list = list.filter((project) => project.featured);
     if (limit > 0) list = list.slice(0, limit);
 
-    mount.innerHTML = list.map((project) => renderProjectCard(project, { compact: category === "all" })).join("");
+    mount.innerHTML = list.map((project) => renderProjectCard(project, {})).join("");
   });
 };
 
@@ -147,18 +168,62 @@ const applyProjectFilters = () => {
     const matchesSearch = !searchValue || (card.dataset.search || "").includes(searchValue);
     card.classList.toggle("is-hidden", !(matchesFilter && matchesSearch));
   });
+
+  qsa("[data-constellation]").forEach((group) => {
+    const hasVisible = qsa("[data-project-card]", group).some((card) => !card.classList.contains("is-hidden"));
+    group.classList.toggle("is-hidden", !hasVisible);
+    group.hidden = !hasVisible;
+  });
+
+  const totalVisible = qsa("[data-project-card]:not(.is-hidden)").length;
+  const emptyEl = qs("[data-project-empty]");
+  if (emptyEl) {
+    emptyEl.classList.toggle("is-hidden", totalVisible > 0);
+    emptyEl.hidden = totalVisible > 0;
+  }
 };
 
 const initProjectFilters = () => {
   qsa("[data-filter]").forEach((button) => {
+    const filterKey = button.dataset.filter;
+    const count = filterKey === "all" ? projects.length : getCategoryProjects(filterKey).length;
+    const countEl = qs("[data-filter-count]", button);
+    if (countEl) countEl.textContent = String(count);
+    button.setAttribute("aria-pressed", button.classList.contains("is-active") ? "true" : "false");
     button.addEventListener("click", () => {
-      qsa("[data-filter]").forEach((item) => item.classList.remove("is-active"));
+      qsa("[data-filter]").forEach((item) => {
+        item.classList.remove("is-active");
+        item.setAttribute("aria-pressed", "false");
+      });
       button.classList.add("is-active");
+      button.setAttribute("aria-pressed", "true");
       applyProjectFilters();
     });
   });
 
   qs("[data-project-search]")?.addEventListener("input", applyProjectFilters);
+
+  qs("[data-project-reset]")?.addEventListener("click", () => {
+    const searchInput = qs("[data-project-search]");
+    if (searchInput) searchInput.value = "";
+    qsa("[data-filter]").forEach((item) => {
+      const isAll = item.dataset.filter === "all";
+      item.classList.toggle("is-active", isAll);
+      item.setAttribute("aria-pressed", isAll ? "true" : "false");
+    });
+    applyProjectFilters();
+  });
+
+  qsa("[data-planet-toggle]").forEach((toggle) => {
+    toggle.addEventListener("click", () => {
+      const card = toggle.closest("[data-project-card]");
+      if (!card) return;
+      const isOpen = card.classList.toggle("is-open");
+      toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      toggle.textContent = isOpen ? "Nascondi i dettagli" : "Scopri i dettagli";
+    });
+  });
+
   applyProjectFilters();
 };
 

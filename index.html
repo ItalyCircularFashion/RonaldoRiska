@@ -857,10 +857,10 @@
           </div>
           <div class="toolbar reveal">
             <div class="filter-group" role="group" aria-label="Filtri categoria progetto">
-              <button class="filter-button is-active" type="button" data-filter="all">Tutti</button>
-              <button class="filter-button" type="button" data-filter="tessitura">Tessitura</button>
-              <button class="filter-button" type="button" data-filter="cad">CAD Moda</button>
-              <button class="filter-button" type="button" data-filter="supply">Supply Chain</button>
+              <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">Tutti <span class="filter-count" data-filter-count="all"></span></button>
+              <button class="filter-button" type="button" data-filter="tessitura" aria-pressed="false">Tessitura <span class="filter-count" data-filter-count="tessitura"></span></button>
+              <button class="filter-button" type="button" data-filter="cad" aria-pressed="false">CAD Moda <span class="filter-count" data-filter-count="cad"></span></button>
+              <button class="filter-button" type="button" data-filter="supply" aria-pressed="false">Supply Chain <span class="filter-count" data-filter-count="supply"></span></button>
             </div>
             <label class="sr-only" for="project-search">Cerca progetto</label>
             <input id="project-search" class="search-input" type="search"
@@ -868,9 +868,9 @@
                    data-project-search
                    autocomplete="off">
           </div>
-          <!-- Mount point: popolato da main.js tramite project-data.js -->
-          <div class="project-grid" data-density="compact" data-project-list data-category="all"
-               aria-live="polite" aria-label="Griglia progetti"></div>
+          <!-- Costellazioni: popolate da main.js tramite project-data.js, raggruppate per categoria -->
+          <div class="project-constellations" data-project-groups aria-live="polite" aria-label="Progetti raggruppati per categoria"></div>
+          <p class="project-empty is-hidden" data-project-empty hidden>Nessun progetto trovato per questa ricerca o filtro. <button class="button button-ghost" type="button" data-project-reset>Mostra tutti i progetti</button></p>
         </div>
       </section>
 
