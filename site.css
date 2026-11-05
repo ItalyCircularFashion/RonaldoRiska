@@ -1,32 +1,57 @@
 :root {
   color-scheme: dark;
-  --bg: #070b09;
-  --bg-soft: #0d1511;
-  --surface: #111a15;
-  --surface-2: #17231d;
+  --bg: #0b0d0c;
+  --bg-soft: #101311;
+  --surface: #121514;
+  --surface-2: #1a1e1c;
   --surface-3: #f7f3ea;
-  --ink: #f8faf7;
+  --ink: #f2f0e9;
   --ink-strong: #ffffff;
-  --muted: #aebbb3;
-  --muted-2: #6f7f75;
-  --line: rgba(232, 226, 214, 0.16);
-  --line-strong: rgba(232, 226, 214, 0.28);
+  --muted: #a8b0a9;
+  --muted-2: #8a948d;
+  --line: rgba(232, 230, 220, 0.12);
+  --line-strong: rgba(232, 230, 220, 0.24);
   --accent: #c7a45b;
-  --accent-2: #1f6f4a;
+  --accent-2: #2e8b5e;
   --accent-3: #e8dfcd;
   --danger: #c96d55;
   --chart-line: #c7a45b;
   --chart-fill: rgba(199, 164, 91, 0.16);
-  --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
-  --radius: 8px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+  --radius: 10px;
   --container: 1180px;
   --content: 72ch;
-  --space-section: clamp(5.5rem, 9vw, 9rem);
-  --space-section-tight: clamp(3.5rem, 7vw, 5.75rem);
-  --space-card: clamp(1.4rem, 2.5vw, 2rem);
+  --space-section: clamp(4rem, 7vw, 6.5rem);
+  --space-section-tight: clamp(2.75rem, 5vw, 4rem);
+  --space-card: clamp(1.25rem, 2vw, 1.75rem);
   --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --accent-ink: #08110c;
+  --accent-ink: #14100a;
   --footer-bg: color-mix(in srgb, var(--bg) 88%, transparent);
+  /* GEN2 design system — Contemporary Industrial Editorial */
+  --gen2-bg: #0b0d0c;
+  --gen2-surface: #121514;
+  --gen2-surface-2: #1a1e1c;
+  --gen2-line: rgba(232, 230, 220, 0.12);
+  --gen2-line-strong: rgba(232, 230, 220, 0.24);
+  --gen2-ink: #f2f0e9;
+  --gen2-muted: #a8b0a9;
+  --gen2-accent: #c7a45b;
+  --gen2-accent-ink: #14100a;
+  --gen2-live: #3db87a;
+  --gen2-display: "Plus Jakarta Sans", Inter, ui-sans-serif, system-ui, sans-serif;
+  --gen2-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --gen2-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --gen2-s1: 0.25rem;
+  --gen2-s2: 0.5rem;
+  --gen2-s3: 0.75rem;
+  --gen2-s4: 1rem;
+  --gen2-s6: 1.5rem;
+  --gen2-s8: 2rem;
+  --gen2-s12: 3rem;
+  --gen2-s16: 4rem;
+  --gen2-radius: 10px;
+  --gen2-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+  --gen2-motion: 200ms ease;
 }
 
 :root[data-theme="light"] {
@@ -45,6 +70,14 @@
   --chart-fill: rgba(31, 111, 74, 0.16);
   --accent-ink: #ffffff;
   --footer-bg: color-mix(in srgb, var(--surface) 88%, transparent);
+  --gen2-bg: #f8f8f4;
+  --gen2-surface: #ffffff;
+  --gen2-surface-2: #edf3ee;
+  --gen2-line: rgba(19, 32, 25, 0.14);
+  --gen2-line-strong: rgba(19, 32, 25, 0.24);
+  --gen2-ink: #132019;
+  --gen2-muted: #5f6c63;
+  --gen2-accent-ink: #ffffff;
 }
 
 * {
@@ -114,21 +147,23 @@ h2,
 h3 {
   margin: 0;
   color: var(--ink-strong);
-  line-height: 1.02;
-  letter-spacing: -0.01em;
+  font-family: var(--gen2-display);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
 h1 {
-  font-size: clamp(3.2rem, 11vw, 8.5rem);
+  font-size: clamp(2.6rem, 7vw, 5.5rem);
 }
 
 h2 {
-  font-size: clamp(2rem, 5vw, 4.4rem);
+  font-size: clamp(1.9rem, 4vw, 3rem);
 }
 
 h3 {
-  font-size: clamp(1.1rem, 2vw, 1.42rem);
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
 }
 
 p {
@@ -414,9 +449,10 @@ dt {
 .eyebrow {
   margin: 0 0 0.85rem;
   color: var(--accent);
-  font-size: 0.76rem;
-  font-weight: 950;
-  letter-spacing: 0;
+  font-family: var(--gen2-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
@@ -1546,6 +1582,76 @@ dt {
   .planet-details {
     transition: none;
   }
+}
+
+/* --- GEN2 unification: shared components beat legacy patch overrides (body specificity) --- */
+body .button {
+  min-height: 44px;
+  padding: 0.72rem 1.05rem;
+  border-radius: var(--gen2-radius);
+  font-weight: 800;
+  transition: transform var(--gen2-motion), background var(--gen2-motion), border-color var(--gen2-motion);
+}
+body .button-primary {
+  color: var(--gen2-accent-ink);
+  background: var(--gen2-accent);
+  border-color: transparent;
+}
+body .button-secondary {
+  color: var(--gen2-ink);
+  background: var(--gen2-surface);
+  border-color: var(--gen2-line-strong);
+}
+body .button-ghost {
+  color: var(--gen2-ink);
+  background: transparent;
+  border-color: var(--gen2-line);
+}
+body .category-card,
+body .project-card,
+body .timeline-card,
+body .skill-card,
+body .education-card,
+body .analysis-panel,
+body .source-panel,
+body .contact-panel {
+  background: var(--gen2-surface);
+  border: 1px solid var(--gen2-line);
+  border-radius: var(--gen2-radius);
+  box-shadow: var(--gen2-shadow);
+}
+body .filter-button {
+  min-height: 44px;
+  color: var(--gen2-ink);
+  background: var(--gen2-surface);
+  border: 1px solid var(--gen2-line);
+  border-radius: var(--gen2-radius);
+}
+body .filter-button:hover,
+body .filter-button.is-active {
+  color: var(--gen2-accent-ink);
+  background: var(--gen2-accent);
+  border-color: transparent;
+}
+body .search-input {
+  min-height: 44px;
+  color: var(--gen2-ink);
+  background: var(--gen2-surface);
+  border: 1px solid var(--gen2-line);
+  border-radius: var(--gen2-radius);
+}
+body :focus-visible {
+  outline: 3px solid var(--gen2-accent);
+  outline-offset: 3px;
+}
+body .eyebrow {
+  color: var(--gen2-accent);
+  font-family: var(--gen2-mono);
+  letter-spacing: 0.12em;
+}
+body .hero-visual {
+  border-color: var(--gen2-line-strong);
+  box-shadow: var(--gen2-shadow);
 }
 
 /* ─── CLS FIX: Canvas dimensioni fisse ─── */
