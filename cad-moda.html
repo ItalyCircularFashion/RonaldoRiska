@@ -110,7 +110,8 @@
       </nav>
     </header>
 
-    <main id="main">
+        <main id="main">
+
       <section class="page-hero section">
         <div class="container dashboard-grid">
           <div class="reveal">
@@ -129,21 +130,38 @@
         </div>
       </section>
 
-      <section class="section section-band">
+      <section class="section" id="in-evidenza" aria-labelledby="in-evidenza-title">
         <div class="container">
           <div class="section-heading reveal">
-            <p class="eyebrow">Product workflow</p>
-            <h2>Dalla modellistica al prototipo digitale.</h2>
+            <div>
+              <p class="eyebrow">In evidenza</p>
+              <h2 id="in-evidenza-title">Strumenti principali dell'area</h2>
+            </div>
+            <p>Selezione operativa: accessi diretti agli strumenti pi&ugrave; utilizzati e alla scheda tecnica.</p>
           </div>
-          <ul class="process-list">
-            <li class="reveal"><strong>01</strong><span>Workspace CAD per modellistica e progettazione prodotto.</span></li>
-            <li class="reveal"><strong>02</strong><span>Costruzioni di cartamodelli e visualizzazione del prodotto.</span></li>
-            <li class="reveal"><strong>03</strong><span>SketchHD: da concept e sketch a output più definiti.</span></li>
-          </ul>
+          <div class="hub-featured-grid">
+            <article class="hub-featured-card reveal">
+              <h3>SketchHD — Sketch to HD</h3>
+              <p>Workflow AI per la trasformazione di sketch digitali in immagini ad alta definizione, con analisi Claude Vision e preset stilistici fashion.</p>
+              <div class="featured-actions">
+                <a class="button button-primary" href="sketchhd-artifact.html">Apri tool</a>
+                <a class="button button-ghost" href="progetto-sketchhd.html">Scheda tecnica</a>
+              </div>
+            </article>
+            <article class="hub-featured-card reveal">
+              <h3>ModaCAD Studio</h3>
+              <p>Workspace tecnico per modellistica digitale, costruzione cartamodelli e gradazione taglie, in dark-mode professionale.</p>
+              <div class="featured-actions">
+                <a class="button button-primary" href="modacad.html">Apri tool</a>
+                <a class="button button-ghost" href="progetto.html?id=modacad-ep1">Scheda tecnica</a>
+              </div>
+            </article>
+          </div>
         </div>
       </section>
 
-      <section class="section" id="lista-progetti">
+
+<section class="section" id="lista-progetti">
         <div class="container">
           <div class="section-heading reveal">
             <p class="eyebrow">Progetti CAD Moda</p>
@@ -173,6 +191,50 @@
           </div>
         </div>
       </section>
+
+<section class="section section-band">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="eyebrow">Product workflow</p>
+            <h2>Dalla modellistica al prototipo digitale.</h2>
+          </div>
+          <ul class="process-list">
+            <li class="reveal"><strong>01</strong><span>Workspace CAD per modellistica e progettazione prodotto.</span></li>
+            <li class="reveal"><strong>02</strong><span>Costruzioni di cartamodelli e visualizzazione del prodotto.</span></li>
+            <li class="reveal"><strong>03</strong><span>SketchHD: da concept e sketch a output più definiti.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section section-band" aria-labelledby="aree-correlate-title">
+        <div class="container">
+          <div class="section-heading reveal">
+            <div>
+              <p class="eyebrow">Aree correlate</p>
+              <h2 id="aree-correlate-title">Prosegui l'esplorazione</h2>
+            </div>
+          </div>
+          <div class="related-grid">
+            <a class="related-card reveal" href="tessitura.html">
+              <h3>Textile Engineering</h3>
+              <p>Armature, note colore, Gantt ciclo lanificio e strumenti per il distretto tessile pratese.</p>
+              <span class="related-arrow" aria-hidden="true">Area &rarr;</span>
+            </a>
+            <a class="related-card reveal" href="supply-chain-production.html">
+              <h3>Industrial Intelligence</h3>
+              <p>MRP, dashboard supply chain, Kanban e operations analytics industriali.</p>
+              <span class="related-arrow" aria-hidden="true">Area &rarr;</span>
+            </a>
+            <a class="related-card reveal" href="sostenibilita-certificazioni.html">
+              <h3>Research &amp; Sustainability</h3>
+              <p>LCA, certificazioni, osservatorio tessile e TextileHUB Network.</p>
+              <span class="related-arrow" aria-hidden="true">Area &rarr;</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+
     </main>
 
     <footer class="site-footer gen2-footer">
