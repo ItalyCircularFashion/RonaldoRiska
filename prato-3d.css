@@ -1,0 +1,26 @@
+/* Prato 3D — scena low-poly distretto tessile (solo homepage, body.page-home). */
+.fx-3d{position:relative;padding:clamp(4.2rem,8vw,7rem) 0 clamp(2rem,4vw,3rem)}
+.fx-3d-stage{position:relative;max-width:1320px;margin:0 auto;height:min(86vh,760px);min-height:520px;border-radius:28px;overflow:hidden;border:1px solid var(--line-strong);background:#0b0d0c;box-shadow:0 40px 100px rgba(0,0,0,.45)}
+.fx-3d-stage canvas{position:absolute;inset:0;width:100%!important;height:100%!important;display:block;touch-action:none;cursor:grab}
+.fx-3d-stage canvas:active{cursor:grabbing}
+.fx-3d-hud{position:absolute;top:clamp(1rem,3vw,2rem);left:clamp(1rem,3vw,2rem);max-width:min(520px,calc(100% - 2rem));padding:clamp(1rem,2.4vw,1.6rem);border-radius:20px;background:color-mix(in srgb,var(--bg) 72%,transparent);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);pointer-events:none;z-index:3}
+.fx-3d-hud .fx-h2{font-size:clamp(2rem,5vw,3.6rem);margin:.2rem 0 .4rem}
+.fx-3d-hud .fx-sub{font-size:.98rem}
+.fx-3d-status{margin:.8rem 0 0;color:var(--fx-gold,#c7a45b);font-weight:700;font-size:.88rem}
+.fx-3d-meta{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.8rem}
+.fx-3d-meta span{border:1px solid var(--line-strong);border-radius:999px;padding:.35rem .8rem;font-size:.8rem;background:color-mix(in srgb,var(--surface) 80%,transparent)}
+.fx-3d-touch{position:absolute;right:clamp(.8rem,2vw,1.4rem);bottom:clamp(.8rem,2vw,1.4rem);display:grid;grid-template-columns:repeat(2,58px);gap:.55rem;z-index:4}
+.fx-3d-touch button{width:58px;height:58px;border-radius:50%;border:1px solid var(--line-strong);background:color-mix(in srgb,var(--bg) 78%,transparent);color:var(--ink);font-size:1.15rem;backdrop-filter:blur(8px);cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none;transition:transform .15s var(--fx-ease,#cubic-bezier(.22,1,.36,1)),background .2s}
+.fx-3d-touch button:active{transform:scale(.92);background:rgba(199,164,91,.25)}
+.fx-3d-help{position:absolute;left:clamp(.9rem,2vw,1.4rem);bottom:clamp(.8rem,2vw,1.4rem);z-index:4;margin:0;font-size:.78rem;color:var(--muted);background:color-mix(in srgb,var(--bg) 70%,transparent);border:1px solid var(--line);border-radius:999px;padding:.45rem .85rem;backdrop-filter:blur(8px)}
+.fx-3d-stage::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(11,13,12,.28),transparent 28%,transparent 72%,rgba(11,13,12,.34));z-index:2}
+@media (max-width:767.98px){
+  .fx-3d-stage{min-height:560px;height:82vh}
+  .fx-3d-hud{max-width:calc(100% - 1.4rem)}
+  .fx-3d-help{display:none}
+  .fx-3d-touch{grid-template-columns:repeat(2,54px)}
+  .fx-3d-touch button{width:54px;height:54px}
+}
+@media (prefers-reduced-motion:reduce){
+  .fx-3d-stage canvas{cursor:default}
+}

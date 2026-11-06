@@ -69,7 +69,7 @@
         if (!reduced) {
           var dx = p.x - mouse.x, dy = p.y - mouse.y, d = Math.hypot(dx, dy);
           if (d < 130 && d > 0.1) { p.vx += (dx / d) * 0.12; p.vy += (dy / d) * 0.12; }
-          p.vx *= 0.985; p.vy = p.vy * 0.985 + 0.004;
+          p.vx *= 0.985; p.vy = p.vy * 0.985 + 0.004 + (window.__fxVel || 0) * 0.015;
           p.x += p.vx; p.y += p.vy;
           if (p.y > H + 6) { p.y = -6; p.x = Math.random() * W; }
           if (p.x < -6) p.x = W + 6; if (p.x > W + 6) p.x = -6;
@@ -109,11 +109,14 @@
   splitHero();
 
   /* Attesa GSAP completi (async, ordine non garantito): gsap + ScrollTrigger + Flip */
+  window.__fxErrs = [];
+  window.addEventListener("error", function (e) { window.__fxErrs.push(String(e.message)); });
+  var fxSafe = function (name, fn) { try { fn(); } catch (err) { window.__fxErrs.push(name + ": " + err.message); } };
   var tries = 0;
   (function wait() {
-    if (window.gsap && window.ScrollTrigger && window.Flip) { try { init(); } catch (e) {} return; }
-    if (++tries > 60) { /* fallback: core solo — init gestisce i plugin mancanti */
-      if (window.gsap) try { init(); } catch (e) {}
+    if (window.gsap && window.ScrollTrigger && window.Flip) { fxSafe("init", init); return; }
+    if (++tries > 120) { /* fallback: core solo — init gestisce i plugin mancanti */
+      if (window.gsap) fxSafe("init-fallback", init);
       return;
     }
     setTimeout(wait, 100);
@@ -302,16 +305,81 @@
     });
     }
 
-    /* Tilt lieve sulle card bento (pointer fine) */
+    /* ── DINAMICA TOTALE: entry/exit reversibili (entrano e uscendo si ritrasformano) ── */
+    if (hasST) qsa(".fx-bento .fx-tile, .fx-grid .project-card, .fx-featured .featured-card, .fx-rail .category-block, .fx-kpi, .fx-journal article").forEach(function (el) {
+      gsap.fromTo(el,
+        { y: 80, opacity: 0, rotate: 2.5, scale: 0.95, clipPath: "inset(0 0 100% 0)" },
+        { y: 0, opacity: 1, rotate: 0, scale: 1, clipPath: "inset(0 0 0% 0)", duration: 0.85, ease: "power4.out",
+          scrollTrigger: { trigger: el, start: "top 92%", end: "bottom 8%", toggleActions: "play reverse play reverse" } });
+    });
+
+    /* Hero exit: mentre esci dalla hero, si comprime e ruota */
+    if (hasST) gsap.to(".fx-hero", { scale: 0.9, rotate: -1.5, opacity: 0.35, transformOrigin: "50% 0%", ease: "none",
+      scrollTrigger: { trigger: ".fx-hero", start: "top top", end: "bottom top", scrub: true } });
+
+    /* Velocity skew: la griglia si inclina con la velocità di scroll */
+    if (hasST && finePointer) {
+      var skewTo = gsap.quickTo(".fx-grid, .fx-bento, .fx-rail", "skewY", { duration: 0.35, ease: "power3.out" });
+      ScrollTrigger.create({ onUpdate: function (self) {
+        skewTo(clamp(self.getVelocity() / -320, -6, 6));
+        window.__fxVel = clamp(self.getVelocity() / 500, -3, 3);
+      } });
+    }
+
+    /* Ticker di sezione: indicatore dinamico fixed (indipendente dagli altri blocchi) */
+    fxSafe("ticker", function () {
+      var ticker = document.createElement("div");
+      ticker.className = "fx-ticker"; ticker.setAttribute("aria-hidden", "true");
+      document.body.appendChild(ticker);
+      var secs = [["#top", "01/06 · Hero"], ["#featured", "02/06 · In evidenza"], ["#progetti", "03/06 · Progetti"],
+        ["#industrial", "04/06 · Industrial"], ["#research-textile", "05/06 · Research"], ["#contatti", "06/06 · Contatti"]];
+      secs.forEach(function (s) {
+        var el = qs(s[0]); if (!el || !hasST) return;
+        ScrollTrigger.create({ trigger: el, start: "top 55%", end: "bottom 55%",
+          onToggle: function (self) { if (self.isActive) { ticker.textContent = s[1]; gsap.fromTo(ticker, { y: 8, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }); } } });
+      });
+    });
+
+    /* Glitch intermittente sul titolo hero */
+    var heroTitle = qs(".fx-hero-title");
+    if (heroTitle) setInterval(function () {
+      heroTitle.classList.add("glitching");
+      setTimeout(function () { heroTitle.classList.remove("glitching"); }, 320);
+    }, 3400);
+
+    /* Cursor trail: scia di punti che sfuma */
+    if (finePointer) {
+      var dots = [];
+      for (var i = 0; i < 10; i++) {
+        var d = document.createElement("div");
+        d.className = "fx-trail-dot";
+        document.body.appendChild(d);
+        dots.push(d);
+      }
+      var last = 0;
+      window.addEventListener("pointermove", function (e) {
+        var now = Date.now();
+        if (now - last < 40) return; last = now;
+        var dot = dots.shift(); dots.push(dot);
+        dot.style.left = e.clientX + "px"; dot.style.top = e.clientY + "px";
+        gsap.fromTo(dot, { opacity: 0.7, scale: 1 }, { opacity: 0, scale: 0.1, duration: 0.8, ease: "power2.out" });
+      }, { passive: true });
+    }
+
+    /* Tilt con inerzia (quickTo) sulle card bento (pointer fine) */
     if (finePointer) {
       var tiltEls = qsa(".fx-tile");
       tiltEls.forEach(function (el) {
+        var rX = gsap.quickTo(el, "rotationX", { duration: 0.5, ease: "power3.out" });
+        var rY = gsap.quickTo(el, "rotationY", { duration: 0.5, ease: "power3.out" });
         el.addEventListener("pointermove", function (e) {
           var r = el.getBoundingClientRect();
           var px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
-          gsap.to(el, { rotateY: (px - 0.5) * 8, rotateX: (0.5 - py) * 8, transformPerspective: 800, duration: 0.4 });
+          el.style.setProperty("--mx", (px * 100) + "%");
+          el.style.setProperty("--my", (py * 100) + "%");
+          rY((px - 0.5) * 12); rX((0.5 - py) * 12);
         });
-        el.addEventListener("pointerleave", function () { gsap.to(el, { rotateX: 0, rotateY: 0, duration: 0.6 }); });
+        el.addEventListener("pointerleave", function () { rX(0); rY(0); });
       });
     }
   }

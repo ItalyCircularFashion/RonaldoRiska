@@ -240,3 +240,17 @@ body.page-home .nav-group[open] .nav-group-label::after{content:" –"}
   body.page-home *,body.page-home *::before,body.page-home *::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;transform:none!important}
   .fx-panel{position:static}
 }
+
+/* ── DINAMICA TOTALE: layer reattivo (glitch, trail, ticker, spotlight hover) ── */
+body.page-home .fx-grid,body.page-home .fx-bento,body.page-home .fx-rail{will-change:transform}
+.fx-ticker{position:fixed;left:1rem;bottom:1rem;z-index:90;font-family:var(--font-mono,monospace);font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--fx-gold);border:1px solid var(--line-strong);border-radius:999px;padding:.45rem .95rem;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(8px);pointer-events:none}
+.fx-trail-dot{position:fixed;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:var(--fx-gold);z-index:98;pointer-events:none;opacity:0;mix-blend-mode:difference}
+@keyframes fx-glitch{0%{text-shadow:3px 0 var(--fx-mag),-3px 0 var(--fx-teal);transform:translate(2px,-1px)}33%{text-shadow:-4px 0 var(--fx-mag),4px 0 var(--fx-teal);transform:translate(-3px,1px)}66%{text-shadow:2px 0 var(--fx-gold),-2px 0 var(--fx-mag);transform:translate(1px,0)}100%{text-shadow:none;transform:none}}
+.fx-hero-title.glitching{animation:fx-glitch .3s steps(2) both}
+body.page-home .fx-tile,body.page-home .fx-grid .project-card,body.page-home .fx-featured .featured-card,body.page-home .fx-rail .category-block{position:relative;overflow:hidden}
+body.page-home .fx-tile::before,body.page-home .fx-grid .project-card::before,body.page-home .fx-featured .featured-card::before,body.page-home .fx-rail .category-block::before{content:"";position:absolute;inset:0;opacity:0;transition:opacity .35s ease;pointer-events:none;background:radial-gradient(22rem 16rem at var(--mx,50%) var(--my,50%),rgba(199,164,91,.16),transparent 65%)}
+body.page-home .fx-tile:hover::before,body.page-home .fx-grid .project-card:hover::before,body.page-home .fx-featured .featured-card:hover::before,body.page-home .fx-rail .category-block:hover::before{opacity:1}
+body.page-home .fx-grid .project-card:hover{transform:translateY(-8px) rotate(-.6deg) scale(1.02)}
+body.page-home .fx-featured .featured-card:hover{transform:translateY(-8px) rotate(.6deg) scale(1.02)}
+@media (pointer:coarse){.fx-trail-dot,.fx-cursor{display:none}}
+@media (prefers-reduced-motion:reduce){.fx-ticker{display:none!important}.fx-hero-title.glitching{animation:none!important}}
