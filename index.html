@@ -229,8 +229,13 @@
 <link rel="stylesheet" href="fonts.css">
 <link rel="stylesheet" href="site-font.css">
 <link rel="stylesheet" href="mobile.css">
+    <link rel="stylesheet" href="homepage-motion.css">
 </head>
-  <body>
+  <body class="page-home">
+    <div class="hp-aurora" aria-hidden="true"></div>
+    <div class="hp-grain" aria-hidden="true"></div>
+    <div class="hp-progress" aria-hidden="true"></div>
+    <div class="hp-cursor" aria-hidden="true"></div>
     <a class="external-site-bar" href="https://italycircularfashion.github.io/RonaldoRiskaCV/" target="_blank" rel="noopener noreferrer">
       <span class="external-site-bar__icon">↗</span>
       <span class="external-site-bar__text">Qui puoi vedere un altro sito realizzato interamente da me</span>
@@ -1282,5 +1287,9 @@
 
       <script src="sheep-walk.js" defer></script>
   <script src="mobile.js"></script>
+    <!-- Homepage experimental: GSAP + ScrollTrigger (CDN async, non bloccanti) + motion layer locale -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" async></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" async></script>
+    <script src="homepage-motion.js" defer></script>
 </body>
 </html>
