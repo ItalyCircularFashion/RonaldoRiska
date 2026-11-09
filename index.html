@@ -229,9 +229,8 @@
 <link rel="stylesheet" href="fonts.css">
 <link rel="stylesheet" href="site-font.css">
 <link rel="stylesheet" href="mobile.css">
-    <link rel="stylesheet" href="homepage-experimental.css">
-    <link rel="stylesheet" href="prato-3d.css">
-    <link rel="stylesheet" href="weaver-3d.css">
+<link rel="stylesheet" href="homepage-experimental.css">
+<link rel="stylesheet" href="weaver-3d.css">
 </head>
 <body class="page-home">
     <canvas class="fx-canvas" aria-hidden="true"></canvas>
@@ -326,27 +325,6 @@
 
     <!-- ── MAIN (un solo <main> per pagina: BUG CORRETTO) ── -->
         <main id="main">
-
-<section class="fx-3d" id="prato-3d" aria-label="Distretto tessile di Prato in 3D">
-  <div class="fx-3d-stage">
-    <canvas id="prato3dCanvas" aria-label="Scena 3D low-poly del distretto tessile di Prato. Usa i comandi su schermo o la tastiera per guidare."></canvas>
-    <div class="fx-3d-hud">
-      <p class="fx-eyebrow">Prato · Distretto tessile</p>
-      <h2 class="fx-h2">Esplora Prato in 3D</h2>
-      <p class="fx-sub">Guida la piccola auto tra fabbriche, telai e ponti: raggiungi i cartelli per aprire le aree Tessitura, CAD Moda e Supply Chain.</p>
-      <p class="fx-3d-status" id="prato3dStatus">Caricamento scena 3D…</p>
-      <div class="fx-3d-meta"><span id="prato3dZone">Distretto di Prato</span><span id="prato3dSpeed">0 km/h circa</span></div>
-      <p id="prato3dFallback" hidden>WebGL non disponibile in questo browser: le aree restano esplorabili nelle sezioni sotto.</p>
-    </div>
-    <div class="fx-3d-touch" aria-label="Comandi di guida">
-      <button type="button" data-drive="left" aria-label="Gira a sinistra">◀</button>
-      <button type="button" data-drive="fwd" aria-label="Accelera">▲</button>
-      <button type="button" data-drive="back" aria-label="Retromarcia">▼</button>
-      <button type="button" data-drive="right" aria-label="Gira a destra">▶</button>
-    </div>
-    <p class="fx-3d-help">Trascina per ruotare la camera · WASD/frecce per guidare · tocca i cartelli per aprire le aree</p>
-  </div>
-</section>
 
 <section class="fx-hero" id="top">
   <div class="fx-hero-glow" aria-hidden="true"></div>
@@ -821,7 +799,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" async></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js" async></script>
     <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
-    <script type="module" src="prato-3d.js"></script>
     <div class="weaver-overlay" id="weaver-overlay" hidden>
       <div class="weaver-panel">
         <header class="weaver-header">
