@@ -851,56 +851,6 @@
         </div>
       </div>
     </div>
-    <div class="weaver-overlay" id="weaver-overlay" hidden>
-      <div class="weaver-panel">
-        <header class="weaver-header">
-          <h2 class="weaver-title">Crea il tuo tessuto in 3D</h2>
-          <button class="weaver-close" id="weaver-close" type="button" aria-label="Chiudi">✕</button>
-        </header>
-        <div class="weaver-body">
-          <div class="weaver-canvas-wrap">
-            <canvas id="weaver-canvas"></canvas>
-          </div>
-          <div class="weaver-controls">
-            <h3>Tessitura</h3>
-            <div class="weave-presets">
-              <button type="button" data-pattern="plain">Piatto</button>
-              <button type="button" data-pattern="twill">Twill</button>
-              <button type="button" data-pattern="satin">Satin</button>
-            </div>
-            <div class="control-group">
-              <label for="weaver-pattern">Pattern</label>
-              <select id="weaver-pattern">
-                <option value="plain">Piatto</option>
-                <option value="twill">Twill</option>
-                <option value="satin">Satin</option>
-              </select>
-            </div>
-            <div class="control-group">
-              <label for="weaver-speed">Velocità</label>
-              <input type="range" id="weaver-speed" min="0.2" max="2.0" step="0.1" value="0.8">
-            </div>
-            <div class="control-group" style="flex-direction:row;align-items:center;gap:1rem">
-              <label style="margin:0;width:7rem">Colore weft</label>
-              <input type="color" id="weaver-weft-color" value="#e8cf8f">
-            </div>
-            <div class="control-group" style="flex-direction:row;align-items:center;gap:1rem">
-              <label style="margin:0;width:7rem">Colore warp</label>
-              <input type="color" id="weaver-warp-color" value="#b85a3a">
-            </div>
-            <div class="weaver-legend">
-              <div><span class="swatch" style="background:#e8cf8f"></span> Weft (orizzontale)</div>
-              <div><span class="swatch" style="background:#b85a3a"></span> Warp (verticale)</div>
-            </div>
-            <div class="weaver-footer">
-              <span>Weave engine</span>
-              <span>Three.js</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- RonnyWeave overlay (iframe wrapper) ── */
     <div class="rw-overlay" id="rw-overlay" hidden>
       <div class="rw-panel">
