@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ronaldo Riska — Portfolio Tessile e Supply Chain | Prato</title>
+  <meta name="description" content="Portfolio di Ronaldo Riska: tessitura, CAD moda, supply chain e industrial tech nel distretto di Prato. Esperienza interattiva con mappa del distretto, progetti e tecnologie efficienti.">
+  <meta name="theme-color" content="#0b0e14">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0e14; --bg-soft:#111624; --panel:#151b2a; --panel-2:#1a2033;
+      --ink:#f4efe4; --ink-strong:#fffaf0; --muted:#b8b1a1; --muted-2:#8f97aa;
+      --line:rgba(244,239,228,.14); --line-strong:rgba(244,239,228,.28);
+      --gold:#c8a45d; --gold-2:#e8cf8f; --wine:#7a2740; --rose:#c9657d; --teal:#37c6ae;
+      --radius:22px; --shadow:0 30px 80px rgba(0,0,0,.42);
+      --ease:cubic-bezier(.22,1,.36,1); --roomlight:72%;
+      color-scheme:dark;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.55;overflow-x:hidden}
+    body::before{content:"";position:fixed;inset:0;z-index:-2;background:
+      radial-gradient(60rem 38rem at 82% -10%,rgba(201,101,125,.18),transparent 60%),
+      radial-gradient(55rem 34rem at -10% 22%,rgba(200,164,93,.16),transparent 58%),
+      linear-gradient(180deg,#0b0e14 0%,#0d111c 44%,#0b0e14 100%)}
+    body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.16;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.32'/%3E%3C/svg%3E");mix-blend-mode:overlay}
+    a{color:inherit}
+    button,input{font:inherit}
+    :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+    .skip-link{position:absolute;left:-9999px;top:1rem;z-index:200;background:var(--gold);color:#14100a;padding:.7rem 1rem;border-radius:999px;font-weight:800}
+    .skip-link:focus{left:1rem}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    #dust{position:fixed;inset:0;z-index:0;width:100%;height:100%;pointer-events:none}
+    .cursor{position:fixed;left:0;top:0;z-index:90;width:34px;height:34px;margin:-17px 0 0 -17px;border:1.5px solid var(--gold);border-radius:50%;pointer-events:none;mix-blend-mode:difference;opacity:0;transition:opacity .3s,width .25s,height .25s,margin .25s,background .25s}
+    body[data-pointer="fine"] .cursor{opacity:.9}
+    .cursor.is-hot{width:58px;height:58px;margin:-29px 0 0 -29px;background:rgba(200,164,93,.16)}
+    .progress{position:fixed;left:0;right:0;top:0;height:3px;z-index:120;background:linear-gradient(90deg,var(--gold),var(--rose));transform-origin:0 50%;transform:scaleX(0)}
+    .container{width:min(1320px,calc(100% - 2.5rem));margin-inline:auto}
+    .site-header{position:fixed;inset:1rem 1rem auto;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:.7rem .8rem;border:1px solid var(--line);border-radius:999px;background:rgba(11,14,20,.62);backdrop-filter:blur(16px)}
+    .brand{display:flex;align-items:center;gap:.75rem;text-decoration:none;min-width:0}
+    .brand-mark{width:44px;height:44px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--wine));color:#fff;font-family:"Cormorant Garamond",serif;font-size:1.35rem;font-weight:700;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    .brand-text{display:grid;line-height:1.05}.brand-text strong{font-size:.98rem;letter-spacing:.02em}.brand-text span{font-size:.72rem;color:var(--muted);letter-spacing:.18em;text-transform:uppercase}
+    .nav-links{display:flex;gap:.3rem;align-items:center}
+    .nav-links a{text-decoration:none;color:var(--muted);font-size:.9rem;font-weight:600;padding:.55rem .8rem;border-radius:999px;transition:.3s}
+    .nav-links a:hover,.nav-links a[aria-current="page"]{color:var(--ink);background:rgba(244,239,228,.08)}
+    .nav-cta{color:#14100a!important;background:var(--gold)!important}
+    .hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;padding:8.5rem 0 2rem;overflow:hidden}
+    .hero::before,.hero::after{content:"";position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none}
+    .hero::before{width:44rem;height:44rem;right:-12rem;top:-14rem;background:radial-gradient(circle,rgba(201,101,125,.32),transparent 65%)}
+    .hero::after{width:38rem;height:38rem;left:-14rem;bottom:-18rem;background:radial-gradient(circle,rgba(200,164,93,.26),transparent 65%)}
+    .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(2rem,6vw,5rem);align-items:end}
+    .eyebrow{margin:0 0 1rem;color:var(--gold);font-size:.78rem;font-weight:800;letter-spacing:.32em;text-transform:uppercase}
+    h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;letter-spacing:-.02em}
+    .hero-title{margin:0;font-size:clamp(4rem,11vw,10.5rem);line-height:.82;text-transform:uppercase}
+    .hero-title span{display:block;overflow:hidden}
+    .hero-title output{display:inline-block;transform:translateY(110%);animation:lineUp 1.1s var(--ease) forwards}
+    .hero-title em{font-style:italic;text-transform:none;color:var(--gold-2)}
+    @keyframes lineUp{to{transform:translateY(0)}}
+    .role{margin:1.2rem 0 0;font-size:clamp(1.15rem,2.3vw,1.7rem);font-weight:700;color:var(--ink)}
+    .lead{max-width:58ch;color:var(--muted);font-size:clamp(1rem,1.5vw,1.18rem)}
+    .actions{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.6rem}
+    .button{display:inline-flex;align-items:center;gap:.55rem;min-height:48px;padding:.75rem 1.25rem;border-radius:999px;border:1px solid var(--line-strong);text-decoration:none;font-weight:800;background:transparent;color:var(--ink);transition:transform .35s var(--ease),background .35s,border-color .35s,box-shadow .35s;will-change:transform}
+    .button.primary{background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#171106;border-color:transparent}
+    .button:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 18px 42px rgba(0,0,0,.35)}
+    .hero-meta{display:grid;grid-template-columns:repeat(2,minmax(150px,1fr));gap:1px;margin-top:2.2rem;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--line)}
+    .hero-meta div{background:rgba(17,22,36,.78);padding:1rem}
+    .hero-meta dt{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+    .hero-meta dd{margin:.25rem 0 0;font-weight:800}
+    .portrait-card{position:relative;margin:0;padding:1rem;border-radius:26px;background:linear-gradient(160deg,rgba(244,239,228,.15),rgba(244,239,228,.04));border:1px solid var(--line);box-shadow:var(--shadow);transform-style:preserve-3d;transition:transform .5s var(--ease),border-color .5s}
+    .portrait-card:hover{border-color:rgba(200,164,93,.65)}
+    .portrait-card img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:18px;background:var(--panel);filter:saturate(.85) contrast(1.05)}
+    .portrait-card figcaption{position:absolute;left:1.4rem;right:1.4rem;bottom:1.4rem;padding:1rem;border-radius:16px;background:rgba(11,14,20,.68);backdrop-filter:blur(12px);border:1px solid var(--line)}
+    .portrait-card figcaption strong{display:block;font-family:"Cormorant Garamond",serif;font-size:1.5rem}
+    .portrait-card figcaption span{color:var(--muted);font-size:.86rem}
+    .ribbon{position:relative;z-index:2;overflow:hidden;border-block:1px solid var(--line);background:rgba(244,239,228,.045);padding:.9rem 0;margin-top:3rem}
+    .ribbon-track{display:flex;gap:3rem;width:max-content;white-space:nowrap;font-family:"Cormorant Garamond",serif;font-size:1.35rem;animation:marquee 24s linear infinite}
+    .ribbon-track b{color:var(--gold);font-weight:500}
+    @keyframes marquee{to{transform:translateX(-50%)}}
+    section{position:relative;padding:clamp(4.5rem,9vw,8rem) 0}
+    .section-head{max-width:780px}
+    .section-index{color:var(--rose);font-size:.76rem;font-weight:800;letter-spacing:.32em;text-transform:uppercase}
+    h2{margin:.25rem 0 .8rem;font-size:clamp(2.6rem,6vw,5.4rem);line-height:.95}
+    h2 em{color:var(--gold-2);font-style:italic}
+    .sub{color:var(--muted);max-width:66ch}
+    .reveal{opacity:0;transform:translateY(34px) rotate(.6deg);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+    .reveal.in{opacity:1;transform:none}
+    .map-shell{position:relative;margin-top:2.6rem;border:1px solid var(--line-strong);border-radius:28px;overflow:hidden;background:linear-gradient(180deg,#131a2a,#0e1320);box-shadow:var(--shadow)}
+    #district{position:absolute;inset:0;width:100%;height:100%;display:block}
+    .map-ui{position:absolute;inset:0;z-index:3;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(1rem,3vw,2rem)}
+    .map-panel{pointer-events:auto;max-width:430px;padding:1.2rem;border:1px solid var(--line);border-radius:20px;background:rgba(11,14,20,.66);backdrop-filter:blur(14px)}
+    .map-panel h3{margin:.2rem 0 .4rem;font-size:2rem}.map-panel p{margin:0;color:var(--muted)}
+    .map-actions{pointer-events:auto;display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+    .map-actions button{border:1px solid var(--line-strong);background:rgba(244,239,228,.07);color:var(--ink);border-radius:999px;padding:.55rem .9rem;cursor:pointer;font-weight:700;transition:.3s}
+    .map-actions button.active,.map-actions button:hover{background:var(--gold);color:#171106;border-color:transparent}
+    .map-help{pointer-events:none;align-self:flex-end;max-width:360px;margin:0;padding:.8rem 1rem;border-radius:16px;background:rgba(11,14,20,.58);border:1px solid var(--line);color:var(--muted);font-size:.86rem}
+    .metrics{position:relative;z-index:1;margin-top:-1rem}
+    .bento{display:grid;grid-template-columns:repeat(12,1fr);gap:1rem;margin-top:2.4rem}
+    .metric{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius);padding:1.5rem;background:linear-gradient(160deg,rgba(244,239,228,.09),rgba(244,239,228,.02));transition:transform .5s var(--ease),border-color .5s}
+    .metric:hover{transform:translateY(-7px) rotate(-.4deg);border-color:rgba(200,164,93,.55)}
+    .metric::after{content:"";position:absolute;inset:auto -30% -55% auto;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(201,101,125,.28),transparent 65%);pointer-events:none}
+    .metric.wide{grid-column:span 7}.metric.small{grid-column:span 5}.metric.third{grid-column:span 4}.metric.half{grid-column:span 6}
+    .metric .num{font-family:"Cormorant Garamond",serif;font-size:clamp(3.6rem,7vw,6rem);font-weight:700;line-height:.9}
+    .metric h3{margin:.5rem 0 .3rem;font-size:1.5rem}.metric p{margin:0;color:var(--muted)}
+    .chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}.chips span{border:1px solid var(--line-strong);border-radius:999px;padding:.32rem .75rem;font-size:.78rem;color:var(--muted)}
+    .toolbar{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin-top:2rem}
+    .filter{border:1px solid var(--line-strong);background:transparent;color:var(--ink);border-radius:999px;padding:.6rem 1rem;cursor:pointer;font-weight:700;transition:.3s}
+    .filter:hover{transform:translateY(-2px)}.filter.active{background:var(--gold);color:#171106;border-color:transparent}
+    .search{margin-left:auto;min-width:min(320px,100%);border:1px solid var(--line-strong);background:var(--panel);color:var(--ink);border-radius:999px;padding:.72rem 1rem;font-size:1rem}
+    .project-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:1rem;margin-top:1.2rem}
+    .project-card{grid-column:span 4;position:relative;min-height:300px;display:flex;flex-direction:column;justify-content:flex-end;gap:.65rem;padding:1.5rem;border-radius:24px;border:1px solid var(--line);background:linear-gradient(170deg,rgba(244,239,228,.1),rgba(244,239,228,.025));overflow:hidden;cursor:pointer;transition:transform .5s var(--ease),border-color .5s,box-shadow .5s}
+    .project-card:nth-child(3n){grid-column:span 5}.project-card:nth-child(3n+1){grid-column:span 4}
+    .project-card:hover{transform:translateY(-8px) rotate(.5deg);border-color:rgba(200,164,93,.6);box-shadow:0 30px 70px rgba(0,0,0,.38)}
+    .project-card::before{content:"";position:absolute;inset:0;background:radial-gradient(24rem 16rem at var(--mx,50%) var(--my,50%),rgba(232,207,143,.16),transparent 65%);opacity:0;transition:opacity .4s}
+    .project-card:hover::before{opacity:1}
+    .card-top{display:flex;justify-content:space-between;gap:1rem}.badge{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:800}
+    .project-card h3{margin:0;font-size:clamp(1.5rem,2.2vw,2.1rem)}
+    .project-card p{margin:0;color:var(--muted)}
+    .card-actions{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:auto}.card-actions a,.card-actions button{border:1px solid var(--line-strong);background:rgba(11,14,20,.34);color:var(--ink);border-radius:999px;padding:.5rem .85rem;text-decoration:none;font-size:.85rem;font-weight:700;cursor:pointer}
+    .card-actions a:hover,.card-actions button:hover{background:var(--gold);color:#171106;border-color:transparent}
+    .couture{background:linear-gradient(180deg,rgba(122,39,64,.18),transparent 58%),var(--bg-soft);border-block:1px solid var(--line)}
+    .couture-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2rem,6vw,5rem);align-items:center;margin-top:2rem}
+    .etiquette{border:1px solid rgba(200,164,93,.45);border-radius:28px;padding:clamp(1.4rem,4vw,2.4rem);background:linear-gradient(155deg,rgba(244,239,228,.11),rgba(244,239,228,.03));box-shadow:var(--shadow)}
+    .etiquette h3{margin:.2rem 0 1rem;font-size:clamp(2rem,4vw,3.2rem)}
+    .rule{display:flex;gap:1rem;padding:1rem 0;border-top:1px solid var(--line)}.rule b{font-family:"Cormorant Garamond",serif;font-size:1.7rem;color:var(--gold)}.rule p{margin:0;color:var(--muted)}
+    .quote{max-height:0;opacity:0;overflow:hidden;transition:max-height .7s var(--ease),opacity .5s;margin-top:1rem}
+    .quote.open{max-height:220px;opacity:1}.quote blockquote{margin:0;padding:1.1rem;border-left:3px solid var(--gold);background:rgba(200,164,93,.1);font-family:"Cormorant Garamond",serif;font-size:1.5rem;font-style:italic}
+    .dress-toggle{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.2rem}.dress-toggle button{border:1px solid var(--line-strong);background:transparent;color:var(--ink);border-radius:999px;padding:.6rem 1rem;cursor:pointer;font-weight:700}.dress-toggle button.active{background:var(--gold);color:#171106;border-color:transparent}
+    .soiree{position:relative;min-height:420px;border-radius:28px;overflow:hidden;border:1px solid var(--line-strong);padding:2rem;display:flex;align-items:flex-end;background:radial-gradient(34rem 22rem at 78% 20%,rgba(201,101,125,.38),transparent 60%),radial-gradient(28rem 20rem at 16% 85%,rgba(200,164,93,.3),transparent 60%),linear-gradient(160deg,#1b1120,#0e1320)}
+    .soiree::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 34px,rgba(244,239,228,.045) 34px 35px)}
+    .soiree-copy{position:relative;z-index:1;max-width:430px}.soiree-copy h3{font-size:clamp(2.4rem,5vw,4.4rem);line-height:.9}.soiree-copy p{color:var(--muted)}
+    .tech-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.4rem}
+    .tech-card{border:1px solid var(--line);border-radius:24px;padding:1.5rem;background:linear-gradient(160deg,rgba(244,239,228,.09),rgba(244,239,228,.025))}
+    .tech-card h3{margin:.1rem 0 .5rem;font-size:2rem}.tech-card p{color:var(--muted)}
+    .tech-value{font-family:"Cormorant Garamond",serif;font-size:3.8rem;line-height:1;color:var(--gold-2)}
+    input[type="range"]{width:100%;accent-color:var(--gold);margin:1rem 0}
+    .room{height:150px;border-radius:18px;border:1px solid var(--line);margin-top:1rem;background:radial-gradient(circle at var(--roomlight),rgba(232,207,143,.5),rgba(11,14,20,.85) 62%,#0b0e14);transition:background .4s}
+    .switch{display:inline-flex;align-items:center;gap:.7rem;cursor:pointer}.switch input{appearance:none;width:58px;height:32px;border-radius:999px;background:#2a3145;border:1px solid var(--line-strong);position:relative;transition:.3s}.switch input::after{content:"";position:absolute;width:24px;height:24px;left:3px;top:3px;border-radius:50%;background:var(--ink);transition:.3s}.switch input:checked{background:var(--teal)}.switch input:checked::after{transform:translateX(26px);background:#07120f}
+    .bars{display:flex;align-items:flex-end;gap:.45rem;height:130px;margin-top:1rem}.bar{flex:1;border-radius:10px 10px 4px 4px;background:linear-gradient(180deg,var(--gold-2),var(--gold));transform-origin:bottom;transition:transform .6s var(--ease)}
+    .story-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:1rem;margin-top:2.4rem}
+    .story-card{border:1px solid var(--line);border-radius:24px;padding:1.6rem;background:linear-gradient(160deg,rgba(244,239,228,.09),rgba(244,239,228,.025))}
+    .timeline{list-style:none;padding:0;margin:0;display:grid;gap:1rem}.timeline li{display:grid;grid-template-columns:70px 1fr;gap:1rem;padding:1rem;border-top:1px solid var(--line)}.timeline b{font-family:"Cormorant Garamond",serif;font-size:1.9rem;color:var(--gold)}.timeline h3{margin:0 0 .25rem;font-size:1.4rem}.timeline p{margin:0;color:var(--muted)}
+    .contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(2rem,6vw,5rem);align-items:start}
+    .contact-links{display:grid;gap:.8rem}
+    .contact-links a{display:flex;justify-content:space-between;gap:1rem;padding:1.1rem;border:1px solid var(--line);border-radius:18px;text-decoration:none;background:rgba(244,239,228,.045);transition:.35s}.contact-links a:hover{transform:translateX(8px);border-color:rgba(200,164,93,.6)}
+    .contact-links small{color:var(--muted)}
+    footer{border-top:1px solid var(--line);padding:2rem 0 3rem;color:var(--muted)}
+    .footer-inner{display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:center}
+    .to-top{text-decoration:none;color:var(--gold);font-weight:800}
+    @media (max-width:1100px){.hero-grid{grid-template-columns:1fr}.portrait-card{max-width:520px}.project-card,.project-card:nth-child(3n),.project-card:nth-child(3n+1){grid-column:span 6}.couture-grid,.story-grid,.contact-grid{grid-template-columns:1fr}.tech-grid{grid-template-columns:1fr}}
+    @media (max-width:767.98px){.nav-links a:not(.nav-cta){display:none}.site-header{inset:.7rem;border-radius:24px}.hero{padding-top:7.2rem}.hero-meta{grid-template-columns:1fr 1fr}.metric.wide,.metric.small,.metric.third,.metric.half{grid-column:span 12}.project-card,.project-card:nth-child(3n),.project-card:nth-child(3n+1){grid-column:span 12}.map-ui{padding:.8rem}.map-panel{max-width:100%}.map-help{display:none}.search{margin-left:0}.cursor{display:none}}
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}.reveal{opacity:1;transform:none}.ribbon-track{animation:none}.cursor{display:none}}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Salta al contenuto</a>
+  <canvas id="dust" aria-hidden="true"></canvas>
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="Homepage Ronaldo Riska">
+      <span class="brand-mark" aria-hidden="true">RR</span>
+      <span class="brand-text"><strong>Ronaldo Riska</strong><span>Textile digital portfolio</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Navigazione principale">
+      <a href="#mondo">Mondo</a>
+      <a href="#progetti">Progetti</a>
+      <a href="#gala">Galà</a>
+      <a href="#tecnologia">Tecnologia</a>
+      <a class="nav-cta" href="#contatti">Contatti</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-label="Presentazione">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">Portfolio tecnico operativo — Prato</p>
+          <h1 class="hero-title" aria-label="Ronaldo Riska"><span><output>Ronaldo</output></span><span><output><em>Riska</em></output></span></h1>
+          <p class="role">Tessitura · CAD moda · Supply chain · Industrial tech</p>
+          <p class="lead">Ogni progetto nasce come una scena: un filo, una macchina, un dato. Qui la filiera tessile diventa un mondo da attraversare, dove tradizione e controllo industriale si incontrano.</p>
+          <div class="actions">
+            <a class="button primary" href="#mondo">Esplora il mondo →</a>
+            <a class="button" href="#progetti">Vedi i progetti</a>
+            <a class="button" href="curriculum.html">Leggi il CV</a>
+          </div>
+          <dl class="hero-meta" aria-label="Informazioni rapide">
+            <div><dt>Base</dt><dd>Prato, Italia</dd></div>
+            <div><dt>Focus</dt><dd>Textile operations</dd></div>
+            <div><dt>Digitale</dt><dd>Dashboard + web tools</dd></div>
+            <div><dt>Approccio</dt><dd>Industrial tech</dd></div>
+          </dl>
+        </div>
+        <figure class="portrait-card" id="portraitCard">
+          <img src="profile.jpg" alt="Ritratto professionale di Ronaldo Riska" loading="eager" fetchpriority="high" decoding="async">
+          <figcaption><strong>La casa della seta</strong><span>Produzione, qualità e strumenti digitali sotto un’unica luce.</span></figcaption>
+        </figure>
+      </div>
+      <div class="ribbon" aria-hidden="true"><div class="ribbon-track"><span>Tessitura <b>·</b> CAD Moda <b>·</b> Supply Chain <b>·</b> Industrial Tech <b>·</b> LCA <b>·</b> AI Systems <b>·</b></span><span>Tessitura <b>·</b> CAD Moda <b>·</b> Supply Chain <b>·</b> Industrial Tech <b>·</b> LCA <b>·</b> AI Systems <b>·</b></span></div></div>
+    </section>
+
+    <section id="mondo" aria-labelledby="mondo-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-index">01 / Il mondo</p>
+          <h2 id="mondo-title">Prato, <em>distretto da esplorare.</em></h2>
+          <p class="sub">Una mappa illustrata e animata: segui la navetta lungo il percorso produttivo e tocca le zone per aprire le aree del portfolio.</p>
+        </div>
+        <div class="map-shell reveal" id="mapShell">
+          <canvas id="district" aria-label="Mappa illustrata del distretto tessile di Prato con zone interattive"></canvas>
+          <div class="map-ui">
+            <div class="map-panel">
+              <p class="eyebrow">Zona selezionata</p>
+              <h3 id="zoneTitle">Distretto di Prato</h3>
+              <p id="zoneText">Telai, tintorie, magazzini e persone: ogni punto della mappa corrisponde a un modo di lavorare la materia.</p>
+              <div class="map-actions">
+                <button type="button" data-zone="tessitura">Tessitura</button>
+                <button type="button" data-zone="cad">CAD Moda</button>
+                <button type="button" data-zone="supply">Supply Chain</button>
+                <button type="button" data-zone="arno">Fiume Arno</button>
+              </div>
+            </div>
+            <p class="map-help">Percorri la mappa con mouse o tocco: i telai si muovono, le luci cambiano e i cartelli mostrano la strada verso le aree.</p>
+          </div>
+        </div>
+        <div class="metrics bento" aria-label="Metriche del portfolio">
+          <article class="metric wide reveal"><div class="num"><span data-count="25">0</span></div><h3>Progetti e prototipi operativi</h3><p>Tool interattivi, dashboard industriali, simulatori tessili e moduli di process intelligence.</p><div class="chips"><span>Live</span><span>Dashboard</span><span>Simulatori</span></div></article>
+          <article class="metric small reveal"><div class="num"><span data-count="3">0</span></div><h3>Macro-aree professionali</h3><p>Tessitura, CAD moda, supply chain e workflow industriali.</p></article>
+          <article class="metric third reveal"><div class="num"><span data-count="18">0</span></div><h3>Dashboard e tool HTML</h3><p>Applicazioni navigabili per desktop, tablet e mobile.</p></article>
+          <article class="metric third reveal"><div class="num"><span data-count="7">0</span></div><h3>Prototipi tecnici</h3><p>Strutture React, moduli JS e architetture front-end scalabili.</p></article>
+          <article class="metric half reveal"><h3>Approccio operativo</h3><p>Dal filo al dato: ogni interfaccia è progettata per essere usata in produzione, non solo mostrata.</p><div class="chips"><span>Qualità</span><span>Pianificazione</span><span>Controllo</span><span>Ottimizzazione</span></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="progetti" aria-labelledby="progetti-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-index">02 / I progetti</p>
+          <h2 id="progetti-title">Scene, <em>non schede.</em></h2>
+          <p class="sub">Seleziona un progetto per aprirne la scheda: ogni card è un ingresso in una scena operativa della filiera.</p>
+        </div>
+        <div class="toolbar reveal" role="group" aria-label="Filtri e ricerca progetti">
+          <button class="filter active" type="button" data-filter="all">Tutti</button>
+          <button class="filter" type="button" data-filter="tessitura">Tessitura</button>
+          <button class="filter" type="button" data-filter="cad">CAD Moda</button>
+          <button class="filter" type="button" data-filter="supply">Supply Chain</button>
+          <label class="sr-only" for="q">Cerca progetto</label>
+          <input class="search" id="q" type="search" placeholder="Cerca progetto, tag o tecnologia">
+        </div>
+        <div class="project-grid" id="projectGrid" aria-live="polite"></div>
+        <p id="empty" hidden>Nessun progetto trovato. <button class="filter" type="button" id="reset">Mostra tutti</button></p>
+      </div>
+    </section>
+
+    <section class="couture" id="gala" aria-labelledby="gala-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-index">03 / Il galà dei dettagli</p>
+          <h2 id="gala-title">Eleganza <em>con metodo.</em></h2>
+          <p class="sub">Anche un ambiente di lavoro ha un suo bon ton: forma, misura, luce e comportamento corretto delle macchine.</p>
+        </div>
+        <div class="couture-grid">
+          <article class="etiquette reveal">
+            <p class="eyebrow">Manuale della casa</p>
+            <h3>Tre regole del salotto produttivo</h3>
+            <div class="rule"><b>01</b><p><strong>Entra in punta di filo.</strong><br>Prima di cambiare la macchina, osserva il tessuto e il rumore che fa.</p></div>
+            <div class="rule"><b>02</b><p><strong>Saluta la qualità.</strong><br>Ogni difetto racconta una storia di tensione, umidità o fretta.</p></div>
+            <div class="rule"><b>03</b><p><strong>Non arrivare tardi al dato.</strong><br>Un KPI letto tardi è un invito già scaduto.</p></div>
+            <div class="dress-toggle" role="group" aria-label="Scegli l'accento cromatico">
+              <button type="button" data-theme="gold" class="active">Oro classico</button>
+              <button type="button" data-theme="rose">Rosa soirée</button>
+              <button type="button" data-theme="teal">Verde smeraldo</button>
+            </div>
+            <button class="button" type="button" id="quoteBtn" style="margin-top:1.2rem">Leggi la cronaca</button>
+            <div class="quote" id="quoteBox"><blockquote>«Gentile visitatore, nel distretto la fretta non fa il padrone: è la misura a decidere chi entra nel salotto e chi resta in cucina.»</blockquote></div>
+          </article>
+          <div class="soiree reveal">
+            <div class="soiree-copy">
+              <p class="eyebrow">Ingresso riservato</p>
+              <h3>La produzione entra in scena.</h3>
+              <p>La mia idea di eleganza è semplice: niente gesti inutili, solo precisione visibile. La luce giusta, il filo giusto, il dato giusto.</p>
+              <div class="actions"><a class="button primary" href="#contatti">Richiedi una conversazione</a><a class="button" href="curriculum.html">Apri il profilo</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tecnologia" aria-labelledby="tech-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-index">04 / Tecnologia efficiente</p>
+          <h2 id="tech-title">Clima, luce, <em>energia.</em></h2>
+          <p class="sub">Il comfort di un ambiente si misura in dettagli: temperatura stabile, luce scenica e consumi sotto controllo.</p>
+        </div>
+        <div class="tech-grid">
+          <article class="tech-card reveal">
+            <p class="eyebrow">Clima intelligente</p>
+            <div class="tech-value"><span id="tempOut">21</span>°C</div>
+            <p>Regola la temperatura ideale per mantenere qualità e comfort in sala o in ufficio.</p>
+            <label for="tempRange">Temperatura</label>
+            <input id="tempRange" type="range" min="18" max="26" value="21">
+            <div class="room" id="roomTemp" aria-hidden="true"></div>
+          </article>
+          <article class="tech-card reveal">
+            <p class="eyebrow">Luce scenica</p>
+            <div class="tech-value"><span id="lightOut">72</span>%</div>
+            <p>La luce cambia la percezione dei colori e dei tessuti: prova un’atmosfera da sera.</p>
+            <label for="lightRange">Intensità luce</label>
+            <input id="lightRange" type="range" min="0" max="100" value="72">
+            <div class="room" aria-hidden="true"></div>
+          </article>
+          <article class="tech-card reveal">
+            <p class="eyebrow">Efficienza energetica</p>
+            <div class="tech-value">−<span id="savingOut">18</span>%</div>
+            <p>Attiva la modalità efficiente e osserva il consumo simulato delle ultime ore.</p>
+            <label class="switch"><input id="ecoSwitch" type="checkbox" checked><span>Modalità efficiente</span></label>
+            <div class="bars" id="energyBars" aria-hidden="true"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="storia" aria-labelledby="storia-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-index">05 / Fiume e distretto</p>
+          <h2 id="storia-title">L’Arno <em>e la trama di Prato.</em></h2>
+          <p class="sub">L’acqua ha nutrito il distretto; oggi la filiera si misura con sostenibilità, tracciabilità e strumenti digitali.</p>
+        </div>
+        <div class="story-grid">
+          <article class="story-card reveal">
+            <h3>Dal lanificio alla circular fashion</h3>
+            <p>Prato ha trasformato la tessitura in un modello capace di rinnovarsi: recupero, rigenerazione e nuove tecnologie mantengono viva la tradizione senza renderla museo.</p>
+            <div class="actions"><a class="button primary" href="prato-textile-district.html">Apri l’osservatorio →</a><a class="button" href="sostenibilita-certificazioni.html">Sostenibilità</a></div>
+          </article>
+          <ol class="timeline reveal">
+            <li><b>01</b><div><h3>Orditura</h3><p>Il filo prende forma: proporzioni, tensioni e note colore decidono la tessitura.</p></div></li>
+            <li><b>02</b><div><h3>Tessitura</h3><p>Trama e ordito si intrecciano; la macchina diventa ritmo, controllo e memoria.</p></div></li>
+            <li><b>03</b><div><h3>Finito</h3><p>Il tessuto esce dal telaio e entra nel circuito di qualità, logistica e vendita.</p></div></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section id="contatti" aria-labelledby="contatti-title">
+      <div class="container contact-grid">
+        <div class="reveal">
+          <p class="eyebrow">Contatti</p>
+          <h2 id="contatti-title">Disponibile per <em>nuove590 scene.</em></h2>
+          <p class="sub">Collaborazioni su operations, supply chain, dashboard industriali e strumenti digitali per la filiera moda-tessile.</p>
+          <div class="actions"><a class="button primary" href="mailto:ronaldo.riska@gmail.com">Avvia una conversazione →</a><a class="button" href="Ronaldo-Riska-CV-2026.pdf" download>Scarica CV PDF</a></div>
+          <div class="chips"><span>Textile Operations</span><span>CAD Fashion</span><span>Supply Chain</span><span>Industrial Analytics</span><span>Digital Workflow</span><span>AI Systems</span></div>
+        </div>
+        <address class="contact-links reveal" style="font-style:normal">
+          <a href="mailto:ronaldo.riska@gmail.com"><span><small>Email</small><br>ronaldo.riska@gmail.com</span><span aria-hidden="true">↗</span></a>
+          <a href="https://github.com/ItalyCircularFashion" target="_blank" rel="noopener noreferrer"><span><small>GitHub</small><br>github.com/ItalyCircularFashion</span><span aria-hidden="true">↗</span></a>
+          <a href="curriculum.html"><span><small>Profilo</small><br>Curriculum online</span><span aria-hidden="true">↗</span></a>
+          <a href="https://italycircularfashion.github.io/RonaldoRiskaCV/" target="_blank" rel="noopener noreferrer"><span><small>Altro sito</small><br>RonaldoRiskaCV</span><span aria-hidden="true">↗</span></a>
+        </address>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> Ronaldo Riska — Textile Intelligence Portfolio</p>
+      <nav aria-label="Mappa del sito" style="display:flex;gap:1rem;flex-wrap:wrap"><a href="#mondo">Mondo</a><a href="#progetti">Progetti</a><a href="#gala">Galà</a><a href="#tecnologia">Tecnologia</a><a href="#top">Torna su ↑</a></nav>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
+      const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const fine=matchMedia('(pointer: fine)').matches;
+      document.body.dataset.pointer=fine?'fine':'coarse';
+      $('#year').textContent=new Date().getFullYear();
+      // Progress
+      const progress=$('#progress');
+      addEventListener('scroll',()=>{const h=document.documentElement;const max=h.scrollHeight-h.clientHeight;progress.style.transform=`scaleX(${max>0?h.scrollTop/max:0})`},{passive:true});
+      // Cursor
+      const cursor=$('#cursor'); let cx=-100,cy=-100,tx=cx,ty=cy;
+      if(fine){addEventListener('pointermove',e=>{tx=e.clientX;ty=e.clientY},{passive:true});
+      document.addEventListener('mouseover',e=>cursor.classList.toggle('is-hot',!!e.target.closest('a,button,input,.project-card')));
+      (function loop(){cx+=(tx-cx)*.18;cy+=(ty-cy)*.18;cursor.style.transform=`translate(${cx}px,${cy}px)`;requestAnimationFrame(loop)})();}
+      // Dust particles
+      const dust=$('#dust'), dctx=dust.getContext('2d'); let DW=0,DH=0,parts=[];
+      function sizeDust(){DW=dust.width=innerWidth;DH=dust.height=innerHeight}
+      function makeParts(){const n=reduced?0:Math.min(90,Math.floor(DW*DH/16000));parts=Array.from({length:n},()=>({x:Math.random()*DW,y:Math.random()*DH,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.25,r:Math.random()*1.7+.5,c:['#c8a45d','#c9657d','#37c6ae'][Math.floor(Math.random()*3)]}))}
+      function drawDust(){dctx.clearRect(0,0,DW,DH);for(const p of parts){p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=DW;if(p.x>DW)p.x=0;if(p.y<0)p.y=DH;if(p.y>DH)p.y=0;dctx.beginPath();dctx.arc(p.x,p.y,p.r,0,Math.PI*2);dctx.fillStyle=p.c;dctx.globalAlpha=.48;dctx.fill()}dctx.globalAlpha=1}
+      sizeDust();makeParts();addEventListener('resize',()=>{sizeDust();makeParts()});
+      if(!reduced){(function tick(){drawDust();requestAnimationFrame(tick)})()} else drawDust();
+      // Reveal
+      const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+      $$('.reveal').forEach(el=>io.observe(el));
+      // Counters
+      const cio=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const el=e.target,target=+el.dataset.count;let n=0;const step=Math.max(1,Math.ceil(target/34));const t=setInterval(()=>{n=Math.min(target,n+step);el.textContent=n;if(n>=target)clearInterval(t)},28);cio.unobserve(el)}),{threshold:.4});
+      $$('[data-count]').forEach(el=>cio.observe(el));
+      // Projects
+      const projects=[
+        {id:'weavecad',title:'WeaveCAD Draft Studio',category:'tessitura',status:'Live',detail:'Simulatore di armature tessili con disegno trama/ordito, note colore e spezzature.',tags:['Armature','Tessitura','Simulatore'],url:'weavecad.html',detailPage:'progetto-weavecad.html'},
+        {id:'gantt',title:'Gantt Ciclo Tessile',category:'tessitura',status:'Live',detail:'Pianificazione del ciclo tessile e avanzamento per fase con vista WIP.',tags:['Gantt','Pianificazione','Lanificio'],url:'gantt-tessile.html',detailPage:'progetto-gantt-tessile.html'},
+        {id:'note',title:'Note Colore Calculator',category:'tessitura',status:'Live',detail:'Calcolo note colore per ordito: spezzature, simmetrie e sequenze pronte per l’orditrice.',tags:['Orditura','Calcolo','Qualità'],url:'note-colore.html',detailPage:'progetto-note-colore.html'},
+        {id:'sketch',title:'SketchHD — Sketch to HD',category:'cad',status:'Live',detail:'Workflow AI da sketch a immagini ad alta definizione con preset Fashion, Product e Textile.',tags:['AI','Sketch','Fashion'],url:'sketchhd-artifact.html',detailPage:'progetto-sketchhd.html'},
+        {id:'modacad',title:'ModaCAD Studio',category:'cad',status:'Live',detail:'Ambiente CAD per modellistica, cartamodelli e concept di prodotto moda.',tags:['Modellistica','Cartamodello','Concept'],url:'modacad.html',detailPage:'progetto-modacad.html'},
+        {id:'supply',title:'Supply Chain Control',category:'supply',status:'Live',detail:'Dashboard e simulatori per pianificazione, stock, make-or-buy e operations analytics.',tags:['MRP','Dashboard','Operations'],url:'supply-chain-production.html',detailPage:'supply-chain-production.html'}
+      ];
+      const grid=$('#projectGrid'); let activeFilter='all', query='';
+      function esc(s){return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;')}
+      function card(p){return `<article class="project-card" data-category="${p.category}" data-search="${esc((p.title+' '+p.detail+' '+p.tags.join(' ')).toLowerCase())}">
+        <div class="card-top"><span class="badge">${esc(p.status)} · ${esc(p.category)}</span><span aria-hidden="true">✦</span></div>
+        <h3>${esc(p.title)}</h3><p>${esc(p.detail)}</p>
+        <div class="chips">${p.tags.map(t=>`<span>${esc(t)}</span>`).join('')}</div>
+        <div class="card-actions"><a href="${p.detailPage}">Scheda tecnica</a><a href="${p.url}">Apri</a><button type="button" data-expand>Dettagli</button></div>
+        <div class="more" hidden><p>Ingresso operativo nel progetto: stack tecnico, casi d’uso e collegamenti rapidi sono raccolti nella scheda dedicata. La scena resta parte del mondo, non una pagina isolata.</p></div>
+      </article>`}
+      function render(){const list=projects.filter(p=>(activeFilter==='all'||p.category===activeFilter)&&(!query||(p.title+' '+p.detail+' '+p.tags.join(' ')).toLowerCase().includes(query)));grid.innerHTML=list.map(card).join('');grid.querySelectorAll('.project-card').forEach(el=>{el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect();el.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');el.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%')});el.addEventListener('click',e=>{if(e.target.closest('a'))return;const more=el.querySelector('.more');more.hidden=!more.hidden;el.setAttribute('aria-expanded',String(!more.hidden))})});$('#empty').hidden=list.length>0}
+      render();
+      $$('.filter[data-filter]').forEach(b=>b.addEventListener('click',()=>{$$('.filter[data-filter]').forEach(x=>x.classList.toggle('active',x===b));activeFilter=b.dataset.filter;render()}));
+      $('#q').addEventListener('input',e=>{query=e.target.value.trim().toLowerCase();render()});
+      $('#reset').addEventListener('click',()=>{$('#q').value='';query='';activeFilter='all';$$('.filter[data-filter]').forEach(x=>x.classList.toggle('active',x.dataset.filter==='all'));render()});
+      // Dress code / quote
+      const accents={gold:['#c8a45d','#e8cf8f'],rose:['#c9657d','#e7a3b5'],teal:['#37c6ae','#8be5d5']};
+      $$('.dress-toggle button').forEach(b=>b.addEventListener('click',()=>{$$('.dress-toggle button').forEach(x=>x.classList.toggle('active',x===b));const a=accents[b.dataset.theme];document.documentElement.style.setProperty('--gold',a[0]);document.documentElement.style.setProperty('--gold-2',a[1])}));
+      $('#quoteBtn').addEventListener('click',()=>{const q=$('#quoteBox');q.classList.toggle('open');$('#quoteBtn').textContent=q.classList.contains('open')?'Chiudi la cronaca':'Leggi la cronaca'});
+      // Tech controls
+      const temp=$('#tempRange'), light=$('#lightRange'), eco=$('#ecoSwitch');
+      function updateTech(){const t=+temp.value,l=+light.value;$('#tempOut').textContent=t;$('#lightOut').textContent=l;document.documentElement.style.setProperty('--roomlight',l+'%');$('#roomTemp').style.background=`radial-gradient(circle at ${l}%,rgba(232,207,143,.55),rgba(11,14,20,.85) 62%,#0b0e14)`;const saving=eco.checked?18:4;$('#savingOut').textContent=saving;renderBars(saving)}
+      function renderBars(s){const host=$('#energyBars');host.innerHTML='';const base=[42,58,36,66,49,72,44,61,38,55,47,64];base.forEach((v,i)=>{const b=document.createElement('div');b.className='bar';const scale=eco.checked?0.62:1;const delay=i*45;b.style.height=Math.max(18,v*scale)+'%';b.style.transform=`scaleY(1)`;host.appendChild(b)})}
+      [temp,light,eco].forEach(el=>el.addEventListener('input',updateTech));updateTech();
+      // District map
+      const map=$('#district'), mctx=map.getContext('2d'); let MW=0,MH=0, hover=null, selected='distretto', t=0;
+      const zones={
+        tessitura:{x:.28,y:.62,label:'Tessitura',text:'Telai, armature, note colore e la precisione del filo.',href:'tessitura.html'},
+        cad:{x:.62,y:.34,label:'CAD Moda',text:'Modellistica, sketch e concept digitali per il prodotto.',href:'cad-moda.html'},
+        supply:{x:.78,y:.72,label:'Supply Chain',text:'Pianificazione, logistica e controllo dei flussi.',href:'supply-chain-production.html'},
+        arno:{x:.5,y:.86,label:'Fiume Arno',text:'L’acqua che ha nutrito il distretto e la sua memoria industriale.',href:'prato-textile-district.html'},
+        distretto:{x:.5,y:.5,label:'Distretto di Prato',text:'Telai, tintorie, magazzini e persone: ogni punto della mappa corrisponde a un modo di lavorare la materia.',href:'#progetti'}
+      };
+      function sizeMap(){const r=map.getBoundingClientRect();MW=map.width=Math.max(1,Math.floor(r.width));MH=map.height=Math.max(1,Math.floor(r.height))}
+      function roundRect(x,y,w,h,r){mctx.beginPath();mctx.moveTo(x+r,y);mctx.arcTo(x+w,y,x+w,y+h,r);mctx.arcTo(x+w,y+h,x,y+h,r);mctx.arcTo(x,y+h,x,y,r);mctx.arcTo(x,y,x+w,y,r);mctx.closePath()}
+      function drawMap(){if(!MW||!MH)return;mctx.clearRect(0,0,MW,MH);const g=mctx.createLinearGradient(0,0,0,MH);g.addColorStop(0,'#172033');g.addColorStop(1,'#0e1320');mctx.fillStyle=g;mctx.fillRect(0,0,MW,MH);
+        // river
+        mctx.strokeStyle='rgba(55,198,174,.55)';mctx.lineWidth=Math.max(10,MW*.025);mctx.beginPath();for(let x=0;x<=MW;x+=12){const y=MH*.82+Math.sin(x*.018+t*.35)*MH*.035;x===0?mctx.moveTo(x,y):mctx.lineTo(x,y)}mctx.stroke();
+        // roads
+        mctx.strokeStyle='rgba(244,239,228,.15)';mctx.lineWidth=3;for(let i=0;i<5;i++){mctx.beginPath();mctx.moveTo(MW*(.12+i*.19),0);mctx.lineTo(MW*(.18+i*.16),MH);mctx.stroke()}for(let i=0;i<4;i++){mctx.beginPath();mctx.moveTo(0,MH*(.18+i*.22));mctx.lineTo(MW,MH*(.24+i*.18));mctx.stroke()}
+        // factories
+        const blocks=[[ .14,.34,.16,.18,'#8f7d62'],[.39,.20,.15,.22,'#6f7f8a'],[.62,.48,.17,.18,'#8f7d62'],[.76,.18,.15,.2,'#59677a'],[.20,.62,.17,.16,'#6f7f8a'],[.55,.70,.16,.16,'#8f7d62']];
+        for(const [bx,by,bw,bh,c] of blocks){mctx.fillStyle=c;mctx.globalAlpha=.9;roundRect(MW*bx,MH*by,MW*bw,MH*bh,10);mctx.fill();mctx.globalAlpha=1;mctx.fillStyle='rgba(200,164,93,.7)';mctx.fillRect(MW*bx+12,MH*by+10,MW*bw*.45,3);mctx.fillRect(MW*bx+12,MH*by+22,MW*bw*.32,3)}
+        // looms
+        for(const [x,y] of [[.25,.55],[.48,.30],[.70,.58]]){mctx.strokeStyle='rgba(232,207,143,.85)';mctx.lineWidth=2;for(let i=0;i<5;i++){mctx.beginPath();mctx.moveTo(MW*x-22,MH*y+i*4);mctx.lineTo(MW*x+22,MH*y+i*4+Math.sin(t*4+i)*2);mctx.stroke()}}
+        // moving shuttle
+        const sx=(Math.sin(t*.5)*.5+.5)*MW, sy=MH*.62+Math.sin(t*.8)*MH*.08; mctx.fillStyle='#c8a45d';mctx.beginPath();mctx.arc(sx,sy,7,0,Math.PI*2);mctx.fill();mctx.strokeStyle='rgba(200,164,93,.35)';mctx.beginPath();mctx.arc(sx,sy,16+Math.sin(t*3)*4,0,Math.PI*2);mctx.stroke();
+        // hotspots
+        for(const [key,z] of Object.entries(zones)){if(key==='distretto')continue;const x=MW*z.x,y=MH*z.y;const active=selected===key;mctx.fillStyle=active?'#e8cf8f':'#c8a45d';mctx.beginPath();mctx.arc(x,y,active?13:9,0,Math.PI*2);mctx.fill();mctx.fillStyle='#171106';mctx.font='900 13px Inter';mctx.textAlign='center';mctx.fillText(String(key[0].toUpperCase()),x,y+4.5);mctx.fillStyle='rgba(244,239,228,.9)';mctx.font='700 12px Inter';mctx.fillText(z.label,x,y-20)}
+      }
+      function selectZone(key){selected=key;const z=zones[key];$('#zoneTitle').textContent=z.label;$('#zoneText').textContent=z.text+' Apri l’area per entrare nella scena.';$$('.map-actions button').forEach(b=>b.classList.toggle('active',b.dataset.zone===key));drawMap()}
+      $$('.map-actions button').forEach(b=>b.addEventListener('click',()=>selectZone(b.dataset.zone)));
+      map.addEventListener('pointermove',e=>{const r=map.getBoundingClientRect();const x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;hover=Object.entries(zones).find(([,z])=>Math.hypot(x-z.x,y-z.y)<.12)?.[0]||null;map.style.cursor=hover?'pointer':'grab'});
+      map.addEventListener('click',()=>{if(!hover)return;const z=zones[hover];if(z.href==='distretto'){selectZone('distretto')}else if(z.href.startsWith('#')){document.querySelector(z.href).scrollIntoView({behavior:'smooth'})}else{location.href=z.href}});
+      function loopMap(){t+=.016;drawMap();requestAnimationFrame(loopMap)}
+      new ResizeObserver(()=>{sizeMap();drawMap()}).observe(map);sizeMap();
+      if(reduced){drawMap()}else loopMap();
+      // Portrait tilt
+      const portrait=$('#portraitCard');
+      if(fine && !reduced){portrait.addEventListener('pointermove',e=>{const r=portrait.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;portrait.style.transform=`perspective(900px) rotateY(${x*9}deg) rotateX(${-y*9}deg) translateY(-4px)`});portrait.addEventListener('pointerleave',()=>portrait.style.transform='')}
+    })();
+  </script>
+</body>
+</html>

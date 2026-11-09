@@ -1,0 +1,269 @@
+/* ── Weaver 3D widget (overlay in index.html) ── */
+:root {
+  --weaver-bg: #0b0d0c;
+  --weaver-surface: #121514;
+  --weaver-surface-2: #1a1e1c;
+  --weaver-ink: #f2f0e9;
+  --weaver-muted: #a8b0a9;
+  --weaver-accent: #ff2d6f;
+  --weaver-accent-2: #c7a45b;
+  --weaver-line: rgba(232, 230, 220, 0.12);
+  --weaver-line-strong: rgba(232, 230, 220, 0.24);
+  --weaver-radius: 12px;
+  --weaver-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Overlay */
+.weaver-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.weaver-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.weaver-panel {
+  width: min(1100px, 100%);
+  max-height: 92vh;
+  overflow: hidden;
+  border-radius: var(--weaver-radius);
+  background: var(--weaver-bg);
+  border: 1px solid var(--weaver-line-strong);
+  box-shadow: var(--weaver-shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Header */
+.weaver-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid var(--weaver-line);
+  flex-shrink: 0;
+}
+
+.weaver-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--weaver-ink);
+  letter-spacing: -0.01em;
+}
+
+.weaver-close {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid var(--weaver-line-strong);
+  border-radius: 8px;
+  background: var(--weaver-surface);
+  color: var(--weaver-ink);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  transition: background 0.15s;
+}
+
+.weaver-close:hover {
+  background: var(--weaver-surface-2);
+}
+
+/* Body */
+.weaver-body {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  gap: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.weaver-canvas-wrap {
+  position: relative;
+  overflow: hidden;
+  background: var(--weaver-bg);
+  border-right: 1px solid var(--weaver-line);
+  flex: 1;
+  min-width: 0;
+}
+
+#weaver-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #0b0d0c;
+}
+
+/* Controls panel */
+.weaver-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.2rem;
+  overflow-y: auto;
+  background: var(--weaver-surface);
+  border-left: 1px solid var(--weaver-line);
+}
+
+.weaver-controls h3 {
+  margin: 0 0 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--weaver-muted);
+}
+
+.weaver-controls .control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.weaver-controls .control-group label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--weaver-muted);
+}
+
+.weaver-controls select,
+.weaver-controls input[type="range"] {
+  font: inherit;
+  color: var(--weaver-ink);
+  background: var(--weaver-surface-2);
+  border: 1px solid var(--weaver-line-strong);
+  border-radius: 8px;
+  padding: 0.5rem 0.6rem;
+  width: 100%;
+}
+
+.weaver-controls input[type="range"] {
+  accent-color: var(--weaver-accent);
+}
+
+.weaver-controls .color-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.weaver-controls .color-row input[type="color"] {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--weaver-line-strong);
+  border-radius: 8px;
+  cursor: pointer;
+  background: transparent;
+  flex-shrink: 0;
+}
+
+.weaver-controls .color-row input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.weaver-controls .color-row input[type="color"]::-webkit-color-swatch {
+  border: 1px solid var(--weaver-line-strong);
+  border-radius: 6px;
+}
+
+.weaver-controls .weave-presets {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.weaver-controls .weave-presets button {
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--weaver-line-strong);
+  background: var(--weaver-surface-2);
+  color: var(--weaver-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.weaver-controls .weave-presets button:hover {
+  border-color: var(--weaver-accent);
+  color: var(--weaver-ink);
+}
+
+.weaver-controls .weave-presets button.is-active {
+  background: var(--weaver-accent);
+  border-color: var(--weaver-accent);
+  color: var(--weaver-accent-ink);
+}
+
+.weaver-controls .slider-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.weaver-controls .slider-row span {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--weaver-muted);
+  min-width: 3rem;
+}
+
+.weaver-controls .weaver-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--weaver-line);
+  font-size: 0.7rem;
+  color: var(--weaver-muted);
+}
+
+.weaver-controls .weaver-legend div {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.weaver-controls .weaver-legend .swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.weaver-controls .weaver-footer {
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--weaver-line);
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--weaver-muted);
+}
+
+/* Close overlay on overlay click outside panel */
+.weaver-overlay .weaver-panel {
+  position: relative;
+  flex: 1;
+}
+
+.weaver-overlay .weaver-canvas-wrap {
+  position: relative;
+}

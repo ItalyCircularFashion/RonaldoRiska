@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#171f25">
+  <meta name="description" content="Esplora una ricostruzione didattica low-poly della tessitura nel distretto tessile pratese.">
+  <title>Prato Textile World · Esplora la tessitura</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+  <div id="app">
+    <header class="topbar"><a class="brand" href="../../index.html" aria-label="Torna al portfolio">PRATO <span>TEXTILE WORLD</span></a><span class="topbar-note">UN'ESPLORAZIONE DIDATTICA · 01</span><button type="button" id="guide-button" class="ghost">Come si gioca</button></header>
+    <main>
+      <section class="world-shell" aria-label="Distretto tessile interattivo">
+        <canvas id="world" tabindex="0" aria-label="Mondo tessile 3D. WASD per camminare, trascina per ruotare la camera, E per interagire."></canvas>
+        <div class="scene-vignette" aria-hidden="true"></div>
+        <div class="top-hud"><div class="location"><span class="pulse-dot"></span><span id="zone-name">DISTRETTO / PRATO</span></div><div class="fps">FPS <output id="fps">—</output></div></div>
+        <div class="title-hud"><span class="eyebrow">UN DISTRETTO DA ATTRAVERSARE</span><h1>Segui il filo.<br><em>Entra nella storia.</em></h1><p>Un percorso esplorabile tra strade, fabbrica e un telaio a licci.</p></div>
+        <div class="action-hud"><p id="action-hint" role="status" aria-live="polite">Caricamento mondo 3D…</p><button id="interact" type="button" hidden>Interagisci <kbd>E</kbd></button></div>
+        <div class="controls-touch" aria-label="Comandi touch">
+          <button type="button" data-move="forward" aria-label="Avanti">↑</button><div><button type="button" data-move="left" aria-label="Sinistra">←</button><button type="button" data-move="backward" aria-label="Indietro">↓</button><button type="button" data-move="right" aria-label="Destra">→</button></div><span>Trascina la scena per guardarti intorno</span>
+        </div>
+        <div id="startup-fallback" class="startup-fallback" hidden role="alert"><strong>Il mondo 3D non si è avviato.</strong><p id="startup-error">Puoi comunque esplorare le tappe tessili nel pannello didattico.</p><button type="button" id="retry">Riprova</button></div>
+      </section>
+      <aside class="sidebar" aria-label="Percorso didattico">
+        <div class="sidebar-head"><span class="eyebrow">01 — ATLANTE DELLA MATERIA</span><h2>Dal filo alla pezza.</h2><p>Un itinerario possibile, non la sequenza obbligatoria di ogni impianto pratese. Le alternative sono esplicite.</p></div>
+        <nav id="stage-list" class="stage-list" aria-label="Fasi della filiera"><a href="#stage-telaio">Tessitura · Telaio a licci</a><a href="#stage-orditura">Preparazione dell'ordito</a></nav>
+        <article id="stage-detail" class="stage-detail" aria-live="polite"><h3>La tessitura</h3><p>Ordito e trama convergono al telaio. Apri una fase per leggere fonte, ingressi e uscita.</p></article>
+        <div class="sidebar-foot"><span class="eyebrow">IL PROTOTIPO</span><p>Distretto stilizzato. Macchina e ciclo illustrano un principio generale documentato, non riproducono un impianto reale né parametri produttivi.</p><a href="../../index.html">← Torna al portfolio</a></div>
+      </aside>
+    </main>
+    <div id="machine-panel" class="machine-panel" role="dialog" aria-modal="true" aria-labelledby="machine-title" hidden>
+      <div class="machine-card"><button id="close-panel" class="close" type="button" aria-label="Chiudi scheda">×</button><span class="eyebrow">DENTRO LA FABBRICA · 01 / TESSITURA</span><h2 id="machine-title">Il telaio a licci.</h2><p class="intro">Due sistemi di fili si incontrano: l'ordito, tenuto in tensione, e la trama, inserita nel passo.</p><div class="process-flow"><span>SUBBIO + TRAMA</span><span aria-hidden="true">→</span><span>PASSO · INSERZIONE · BATTUTA</span><span aria-hidden="true">→</span><span>PEZZA GREGGIA</span></div><p id="phase-label" class="phase-label">Macchina in pausa. Avvia il ciclo dimostrativo.</p><button id="machine-toggle" class="primary" type="button" disabled>Avvia telaio</button><h3>Come funziona</h3><p>I licci separano i fili d'ordito e aprono il passo. La navetta porta la trama, il pettine la accosta al tessuto formato e la pezza avanza. L'animazione è didattica: velocità e configurazione non rappresentano un impianto industriale.</p><p class="source">Fonte: A · Tessile_lana storia completa, p. 26 (nota 7) e p. 27; D · GEFITE tessitura, p. 59. Meccanismo generale, non attribuito a uno stabilimento di Prato.</p></div>
+    </div>
+    <dialog id="guide"><button type="button" class="close" id="guide-close" aria-label="Chiudi guida">×</button><span class="eyebrow">COMANDI / 01</span><h2>Un mondo da percorrere.</h2><p><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> / frecce per muoverti. Trascina o muovi il mouse tenendo premuto per ruotare la camera. <kbd>E</kbd> per entrare nella fabbrica e azionare il telaio; <kbd>Esc</kbd> per chiudere. Su telefono usa le frecce e il pulsante «Interagisci».</p><p>La guida resta attiva anche se sul dispositivo è selezionato «movimento ridotto».</p></dialog>
+  </div>
+  <noscript><p class="no-js">JavaScript è disabilitato: la scena non può partire. Ordito e trama convergono al telaio a licci che forma il tessuto greggio. Fonte: Tessile_lana storia completa pp. 26–27.</p></noscript>
+  <script>
+    window.addEventListener('error', function (e) {
+      if (e.target && e.target.tagName === 'SCRIPT') { var box = document.getElementById('startup-fallback'); if (box) { box.hidden = false; document.getElementById('startup-error').textContent = 'Modulo 3D non caricato. Consulta le fasi tessili nella colonna laterale.'; } }
+    }, true);
+  </script>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

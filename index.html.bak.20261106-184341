@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="it" data-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <!-- ── SEO ── -->
+    <title>Ronaldo Riska | Portfolio Tessile e Supply Chain — Prato, IT</title>
+    <meta name="description" content="Portfolio operativo di Ronaldo Riska, Supply Chain Manager tessile a Prato: tool CAD moda, progetti supply chain, dashboard industriali, AI applicata e competenze digitali per la filiera moda‑tessile.">
+    <meta name="keywords" content="portfolio tessile, supply chain manager, Prato, filiera moda, operations industriali, dashboard tessile, digitalizzazione tessile">
+
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#08110c">
+    <!-- ── OPEN GRAPH (immagine URL assoluto — era relativo: BUG CORRETTO) ── -->
+    <meta property="og:type" content="website">
+    <meta property="og:title"       content="Ronaldo Riska | Portfolio interattivo">
+    <meta property="og:description" content="CV online tecnico con progetti, dashboard e tool digitali per tessile, moda e operations industriali.">
+    <meta property="og:image"       content="https://italycircularfashion.github.io/RonaldoRiska/profile.jpg">
+    <meta property="og:url"         content="https://italycircularfashion.github.io/RonaldoRiska/">
+    <meta property="og:locale"      content="it_IT">
+    <!-- ── TWITTER CARD (aggiunto) ── -->
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="Ronaldo Riska | Portfolio tessile digitale">
+    <meta name="twitter:description" content="CV online con tool reali, simulatori e dashboard per il settore tessile.">
+    <meta name="twitter:image"       content="https://italycircularfashion.github.io/RonaldoRiska/profile.jpg">
+    <!-- ── CANONICAL ── -->
+    <link rel="canonical" href="https://italycircularfashion.github.io/RonaldoRiska/">
+    <link rel="alternate" hreflang="it" href="https://italycircularfashion.github.io/RonaldoRiska/">
+    <link rel="alternate" hreflang="x-default" href="https://italycircularfashion.github.io/RonaldoRiska/">
+    <!-- ── PRELOAD hero image (era lazy: BUG CORRETTO — LCP) ── -->
+    <link rel="preload" as="image" href="profile.jpg">
+    <!-- ── CSS ── -->
+    <link rel="stylesheet" href="site.css">
+    <link rel="stylesheet" href="site-patch.css">
+    <!-- ── STRUCTURED DATA ── -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Ronaldo Riska",
+      "url": "https://italycircularfashion.github.io/RonaldoRiska/",
+      "image": "https://italycircularfashion.github.io/RonaldoRiska/profile.jpg",
+      "jobTitle": "Textile Supply Chain & Digital Operations",
+      "worksFor": { "@type": "Organization", "name": "Distretto Tessile di Prato" },
+      "address": { "@type": "PostalAddress", "addressLocality": "Prato", "addressCountry": "IT" },
+      "email": "ronaldo.riska@gmail.com",
+      "sameAs": ["https://github.com/ItalyCircularFashion"]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://italycircularfashion.github.io/RonaldoRiska/" }
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Ronaldo Riska",
+      "url": "https://italycircularfashion.github.io/RonaldoRiska/",
+      "description": "Portfolio tessile, supply chain e tool digitali by Ronaldo Riska",
+      "inLanguage": "it",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://italycircularfashion.github.io/RonaldoRiska/?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Ronaldo Riska",
+      "url": "https://italycircularfashion.github.io/RonaldoRiska/",
+      "logo": "https://italycircularfashion.github.io/RonaldoRiska/profile.jpg",
+      "email": "ronaldo.riska@gmail.com",
+      "sameAs": [
+        "https://github.com/ItalyCircularFashion",
+        "https://italycircularfashion.github.io/RonaldoRiskaCV/"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Prato",
+        "addressCountry": "IT"
+      }
+    }
+    </script>
+  
+  <style>
+  /* ── LCA SHOWCASE ── */
+  .lca-showcase {
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
+    padding: clamp(4rem, 8vw, 7rem) 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .lca-showcase::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.3;
+  }
+  .lca-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  @media (max-width: 900px) {
+    .lca-hero { grid-template-columns: 1fr; }
+  }
+  .lca-hero-content h2 {
+    font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 0.5rem 0 1.2rem;
+    background: linear-gradient(135deg, var(--ink) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .lca-lead {
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0 0 1.5rem;
+    max-width: 540px;
+  }
+  .lca-lead strong {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .lca-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+  .lca-badge {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    color: var(--muted);
+    background: rgba(255,255,255,0.02);
+  }
+  .lca-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .lca-hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .lca-visual-card {
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+  .lca-visual-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .lca-visual-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+  }
+  .lca-visual-title {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .lca-visual-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .lca-metric {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    border: 1px solid var(--line);
+  }
+  .lca-metric-value {
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .lca-metric-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  </style>
+
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/Inter-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/PlusJakartaSans-latin.woff2" crossorigin>
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="site-font.css">
+<link rel="stylesheet" href="mobile.css">
+    <link rel="stylesheet" href="homepage-experimental.css">
+</head>
+<body class="page-home">
+    <canvas class="fx-canvas" aria-hidden="true"></canvas>
+    <div class="fx-cursor" aria-hidden="true"></div>
+    <div class="fx-curtain" aria-hidden="true"></div>
+    <div class="fx-progress" aria-hidden="true"></div>
+    <a class="external-site-bar" href="https://italycircularfashion.github.io/RonaldoRiskaCV/" target="_blank" rel="noopener noreferrer">
+      <span class="external-site-bar__icon">↗</span>
+      <span class="external-site-bar__text">Qui puoi vedere un altro sito realizzato interamente da me</span>
+    </a>
+    <div class="sheep-walk-container" aria-hidden="true">
+      <canvas id="sheepCanvas"></canvas>
+    </div>
+    <a href="./" class="logo-animated-container" aria-label="Torna alla home">
+      <canvas id="animatedLogoCanvas"></canvas>
+    </a>
+    <a class="skip-link" href="#main">Salta al contenuto</a>
+    <div class="fx-aperture" role="dialog" aria-modal="true" aria-label="Dettaglio progetto"><div class="fx-aperture-back"></div><button class="fx-aperture-close" type="button" aria-label="Chiudi">✕</button><div class="fx-aperture-panel"></div></div><!-- ── HEADER ── -->
+    <header class="site-header">
+      <nav class="nav container" aria-label="Navigazione principale">
+        <a class="brand" href="./" aria-label="Homepage Ronaldo Riska">
+          <span class="brand-mark">RR</span>
+          <span class="brand-text">
+            <span>Ronaldo Riska</span>
+            <span>Textile digital portfolio</span>
+          </span>
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu" data-nav-toggle>
+          <span aria-hidden="true"></span>
+          <span class="sr-only">Apri menu</span>
+        </button>
+        <div class="nav-links gen2-nav" id="site-menu" data-nav-menu>
+          <a href="index.html" aria-current="page">Home</a>
+          <a href="curriculum.html">Profilo</a>
+          <details class="nav-group">
+            <summary class="nav-group-label">Textile Engineering</summary>
+            <div class="nav-dropdown">
+              <a href="tessitura.html">Panoramica tessitura</a>
+              <a href="RonnyWeave.html">RonnyWeave</a>
+              <a href="weavecad.html">WeaveCAD</a>
+              <a href="note-colore.html">Note colore</a>
+              <a href="gantt-tessile.html">Gantt tessile</a>
+              <a href="tessile-dashboard.html">Tecnico tessile</a>
+            </div>
+          </details>
+          <details class="nav-group">
+            <summary class="nav-group-label">Digital Lab</summary>
+            <div class="nav-dropdown">
+              <a href="cad-moda.html">Panoramica CAD</a>
+              <a href="sketchhd-artifact.html">SketchHD</a>
+              <a href="modacad.html">ModaCAD</a>
+              <a href="pdf-converter.html">Convertitore PDF</a>
+            </div>
+          </details>
+          <details class="nav-group">
+            <summary class="nav-group-label">Industrial Intelligence</summary>
+            <div class="nav-dropdown">
+              <a href="supply-chain-production.html">Panoramica supply chain</a>
+              <a href="textile-platform-v5.html">Textile Platform v5</a>
+              <a href="mrp-iphone-planner.html">MRP Planner</a>
+              <a href="filieraos.html">FilieraOS</a>
+              <a href="progetto-digitalizzazione-impresa.html">Digitalizza impresa</a>
+            </div>
+          </details>
+          <details class="nav-group">
+            <summary class="nav-group-label">Research &amp; Sustainability</summary>
+            <div class="nav-dropdown">
+              <a href="sostenibilita-certificazioni.html">Sostenibilita&#769; e certificazioni</a>
+              <a href="demo-lca.html">Demo LCA</a>
+              <a href="prato-textile-district.html">Osservatorio Prato</a>
+              <a href="the-real-network.html">TextileHUB Network</a>
+            </div>
+          </details>
+          <details class="nav-group">
+            <summary class="nav-group-label">Other Projects</summary>
+            <div class="nav-dropdown">
+              <a href="schacchi.html">Scacchi</a>
+              <a href="flip-flop-poke.html">Flip Flop Poke&#768;</a>
+              <a href="flip-flop-rpg.html">Flip Flop RPG</a>
+              <a href="neon-zero.html">Neon Zero</a>
+              <a href="fractal-city.html">Fractal City</a>
+              <a href="cyberdeck-os/index.html">Cyberdeck OS</a>
+              <a href="index.html#contatti">Contatti</a>
+            </div>
+          </details>
+        </div>
+      </nav>
+    </header>
+
+    <!-- ── MAIN (un solo <main> per pagina: BUG CORRETTO) ── -->
+        <main id="main">
+
+<section class="fx-hero" id="top">
+  <div class="fx-hero-glow" aria-hidden="true"></div>
+  <div class="fx-hero-videos" aria-hidden="true">
+    <video class="fx-hero-video" autoplay muted loop playsinline preload="metadata" aria-label="Video: orditura del filato"><source src="assets/video/orditura-hero.mp4" type="video/mp4"></video>
+    <video class="fx-hero-video" autoplay muted loop playsinline preload="metadata" aria-label="Video: tessitura del tessuto"><source src="assets/video/tessitura-hero.mp4" type="video/mp4"></video>
+  </div>
+  <div class="container fx-hero-grid fx-head">
+    <div class="fx-hero-copy">
+      <p class="fx-eyebrow">Portfolio tecnico operativo</p>
+      <h1 class="fx-hero-title">Ronaldo Riska</h1>
+      <p class="fx-hero-role">Tessitura · CAD moda · Supply chain · Industrial tech</p>
+      <p class="fx-hero-lead">Ogni parte del sito e ogni tool sono stati realizzati dal sottoscritto come dimostrazione di competenza per filiera moda-tessile, operations e controllo industriale.</p>
+      <div class="fx-hero-actions fx-cta">
+        <a class="button button-primary" href="#progetti">Esplora i progetti →</a>
+        <a class="button button-secondary" href="curriculum.html">Leggi il CV</a>
+        <a class="button button-ghost" href="Ronaldo-Riska-CV-2026.pdf" download>Scarica PDF</a>
+      </div>
+    </div>
+    <figure class="fx-hero-fig" style="margin:0">
+      <div class="fx-frame">
+        <img src="profile.jpg" width="870" height="1260" alt="Ritratto professionale di Ronaldo Riska" loading="eager" fetchpriority="high" decoding="async">
+      </div>
+      <span class="fx-chip c1" aria-hidden="true">Supply chain tessile</span>
+      <span class="fx-chip c2" aria-hidden="true">CAD prodotto</span>
+      <span class="fx-chip c3" aria-hidden="true">Process intelligence</span>
+    </figure>
+  </div>
+  <dl class="fx-hero-meta fx-head" aria-label="Informazioni rapide">
+    <div><dt>Base</dt><dd>Prato, Italia</dd></div>
+    <div><dt>Focus</dt><dd>Textile operations</dd></div>
+    <div><dt>Digitale</dt><dd>Dashboard + web tools</dd></div>
+    <div><dt>Approccio</dt><dd>Industrial tech</dd></div>
+  </dl>
+  <div class="fx-marquee" aria-hidden="true"><div class="fx-marquee-track">
+    <span>Tessitura <em>·</em> CAD Moda <em>·</em> Supply Chain <em>·</em> Industrial Tech <em>·</em> LCA <em>·</em> AI Systems <em>·</em></span>
+    <span>Tessitura <em>·</em> CAD Moda <em>·</em> Supply Chain <em>·</em> Industrial Tech <em>·</em> LCA <em>·</em> AI Systems <em>·</em></span>
+  </div></div>
+</section>
+
+<section class="fx-section" aria-labelledby="metriche-title">
+  <div class="container fx-head">
+    <p class="fx-sec-index">01 / Metriche</p>
+    <p class="fx-eyebrow">Operational Portfolio Metrics</p>
+    <h2 class="fx-h2" id="metriche-title">Ecosistema digitale tra tessile, supply chain e industrial intelligence.</h2>
+    <p class="fx-sub">Una struttura portfolio progettata come piattaforma operativa: dashboard, tool HTML, simulatori produttivi, moduli analitici e prototipi digitali navigabili.</p>
+    <div class="fx-badges" aria-label="Aree di competenza"><span>Industrial Tech</span><span>Digital Workflow</span><span>Textile Operations</span><span>AI Systems</span></div>
+    <div class="fx-bento">
+      <article class="fx-tile t-wide">
+        <p class="fx-num"><strong class="metric-number" data-count-to="25" aria-live="polite">0</strong></p>
+        <h3>Progetti e prototipi operativi</h3>
+        <p>Tool interattivi, dashboard industriali, simulatori tessili e moduli orientati a process intelligence e operations. Stato: Live.</p>
+      </article>
+      <article class="fx-tile t-sq">
+        <p class="fx-num"><strong class="metric-number" data-count-to="3" aria-live="polite">0</strong></p>
+        <h3>Macro-aree professionali</h3>
+        <p>Tessitura, CAD moda, supply chain e workflow industriali.</p>
+      </article>
+      <article class="fx-tile t-3">
+        <p class="fx-num"><strong class="metric-number" data-count-to="18" aria-live="polite">0</strong></p>
+        <h3>Dashboard e tool HTML</h3>
+        <p>Applicazioni navigabili per desktop, tablet e mobile.</p>
+      </article>
+      <article class="fx-tile t-3">
+        <p class="fx-num"><strong class="metric-number" data-count-to="7" aria-live="polite">0</strong></p>
+        <h3>Prototipi tecnici e sorgenti</h3>
+        <p>Strutture React, moduli JS e architetture front-end orientate a scalabilità e UX industriale.</p>
+      </article>
+      <article class="fx-tile t-6">
+        <h3>Development Layer</h3>
+        <p>Front-end industriale: prototipi React, logica JS e interfacce orientate a scalabilità e UX per operazioni complesse.</p>
+        <div class="fx-badges"><span>React prototype</span><span>JavaScript</span><span>UX industriale</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="fx-section" id="featured" aria-labelledby="featured-title">
+  <div class="container fx-head">
+    <p class="fx-sec-index">02 / In evidenza</p>
+    <p class="fx-eyebrow">Featured Work</p>
+    <h2 class="fx-h2" id="featured-title">Progetti in evidenza</h2>
+    <p class="fx-sub">Selezione dei progetti più significativi dell'ecosistema: piattaforma, simulatori e strumenti operativi live. Tocca una card per aprirla in fullscreen.</p>
+    <div class="fx-featured" data-featured-grid aria-live="polite"></div>
+    <div class="fx-cta"><a class="button button-secondary" href="#progetti">Esplora tutti i progetti →</a></div>
+  </div>
+</section>
+
+<section class="fx-section" id="progetti" aria-labelledby="progetti-title">
+  <div class="container fx-head">
+    <p class="fx-sec-index">03 / Progetti</p>
+    <p class="fx-eyebrow">PROGETTI</p>
+    <h2 class="fx-h2" id="progetti-title">Tool · Simulatori · Dashboard</h2>
+    <p class="fx-sub">Interfacce applicative e prototipi industriali. Stack tecnico e casi d'uso in ogni scheda. Tocca una card per aprirla in fullscreen; cambia filtro e le card si riposizionano con FLIP.</p>
+    <div class="fx-toolbar">
+      <div class="filter-group" role="group" aria-label="Filtri categoria progetto">
+        <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">Tutti <span class="filter-count" data-filter-count="all"></span></button>
+        <button class="filter-button" type="button" data-filter="tessitura" aria-pressed="false">Tessitura <span class="filter-count" data-filter-count="tessitura"></span></button>
+        <button class="filter-button" type="button" data-filter="cad" aria-pressed="false">CAD Moda <span class="filter-count" data-filter-count="cad"></span></button>
+        <button class="filter-button" type="button" data-filter="supply" aria-pressed="false">Supply Chain <span class="filter-count" data-filter-count="supply"></span></button>
+      </div>
+      <label class="sr-only" for="project-search">Cerca progetto</label>
+      <input id="project-search" class="search-input" type="search" placeholder="Cerca progetto, tag o tecnologia" data-project-search autocomplete="off">
+    </div>
+    <div class="fx-grid" data-project-groups aria-live="polite" aria-label="Progetti raggruppati per categoria"></div>
+    <p class="project-empty is-hidden" data-project-empty hidden>Nessun progetto trovato per questa ricerca o filtro. <button class="button button-ghost" type="button" data-project-reset>Mostra tutti i progetti</button></p>
+  </div>
+</section>
+
+<section class="fx-section" aria-labelledby="categorie-title">
+  <div class="container fx-head">
+    <p class="fx-sec-index">04 / Aree</p>
+    <p class="fx-eyebrow">MACRO-CATEGORIE</p>
+    <h2 class="fx-h2" id="categorie-title">Tessitura · CAD Moda · Supply Chain</h2>
+    <p class="fx-sub">Moduli sviluppati su casi d'uso concreti: armatura, note colore, MRP, make-or-buy, simulazione e operations analytics. Passa sopra o tocca un'area per espanderla.</p>
+    <div class="fx-rail">
+      <article class="category-block" data-category-card="tessitura">
+        <span class="cat-index" data-category-tone aria-hidden="true">T01</span>
+        <h3 class="category-name" data-category-title>Tessitura</h3>
+        <p class="category-desc" data-category-summary>Simulatori di armatura, note colore, Gantt ciclo produttivo.</p>
+        <div class="category-tags"><span>Simulatori produttivi</span><span>Armature</span><span>Pianificazione</span></div>
+        <div class="category-meta"><span class="category-badge"><strong data-category-count>0</strong> <span>moduli</span></span><a class="button button-primary category-cta" data-category-link href="tessitura.html">Apri area →</a></div>
+      </article>
+      <article class="category-block" data-category-card="cad">
+        <span class="cat-index" data-category-tone aria-hidden="true">C01</span>
+        <h3 class="category-name" data-category-title>CAD Moda</h3>
+        <p class="category-desc" data-category-summary>Modellistica, cartamodelli, SketchHD AI e concept digitale.</p>
+        <div class="category-tags"><span>Modellistica</span><span>Sketch AI</span><span>Prodotto</span></div>
+        <div class="category-meta"><span class="category-badge"><strong data-category-count>0</strong> <span>moduli</span></span><a class="button button-primary category-cta" data-category-link href="cad-moda.html">Apri area →</a></div>
+      </article>
+      <article class="category-block" data-category-card="supply">
+        <span class="cat-index" data-category-tone aria-hidden="true">S01</span>
+        <h3 class="category-name" data-category-title>Supply Chain</h3>
+        <p class="category-desc" data-category-summary>MRP, dashboard SCM, make-or-buy e operations analytics.</p>
+        <div class="category-tags"><span>MRP</span><span>Dashboard</span><span>Operations Analytics</span></div>
+        <div class="category-meta"><span class="category-badge"><strong data-category-count>0</strong> <span>moduli</span></span><a class="button button-primary category-cta" data-category-link href="supply-chain-production.html">Apri area →</a></div>
+      </article>
+      <article class="category-block" data-explore-tile="digital-lab">
+        <span class="cat-index" aria-hidden="true">D01</span>
+        <h3 class="category-name">Digital Lab</h3>
+        <p class="category-desc">CAD moda, SketchHD AI, ModaCAD e convertitore PDF.</p>
+        <div class="category-tags"><span>Modellistica</span><span>Concept digitale</span></div>
+        <div class="category-meta"><a class="button button-primary category-cta" href="cad-moda.html">Apri area →</a></div>
+      </article>
+      <article class="category-block" data-explore-tile="research">
+        <span class="cat-index" aria-hidden="true">R01</span>
+        <h3 class="category-name">Research &amp; Sustainability</h3>
+        <p class="category-desc">LCA, certificazioni, osservatorio tessile e TextileHUB Network.</p>
+        <div class="category-tags"><span>LCA</span><span>Circular economy</span></div>
+        <div class="category-meta"><a class="button button-primary category-cta" href="sostenibilita-certificazioni.html">Apri area →</a></div>
+      </article>
+      <article class="category-block" data-explore-tile="other">
+        <span class="cat-index" aria-hidden="true">O01</span>
+        <h3 class="category-name">Other Projects</h3>
+        <p class="category-desc">Esperimenti, giochi e prototipi fuori dal core professionale.</p>
+        <div class="category-tags"><span>Esperimenti</span><span>Prototipi</span></div>
+        <div class="category-meta"><a class="button button-primary category-cta" href="schacchi.html">Esplora progetti →</a></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="fx-story" id="industrial" aria-labelledby="industrial-title">
+  <div class="container fx-head">
+    <p class="fx-sec-index">05 / Industrial Intelligence</p>
+    <p class="fx-eyebrow">Industrial Intelligence</p>
+    <h2 class="fx-h2" id="industrial-title">Digitalizzazione e operations intelligence</h2>
+    <p class="fx-sub">Dashboard KPI, analisi colli di bottiglia, digital twin e governance aziendale data-driven. Scorri: i pannelli si impilano e si trasformano.</p>
+    <div class="fx-stack">
+      <article class="fx-panel">
+        <span class="fx-panel-tag">Textile Intelligence</span>
+        <h3>Digitalizza la tua impresa con dati misurabili.</h3>
+        <p>La digitalizzazione della filiera produttiva converte i dati operativi grezzi in KPI azionabili, trasformando volumi, tempistiche e costi in leve strategiche per la governance aziendale.</p>
+        <div class="fx-badges"><span>KPI azionabili</span><span>Digital Twin</span><span>Dashboard direzionale</span><span>OEE &amp; saturazione</span><span>Tempo &amp; Metodo</span><span>AI predittiva</span><span>Colli di bottiglia</span><span>Miglioramento continuo</span></div>
+        <div class="fx-compare">
+          <div><h4>✓ Azienda Digitalizzata</h4><ul>
+            <li>Monitoraggio KPI in tempo reale (€, resa, scostamento)</li><li>Identificazione automatica colli di bottiglia</li><li>Alert predittivi prima che il problema diventi critico</li><li>Digital twin sempre più fedele all'impianto reale</li><li>Decisioni data-driven, non basate sull'intuizione</li><li>Miglioramento continuo: i modelli imparano dai dati</li><li>Riduzione scarti e ottimizzazione saturazione macchine</li></ul></div>
+          <div><h4>✗ Azienda NON-Digitalizzata</h4><ul>
+            <li>Dati sparsi, nessuna visione unificata dello stato</li><li>Colli di bottiglia scoperti solo dopo il danno</li><li>Decisioni reattive, sempre in ritardo</li><li>Nessuna previsione, solo contabilità retrospettiva</li><li>Dipendenza dall'esperienza individuale, non dal dato</li><li>Scarti e inefficenze nascoste, costi invisibili</li><li>Impossibilità di scalare senza aumentare errori</li></ul></div>
+        </div>
+        <form action="#" method="post" aria-label="Richiedi consulenza gratuita">
+          <h4>Pronto a vedere i tuoi KPI in tempo reale?</h4>
+          <p>Compila il form e ricevi una consulenza gratuita di 30 minuti. Analizziamo i tuoi processi e ti mostriamo cosa può fare la digitalizzazione per la tua azienda.</p>
+          <label>Nome e azienda <input type="text" name="nome_azienda" placeholder="Mario Rossi — Tessitura Rossi Srl" autocomplete="organization" required></label>
+          <label>Email aziendale <input type="email" name="email" placeholder="mario@rossi.example" autocomplete="email" required></label>
+          <label>Cosa ti preoccupa di più della tua produzione? <textarea name="preoccupazione" placeholder="Es: tempi ciclo troppo lunghi, scarti elevati, non ho visibilità sui costi..." rows="3" required></textarea></label>
+          <button type="submit" class="button button-primary">Richiedi consulenza gratuita</button>
+          <p>Nessun impegno. Consulenza iniziale di 30 minuti, gratuita e senza vincolo.</p>
+        </form>
+        <div class="fx-cta"><a class="button button-primary" href="progetto-digitalizzazione-impresa.html">Scopri il progetto →</a></div>
+      </article>
+      <article class="fx-panel" aria-labelledby="command-title">
+        <span class="fx-panel-tag">Command center</span>
+        <h2 id="command-title" style="font-size:clamp(1.9rem,4vw,3rem);letter-spacing:-.02em;line-height:1.05;margin:.4rem 0 .8rem">KPI e analisi operativa</h2>
+        <div class="fx-kpi-row">
+          <div class="fx-kpi"><span class="pie-value">78%</span><span class="pie-label">OEE · Efficienza impianto</span></div>
+          <div class="fx-kpi"><span class="pie-value">65%</span><span class="pie-label">Saturazione · Utilizzo macchine</span></div>
+          <div class="fx-kpi"><span class="pie-value">92%</span><span class="pie-label">Qualità · First pass yield</span></div>
+          <div class="fx-kpi"><span class="pie-value">45%</span><span class="pie-label">Riduzione scarti · Miglioramento</span></div>
+        </div>
+        <div class="fx-charts">
+          <div class="fx-chart"><span class="chart-title">Ripartizione costi</span><span class="chart-badge">Breakdown</span>
+            <div class="fx-legend"><span><i style="background:#ff4d4d"></i>Materie 35%</span><span><i style="background:#00f6ff"></i>Lavorazioni 30%</span><span><i style="background:#00ff9d"></i>Energia 25%</span></div></div>
+          <div class="fx-chart"><span class="chart-title">Andamento produzione</span><span class="chart-badge">Trend 12 mesi</span>
+            <div class="fx-legend"><span><i style="background:#00f6ff"></i>Attuale</span><span><i style="background:#ff4d4d"></i>Precedente</span></div></div>
+          <div class="fx-chart"><span class="chart-title">Distribuzione difetti</span><span class="chart-badge">Pareto</span>
+            <div class="fx-legend"><span><i style="background:#ff4d4d"></i>Contestazione 40%</span><span><i style="background:#00f6ff"></i>Tintoria 25%</span><span><i style="background:#00ff9d"></i>Tessitura 20%</span><span><i style="background:#ffaa00"></i>Altro 15%</span></div></div>
+          <div class="fx-chart"><span class="chart-title">KPI per reparto</span><span class="chart-badge">Confronto</span>
+            <div class="fx-legend"><span><i style="background:#00f6ff"></i>OEE</span><span><i style="background:#00ff9d"></i>Qualità</span><span><i style="background:#ffaa00"></i>Consegna</span><span><i style="background:#ff4d4d"></i>Scarti</span></div></div>
+        </div>
+        <div class="fx-badges"><span>⏱️ Tempi ciclo · teorico vs reale</span><span>📦 WIP tra reparti</span><span>🎯 Advancement · previsto vs attuale</span><span>💡 Colli di bottiglia · criticità automatiche</span><span>📊 KPI dashboard in tempo reale</span><span>🤖 AI Systems · modelli predittivi</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="fx-section" id="research-textile" aria-labelledby="research-title">
+  <div class="container fx-head">
+    <p class="fx-sec-index">06 / Research</p>
+    <p class="fx-eyebrow">Research &amp; Textile</p>
+    <h2 class="fx-h2" id="research-title">Sostenibilità, manifattura e distretto</h2>
+    <p class="fx-sub">LCA, circular economy, osservatorio tessile pratese e analisi di filiera.</p>
+    <div class="fx-lca" id="lca-showcase">
+      <div>
+        <p class="fx-eyebrow">Life Cycle Assessment · Tessile</p>
+        <h3 class="fx-h2" id="lca-title" style="font-size:clamp(2rem,4.5vw,3.4rem)">Costruiamo insieme un LCA</h3>
+        <p class="fx-sub">Un compilatore LCA per tessile e abbigliamento che segue i parametri di <strong>Textile Exchange</strong> e le <strong>normative europee</strong>. Cradle-to-gate, benchmarking e report per la filiera moda.</p>
+        <div class="fx-badges"><span>Textile Exchange</span><span>PEF / OEF</span><span>Cradle-to-Gate</span><span>Sphera 2026</span></div>
+        <div class="fx-cta"><a class="button button-primary" href="demo-lca.html">Apri la Demo →</a><a class="button button-secondary" href="#progetti">Vedi altri progetti</a></div>
+      </div>
+      <div class="fx-lca-card" role="img" aria-label="Valori indicativi LCA tessile: cotone 4.17, poliestere 5.5, cachemire 25 kg CO₂e per kg">
+        <div><span class="fx-panel-tag">LCA Tessile</span></div>
+        <div class="fx-lca-metric"><span>Cotone</span><strong>4.17</strong></div>
+        <div class="fx-lca-metric"><span>Poliestere</span><strong>5.5</strong></div>
+        <div class="fx-lca-metric"><span>Cachemire</span><strong>25</strong></div>
+        <p style="color:var(--muted);margin:.6rem 0 0">kg CO₂e / kg di fibra (valori indicativi).</p>
+      </div>
+    </div>
+    <div class="fx-journal">
+      <article>
+        <p class="fx-eyebrow">Textile Intelligence · Distretto pratese</p>
+        <h3 id="journal-title" style="font-size:clamp(1.7rem,3.4vw,2.6rem);letter-spacing:-.02em">Osservatorio tessile — Prato Textile District</h3>
+        <p class="fx-sub">Analisi e contestualizzazione sul distretto tessile pratese, tra storia, manifattura e transizione digitale.</p>
+        <p class="fx-sub"><strong>Prato: ieri e oggi.</strong> Dalle origini lanerie del Medioevo all'odierno distretto della circular fashion, il territorio pratese ha trasformato la tessitura in un modello produttivo capace di rinnovarsi senza perdere identità.</p>
+        <p class="fx-sub">Approfondimenti su sostenibilità, tracciabilità e innovazione industriale.</p>
+        <div class="fx-cta"><a href="prato-textile-district.html" class="button button-primary">Apri osservatorio →</a><a href="Ronaldo-Riska-CV-2026.pdf" download class="button button-secondary">Scarica CV PDF</a></div>
+      </article>
+      <article aria-labelledby="cv-title">
+        <p class="fx-eyebrow">Curriculum online</p>
+        <h3 id="cv-title" style="font-size:clamp(1.7rem,3.4vw,2.6rem);letter-spacing:-.02em">Esperienza operativa e competenze digitali in un unico percorso.</h3>
+        <p class="fx-sub">Profilo orientato a filiera tessile, qualità, gestione fornitori, supply chain e strumenti digitali per il controllo industriale.</p>
+        <div class="fx-cta"><a class="button button-primary" href="curriculum.html">Leggi il CV completo →</a><a class="button button-secondary" href="Ronaldo-Riska-CV-2026.pdf" download>Scarica PDF</a></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="fx-section" id="contatti" aria-labelledby="contatti-title">
+  <div class="container fx-head">
+    <p class="fx-sec-index">07 / Contatti</p>
+    <div class="fx-contact">
+      <div>
+        <p class="fx-eyebrow">Contatti</p>
+        <h2 class="fx-h2" id="contatti-title">Disponibile per progetti tessili, industriali e digitali.</h2>
+        <p class="fx-sub">Collaborazioni su operations, supply chain, dashboard industriali e strumenti digitali applicati alla filiera moda-tessile.</p>
+        <p class="fx-sub">Integro esperienza produttiva, qualità e pianificazione con approccio data-driven: analytics, automazione documentale, sistemi AI-driven e interfacce web per il monitoraggio dei processi.</p>
+        <div class="fx-cta"><a class="button button-primary" href="mailto:ronaldo.riska@gmail.com">Avvia una conversazione →</a><a class="button button-secondary" href="Ronaldo-Riska-CV-2026.pdf" download>Scarica CV PDF</a></div>
+        <div class="fx-tags"><span>Textile Operations</span><span>CAD Fashion</span><span>Supply Chain</span><span>Industrial Analytics</span><span>Digital Workflow</span><span>AI Systems</span></div>
+      </div>
+      <address class="fx-contact-panel" style="font-style:normal">
+        <div class="fx-contact-card"><span class="contact-label">Email</span><a href="mailto:ronaldo.riska@gmail.com">ronaldo.riska@gmail.com</a></div>
+        <div class="fx-contact-card"><span class="contact-label">Location</span><span>Prato, Toscana — Italy</span></div>
+        <div class="fx-contact-card"><span class="contact-label">GitHub Repository</span><a href="https://github.com/ItalyCircularFashion" target="_blank" rel="noopener noreferrer">github.com/ItalyCircularFashion</a></div>
+        <div class="fx-contact-card"><span class="contact-label">Focus operativo</span><span>Textile manufacturing · Process optimization · Industrial dashboarding · Digital product systems</span></div>
+      </address>
+    </div>
+  </div>
+</section>
+
+</main>
+
+
+    <!-- ── FINE <main> — correttamente uno solo ── -->
+
+    <footer class="site-footer gen2-footer">
+      <div class="container footer-inner">
+        <nav class="footer-links" aria-label="Mappa del sito">
+            <a href="index.html">Home</a>
+            <a href="curriculum.html">Profilo</a>
+            <a href="tessitura.html">Textile Engineering</a>
+            <a href="cad-moda.html">Digital Lab</a>
+            <a href="supply-chain-production.html">Industrial Intelligence</a>
+            <a href="sostenibilita-certificazioni.html">Research &amp; Sustainability</a>
+            <a href="index.html#progetti">Other Projects</a>
+          </nav>
+          <p>&copy; <span data-year></span> Ronaldo Riska — Textile Intelligence Portfolio</p>
+        <a href="#top">Torna su ↑</a>
+      </div>
+    </footer>
+
+    <!-- Script: project-data.js PRIMA di main.js (dipendenza) -->
+    <script src="project-data.js" defer></script>
+    <script src="main.js" defer></script>
+    <script src="logo-loom-animated.js" defer></script>
+    <script>
+    (function(){
+      const canvas = document.getElementById('animatedLogoCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      const dpr = window.devicePixelRatio || 1;
+      const size = 300;
+      canvas.width = size * dpr;
+      canvas.height = size * dpr;
+      ctx.scale(dpr, dpr);
+
+      const cols = 9;
+      const spacing = size / cols;
+      const cycleFrames = 140;
+      let frames = 0;
+
+      let wefts = [
+        { y: 40 + spacing * 4, pattern: 0 },
+        { y: 40 + spacing * 3, pattern: 1 },
+        { y: 40 + spacing * 2, pattern: 0 },
+        { y: 40 + spacing * 1, pattern: 1 },
+        { y: 40 + spacing * 0, pattern: 0 }
+      ];
+
+      function draw() {
+        ctx.clearRect(0, 0, size, size);
+
+        let p = (frames % cycleFrames) / cycleFrames;
+        let cycleIndex = Math.floor(frames / cycleFrames);
+        let isEven = cycleIndex % 2 === 0;
+
+        let shuttleX = -20;
+        let newWeftY = 25;
+        let beaterY = -20;
+        let shiftOffset = 0;
+        let newWeftWidth = 0;
+
+        if (p < 0.4) {
+          let tp = p / 0.4;
+          tp = tp < 0.5 ? 2 * tp * tp : -1 + (4 - 2 * tp) * tp;
+          if (isEven) {
+            shuttleX = tp * (size + 40) - 20;
+            newWeftWidth = Math.max(0, Math.min(size, shuttleX));
+          } else {
+            shuttleX = (size + 20) - tp * (size + 40);
+            newWeftWidth = Math.max(0, Math.min(size, size - shuttleX));
+          }
+        } else {
+          shuttleX = isEven ? size + 20 : -20;
+          newWeftWidth = size;
+        }
+
+        if (p > 0.4 && p <= 0.5) {
+          let tp = (p - 0.4) / 0.1;
+          beaterY = -15 + tp * (newWeftY + 5);
+        } else if (p > 0.5 && p <= 0.7) {
+          let tp = (p - 0.5) / 0.2;
+          tp = 1 - Math.pow(1 - tp, 3);
+          beaterY = (25 + 5) + tp * (40 - 25);
+          newWeftY = 25 + tp * (40 - 25);
+          shiftOffset = tp * spacing;
+        } else if (p > 0.7 && p <= 0.85) {
+          let tp = (p - 0.7) / 0.15;
+          tp = tp * tp;
+          beaterY = (40 + 5) - tp * (40 + 5 + 15);
+          newWeftY = 40;
+          shiftOffset = spacing;
+        } else if (p > 0.85) {
+          beaterY = -15;
+          newWeftY = 40;
+          shiftOffset = spacing;
+        }
+
+        if (frames > 0 && frames % cycleFrames === 0) {
+          wefts.unshift({ y: 40, pattern: isEven ? 1 : 0 });
+          for (let w of wefts) w.y += spacing;
+          if (wefts.length > 8) wefts.pop();
+          shiftOffset = 0;
+        }
+
+        ctx.lineWidth = 3.5;
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineCap = 'round';
+        for (let i = 1; i < cols; i++) {
+          ctx.beginPath();
+          ctx.moveTo(i * spacing, 0);
+          ctx.lineTo(i * spacing, size);
+          ctx.stroke();
+        }
+
+        function drawWeft(yPos, pattern, width, fromLeft) {
+          ctx.lineWidth = 4;
+          ctx.strokeStyle = '#dc2626';
+          ctx.beginPath();
+          if (fromLeft) {
+            ctx.moveTo(0, yPos);
+            ctx.lineTo(width, yPos);
+          } else {
+            ctx.moveTo(size, yPos);
+            ctx.lineTo(size - width, yPos);
+          }
+          ctx.stroke();
+
+          ctx.strokeStyle = '#ffffff';
+          for (let i = 1; i < cols; i++) {
+            if ((i + pattern) % 2 === 0) {
+              let x = i * spacing;
+              let isCrossed = fromLeft ? (width >= x - 2) : (size - width <= x + 2);
+              if (isCrossed) {
+                ctx.beginPath();
+                ctx.moveTo(x, yPos - 5);
+                ctx.lineTo(x, yPos + 5);
+                ctx.stroke();
+              }
+            }
+          }
+        }
+
+        for (let w of wefts) {
+          drawWeft(w.y + shiftOffset, w.pattern, size, true);
+        }
+        if (p < 0.9) drawWeft(newWeftY, isEven ? 1 : 0, newWeftWidth, isEven);
+
+        if (p < 0.45) {
+          ctx.fillStyle = '#dc2626';
+          ctx.beginPath();
+          let w = 24, h = 9;
+          ctx.moveTo(shuttleX - w/2, 25);
+          ctx.lineTo(shuttleX - w/4, 25 - h/2);
+          ctx.lineTo(shuttleX + w/4, 25 - h/2);
+          ctx.lineTo(shuttleX + w/2, 25);
+          ctx.lineTo(shuttleX + w/4, 25 + h/2);
+          ctx.lineTo(shuttleX - w/4, 25 + h/2);
+          ctx.fill();
+        }
+
+        if (beaterY > -10) {
+          ctx.strokeStyle = '#16a34a';
+          ctx.lineWidth = 1.5;
+          for (let i = 0; i <= cols; i++) {
+            let x = (i * spacing) - (spacing / 2);
+            if (x > 0 && x < size) {
+              ctx.beginPath();
+              ctx.moveTo(x, beaterY - 18);
+              ctx.lineTo(x, beaterY + 2);
+              ctx.stroke();
+            }
+          }
+          ctx.fillStyle = '#15803d';
+          ctx.fillRect(0, beaterY - 20, size, 5);
+          ctx.fillRect(0, beaterY, size, 4);
+        }
+
+        frames++;
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    })();
+    </script>
+    <!-- script.js RIMOSSO: era orphaned, tutta la logica è in main.js -->
+
+      <script src="sheep-walk.js" defer></script>
+  <script src="mobile.js"></script>
+    <!-- Homepage Experimental: GSAP + ScrollTrigger + Flip (CDN async) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" async></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" async></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js" async></script>
+    <script src="homepage-experimental.js" defer></script>
+</body>
+</html>
