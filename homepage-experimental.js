@@ -14,18 +14,48 @@
   document.body.classList.add("page-home");
   document.body.dataset.fxPointer = finePointer ? "fine" : "coarse";
 
-  /* ── Progress bar ── */
-  var progress = qs(".fx-progress");
-  if (progress && !reduced) {
-    var ticking = false;
-    window.addEventListener("scroll", function () {
-      if (ticking) return; ticking = true;
-      requestAnimationFrame(function () {
-        var h = document.documentElement, max = h.scrollHeight - h.clientHeight;
-        progress.style.transform = "scaleX(" + (max > 0 ? h.scrollTop / max : 0) + ")";
-        ticking = false;
+  /* ── Scroll-linked progress bar ── */
+  if (hasST) {
+    gsap.to(".fx-progress", {
+      scaleX: 1, duration: 1, ease: "none",
+      scrollTrigger: {
+        trigger: document.documentElement,
+        start: 0, end: "max",
+        scrub: 1
+      }
+    });
+  }
+
+  /* ── Parallax on hero: titolo + copia si muovono con lo scorrimento ── */
+  /* Damping 0.08, range ±6px, fare subito prima del pulsante */
+  if (hasST) {
+    var heroTitle = qs(".fx-hero-title");
+    var heroCopy = qs(".fx-hero-copy");
+    if (heroTitle && heroCopy) {
+      gsap.to([heroTitle, heroCopy], {
+        y: -6, rotationX: 2, ease: "none",
+        scrollTrigger: {
+          trigger: ".fx-hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.08,
+          invalidateOnRefresh: true
+        }
       });
-    }, { passive: true });
+    }
+  }
+
+  /* ── Scroll-driven reveal (FLIP) su card progetti ── */
+  /* opacity:0→1 + y:40→0, stagger 0.05, power3.out, start top 80% */
+  if (hasST) {
+    var projectCards = qsa(".fx-grid .project-card");
+    if (projectCards.length) {
+      gsap.from(projectCards, {
+        opacity: 0, y: 40, duration: 0.9,
+        ease: "power3.out", stagger: 0.05,
+        scrollTrigger: { trigger: projectCards[0], start: "top 80%", once: true }
+      });
+    }
   }
 
   /* ── Cursor ring + hot state ── */
