@@ -2028,3 +2028,81 @@ body .hero-visual {
     grid-template-columns: 1fr;
   }
 }
+
+/* ── RonnyWeave overlay (iframe wrapper) ── */
+.rw-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 1.2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.rw-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.rw-panel {
+  width: 100%;
+  max-width: 1400px;
+  max-height: 92vh;
+  border-radius: var(--radius);
+  background: var(--bg);
+  border: 1px solid var(--line-strong);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.rw-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.rw-panel-header h2 {
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+}
+
+.rw-close {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.rw-close:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(255, 45, 111, 0.08);
+}
+
+.rw-panel-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}

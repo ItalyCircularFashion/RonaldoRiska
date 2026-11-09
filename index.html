@@ -261,6 +261,9 @@
         <button class="weaver-trigger" id="weaver-trigger" type="button" aria-label="Crea il tuo tessuto in 3D">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
         </button>
+        <button class="rw-trigger" id="rw-trigger" type="button" aria-label="Designer tessuto 3D">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+        </button>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu" data-nav-toggle>
           <span aria-hidden="true"></span>
           <span class="sr-only">Apri menu</span>
@@ -848,7 +851,123 @@
         </div>
       </div>
     </div>
-    <script type="module" src="weaver-3d.js"></script>
-    <script src="homepage-experimental.js" defer></script>
-</body>
+    <div class="weaver-overlay" id="weaver-overlay" hidden>
+      <div class="weaver-panel">
+        <header class="weaver-header">
+          <h2 class="weaver-title">Crea il tuo tessuto in 3D</h2>
+          <button class="weaver-close" id="weaver-close" type="button" aria-label="Chiudi">✕</button>
+        </header>
+        <div class="weaver-body">
+          <div class="weaver-canvas-wrap">
+            <canvas id="weaver-canvas"></canvas>
+          </div>
+          <div class="weaver-controls">
+            <h3>Tessitura</h3>
+            <div class="weave-presets">
+              <button type="button" data-pattern="plain">Piatto</button>
+              <button type="button" data-pattern="twill">Twill</button>
+              <button type="button" data-pattern="satin">Satin</button>
+            </div>
+            <div class="control-group">
+              <label for="weaver-pattern">Pattern</label>
+              <select id="weaver-pattern">
+                <option value="plain">Piatto</option>
+                <option value="twill">Twill</option>
+                <option value="satin">Satin</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label for="weaver-speed">Velocità</label>
+              <input type="range" id="weaver-speed" min="0.2" max="2.0" step="0.1" value="0.8">
+            </div>
+            <div class="control-group" style="flex-direction:row;align-items:center;gap:1rem">
+              <label style="margin:0;width:7rem">Colore weft</label>
+              <input type="color" id="weaver-weft-color" value="#e8cf8f">
+            </div>
+            <div class="control-group" style="flex-direction:row;align-items:center;gap:1rem">
+              <label style="margin:0;width:7rem">Colore warp</label>
+              <input type="color" id="weaver-warp-color" value="#b85a3a">
+            </div>
+            <div class="weaver-legend">
+              <div><span class="swatch" style="background:#e8cf8f"></span> Weft (orizzontale)</div>
+              <div><span class="swatch" style="background:#b85a3a"></span> Warp (verticale)</div>
+            </div>
+            <div class="weaver-footer">
+              <span>Weave engine</span>
+              <span>Three.js</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RonnyWeave overlay (iframe wrapper) ── */
+    <div class="rw-overlay" id="rw-overlay" hidden>
+      <div class="rw-panel">
+        <div class="rw-panel-header">
+          <h2 id="rw-panel-title">RonnyWeave — Designer tessuto 3D</h2>
+          <button class="rw-close" id="rw-close-btn" type="button" aria-label="Chiudi">✕</button>
+        </div>
+        <div class="rw-panel-body">
+          <iframe
+            id="rw-iframe"
+            src="RonnyWeave.html"
+            title="RonnyWeave — 3D Weave Designer"
+            loading="lazy"
+            sandbox="allow-scripts allow-same-origin"
+            style="width:100%; height:100%; border:0; display:block;"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // RonnyWeave overlay controller
+      (() => {
+        const trigger = document.getElementById('rw-trigger');
+        const overlay = document.getElementById('rw-overlay');
+        const closeBtn = document.getElementById('rw-close-btn');
+
+        if (!trigger || !overlay || !closeBtn) return;
+
+        const openOverlay = () => {
+          overlay.hidden = false;
+          overlay.classList.add('open');
+          setTimeout(() => closeBtn.focus(), 200);
+        };
+
+        const closeOverlay = () => {
+          overlay.classList.remove('open');
+          setTimeout(() => {
+            overlay.hidden = true;
+            overlay.classList.remove('open');
+          }, 350);
+        };
+
+        trigger.addEventListener('click', (e) => {
+          e.preventDefault();
+          openOverlay();
+        });
+
+        closeBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          closeOverlay();
+        });
+
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) closeOverlay();
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && !overlay.hidden) {
+            closeOverlay();
+          }
+        });
+
+        window.addEventListener('message', (e) => {
+          if (e.data?.type === 'RW_CLOSE') closeOverlay();
+        });
+      })();
+    </script>
+  </body>
 </html>
