@@ -58,20 +58,7 @@
     }
   }
 
-  /* ── Cursor ring + hot state ── */
-  var cursor = qs(".fx-cursor");
-  if (cursor && finePointer && !reduced) {
-    var cx = -100, cy = -100, tx = cx, ty = cy;
-    window.addEventListener("pointermove", function (e) { tx = e.clientX; ty = e.clientY; }, { passive: true });
-    document.addEventListener("mouseover", function (e) {
-      cursor.classList.toggle("is-hot", !!e.target.closest("a,button,.project-card,.featured-card,.category-block"));
-    });
-    (function loop() {
-      cx += (tx - cx) * 0.2; cy += (ty - cy) * 0.2;
-      cursor.style.transform = "translate(" + cx + "px," + cy + "px)";
-      requestAnimationFrame(loop);
-    })();
-  }
+  /* Cursor ring + hot state ── */
 
   /* ── Particelle warp-thread (canvas, mouse-repulsione) ── */
   (function particles() {
@@ -79,48 +66,60 @@
     var ctx = cv.getContext("2d"); if (!ctx) return;
     var W, H, pts = [], mouse = { x: -9999, y: -9999 };
     var COLORS = ["199,164,91", "255,45,111", "45,212,191"];
+    var MAX_PARTICLES = 30;
+    var lastMove = 0;
+    var rafId = 0;
+
     function size() {
       W = cv.width = Math.min(window.innerWidth, 1600);
       H = cv.height = Math.min(window.innerHeight, 1100);
       cv.style.width = "100%"; cv.style.height = "100%";
     }
+
     function spawn() {
       pts = [];
-      var n = reduced ? 0 : Math.min(90, Math.floor(W * H / 16000));
+      var n = reduced ? 0 : Math.min(MAX_PARTICLES, Math.floor(W * H / 24000));
       for (var i = 0; i < n; i++) pts.push({
         x: Math.random() * W, y: Math.random() * H,
-        vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() * 0.5) + 0.15,
-        r: Math.random() * 1.8 + 0.6, c: COLORS[i % 3], l: i % 5 === 0
+        vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() * 0.4) + 0.12,
+        r: Math.random() * 1.4 + 0.4, c: COLORS[i % 3], l: i % 4 === 0
       });
     }
+
     function draw() {
       ctx.clearRect(0, 0, W, H);
       pts.forEach(function (p) {
         if (!reduced) {
           var dx = p.x - mouse.x, dy = p.y - mouse.y, d = Math.hypot(dx, dy);
-          if (d < 130 && d > 0.1) { p.vx += (dx / d) * 0.12; p.vy += (dy / d) * 0.12; }
-          p.vx *= 0.985; p.vy = p.vy * 0.985 + 0.004 + (window.__fxVel || 0) * 0.015;
+          if (d < 130 && d > 0.1) { p.vx += (dx / d) * 0.08; p.vy += (dy / d) * 0.08; }
+          p.vx *= 0.98; p.vy = p.vy * 0.98 + 0.003 + (window.__fxVel || 0) * 0.01;
           p.x += p.vx; p.y += p.vy;
           if (p.y > H + 6) { p.y = -6; p.x = Math.random() * W; }
-          if (p.x < -6) p.x = W + 6; if (p.x > W + 6) p.x = -6;
+          if (p.x < -6) p.x = W + 6;
         }
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(" + p.c + "," + (p.l ? 0.85 : 0.4) + ")";
+        ctx.fillStyle = "rgba(" + p.c + "," + (p.l ? 0.6 : 0.3) + ")";
         ctx.fill();
-        if (p.l) { ctx.strokeStyle = "rgba(" + p.c + ",0.25)"; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x, p.y - 34); ctx.stroke(); }
+        if (p.l) { ctx.strokeStyle = "rgba(" + p.c + ",0.18)"; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x, p.y - 26); ctx.stroke(); }
       });
     }
+
+    function tick() {
+      draw();
+      rafId = requestAnimationFrame(tick);
+    }
+
     size(); spawn();
-    window.addEventListener("resize", function () { size(); spawn(); draw(); });
-    window.addEventListener("pointermove", function (e) { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
-    if (reduced) { draw(); return; }
-    var raf, running = true;
-    (function tick() { if (running) draw(); raf = requestAnimationFrame(tick); })();
-    document.addEventListener("visibilitychange", function () {
-      running = !document.hidden;
-      if (running) tick(); else cancelAnimationFrame(raf);
-    });
+    if (!reduced) {
+      var lastMove = 0;
+      window.addEventListener("pointermove", function (e) { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
+      window.addEventListener("resize", function () { size(); spawn(); draw(); });
+      tick();
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) cancelAnimationFrame(rafId); else tick();
+      });
+    } else { draw(); }
   })();
 
   if (reduced) return; // da qui: niente GSAP, aperture base via CSS
@@ -257,22 +256,9 @@
       .from(".fx-chip", { scale: 0, opacity: 0, duration: 0.7, ease: "back.out(2)", stagger: 0.12 }, 0.9)
       .from(".fx-hero-videos video", { clipPath: "inset(50% 0 50% 0)", opacity: 0, duration: 1.2, stagger: 0.2 }, 0.3);
 
-    /* Hero mouse-3D: figura + chip + video (parallax differenziale) ── */
-    if (finePointer) {
-      var hero = qs(".fx-hero"), fig = qs(".fx-hero-fig");
-      hero.addEventListener("pointermove", function (e) {
-        var r = hero.getBoundingClientRect();
-        var px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
-        gsap.to(fig, { rotateY: px * 10, rotateX: -py * 8, transformPerspective: 900, duration: 0.6, ease: "power3.out" });
-        gsap.to(".fx-chip.c1", { x: px * -34, y: py * -26, duration: 0.8 });
-        gsap.to(".fx-chip.c2", { x: px * 40, y: py * 30, duration: 0.8 });
-        gsap.to(".fx-chip.c3", { x: px * -24, y: py * 34, duration: 0.8 });
-        gsap.to(".fx-hero-fig img", { x: px * -14, y: py * -12, scale: 1.06, duration: 0.8 });
-        gsap.to(".fx-hero-videos video", { x: px * (20), duration: 1 });
-      });
-    }
-
-    /* Magnetici ── */
+    /* Marquee infinito ── */
+    var track = qs(".fx-marquee-track");
+    if (track) gsap.to(track, { xPercent: -50, duration: 22, ease: "none", repeat: -1 });
     if (finePointer) qsa(".button, .fx-hero-actions a").forEach(function (btn) {
       btn.addEventListener("pointermove", function (e) {
         var r = btn.getBoundingClientRect();
@@ -370,33 +356,6 @@
       });
     });
 
-    /* Glitch intermittente sul titolo hero */
-    var heroTitle = qs(".fx-hero-title");
-    if (heroTitle) setInterval(function () {
-      heroTitle.classList.add("glitching");
-      setTimeout(function () { heroTitle.classList.remove("glitching"); }, 320);
-    }, 3400);
-
-    /* Cursor trail: scia di punti che sfuma */
-    if (finePointer) {
-      var dots = [];
-      for (var i = 0; i < 10; i++) {
-        var d = document.createElement("div");
-        d.className = "fx-trail-dot";
-        document.body.appendChild(d);
-        dots.push(d);
-      }
-      var last = 0;
-      window.addEventListener("pointermove", function (e) {
-        var now = Date.now();
-        if (now - last < 40) return; last = now;
-        var dot = dots.shift(); dots.push(dot);
-        dot.style.left = e.clientX + "px"; dot.style.top = e.clientY + "px";
-        gsap.fromTo(dot, { opacity: 0.7, scale: 1 }, { opacity: 0, scale: 0.1, duration: 0.8, ease: "power2.out" });
-      }, { passive: true });
-    }
-
-    /* Tilt con inerzia (quickTo) sulle card bento (pointer fine) */
     if (finePointer) {
       var tiltEls = qsa(".fx-tile");
       tiltEls.forEach(function (el) {
