@@ -1,0 +1,303 @@
+/* ── MOTION SYSTEM 2.0 — CSS (effects that run without JS) ── */
+/* Effect 01 — FADE IN & SLIDE UP */
+.reveal-up {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition:
+    opacity 650ms ease,
+    transform 650ms cubic-bezier(.22, 1, .36, 1);
+}
+.reveal-up.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Effect 02 — PULSE */
+@keyframes pt-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 0.72;
+  }
+}
+.pt-pulse {
+  animation: pt-pulse 2s ease-in-out infinite;
+}
+.pt-pulse.pulse-off {
+  animation: none;
+  opacity: 1;
+}
+
+/* Effect 04 — UNDERLINE EXPAND */
+.pt-underline {
+  position: relative;
+  text-decoration: none;
+  cursor: pointer;
+}
+.pt-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 300ms ease;
+}
+.pt-underline:hover::after,
+.pt-underline:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* Effect 05 — BUTTON PRESS */
+.pt-button {
+  transform: translateY(0);
+  transition:
+    transform 130ms ease,
+    box-shadow 130ms ease;
+}
+.pt-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 3px rgba(0,0,0,.12);
+}
+.pt-button:disabled,
+.pt-button.is-loading {
+  pointer-events: none;
+  opacity: 0.65;
+}
+.pt-button .pt-spinner {
+  display: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,.25);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: pt-spin .8s linear infinite;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.pt-button.is-loading .pt-spinner {
+  display: inline-block;
+}
+
+/* Effect 10 — 3D FLIP CARDS */
+.flip-card {
+  perspective: 1000px;
+}
+.flip-card__inner {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform .65s cubic-bezier(.2,.8,.2,1);
+}
+.flip-card.is-flipped .flip-card__inner {
+  transform: rotateY(180deg);
+}
+.flip-card__front,
+.flip-card__back {
+  backface-visibility: hidden;
+  backface-visibility: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  -webkit-backface-visibility: preserve-3d;
+}
+.flip-card__back {
+  transform: rotateY(180deg);
+}
+.flip-card__control {
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+/* Fallback: if reduced motion, never flip and show both sides statically */
+@media (prefers-reduced-motion: reduce) {
+  .flip-card__inner {
+    transition: none;
+  }
+  .flip-card.is-flipped .flip-card__inner {
+    transform: rotateY(0deg);
+  }
+  .flip-card__back {
+    transform: rotateY(0deg);
+  }
+}
+
+/* ── Reduced motion: disable all JS-driven motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Effect 06: GSAP HORIZONTAL SCROLL ── */
+.textile-journey {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+.textile-journey__track {
+  display: flex;
+  gap: clamp(1rem, 3vw, 3rem);
+  padding: 1rem 0;
+  width: max-content;
+}
+.textile-panel {
+  flex: 0 0 auto;
+  flex: 1 1 0;
+  min-width: clamp(260px, 30vw, 380px);
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  text-align: center;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.textile-panel:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+}
+.textile-panel h3 {
+  margin: 0 0 0.3rem;
+  color: var(--accent-mag);
+}
+.textile-panel p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* ── Effect 07: PARALLAX SECTIONS ── */
+.parallax-section {
+  height: 60vh;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.parallax-background, .parallax-midground, .parallax-foreground {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+.parallax-midground {
+  background-image: radial-gradient(circle at 30% 40%, rgba(199,164,91,0.08), transparent 60%);
+  z-index: 1;
+}
+.parallax-foreground {
+  background-image: radial-gradient(circle at 70% 60%, rgba(255,45,111,0.10), transparent 60%);
+  z-index: 2;
+}
+.parallax-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  z-index: 3;
+}
+
+/* ── Effect 11: SCROLL STORYTELLING ── */
+.textile-story {
+  padding: clamp(4rem, 8vw, 7rem) 0;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+}
+.story-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 12px;
+}
+.story-step h3 {
+  margin: 0.5rem 0;
+  color: var(--accent-mag);
+}
+.story-step p {
+  max-width: 42ch;
+  color: var(--muted);
+}
+
+/* ── Effect 13: THREE.JS SHOWCASE ── */
+.three-showcase-section {
+  position: relative;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+}
+.three-showcase-container {
+  width: 100%;
+  max-width: 700px;
+  height: 400px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  background: var(--surface);
+  position: relative;
+}
+.three-showcase-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+.three-showcase-ui {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 2;
+  color: var(--ink);
+}
+.three-showcase-label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  pointer-events: auto;
+}
+
+/* ── Effect 09: STAGGERED REVEAL CONTAINER (stile generico) ── */
+.stagger-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.stagger-card {
+  padding: 1.2rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  text-align: center;
+  background: var(--surface);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.stagger-card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Effect 12: MAGNETIC BUTTON (stile generico) ── */
+.magnetic-button {
+  position: relative;
+  will-change: transform;
+}

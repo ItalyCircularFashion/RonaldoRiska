@@ -231,6 +231,8 @@
 <link rel="stylesheet" href="mobile.css">
 <link rel="stylesheet" href="homepage-experimental.css">
 <link rel="stylesheet" href="weaver-3d.css">
+<link rel="stylesheet" href="flower-spiral.css">
+<link rel="stylesheet" href="motion.css">
 </head>
 <body class="page-home">
     <canvas class="fx-canvas" aria-hidden="true"></canvas>
@@ -338,8 +340,12 @@
   <div class="container fx-hero-grid fx-head">
     <div class="fx-hero-copy">
       <p class="fx-eyebrow">Portfolio tecnico operativo</p>
-      <h1 class="fx-hero-title">Ronaldo Riska</h1>
-      <p class="fx-hero-role">Tessitura · CAD moda · Supply chain · Industrial tech</p>
+      <h1 class="fx-hero-title">
+        <span id="hero-typed" aria-live="polite">Ronaldo Riska</span>
+      </h1>
+      <p class="fx-hero-role" id="hero-typed-role">
+        <span class="pt-underline">Tessitura · CAD moda · Supply chain · Industrial tech</span>
+      </p>
       <p class="fx-hero-lead">Ogni parte del sito e ogni tool sono stati realizzati dal sottoscritto come dimostrazione di competenza per filiera moda-tessile, operations e controllo industriale.</p>
       <div class="fx-hero-actions fx-cta">
         <a class="button button-primary" href="#progetti">Esplora i progetti →</a>
@@ -366,6 +372,77 @@
     <span>Tessitura <em>·</em> CAD Moda <em>·</em> Supply Chain <em>·</em> Industrial Tech <em>·</em> LCA <em>·</em> AI Systems <em>·</em></span>
     <span>Tessitura <em>·</em> CAD Moda <em>·</em> Supply Chain <em>·</em> Industrial Tech <em>·</em> LCA <em>·</em> AI Systems <em>·</em></span>
   </div></div>
+</section>
+
+<!-- ── Effect 06: GSAP HORIZONTAL SCROLL (textile journey) ── -->
+<section class="textile-journey" aria-label="Il ciclo del tessile">
+  <div class="textile-journey__track">
+    <article class="textile-panel">
+      <h3>Filatura</h3>
+      <p>Produzione del filamento dai fibre alle bobine.</p>
+    </article>
+    <article class="textile-panel">
+      <h3>Orditura</h3>
+      <p>Impilamento dei fili sulla viscosca prima della tessitura.</p>
+    </article>
+    <article class="textile-panel">
+      <h3>Tessitura</h3>
+      <p>Costruzione del tessuto mediante intreccio o lavorazione.</p>
+    </article>
+    <article class="textile-panel">
+      <h3>Rifinizione</h3>
+      <p>Bagnettaire, stampi e finiture finali del prodotto.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ── Effect 11: SCROLL STORYTELLING ── -->
+<section class="textile-story" id="story-section" aria-label="Storia del tessile">
+  <div class="story-step">
+    <h3>Filatura</h3>
+    <p>Il filamento è nato dalle fibre — la prima fase del ciclo tessile.</p>
+  </div>
+  <div class="story-step">
+    <h3>Orditura</h3>
+    <p>I fili vengono impilati sulla viscosca prona a ricevere il tessuto.</p>
+  </div>
+  <div class="story-step">
+    <h3>Tessitura</h3>
+    <p>Il tessuto si costruisce intrecciando fibre in un'opera tridimensionale.</p>
+  </div>
+  <div class="story-step">
+    <h3>Rifinizione</h3>
+    <p>Il prodotto finito è pronto per l'uso attraverso bagnettaire e stampi.</p>
+  </div>
+</section>
+
+<!-- ── Effect 13: THREE.JS INTERACTIVE SHOWCASE ── -->
+<section class="three-showcase-section" aria-label="Mostra 3D materiali">
+<div class="three-showcase-container" id="three-showcase">
+  <div class="three-showcase-ui">
+    <span class="three-showcase-label">Materiali tessili 3D — interagisci</span>
+    <button class="magnetic-button pt-button" type="button">📦 Materiali</button>
+  </div>
+</div>
+</section>
+
+<section class="fx-flower" id="fiore" aria-labelledby="fiore-title">
+  <div class="fx-flower-sticky">
+    <div class="fx-flower-stage">
+      <div class="fx-flower-copy">
+        <p class="fx-sec-index">✳ / Il fiore dei progetti</p>
+        <p class="fx-eyebrow">Project Flower</p>
+        <h2 class="fx-h2" id="fiore-title">Un fiore, tutti i progetti.</h2>
+        <p class="fx-sub">Scorri per far girare la spirale: ogni petalo è un progetto. Tocca una card per aprirlo.</p>
+      </div>
+      <div class="fx-flower-mount" data-flower-mount></div>
+      <div class="fx-flower-fallback" data-flower-fallback hidden>
+        <p>Il fiore 3D non è disponibile in questo browser.</p>
+        <a class="button button-primary" href="#progetti">Vedi tutti i progetti →</a>
+      </div>
+      <p class="fx-flower-hint" data-flower-hint>Scorri per far girare il fiore ↓</p>
+    </div>
+  </div>
 </section>
 
 <section class="fx-section" aria-labelledby="metriche-title">
@@ -411,8 +488,31 @@
     <p class="fx-eyebrow">Featured Work</p>
     <h2 class="fx-h2" id="featured-title">Progetti in evidenza</h2>
     <p class="fx-sub">Selezione dei progetti più significativi dell'ecosistema: piattaforma, simulatori e strumenti operativi live. Tocca una card per aprirla in fullscreen.</p>
-    <div class="fx-featured" data-featured-grid aria-live="polite"></div>
-    <div class="fx-cta"><a class="button button-secondary" href="#progetti">Esplora tutti i progetti →</a></div>
+    <div class="fx-featured" data-featured-grid aria-live="polite">
+      <div class="featured-card featured-3d" data-flip-card>
+        <div class="flip-card">
+          <div class="flip-card__inner">
+            <div class="flip-card__front">
+              <p class="fx-eyebrow">Effetto 10 · Flip 3D</p>
+              <h3>Card 3D — Faccia fronte</h3>
+              <p>Scorri o tocca per vedere il retro.</p>
+            </div>
+            <div class="flip-card__back">
+              <p class="fx-eyebrow">Effetto 10 · Flip 3D</p>
+              <h3>Card 3D — Faccia retro</h3>
+              <p>Contenuto accessibile sul retro della card.</p>
+            </div>
+          </div>
+          <button class="flip-card__control pt-button" type="button" aria-expanded="false" aria-label="Flip cartadtera 3D">Flip</button>
+        </div>
+      </div>
+      <div class="stagger-container">
+        <div class="stagger-card"><h3>Staggered 1</h3><p>Appare 90ms dopo</p></div>
+        <div class="stagger-card"><h3>Staggered 2</h3><p>Appare 180ms dopo</p></div>
+        <div class="stagger-card"><h3>Staggered 3</h3><p>Appare 270ms dopo</p></div>
+        <div class="stagger-card"><h3>Staggered 4</h3><p>Appare 360ms dopo</p></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -594,7 +694,10 @@
         <h2 class="fx-h2" id="contatti-title">Disponibile per progetti tessili, industriali e digitali.</h2>
         <p class="fx-sub">Collaborazioni su operations, supply chain, dashboard industriali e strumenti digitali applicati alla filiera moda-tessile.</p>
         <p class="fx-sub">Integro esperienza produttiva, qualità e pianificazione con approccio data-driven: analytics, automazione documentale, sistemi AI-driven e interfacce web per il monitoraggio dei processi.</p>
-        <div class="fx-cta"><a class="button button-primary" href="mailto:ronaldo.riska@gmail.com">Avvia una conversazione →</a><a class="button button-secondary" href="Ronaldo-Riska-CV-2026.pdf" download>Scarica CV PDF</a></div>
+        <div class="fx-cta">
+          <a class="magnetic-button pt-button" href="mailto:ronaldo.riska@gmail.com">Avvia una conversazione →</a>
+          <a class="button button-secondary" href="Ronaldo-Riska-CV-2026.pdf" download>Scarica CV PDF</a>
+        </div>
         <div class="fx-tags"><span>Textile Operations</span><span>CAD Fashion</span><span>Supply Chain</span><span>Industrial Analytics</span><span>Digital Workflow</span><span>AI Systems</span></div>
       </div>
       <address class="fx-contact-panel" style="font-style:normal">
@@ -802,6 +905,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" async></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js" async></script>
     <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+    <script type="module" src="flower-spiral.js"></script>
+    <!-- Motion System 2.0 (GSAP + Three.js effects) -->
+    <script src="motion-system.js" defer></script>
     <div class="weaver-overlay" id="weaver-overlay" hidden>
       <div class="weaver-panel">
         <header class="weaver-header">
