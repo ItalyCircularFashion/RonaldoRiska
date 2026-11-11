@@ -6,7 +6,7 @@
 .fx-3d-hud{position:absolute;top:clamp(1rem,3vw,2rem);left:clamp(1rem,3vw,2rem);max-width:min(520px,calc(100% - 2rem));padding:clamp(1rem,2.4vw,1.6rem);border-radius:20px;background:color-mix(in srgb,var(--bg) 72%,transparent);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);pointer-events:none;z-index:3}
 .fx-3d-hud .fx-h2{font-size:clamp(2rem,5vw,3.6rem);margin:.2rem 0 .4rem}
 .fx-3d-hud .fx-sub{font-size:.98rem}
-.fx-3d-status{margin:.8rem 0 0;color:var(--fx-gold,#c7a45b);font-weight:700;font-size:.88rem}
+.fx-3d-status{margin:.8rem 0 0;color:var(--fx-gold,#ff2d6f);font-weight:700;font-size:.88rem}
 .fx-3d-meta{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.8rem}
 .fx-3d-meta span{border:1px solid var(--line-strong);border-radius:999px;padding:.35rem .8rem;font-size:.8rem;background:color-mix(in srgb,var(--surface) 80%,transparent)}
 .fx-3d-touch{position:absolute;right:clamp(.8rem,2vw,1.4rem);bottom:clamp(.8rem,2vw,1.4rem);display:grid;grid-template-columns:repeat(2,58px);gap:.55rem;z-index:4}

@@ -101,6 +101,8 @@
   font-weight: 700;
   line-height: 1.2;
   max-width: 190px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .fx-flower-meta {
@@ -126,6 +128,9 @@
 
 .fx-flower-copy .fx-h2 {
   font-size: clamp(2rem, 5vw, 3.6rem);
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .fx-flower-copy .fx-sub {

@@ -11,15 +11,15 @@
   --muted-2: #8a948d;
   --line: rgba(232, 230, 220, 0.12);
   --line-strong: rgba(232, 230, 220, 0.24);
-  --accent: #c7a45b;
+  --accent: #ff2d6f;
   --accent-2: #2e8b5e;
-  --accent-3: #e8dfcd;
+  --accent-3: #f2a6c0;
   --accent-mag: #ff2d6f;
   --accent-mag-soft: rgba(255, 45, 111, 0.12);
   --accent-mag-ink: #1a0a14;
   --danger: #c96d55;
-  --chart-line: #c7a45b;
-  --chart-fill: rgba(199, 164, 91, 0.16);
+  --chart-line: #ff2d6f;
+  --chart-fill: rgba(255, 45, 111, 0.16);
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
   --radius: 10px;
   --container: 1180px;
@@ -38,7 +38,7 @@
   --gen2-line-strong: rgba(232, 230, 220, 0.24);
   --gen2-ink: #f2f0e9;
   --gen2-muted: #a8b0a9;
-  --gen2-accent: #c7a45b;
+  --gen2-accent: #ff2d6f;
   --gen2-accent-ink: #14100a;
   --gen2-live: #3db87a;
   --gen2-display: "Plus Jakarta Sans", Inter, ui-sans-serif, system-ui, sans-serif;
@@ -90,6 +90,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 76px;
 }
 
 body {

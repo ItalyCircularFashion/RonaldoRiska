@@ -1,7 +1,7 @@
 /* Homepage Experimental — ricostruzione radicale (solo index.html, body.page-home).
-   Token: site.css (oro #c7a45b, magenta #ff2d6f, Inter). Senza JS/GSAP: tutto visibile. */
+   Token: site.css (maggio #ff2d6f, verde #2e8b5e, Inter). Senza JS/GSAP: tutto visibile. */
 :root{
-  --fx-gold:#c7a45b; --fx-gold2:#e8cf8f; --fx-mag:#ff2d6f; --fx-teal:#2dd4bf;
+  --fx-gold:#ff2d6f; --fx-gold2:#f2a6c0; --fx-mag:#ff2d6f; --fx-teal:#2dd4bf;
   --fx-ease:cubic-bezier(.22,1,.36,1); --fx-swift:cubic-bezier(.65,.05,0,1);
 }
 body.page-home{overflow-x:hidden;background:var(--bg);color:var(--ink)}
