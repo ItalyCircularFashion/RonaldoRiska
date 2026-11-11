@@ -143,13 +143,17 @@
 
     let visible = true;
 
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver(
-        ([entry]) => { visible = entry.isIntersecting; },
-        { threshold: 0 }
-      );
-      io.observe(section);
-    }
+    // Use measure() instead of IntersectionObserver: more reliable
+    const checkVisible = () => {
+      const top = section.getBoundingClientRect().top;
+      const inView = top >= 0 && top < window.innerHeight;
+      visible = inView;
+    };
+
+    // Check visibility on scroll and on load
+    checkVisible();
+    window.addEventListener('scroll', checkVisible, { passive: true });
+    window.addEventListener('resize', checkVisible);
 
     /* ── Render ───────────────────────────────────────────── */
 
@@ -173,7 +177,12 @@
     let raf = 0;
     const loop = () => {
       raf = requestAnimationFrame(loop);
-      if (!visible) return;
+      // Update scroll progress: measure current scroll position
+      const top = section.getBoundingClientRect().top;
+      const total = section.offsetHeight - window.innerHeight;
+      if (total > 0) {
+        target = Math.min(1, Math.max(0, -top / total));
+      }
       render();
     };
     loop();

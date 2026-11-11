@@ -405,13 +405,11 @@
 
     // Shared progress state (consumed by other scenes, e.g. Three.js)
     const progress = () => {
-      const progress = timeline.scrollTrigger ? timeline.scrollTrigger.progress : 0;
+      const st = timeline.scrollTrigger;
+      const progress = st ? st.progress : 0;
       globalThis.__storyProgress = Math.min(1, Math.max(0, progress));
       return globalThis.__storyProgress;
     };
-
-    // Attach to timeline for refresh
-    timeline.scrollTrigger && timeline.scrollTrigger.addEventListener("refresh", progress);
 
     // Cleanup
     return () => {
