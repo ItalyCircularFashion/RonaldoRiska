@@ -56,33 +56,56 @@
 
 /* Effect 05 — BUTTON PRESS */
 .pt-button {
-  transform: translateY(0);
-  transition:
-    transform 130ms ease,
-    box-shadow 130ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--gen2-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  transition: transform 130ms ease, box-shadow 130ms ease, background 130ms ease, border-color 130ms ease;
 }
+
+.pt-button:hover {
+  background: color-mix(in srgb, var(--accent) 88%, white);
+  border-color: transparent;
+  box-shadow: 0 6px 20px rgba(255, 45, 111, 0.35);
+}
+
 .pt-button:active {
   transform: translateY(2px);
-  box-shadow: 0 1px 3px rgba(0,0,0,.12);
+  box-shadow: 0 2px 8px rgba(255, 45, 111, 0.3);
 }
+
 .pt-button:disabled,
 .pt-button.is-loading {
   pointer-events: none;
   opacity: 0.65;
 }
+
 .pt-button .pt-spinner {
   display: none;
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(255,255,255,.25);
+  border: 2px solid rgba(255, 255, 255, 0.25);
   border-top-color: currentColor;
   border-radius: 50%;
-  animation: pt-spin .8s linear infinite;
+  animation: pt-spin 0.8s linear infinite;
   margin-right: 6px;
   vertical-align: middle;
 }
+
 .pt-button.is-loading .pt-spinner {
   display: inline-block;
+}
 }
 
 /* Effect 10 — 3D FLIP CARDS */
@@ -264,7 +287,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  pointer-events: none;
+  pointer-events: auto;
   z-index: 2;
   color: var(--ink);
 }
@@ -297,7 +320,58 @@
 }
 
 /* ── Effect 12: MAGNETIC BUTTON (stile generico) ── */
+/* Effect 12: MAGNETIC BUTTON (stile generico) */
 .magnetic-button {
   position: relative;
   will-change: transform;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--gen2-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  transition: transform 130ms ease, box-shadow 130ms ease, background 130ms ease, border-color 130ms ease;
+}
+
+.magnetic-button:hover {
+  background: color-mix(in srgb, var(--accent) 88%, white);
+  border-color: transparent;
+  box-shadow: 0 6px 20px rgba(255, 45, 111, 0.35);
+  transform: translateY(-2px);
+}
+
+.magnetic-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 8px rgba(255, 45, 111, 0.3);
+}
+
+.magnetic-button:disabled,
+.magnetic-button.is-loading {
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+.magnetic-button .pt-spinner {
+  display: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: pt-spin 0.8s linear infinite;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.magnetic-button.is-loading .pt-spinner {
+  display: inline-block;
 }
