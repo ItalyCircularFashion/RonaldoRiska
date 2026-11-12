@@ -233,6 +233,7 @@
 <link rel="stylesheet" href="weaver-3d.css">
 <link rel="stylesheet" href="flower-spiral.css">
 <link rel="stylesheet" href="motion.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 </head>
 <body class="page-home">
     <canvas class="fx-canvas" aria-hidden="true"></canvas>
@@ -900,11 +901,10 @@
 
       <script src="sheep-walk.js" defer></script>
   <script src="mobile.js"></script>
-    <!-- Homepage Experimental: GSAP + ScrollTrigger + Flip (CDN async) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" async></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" async></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js" async></script>
-    <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+    <!-- GSAP core + ScrollTrigger + Flip (local UMD files) -->
+    <script src="node_modules/gsap/dist/gsap.min.js"></script>
+    <script src="node_modules/gsap/dist/ScrollTrigger.min.js"></script>
+    <script src="node_modules/gsap/dist/Flip.min.js"></script>
     <script type="module" src="flower-spiral.js"></script>
     <!-- Motion System 2.0 (GSAP + Three.js effects) -->
     <script src="motion-system.js" defer></script>

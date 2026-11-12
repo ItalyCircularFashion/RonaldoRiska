@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Universe — 3D Scoreboard</title>
+  <style>
+    :root {
+      --bg: #0a0c0a;
+      --accent: #ff2d6f;
+      --accent-2: #2dd4bf;
+      --ink: #f2f0e9;
+      --muted: #a8b0a9;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      overflow: hidden;
+      background: #0a0c0a;
+      color: var(--ink);
+      font-family: 'Inter', 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    #scroll-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    #profile-overlay {
+      position: fixed;
+      bottom: 4rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      max-width: min(90vw, 700px);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+
+    #profile-overlay.visible {
+      opacity: 1;
+    }
+
+    #profile-card {
+      background: linear-gradient(160deg, rgba(11,13,10,0.95), rgba(18,22,16,0.92));
+      border: 1px solid rgba(255,45,111,0.3);
+      border-radius: 20px;
+      padding: 2rem 2.5rem;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+      text-align: center;
+      width: 100%;
+      transform: scale(0.7);
+      transition: transform 0.6s cubic-bezier(.2,.8,.2,1);
+    }
+
+    #profile-card.zoomed {
+      transform: scale(1.2);
+    }
+
+    #profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      margin: 0 auto 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      font-weight: 900;
+      color: #0a0c0a;
+      box-shadow: 0 0 40px rgba(255,45,111,0.4);
+      transition: transform 0.5s ease;
+    }
+
+    #profile-card.zoomed #profile-avatar {
+      transform: scale(1.3);
+    }
+
+    #profile-card h1 {
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+
+    #profile-card p {
+      font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 0.8rem;
+    }
+
+    #profile-card .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    #profile-card .tags span {
+      font-size: 0.75rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(255,45,111,0.15);
+      color: var(--accent);
+      border: 1px solid rgba(255,45,111,0.3);
+    }
+
+    #scroll-hint {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      color: var(--muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity 1s ease;
+      pointer-events: none;
+    }
+
+    #scroll-hint.visible { opacity: 0.7; }
+
+    @media (prefers-reduced-motion: reduce) {
+      #profile-card, #scroll-hint { transition: none !important; }
+      #profile-card { transform: scale(1) !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="scroll-canvas"></canvas>
+
+  <div id="profile-overlay">
+    <div id="profile-card">
+      <div id="profile-avatar">🔧</div>
+      <h1>Ronaldo Riska</h1>
+      <p>Tessitura · CAD moda · Supply chain · Industrial tech</p>
+      <div id="profile-tags" class="tags">
+        <span>Textile Operations</span>
+        <span>CAD Fashion</span>
+        <span>Supply Chain</span>
+        <span>Industrial Analytics</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="scroll-hint">Scorri per esplorare l'universo ↓</div>
+
+  <!-- Three.js from CDN (r128) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <script>
+  // ── Setup ──────────────────────────────────────────────
+  const container = document.getElementById('scroll-canvas');
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, canvas: container });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x0a0c0a, 1);
+  container.appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x0a0c0a);
+
+  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 200);
+  camera.position.set(0, 4, 10);
+
+  // ── Infinite floor ─────────────────────────────────────
+  const earthGeo = new THREE.PlaneGeometry(1000, 1000);
+  const earthMat = new THREE.MeshStandardMaterial({
+    color: 0x0f110d,
+    roughness: 0.95,
+    metalness: 0.05,
+    side: THREE.DoubleSide,
+  });
+  const earth = new THREE.Mesh(earthGeo, earthMat);
+  earth.rotation.x = -Math.PI / 2;
+  earth.position.y = -0.1;
+  scene.add(earth);
+
+  // Grid helper
+  const gridHelper = new THREE.GridHelper(1000, 50, 0x2dd4bf, 0x1a1e1c);
+  gridHelper.position.y = -0.05;
+  gridHelper.material.transparent = true;
+  gridHelper.material.opacity = 0.15;
+  scene.add(gridHelper);
+
+  // Stars background
+  const starsGeo = new THREE.BufferGeometry();
+  const starsCount = 2000;
+  const starsPos = new Float32Array(starsCount * 3);
+  for (let i = 0; i < starsCount * 3; i++) {
+    starsPos[i] = (Math.random() - 0.5) * 2000;
+  }
+  starsGeo.setAttribute('position', new THREE.BufferAttribute(starsPos, 3));
+  const starsMat = new THREE.PointsMaterial({
+    color: 0xffffff,
+    size: 0.15,
+    transparent: true,
+    opacity: 0.6,
+  });
+  const stars = new THREE.Points(starsGeo, starsMat);
+  scene.add(stars);
+
+  // ── Profile avatar ─────────────────────────────────────
+  const avatarGroup = new THREE.Group();
+  scene.add(avatarGroup);
+
+  // Body
+  const bodyGeo = new THREE.CylinderGeometry(1.0, 1.2, 1.4, 16);
+  const bodyMat = new THREE.MeshStandardMaterial({
+    color: 0xff2d6f,
+    roughness: 0.4,
+    metalness: 0.2,
+    emissive: 0xff2d6f,
+    emissiveIntensity: 0.1,
+  });
+  const body = new THREE.Mesh(bodyGeo, bodyMat);
+  body.position.y = 0.7;
+  avatarGroup.add(body);
+
+  // Head
+  const headGeo = new THREE.SphereGeometry(0.7, 16, 16);
+  const headMat = new THREE.MeshStandardMaterial({
+    color: 0xf2f0e9,
+    roughness: 0.3,
+    metalness: 0.1,
+  });
+  const head = new THREE.Mesh(headGeo, headMat);
+  head.position.y = 1.8;
+  avatarGroup.add(head);
+
+  // Eyes
+  const eyeGeo = new THREE.SphereGeometry(0.15, 12, 12);
+  const eyeMat = new THREE.MeshStandardMaterial({ color: 0x0a0c0a });
+  for (let side = -1; side <= 1; side += 2) {
+    const eye = new THREE.Mesh(eyeGeo, eyeMat);
+    eye.position.set(side * 0.4, 1.95, 0.9);
+    avatarGroup.add(eye);
+  }
+
+  // Smile
+  const smileMat = new THREE.MeshStandardMaterial({ color: 0x0a0c0a });
+  const smileGeo = new THREE.TorusGeometry(0.3, 0.05, 8, 16);
+  const smile = new THREE.Mesh(smileGeo, smileMat);
+  smile.position.set(0, 1.65, 1.0);
+  smile.rotation.x = 0.2;
+  avatarGroup.add(smile);
+
+  // Base
+  const baseGeo = new THREE.CylinderGeometry(0.8, 1.0, 0.2, 12);
+  const baseMat = new THREE.MeshStandardMaterial({ color: 0x2e8b5e });
+  const base = new THREE.Mesh(baseGeo, baseMat);
+  base.position.y = 0.2;
+  avatarGroup.add(base);
+
+  // ── Lights ─────────────────────────────────────────────
+  const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+  scene.add(ambient);
+
+  const hemi = new THREE.HemisphereLight(0xffffff, 0x0a0c0a, 0.6);
+  scene.add(hemi);
+
+  const dir = new THREE.DirectionalLight(0xffffff, 1.0);
+  dir.position.set(5, 10, 7);
+  dir.castShadow = true;
+  scene.add(dir);
+
+  const fill = new THREE.DirectionalLight(0x2dd4bf, 0.3);
+  fill.position.set(-5, 2, -5);
+  scene.add(fill);
+
+  // ── Orbit controls ─────────────────────────────────────
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = 0.08;
+  controls.dampingFactor = 0.08;
+  controls.target.set(0, 1.5, 0);
+  controls.minDistance = 3;
+  controls.maxDistance = 30;
+  controls.rotateX = Math.PI / 2;
+  controls.update();
+
+  // ── Scroll-linked zoom + profile animation ─────────────
+  let targetZ = 10;
+  let targetScale = 1;
+  let targetOpacity = 0;
+
+  const onScroll = () => {
+    const y = window.scrollY || window.pageYOffset;
+    const progress = y / (window.innerHeight * 3);
+
+    const moveZ = Math.max(4, 10 - y * 0.004);
+    targetZ = Math.max(4, moveZ);
+
+    const scale = 0.7 + progress * 0.6;
+    targetScale = Math.min(1.3, scale);
+    targetOpacity = Math.min(1, progress * 1.2);
+
+    const hint = document.getElementById('scroll-hint');
+    if (progress > 0.1) {
+      hint.classList.add('visible');
+    }
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // ── Render loop ────────────────────────────────────────
+  const clock = new THREE.Clock();
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    const delta = clock.getDelta();
+
+    // Smooth camera movement toward targetZ
+    camera.position.z += (targetZ - camera.position.z) * 0.08;
+    camera.position.y += (2 - camera.position.y) * 0.04;
+
+    // Rotate avatar slowly
+    avatarGroup.rotation.y += delta * 0.4;
+
+    // Pulse avatar glow
+    bodyMat.emissiveIntensity = 0.1 + Math.sin(clock.elapsedTime * 2) * 0.05;
+
+    // Control orbit
+    controls.update();
+
+    // Render
+    renderer.render(scene, camera);
+
+    // Update profile overlay
+    const overlay = document.getElementById('profile-overlay');
+    const card = document.getElementById('profile-card');
+    const avatar = document.getElementById('profile-avatar');
+
+    const progress = Math.min(1, Math.max(0, (10 - camera.position.z) / 6));
+    overlay.style.opacity = progress;
+
+    if (card) {
+      card.style.transform = `scale(${0.7 + progress * 0.5})`;
+    }
+    if (avatar) {
+      avatar.style.transform = `scale(${1 + progress * 0.3})`;
+    }
+  }
+
+  animate();
+
+  // ── Reset camera ───────────────────────────────────────
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'r' || e.key === 'R') {
+      camera.position.z = 10;
+      camera.position.y = 4;
+      controls.target.set(0, 1.5, 0);
+    }
+  });
+  </script>
+</body>
+</html>
