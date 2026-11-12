@@ -214,16 +214,7 @@
     });
   });
 
-  /* ── Menu: stagger link + curtain wipe su nav interna ── */
-  var toggle = qs("[data-nav-toggle]"), menu = qs("[data-nav-menu]");
-  if (toggle && menu) toggle.addEventListener("click", function () {
-    if (!hasGsap()) return;
-    setTimeout(function () {
-      if (!menu.classList.contains("is-open")) return;
-      gsap.fromTo(menu.querySelectorAll(":scope > a, :scope .nav-group"),
-        { y: 34, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out", stagger: 0.06 });
-    }, 60);
-  });
+  /* ── Mobile sidebar (no hamburger; handled by main.js) ── */
   document.addEventListener("click", function (e) {
     var a = e.target.closest('.nav-links a[href^="#"], .fx-cta a[href^="#"]');
     if (!a || !hasGsap()) return;

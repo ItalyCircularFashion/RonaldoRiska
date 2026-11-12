@@ -388,7 +388,366 @@ body .brand-mark::after {
   transform: scaleX(0);
 }
 
-/* --- HERO --- */
+/* ── NEW: Topbar with interactive sidebar (no hamburger) ── */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 74px;
+  padding: 0 1.2rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: max-content;
+  font-weight: 900;
+}
+
+.brand-mark {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-radius: var(--radius);
+}
+
+body .brand-mark {
+  background: linear-gradient(135deg, var(--accent), var(--accent-mag));
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  position: relative;
+}
+
+body .brand-mark::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: calc(var(--radius) - 1px);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), transparent 50%);
+  pointer-events: none;
+}
+
+.brand-text {
+  display: grid;
+  line-height: 1.05;
+}
+
+.brand-text span:first-child {
+  color: var(--ink-strong);
+}
+
+.brand-text span:last-child {
+  color: var(--muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
+.topbar-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.topbar a,
+.topbar .topbar-group-label {
+  min-height: 40px;
+  padding: 0.58rem 0.74rem;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.topbar a:hover,
+.topbar .topbar-group-label:hover {
+  color: var(--ink-strong);
+  background: var(--surface-2);
+}
+
+.topbar a[aria-current="page"] {
+  color: var(--ink-strong);
+  background: var(--surface-2);
+}
+
+.topbar-group {
+  position: relative;
+}
+
+.topbar-group-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.topbar-group-label::after {
+  content: "▾";
+  font-size: 0.6rem;
+  color: var(--muted);
+  transition: transform 0.2s ease;
+}
+
+.topbar-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 260px;
+  padding: 0.5rem 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+.topbar-group:hover .topbar-dropdown,
+.topbar-dropdown:focus-within {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.topbar-dropdown a {
+  display: block;
+  padding: 0.5rem 0.9rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  transition: color 0.2s ease;
+}
+
+.topbar-dropdown a:hover {
+  color: var(--ink-strong);
+  background: var(--surface-2);
+}
+
+/* Mobile sidebar trigger */
+.mobile-sidebar-trigger {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.mobile-sidebar-trigger span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 1px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.mobile-sidebar-trigger span:nth-child(1) { margin-bottom: 3px; }
+.mobile-sidebar-trigger span:nth-child(3) { margin-top: 3px; }
+
+.mobile-sidebar-trigger[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.mobile-sidebar-trigger[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-sidebar-trigger[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Mobile sidebar (off-canvas) */
+.mobile-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 320px;
+  max-width: 85vw;
+  height: 100vh;
+  background: var(--surface);
+  border-left: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 200;
+  overflow-y: auto;
+}
+
+.mobile-sidebar.is-open {
+  transform: translateX(0);
+}
+
+.mobile-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.mobile-sidebar-header .brand-text span:first-child {
+  font-size: 1.1rem;
+}
+
+.mobile-sidebar-close {
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1.4rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.mobile-sidebar-close:hover {
+  color: var(--ink-strong);
+  background: var(--surface-2);
+}
+
+.mobile-sidebar-nav {
+  padding: 0.5rem 1.2rem 1.2rem;
+}
+
+.mobile-sidebar-nav a,
+.mobile-sidebar-nav .topbar-group-label {
+  display: block;
+  padding: 0.7rem 0.8rem;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  width: 100%;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.mobile-sidebar-nav a:hover,
+.mobile-sidebar-nav .topbar-group-label:hover {
+  color: var(--ink-strong);
+  background: var(--surface-2);
+}
+
+.mobile-sidebar-nav a[aria-current="page"] {
+  color: var(--ink-strong);
+  background: var(--surface-2);
+}
+
+/* Topbar sidebar overlay (behind mobile sidebar) */
+.topbar-sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 199;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.topbar-sidebar-overlay.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Hide mobile sidebar trigger on desktop */
+@media (min-width: 901px) {
+  .mobile-sidebar-trigger { display: none; }
+  .mobile-sidebar { display: none; }
+  .topbar-sidebar-overlay { display: none; }
+}
+
+/* ── FLUID TYPOGRAPHY & SPACING ── */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 76px;
+  font-size: clamp(16px, 0.85rem + 0.3vw, 19px);
+}
+
+body {
+  font-size: 1rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: clamp(1.3rem, 0.95rem + 2.5vw, 2.2rem);
+}
+
+h1 { font-size: clamp(2.2rem, 1.6rem + 3.5vw, 4.2rem); }
+h2 { font-size: clamp(1.8rem, 1.3rem + 3vw, 3.2rem); }
+h3 { font-size: clamp(1.3rem, 0.95rem + 2.5vw, 2.2rem); }
+h4 { font-size: clamp(1.1rem, 0.8rem + 2vw, 1.8rem); }
+
+.fx-hero, .fx-section, .fx-story, .textile-journey, .textile-story, .three-showcase-section {
+  padding: clamp(4rem, 7vw, 8rem) 0;
+}
+
+.fx-head {
+  max-width: 1400px;
+}
+
+.fx-sub {
+  max-width: 64ch;
+  font-size: clamp(1rem, 0.9rem + 0.4vw, 1.2rem);
+}
+
+.fx-hero-title {
+  font-size: clamp(3.4rem, 1.6rem + 5vw, 7.5rem);
+  line-height: 0.92;
+}
+
+.fx-hero-role {
+  font-size: clamp(1.15rem, 0.85rem + 2.2vw, 1.9rem);
+}
+
+.fx-hero-lead {
+  font-size: clamp(1rem, 0.85rem + 0.8vw, 1.2rem);
+}
+
+.fx-tile h3 {
+  font-size: clamp(1.2rem, 0.9rem + 2vw, 1.8rem);
+}
+
+.fx-num {
+  font-size: clamp(3rem, 2rem + 4vw, 5.5rem);
+}
+
+/* Mobile: adjust topbar */
+@media (max-width: 900px) {
+  .topbar {
+    padding: 0 0.8rem;
+  }
+  .topbar-links {
+    gap: 0.1rem;
+  }
+  .topbar a,
+  .topbar .topbar-group-label {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.5rem;
+  }
+  .topbar-group-label::after {
+    font-size: 0.5rem;
+  }
+  .topbar-dropdown {
+    min-width: 200px;
+    top: calc(100% + 2px);
+  }
+}
 .hero,
 .page-hero,
 .project-hero {

@@ -44,22 +44,43 @@ const projectTypeLabel = {
 };
 
 const initNavigation = () => {
-  const toggle = qs("[data-nav-toggle]");
-  const menu = qs("[data-nav-menu]");
+  const trigger = document.querySelector(".mobile-sidebar-trigger");
+  const sidebar = document.getElementById("mobile-sidebar");
+  const overlay = document.querySelector(".topbar-sidebar-overlay");
 
-  if (!toggle || !menu) return;
+  if (trigger && sidebar) {
+    trigger.addEventListener("click", () => {
+      const isOpen = trigger.getAttribute("aria-expanded") === "true";
+      trigger.setAttribute("aria-expanded", String(!isOpen));
+      sidebar.classList.toggle("is-open", !isOpen);
+      if (overlay) {
+        overlay.classList.toggle("is-visible", !isOpen);
+      }
+    });
 
-  toggle.addEventListener("click", () => {
-    const isOpen = toggle.getAttribute("aria-expanded") === "true";
-    toggle.setAttribute("aria-expanded", String(!isOpen));
-    menu.classList.toggle("is-open", !isOpen);
-  });
-
-  menu.addEventListener("click", (event) => {
-    if (event.target instanceof HTMLAnchorElement) {
-      toggle.setAttribute("aria-expanded", "false");
-      menu.classList.remove("is-open");
+    if (overlay) {
+      overlay.addEventListener("click", () => {
+        if (sidebar.classList.contains("is-open")) {
+          trigger.setAttribute("aria-expanded", "false");
+          sidebar.classList.remove("is-open");
+          overlay.classList.remove("is-visible");
+        }
+      });
     }
+  }
+
+  // Close mobile sidebar on link click
+  document.querySelectorAll(".mobile-sidebar-nav a").forEach((link) => {
+    link.addEventListener("click", () => {
+      const trigger = document.querySelector(".mobile-sidebar-trigger");
+      const sidebar = document.getElementById("mobile-sidebar");
+      const overlay = document.querySelector(".topbar-sidebar-overlay");
+      if (sidebar && sidebar.classList.contains("is-open")) {
+        trigger?.setAttribute("aria-expanded", "false");
+        sidebar.classList.remove("is-open");
+        overlay?.classList.remove("is-visible");
+      }
+    });
   });
 };
 
