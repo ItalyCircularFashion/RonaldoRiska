@@ -11,7 +11,7 @@
 .fx-3d-meta span{border:1px solid var(--line-strong);border-radius:999px;padding:.35rem .8rem;font-size:.8rem;background:color-mix(in srgb,var(--surface) 80%,transparent)}
 .fx-3d-touch{position:absolute;right:clamp(.8rem,2vw,1.4rem);bottom:clamp(.8rem,2vw,1.4rem);display:grid;grid-template-columns:repeat(2,58px);gap:.55rem;z-index:4}
 .fx-3d-touch button{width:58px;height:58px;border-radius:50%;border:1px solid var(--line-strong);background:color-mix(in srgb,var(--bg) 78%,transparent);color:var(--ink);font-size:1.15rem;backdrop-filter:blur(8px);cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none;transition:transform .15s var(--fx-ease,#cubic-bezier(.22,1,.36,1)),background .2s}
-.fx-3d-touch button:active{transform:scale(.92);background:rgba(199,164,91,.25)}
+.fx-3d-touch button:active{transform:scale(.92);background:rgba(255,45,111,.25)}
 .fx-3d-help{position:absolute;left:clamp(.9rem,2vw,1.4rem);bottom:clamp(.8rem,2vw,1.4rem);z-index:4;margin:0;font-size:.78rem;color:var(--muted);background:color-mix(in srgb,var(--bg) 70%,transparent);border:1px solid var(--line);border-radius:999px;padding:.45rem .85rem;backdrop-filter:blur(8px)}
 .fx-3d-stage::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(11,13,12,.28),transparent 28%,transparent 72%,rgba(11,13,12,.34));z-index:2}
 @media (max-width:767.98px){

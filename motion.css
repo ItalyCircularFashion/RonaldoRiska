@@ -193,7 +193,7 @@
   background-position: center;
 }
 .parallax-midground {
-  background-image: radial-gradient(circle at 30% 40%, rgba(199,164,91,0.08), transparent 60%);
+  background-image: radial-gradient(circle at 30% 40%, rgba(255,45,111,0.08), transparent 60%);
   z-index: 1;
 }
 .parallax-foreground {
