@@ -53,6 +53,14 @@
   }
 }
 
+/* ── Mobile: add consistent side padding to container ── */
+@media (max-width: 767.98px) {
+  .container {
+    padding-inline: clamp(1rem, 4.5vw, 1.75rem);
+    margin-inline: 0;
+  }
+}
+
 /* ─────────────────────────────────────────────────────────────
  * 2️⃣ NAV + HEADER — Mobile
  * ───────────────────────────────────────────────────────────── */
@@ -162,7 +170,7 @@
   .hero,
   .page-hero,
   .project-hero {
-    padding-block: clamp(3rem, 10vw, 5rem);
+    padding-block: clamp(2.5rem, 6vw, 4rem);
   }
 
   .section {
