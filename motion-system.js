@@ -653,17 +653,19 @@
   };
 
   // If GSAP/Three are not loaded yet, wait briefly then fallback
+  // NO TICKER: boot is deferred until {gsap, THREE} are ready
   if (window.gsap && window.THREE) {
     boot().catch(console.error);
   } else {
-    // Fallback: GSAP/CDN may still be loading async
-    const raf = setInterval(() => {
+    // Fallback: wait for GSAP and Three to load, then boot
+    // Single one-time check via rAF, no ongoing setInterval ticker
+    (function waitForScripts() {
       if (window.gsap && window.THREE) {
-        clearInterval(raf);
         boot().catch(console.error);
+      } else {
+        requestAnimationFrame(waitForScripts);
       }
-    }, 100);
-    setTimeout(() => clearInterval(raf), 3000);
+    })();
   }
 
   return Coordinator;

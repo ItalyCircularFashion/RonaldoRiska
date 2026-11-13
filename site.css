@@ -227,6 +227,18 @@ dt {
 
 section {
   padding-block: var(--space-section);
+  /* Fase 3: content-visibility for off-screen sections (Chrome/Edge only) */
+  content-visibility: auto;
+  contain-intrinsic-size: 1000px;
+}
+
+/* Fallback for browsers not supporting content-visibility */
+@supports not (content-visibility: auto) {
+  section {
+    content-visibility: normal;
+    contain-intrinsic-size: auto;
+  }
+}
 }
 
 section:nth-of-type(odd) {

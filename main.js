@@ -411,25 +411,23 @@ const drawKpiCanvas = () => {
 
       const bounds = canvas.getBoundingClientRect();
 
-      const dpr = window.devicePixelRatio || 1;
+      // Cap devicePixelRatio at 1 for performance (1x is sufficient for UI)
+      const dpr = Math.min(window.devicePixelRatio || 1, 1);
 
       const width = Math.max(320, bounds.width);
       const height = Math.max(180, bounds.height || 220);
 
       // evita resize inutili
       if (
-        canvas.width !== width * dpr ||
-        canvas.height !== height * dpr
+        canvas.width !== width ||
+        canvas.height !== height
       ) {
-
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-
+        canvas.width = width;
+        canvas.height = height;
       }
 
-      // reset transform matrix
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
+      // reset transform matrix (1x scale, dpr capped at 1)
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, width, height);
 
       const css = getComputedStyle(document.documentElement);
