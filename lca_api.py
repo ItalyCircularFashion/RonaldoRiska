@@ -8,7 +8,6 @@ import sqlite3
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 import sys
-sys.path.insert(0, '/home/indigo/RonaldoRiska')
 
 from lca_engine import LCAEngine, LCAInput, ProductComponent, Transport, create_tshirt_example
 

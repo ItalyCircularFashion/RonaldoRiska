@@ -5,7 +5,6 @@ Verifica il modello di calcolo LCA con dati ADEME
 
 import sys
 import os
-sys.path.insert(0, '/home/indigo/RonaldoRiska')
 
 from lca_engine import (
     LCAEngine, LCAInput, ProductComponent, Material, Process, Transport,

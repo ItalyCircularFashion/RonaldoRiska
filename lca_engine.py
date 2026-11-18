@@ -171,7 +171,7 @@ class LCAEngine:
         'ozone_depletion': 0.0436,
     }
     
-    def __init__(self, db_path: str = "/home/indigo/RonaldoRiska/lca_data.db"):
+    def __init__(self, db_path: str = str(Path(__file__).resolve().with_name("lca_data.db"))):
         self.db_path = db_path
         self._validate_database()
     
